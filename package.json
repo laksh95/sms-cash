@@ -13,7 +13,6 @@
   "author": "CronJ_Rookies2017",
   "license": "ISC",
   "homepage": "https://bitbucket.org/cronj-dev/student-management-system-web#readme",
-
   "dependencies": {
     "axios": "^0.15.3",
     "babel-core": "6.23.1",
@@ -24,6 +23,7 @@
     "body-parser": "^1.16.1",
     "express": "^4.14.1",
     "lodash": "^4.17.4",
+    "material-ui": "^0.17.1",
     "pg": "^6.1.2",
     "react": "^15.4.2",
     "react-bootstrap": "^0.30.7",

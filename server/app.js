@@ -1,0 +1,10 @@
+let express = require('express')
+let index= require('./config')
+let db = require('./config/db')
+let pg = require('pg')
+let app = express()
+let sql = require('./sqldb/index.js')()
+require("./config/express")(app)
+app.listen(index.port,function(){
+    console.log("listening on port",index.port)
+})

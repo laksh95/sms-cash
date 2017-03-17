@@ -37,7 +37,6 @@ let sql = function(){
                 associate : function(models){
                     let userDetail  = models.user_detail
                     let event = models.event
-                    console.log(models)
                     userDetail.hasMany(event,{
                         foreignKey : "creator_id"
                     })

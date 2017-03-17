@@ -45,9 +45,9 @@ module.exports=function(){
             contact_number: {
                 type: sequelize.INTEGER
             },
-            country_code1: sequelize.INTEGER,
+            country_code_1: sequelize.INTEGER,
             alternate_number: sequelize.INTEGER,
-            country_code2: sequelize.INTEGER,
+            country_code_2: sequelize.INTEGER,
             status:  {
                 type: sequelize.BOOLEAN,
                 default : true

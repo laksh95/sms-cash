@@ -2,7 +2,6 @@ let database=require('../../config/db')
 let sequelize=database.sequelize
 let connection=database.connection
 let SkillData=function(){
-    console.log('model files');
     let skill=database.connection.define('skill',{
             id: {
                 allowNull: false,

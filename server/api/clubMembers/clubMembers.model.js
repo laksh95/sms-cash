@@ -14,14 +14,12 @@ let sql = function(){
                     let clubMembers = models.club_members
                     let club = models.club
                     let student = models.student
-                    club.hasMany(clubMembers,{
-                        foreignKey : "club_id",
-                        primaryKey : "true"
-                    })
-                    student.hasMany(clubMembers,{
-                        foreignKey : "student_id",
-                        primaryKey : "true"
-                    })
+                    club.belongsToMany(student,{
+                        through:clubMembers, foreignKey: 'club_id'
+                    });
+                    student.belongsToMany(club, {
+                        through: clubMembers, foreignKey: 'student_id'
+                    });
                 }
             }
         }

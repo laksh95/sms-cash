@@ -1,0 +1,45 @@
+let data = require('./../../config/db');
+let sequelize = data.sequelize;
+let connection = data.connection;
+
+module.exports=function(){
+let academicCalendar= connection.define('academic_calendar',{
+   id: {
+       type: sequelize.INTEGER,
+       primaryKey: true,
+       autoIncrement: true
+     },
+   type: {
+       type: sequelize.ENUM('exam','holiday','result','others'),
+       allowNull: false,
+     },
+   start_date: {
+       type: sequelize.DATE,
+       allowNull: false
+    },
+    no_of_days: {
+       type: sequelize.INTEGER,
+       allowNull: false
+    },
+    content: {
+       type: sequelize.TEXT,
+       allowNull: false
+     }
+  },
+ {
+ classMethods : {
+    associate : function(models){
+    let academicCalendar  = models.academic_calendar
+    let academicYear = models.academic_year
+    academicYear.hasMany(academicCalendar,{
+      foreignKey : "academic_year"
+    })
+    }
+    }
+},
+{
+ instanceMethods:{}
+}
+);
+ return academicCalendar;
+};

@@ -1,0 +1,22 @@
+let database=require('../../config/db')
+let sequelize=database.sequelize
+let connection=database.connection
+let init = function(){
+    return batch = connection.define('batch',{
+            id: {
+                type: sequelize.INTEGER,
+                primaryKey: true,
+                autoIncrement: true
+            },
+            name: {
+                type: sequelize.INTEGER,
+                allowNull:false,
+                unique:true
+            }
+        },
+        {
+            classMethods: {
+            }
+        })
+}
+module.exports = init

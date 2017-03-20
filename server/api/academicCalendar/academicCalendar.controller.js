@@ -28,7 +28,7 @@ var dashboardHandler = {
 		}).
 		then((userPersonalCalendar)=>{
 			dataToClient.personalCalendar = userPersonalCalendar
-			return academicCalendar().fetchHolidayList(db)
+			return academicCalendar().fetchHolidayList(db, request.body.userId)
 		})
 		.then((holidays)=>{
 			dataToClient.totalHoliday = holidays
@@ -54,3 +54,6 @@ function getData(request, response){
 
 
 module.exports = dashboardHandler;
+
+/*work update: 
+Admin-Dashboard-backend done, reading passport/jwt etc then will continue further.*/

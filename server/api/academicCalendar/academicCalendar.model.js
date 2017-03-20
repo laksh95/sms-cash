@@ -42,7 +42,7 @@ let academicCalendar= connection.define('academic_calendar',{
             db.academic_calendar.create({
               type: "holiday",
               start_date: theData.date,
-              no_of_days: 1,
+              end_date: theData.date,
               content: theData.name
             }).then((data)=>{
               console.log("DONE CREATE")
@@ -56,7 +56,7 @@ let academicCalendar= connection.define('academic_calendar',{
         academicCalendar = db.academic_calendar
 
         return academicCalendar.findAll({
-          attributes: ['type', 'end_date', 'no_of_days', 'content'] 
+          attributes: ['type', 'end_date', 'start_date', 'content'] 
         }).then((data) => {
           return data
         })

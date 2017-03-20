@@ -17,8 +17,8 @@ let academicCalendar= connection.define('academic_calendar',{
        type: sequelize.DATE,
        allowNull: false
     },
-    no_of_days: {
-       type: sequelize.INTEGER,
+    end_date: {
+       type: sequelize.DATE,
        allowNull: false
     },
     content: {

@@ -23,7 +23,7 @@ module.exports=function(){
                 unique: true
             },
             contact_number: {
-                type: sequelize.INTEGER
+                type: sequelize.STRING
             },
             country_code: sequelize.INTEGER,
             status:  {

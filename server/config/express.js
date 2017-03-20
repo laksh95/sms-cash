@@ -1,6 +1,7 @@
 var path= require('path');
 var express= require('express');
 var bodyParser = require('body-parser');
+//var passport= require('passport-local');
 
 var init=function(app){
 	//var public= path.resolve(__dirname +"/../../client/public" );

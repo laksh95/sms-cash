@@ -8,7 +8,7 @@ var options={
 }
 
 
-var connection = new sequelize('postgres://postgres:cronj123@192.168.1.224:5432/sms', options);
+var connection = new sequelize('postgres://postgres:cronj123@192.168.1.223:5432/sms', options);
 
 var connectionObj= {user: 'postgres', 
 			database :'student_management_system', 

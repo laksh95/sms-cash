@@ -32,10 +32,10 @@ let student= connection.define('student',{
                     user.hasMany(stud,{
                       foreignKey : 'user_detail_id'
                      });
-                      stud.belongsTo(dept,{
-                      foreignKey : 'department_id'
-                     });
-                     stud.belongsTo(parent,{
+                     dept.hasMany(stud,{
+                     foreignKey : 'department_id'
+                    });
+                     parent.hasMany(stud, {
                       foreignKey : 'parent_id'
                      });
                      batch.hasMany(stud,{

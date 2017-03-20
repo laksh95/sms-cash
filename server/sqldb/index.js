@@ -24,8 +24,10 @@ Object.keys(db).forEach(function(modelName){
        db[modelName].associate(db);
    }
 });
-data.connection.sync()
+data.connection.sync();
+console.log("Here");
 let sql = function(){
-   return db;
+	console.log("Inside here funcn");
+   	return db;
 }
-module.exports  = sql ;
+module.exports  = sql;

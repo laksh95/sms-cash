@@ -1,12 +1,12 @@
-var express=require('express');
-var app=express();
-var socket= require('./config');
+let express=require('express');
+let app=express();
+let socket= require('./config');
 
-var models  = require('./sqldb');
+let models  = require('./sqldb');
 
 
-//require("./config/express")(app); // for static call and middleware
-//var route= require("./routes/routes")(app);
+require("./config/express")(app); // for static call and middleware
+var route= require("./routes/route")(app);
 //route.init(app);
 
 app.listen(socket.port, function () {

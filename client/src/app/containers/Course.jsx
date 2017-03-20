@@ -37,6 +37,7 @@ class Course extends React.Component{
             errorText4:"",
             newCourse:"",
             newDuration:"",
+            course :[],
             validateCourseName :true,
             validateCourseDuration : true ,
             validateNewCourseName : false,

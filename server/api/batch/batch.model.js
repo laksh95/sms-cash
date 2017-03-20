@@ -9,7 +9,7 @@ let init = function(){
                 autoIncrement: true
             },
             name: {
-                type: sequelize.INTEGER,
+                type: sequelize.STRING,
                 allowNull:false,
                 unique:true
             }

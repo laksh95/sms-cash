@@ -26,12 +26,15 @@
     "express": "^4.14.1",
     "lodash": "^4.17.4",
     "material-ui": "0.17.1",
+    "material-ui-number-input": "^5.0.17",
     "pg": "^6.1.2",
     "react": "^15.4.2",
     "react-bootstrap": "^0.30.7",
     "react-cookie": "^1.0.4",
     "react-dom": "^15.4.2",
+    "react-numeric-input": "^2.0.7",
     "react-redux": "^5.0.3",
+    "react-renderif": "^1.0.2",
     "react-router": "^3.0.2",
     "react-router-redux": "^4.0.8",
     "react-tap-event-plugin": "2.0.1",
@@ -44,5 +47,8 @@
     "url-loader": "0.5.8",
     "webpack": "^1.13.1",
     "webpack-dev-server": "^1.14.1"
+  },
+  "devDependencies": {
+    "image-webpack-loader": "^3.2.0"
   }
 }

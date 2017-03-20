@@ -21,13 +21,13 @@ let init = function(){
 				let userDetail = models.user_detail
 				userDetail.hasMany(uploadResult, {foreignKey: 'uploaded_by'});
 
-				var exam = models.exam
+				let exam = models.exam
 				exam.hasMany(uploadResult, {foreignKey: 'exam_id', unique:'uniqueResultUpload'});
 
-				var subject = models.subject
+				let subject = models.subject
 				subject.hasMany(uploadResult, {foreignKey: 'subject_id', unique:'uniqueResultUpload'});
 
-				var curriculum = models.curriculum
+				let curriculum = models.curriculum
 				curriculum.hasMany(uploadResult, {foreignKey: 'curriculum_id', unique:'uniqueResultUpload'});
 			}
 		}

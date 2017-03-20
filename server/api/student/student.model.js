@@ -28,7 +28,6 @@ let student= connection.define('student',{
                      let parent = models.parent;
                      let batch = models.batch;
                      let section = models.section;
-
                     user.hasMany(student,{
                       foreignKey : 'user_detail_id'
                      });

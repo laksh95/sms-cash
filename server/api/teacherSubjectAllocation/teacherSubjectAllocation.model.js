@@ -13,10 +13,10 @@ let init = function(){
        let section = models.section
        let teacher = models.teacher
        let teacherSubjectAllocation = models.teacher_subject_allocation
-       
        subject.hasMany(teacherSubjectAllocation, {foreignKey: 'subject_id', unique: 'teacherSubjectAllocation'})
        teacher.hasMany(teacherSubjectAllocation, {foreignKey: 'teacher_id', unique: 'teacherSubjectAllocation'})
        section.hasMany(teacherSubjectAllocation, {foreignKey: 'section_id', unique: 'teacherSubjectAllocation'})
+
      }
    }
  })

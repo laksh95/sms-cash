@@ -14,7 +14,7 @@ for(let index in models){
 }
 Object.keys(db).forEach(function(modelName){
     if('associate' in db[modelName]){
-        db[modelName].associate(db)
+        db[modelName].associate(db);
     }
 });
 database.connection.sync()

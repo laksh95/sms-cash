@@ -28,7 +28,7 @@ let init = function () {
                 var skill = models.skill
                 skill.hasMany(subject, {foreignKey: 'skills_set'});
 
-                var department = models.department
+                let department = models.department
                 department.hasOne(subject, {foreignKey: 'department_id'});
             }
         }

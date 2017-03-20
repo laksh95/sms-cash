@@ -43,11 +43,11 @@ module.exports=function(){
                 unique: true
             },
             contact_number: {
-                type: sequelize.INTEGER
+                type: sequelize.STRING
             },
-            country_code1: sequelize.INTEGER,
-            alternate_number: sequelize.INTEGER,
-            country_code2: sequelize.INTEGER,
+            country_code_one: sequelize.INTEGER,
+            alternate_number: sequelize.STRING,
+            country_code_two: sequelize.INTEGER,
             status:  {
                 type: sequelize.BOOLEAN,
                 default : true

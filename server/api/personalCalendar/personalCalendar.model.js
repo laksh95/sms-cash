@@ -21,8 +21,8 @@ let personalCalendar= connection.define('personal_calendar',{
        type: sequelize.DATE,
        allowNull: false
     },
-    no_of_days: {
-       type: sequelize.INTEGER,
+   end_date: {
+       type: sequelize.DATE,
        allowNull: false
     }
   },

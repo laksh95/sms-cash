@@ -21,6 +21,7 @@ let init=function(){
            type:sequelize.BOOLEAN,
            allowNull:false,
            defaultValue:true
+
        }
    },
    {
@@ -78,8 +79,6 @@ let init=function(){
                }).then((data)=>{
                    cb(data)
                })
-
-
            }
        }
    })

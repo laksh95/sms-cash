@@ -52,8 +52,4 @@ function getData(request, response){
 	return data;
 }
 
-
 module.exports = dashboardHandler;
-
-/*work update: 
-Admin-Dashboard-backend done, reading passport/jwt etc then will continue further.*/

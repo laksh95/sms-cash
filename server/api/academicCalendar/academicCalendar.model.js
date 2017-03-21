@@ -26,7 +26,8 @@ let academicCalendar= connection.define('academic_calendar',{
        type: sequelize.TEXT,
        allowNull: false
     }
-  },
+     }
+  }
   {
     classMethods : {
       associate : function(models){
@@ -43,6 +44,7 @@ let academicCalendar= connection.define('academic_calendar',{
               type: "holiday",
               start_date: theData.date,
               end_date: theData.date,
+              no_of_days: 1,
               content: theData.name
             }).then((data)=>{
               console.log("DONE CREATE")
@@ -56,7 +58,11 @@ let academicCalendar= connection.define('academic_calendar',{
         academicCalendar = db.academic_calendar
 
         return academicCalendar.findAll({
+
           attributes: ['type', 'end_date', 'start_date', 'content'] 
+
+          attributes: ['type', 'end_date', 'no_of_days', 'content'] 
+
         }).then((data) => {
           return data
         })

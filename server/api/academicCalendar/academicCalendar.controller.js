@@ -42,8 +42,6 @@ var dashboardHandler = {
 }
 
 function getData(request, response){
-	console.log("inside get data")
-
 	let data = {
 		type: request.body.type,
     	startDate: request.body.startDate,

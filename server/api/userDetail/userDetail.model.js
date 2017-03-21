@@ -55,7 +55,7 @@ module.exports=function(){
         },
         {
             classMethods: {
-                getUserByCredential: function(models, userName, password, cb){
+                getUserByCredential: function(models, userName, cb){
                     console.log("In Db get user by credential");
 
                     let userDetail= models.user_detail;
@@ -121,7 +121,27 @@ module.exports=function(){
                         });
 
                    
+                },
+                
+                findUserById: function(models, id, cb){
+                    let userDetail= models.user_detail;
+                    let user={};
+                    userDetail.findOne({attributes:['id', 'name'], 
+                    where: {id: id, status:true}
+                    }).then((result)=> {
+                        if(result){
+                            user.login=true;
+                            user.id= result.dataValues.id;
+                            user.name= result.dataValues.name;
+                            cb(null,user);
+                        }
+                        else{
+                            user.login=false;
+                            cb(error);
+                        }
+                    })
                 }
+
 
             }
         },

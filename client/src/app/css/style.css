@@ -1,0 +1,21 @@
+.chatApp{
+  position:fixed;
+  bottom:0;
+  width:100%;
+}
+
+.chatwithme{
+   margin-left:200px;
+}
+
+.chatBox{
+  position:fixed;
+  width:26%;
+  bottom:0px;
+  right:0px;
+  
+}
+
+.content{
+ height:100%; width:100%;
+}

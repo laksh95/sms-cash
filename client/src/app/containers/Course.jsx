@@ -123,7 +123,7 @@ class Course extends React.Component{
     };
     handleDeleteCloseWithUpdate = () => {
         let data = this.state.curCourse
-        axios.delete('/deleteCourse',data)
+        axios.delete('localhost:3166/api/course/deleteCourse',data)
         this.setState({deleteDialog: false});
     };
     handleChange = (value) => {
@@ -148,7 +148,7 @@ class Course extends React.Component{
         console.log(key)
         this.setState({open: false});
         let data = this.state.curCourse
-        axios.put('/editCourse',data).then((response)=>{
+        axios.put('localhost:3166/api/course/editCourse',data).then((response)=>{
             console.log(response)
         })
             .catch((response)=>{
@@ -265,7 +265,7 @@ class Course extends React.Component{
     addCourse(){
         let newCourse = this.state.newCourse
         let newDuration = this.state.newDuration
-        axios.post('/addCourse',{
+        axios.post('/localhost:3166/api/course/addCourse',{
             courseName : newCourse,
             duration : newDuration
         })
@@ -275,7 +275,7 @@ class Course extends React.Component{
         this.props = props
     }
     componentWillMount(){
-        axios.get('/getCourses').then((response)=>{
+        axios.get('localhost:3166/api/course/getCourses').then((response)=>{
             console.log(response)
             this.setState({
                 course:response

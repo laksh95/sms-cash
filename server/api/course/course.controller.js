@@ -1,6 +1,3 @@
-/**
- * Created by mustang on 18/03/17.
- */
 let model = require('./course.model')
 let sql= require('../../sqldb')
 

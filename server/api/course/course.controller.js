@@ -34,16 +34,14 @@ let courseFunctions = {
         model().editCourse(db,updateDetails,(data)=>{
             res.send(data)
         })
-
-
     },
     deleteCourse:(req,res)=>{
+        console.log("-------------------",req.body);
+        console.log(req);
         let id=req.body.id
         model().deleteCourse(db,id,(data)=>{
             res.send(data)
         })
-
     }
-
 }
 module.exports=courseFunctions

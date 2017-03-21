@@ -11,6 +11,7 @@ import TextField from 'material-ui/TextField';
 import Dialog from 'material-ui/Dialog';
 import NumberInput from 'material-ui-number-input';
 import axios from 'axios'
+import Snackbar from 'material-ui/Snackbar';
 
 const styles = {
     headline: {
@@ -27,6 +28,8 @@ class Course extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
+            snackbarMessage : "" ,
+            snackbarOpen:false,
             deleteDialog : false,
             value: 'a',
             open: false,
@@ -105,12 +108,26 @@ class Course extends React.Component{
             }
             this.setState({ errorText4: errorText });
         };
+        /*bindings*/
         this.setCourseName = this.setCourseName.bind(this)
         this.addCourseName = this.addCourseName.bind(this)
         this.setCourseDuration = this.setCourseDuration.bind(this)
         this.addCourseDuration = this.addCourseDuration.bind(this)
         this.addCourse = this.addCourse.bind(this)
     }
+    resetNewCourse = () => {
+        console.log("sss");
+        this.setState({
+            newCourse: "",
+            newDuration : ""
+        })
+        console.log("new course",this.state.newCourse)
+    };
+    snackbarHandleRequestClose = () => {
+        this.setState({
+            snackbarOpen: false,
+        });
+    };
     handleDeleteOpen = (index,data) => {
         this.setState({
             curCourse : data
@@ -123,7 +140,22 @@ class Course extends React.Component{
     };
     handleDeleteCloseWithUpdate = () => {
         let data = this.state.curCourse
-        axios.delete('http://localhost:3166/api/course/deleteCourse',data)
+        console.log("handledeleteclosewithupdate",data)
+        axios.put('http://localhost:3166/api/course/deleteCourse',data).then((response)=>{
+            console.log(response)
+            let course = this.state.course
+            for(let index in course){
+                if(course[index].id==data.id){
+                    course.splice(index,1)
+                }
+            }
+            this.setState({
+                course : course
+            })
+        })
+        .catch((response)=>{
+            console.log(response)
+        })
         this.setState({deleteDialog: false});
     };
     handleChange = (value) => {
@@ -280,6 +312,24 @@ class Course extends React.Component{
         axios.post('http://localhost:3166/api/course/addCourse',{
             courseName : newCourse,
             duration : newDuration
+        }).then((response)=>{
+            console.log(response);
+            if(response.data.status==1){
+                this.setState({
+                    value : 'a',
+                    snackbarOpen : true,
+                    snackbarMessage : "Course Added"
+                })
+            }
+            else {
+                this.setState({
+                    snackbarOpen  : true ,
+                    snackbarMessage : response.data.content,
+                })
+            }
+        })
+        .catch((response)=>{
+            console.log(response)
         })
     }
 
@@ -359,17 +409,18 @@ class Course extends React.Component{
                 >
                     <Tab label="View" value="a">
                         <div>
-                            <h2 style={styles.headline}>Controllable Tab A</h2>
+                            <h2 style={styles.headline}>Courses</h2>
                             <Table>
-                                <TableHeader>
+                                <TableHeader adjustForCheckbox={false}>
                                     <TableRow >
                                         <TableHeaderColumn>Course_Name</TableHeaderColumn>
                                         <TableHeaderColumn>Course_Duration</TableHeaderColumn>
                                         <TableHeaderColumn>No of Department</TableHeaderColumn>
                                         <TableHeaderColumn></TableHeaderColumn>
+                                        <TableHeaderColumn></TableHeaderColumn>
                                     </TableRow>
                                 </TableHeader>
-                                <TableBody displayRowCheckbox="false">
+                                <TableBody displayRowCheckbox={false}>
                                     {
                                         this.state.course.map((data,index)=>{
                                             return (
@@ -384,8 +435,6 @@ class Course extends React.Component{
                                             )
                                         })
                                     }
-
-
                                 </TableBody>
                             </Table>
                         </div>
@@ -415,10 +464,10 @@ class Course extends React.Component{
                                           style={style}
                                           disabled = {!(this.state.validateNewCourseName && this.state.validateNewCourseDuration)}
                             />
-
                         </div>
                     </Tab>
                 </Tabs>
+                {/*Confirm delete option*/}
                 <Dialog
                     actions={dialogActions}
                     modal={false}
@@ -427,6 +476,12 @@ class Course extends React.Component{
                 >
                     Are you sure you want to delete ?
                 </Dialog>
+                <Snackbar
+                    open={this.state.snackbarOpen}
+                    message={this.state.snackbarMessage}
+                    autoHideDuration={4000}
+                    onRequestClose={this.snackbarHandleRequestClose}
+                />
             </div>
         )
     }

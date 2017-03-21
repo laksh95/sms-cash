@@ -69,33 +69,15 @@ module.exports=function(){
                     let login=false;
                     let userId=0;
 
-                   //  userDetail.findAll({attributes:['name'], 
-                   //      where: {username: userName, password:password},
-                   //      include:[{
-                   //          model: director
-                   //      }] }).then(function(result){
-                   //          let user={};
-                   //          if(result.length>0){
-                   //              role.push('director');
-                   //              user.login=true;
-                   //              //user.name=result[0].dataValues.name;
-                   //          }
-                   //          else{
-                   //              user.login=false;
-                   //          }
-                   //          cb(user);
-                   //  }).catch(function(error){
-                   //  console.log(error);
-                   // });
-
-
-                    userDetail.findOne({attributes:['id', 'name'], 
-                        where: {username: userName, password:password, status:true}
+                    userDetail.findOne({attributes:['id', 'name', 'password'], 
+                        where: {username: userName, status:true}
                          }).then((result)=> {
                             if(result){
                                 user.login=true;
                                 userId= result.dataValues.id;
+                                user.id= userId;
                                 user.name= result.dataValues.name;
+                                user.password= result.dataValues.password;
                                 admin.findOne({attributes: ['id'], where: {user_detail_id: userId}}).
                                 then((resultAdmin)=> {
                                     if(resultAdmin){
@@ -126,15 +108,16 @@ module.exports=function(){
                                         role.push('student');
                                     }
                                     user.role=role;
-                                    cb(user);
+                                    cb(null,user);
                                 })
                             }
                             else{
                                 user.login=false;
-                                cb(user);  
+                                cb(null, null);  
                             }
                          }).catch(function(error){
-                        console.log(error);
+                                console.log(error);
+                                cb(error);
                         });
 
                    

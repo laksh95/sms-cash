@@ -6,7 +6,6 @@
 
 
 let userDetailDb= require('./userDetail.model')();
-//let userDetailDb= require('./userDetail.db');
 let models  = require('./../../sqldb')();
 
 exports.getUser= function(req, res){

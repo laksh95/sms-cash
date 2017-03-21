@@ -6,10 +6,10 @@ var path= require('path');
 
 module.exports=function(app){
 	console.log("In routes file");
-
-	// routes
 	const authRoutes = require('./authRoute');
-	const apiRoutes = require('./apiRoute');
+	// const apiRoutes = require('./apiRoute');
 	app.use('/auth', authRoutes);
-	app.use('/api', apiRoutes);
+	//app.use('/api',require('./apiRoute')(app));
+	app.use('/api/department',require('../api/department'));
+    app.use('/api/course',require('../api/course'));
 };

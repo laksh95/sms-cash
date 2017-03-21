@@ -37,15 +37,17 @@ var dashboardHandler = {
 	},
 	addHoliday: function(request, response){
 		let inputData = getData(request, response)
-		academicCalendar().addHolidays(db, inputData)
+		academicCalendar().addHolidays(db, inputData, (status)=>{
+			response.send(status)
+		})
 	}
 }
 
 function getData(request, response){
 	let data = {
 		type: request.body.type,
-    	startDate: request.body.startDate,
-    	endDate: request.body.endDate,
+    	startDate: new Date(request.body.startDate),
+    	endDate: new Date(request.body.endDate),
     	holidayName: request.body.holidayName
 	}
 	return data;

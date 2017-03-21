@@ -33,7 +33,7 @@ module.exports=function(){
         },
         {
             classMethods: {
-                addParentDetail: function(db, inputData){
+                addParentDetail: function(db, inputData, cb){
                     let parent = db.parent
 
                     parent.create({
@@ -43,11 +43,25 @@ module.exports=function(){
                         contact_number: inputData.contact_number,
                         country_code: inputData.country_code
                     })
+                    .then((data)=>{
+                        console.log("DONE CREATE")
+                        cb({
+                            status: 1,
+                            message: "Created an entry"
+                        }) 
+                    })
+                    .catch((data)=>{
+                        cb({
+                            status: 0,
+                            message: "Failed to create an entry"
+                        })
+                    })
                 },
                 totalParent: function(db, cb){
                     let parent = db.parent
 
-                    return parent.findAndCountAll().then((data)=>{
+                    return parent.findAndCountAll()
+                    .then((data)=>{
                         return data.count
                     })
                 }

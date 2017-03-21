@@ -44,6 +44,29 @@ let personalCalendar= connection.define('personal_calendar',{
       }).then((data) => {
         return data
       })
+    },
+    addPersonalEvent: function(db, inputData, cb){
+      personalCalendar = db.personal_calendar
+
+      personalCalendar.create({
+        heading: inputData.heading,
+        end_date: inputData.endDate,
+        start_date: inputData.startDate,
+        content: inputData.content
+      })
+      .then((data)=>{
+        console.log("DONE CREATE")
+        cb({
+          status: 1,
+          message: "Created an entry"
+        }) 
+      })
+      .catch((data)=>{
+        cb({
+          status: 0,
+          message: "Failed to create an entry"
+        })
+      })
     }
   }
 },

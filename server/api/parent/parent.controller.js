@@ -5,9 +5,10 @@ var db=require('./../../sqldb')();
 
 var dashboardHandler = {
 	addParent: function(request, response){
-		console.log("adding parent")
 		inputData = getData(request, response)
-		sequalizeObject().addParentDetail(db, inputData)
+		sequalizeObject().addParentDetail(db, inputData, (status)=>{
+			response.send(status)
+		} )
 	},
 	fetchParentCount: function(request, response){
 		sequalizeObject().fetchHolidayList(db, function(data){

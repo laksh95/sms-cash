@@ -29,12 +29,6 @@ let init = function(){
                 hod.belongsTo(userDetail,{
                    foreignKey:'user_detail_id'
                })
-
-                let teacher=model.teacher
-                let hod=model.hod
-                hod.belongsTo(teacher,{
-                    foreignKey:'teacher_id'
-                })
             }
         }
     })

@@ -26,8 +26,7 @@ let academicCalendar= connection.define('academic_calendar',{
        type: sequelize.TEXT,
        allowNull: false
     }
-     }
-  }
+  },
   {
     classMethods : {
       associate : function(models){
@@ -42,15 +41,16 @@ let academicCalendar= connection.define('academic_calendar',{
           data.data.holidays.map((theData, i) => {
             db.academic_calendar.create({
               type: "holiday",
-              start_date: theData.date,
-              end_date: theData.date,
-              no_of_days: 1,
+              start_date: new Date(theData.date),
+              end_date: new Date(theData.date),
               content: theData.name
-            }).then((data)=>{
+            })
+            .then((data)=>{
               console.log("DONE CREATE")
             })
           })
-        }).catch((data) => {
+        })
+        .catch((data) => {
           console.log("ERROR IN LOADING DATA TO DATABASE")
         })
       },
@@ -60,14 +60,12 @@ let academicCalendar= connection.define('academic_calendar',{
         return academicCalendar.findAll({
 
           attributes: ['type', 'end_date', 'start_date', 'content'] 
-
-          attributes: ['type', 'end_date', 'no_of_days', 'content'] 
-
+          
         }).then((data) => {
           return data
         })
       },
-      addHolidays: function(db, inputData){
+      addHolidays: function(db, inputData, cb){
         academicCalendar = db.academic_calendar
 
         academicCalendar.create({
@@ -75,10 +73,20 @@ let academicCalendar= connection.define('academic_calendar',{
           start_date: inputData.startDate,
           end_date: inputData.endDate,
           content: inputData.holidayName
-        }).then((data)=>{
-          console.log("DONE CREATE")
         })
-
+        .then((data)=>{
+          console.log("DONE CREATE")
+          cb({
+          status: 1,
+          message: "Created an entry"
+          }) 
+        })
+        .catch((data)=>{
+          cb({
+            status: 0,
+            message: "Failed to create an entry"
+          })
+        })
       }
     }
   }

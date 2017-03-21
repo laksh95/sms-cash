@@ -11,12 +11,52 @@ import Subheader from 'material-ui/Subheader';
 import Divider from 'material-ui/Divider';
 import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
 import DashBoard from './../components/DashBoard.jsx';
- 
-export default class DrawerOpenRightExample extends React.Component {
+import DashBoardNumberOfRole from './../components/DashBoardNumberOfRole.jsx';
+import {store} from "../store.js";
+import {connect} from "react-redux";
+import {getParentCount,getStudentCount,getTeacherCount,getEvents} from '../actions/getDataAction.jsx'
+
+class DrawerOpenRightExample extends React.Component {
   constructor(props) {
     super(props);
   }
   componentWillMount(){
+      axios.post('http://192.168.1.247:1234/api/academicCalendar/dashboard/getInitialData',{
+        userId:'1'
+      })
+      .then((response)=> {
+        console.log("success",response);
+        let events=this.props.data.events;
+        for(let i in response.data.totalHoliday)
+        {
+          let event1={
+            start:new Date(response.data.totalHoliday[i].start_date),
+            end:new Date(response.data.totalHoliday[i].start_date),
+            content:response.data.totalHoliday[i].content,
+            type:response.data.totalHoliday[i].type,
+            title:response.data.totalHoliday[i].content
+          }
+          events.push(event1)
+        } 
+        for(let i in response.data.personalCalendar)
+        {
+          let event1={
+            start:new Date(response.data.personalCalendar[i].start_date),
+            end:new Date(response.data.personalCalendar[i].start_date),
+            content:response.data.personalCalendar[i].content,
+            type:response.data.personalCalendar[i].heading,
+            title:response.data.personalCalendar[i].heading
+          }
+          events.push(event1)
+        }   
+        this.props.getEvents(events)
+        this.props.getParentCount(response.data.totalParent)
+        this.props.getTeacherCount(response.data.totalStudents)
+        this.props.getStudentCount(response.data.totalTeachers)
+      })
+      .catch(function (response) {
+        console.log("failure",response);
+      });
   }
   getChildContext() {
     return { muiTheme: getMuiTheme(baseTheme) };
@@ -79,12 +119,35 @@ export default class DrawerOpenRightExample extends React.Component {
         </Drawer>
       <div style={contentStyle}>
           
-        <DashBoard />
+        <DashBoard events={this.props.data.events}/>
+        <DashBoardNumberOfRole parentNo={this.props.data.parentCount} studentNo={this.props.data.studentCount} teacherNo={this.props.data.teacherCount}/>
         </div>
     </div>
     );
   }
 }
+const mapStateToProps=(state)=>{
+    return{
+        data:state.data
+    };
+};
+const mapDispatchToProps=(dispatch)=>{
+    return{
+        getEvents:(events)=>{
+            dispatch(getEvents(events));
+        },
+        getParentCount:(count)=>{
+            dispatch(getParentCount(count));
+        },
+        getTeacherCount:(count)=>{
+            dispatch(getTeacherCount(count));
+        },
+        getStudentCount:(count)=>{
+            dispatch(getStudentCount(count));
+        }
+    };
+};
+export default connect(mapStateToProps,mapDispatchToProps)(DrawerOpenRightExample)
 DrawerOpenRightExample.childContextTypes = {
             muiTheme : React.PropTypes.object.isRequired
         };

@@ -4,8 +4,13 @@ import React from 'react';
 import { render } from 'react-dom';  
 import App from './app.jsx'; 
 import injectTapEventPlugin from 'react-tap-event-plugin';
+import{Provider} from "react-redux";
+import {store} from "./store.js";
+
 injectTapEventPlugin();
 render(  
-	<App />,
+	<Provider store={store} >
+		<App />
+	</Provider>,
 	document.getElementById('main')
 );

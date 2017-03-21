@@ -172,6 +172,13 @@ class Course extends React.Component{
                 totalPages:size
             })
             course = this.state.course
+            this.setState({
+                currentPage : 1
+            })
+            this.setState({
+                snackbarOpen:true,
+                snackbarMessage:"Course Deleted"
+            })
             let pagedCourses = []
             for(let index in course ){
                 if(index<10){
@@ -360,6 +367,9 @@ class Course extends React.Component{
                 // let totalPages = Math.floor(size/10) +1
                 this.setState({
                     totalPages:size
+                })
+                this.setState({
+                    currentPage:1
                 })
                 let pagedCourses = []
                 for(let index in course){

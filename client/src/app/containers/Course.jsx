@@ -228,6 +228,29 @@ class Course extends React.Component{
             this.setState({
                 course : course
             })
+            let size = course.length
+            // let totalPages = Math.floor(size/10) +1
+            this.setState({
+                totalPages:size
+            })
+            this.setState({
+                currentPage:1
+            })
+            let pagedCourses = []
+            for(let index in course){
+                if(index<10){
+                    pagedCourses.push(course[index])
+                }
+            }
+            this.setState({
+                pagedCourses:pagedCourses
+            })
+            this.setState({
+                snackbarMessage:"Field Edited Successfully",
+                snackbarOpen:true
+            })
+
+
         })
         .catch((response)=>{
             console.log(response)

@@ -123,7 +123,7 @@ class Course extends React.Component{
     };
     handleDeleteCloseWithUpdate = () => {
         let data = this.state.curCourse
-        axios.delete('localhost:3166/api/course/deleteCourse',data)
+        axios.delete('http://localhost:3166/api/course/deleteCourse',data)
         this.setState({deleteDialog: false});
     };
     handleChange = (value) => {
@@ -148,12 +148,22 @@ class Course extends React.Component{
         console.log(key)
         this.setState({open: false});
         let data = this.state.curCourse
-        axios.put('localhost:3166/api/course/editCourse',data).then((response)=>{
+        console.log("inside handleCloseWithEdit",data)
+        axios.put('http://localhost:3166/api/course/editCourse',data).then((response)=>{
+            console.log(response)
+            let course = this.state.course
+            for(let index in course){
+                if(course[index].id===data.id){
+                    course[index] = data
+                }
+            }
+            this.setState({
+                course : course
+            })
+        })
+        .catch((response)=>{
             console.log(response)
         })
-            .catch((response)=>{
-                console.log(response)
-            })
     };
 
     setCourseName(event){
@@ -187,6 +197,7 @@ class Course extends React.Component{
         }
         this.setState({
             curCourse:{
+                id : course.id,
                 name : event.target.value ,
                 duration :course.duration,
                 noOfDept : course.noOfDept
@@ -210,6 +221,7 @@ class Course extends React.Component{
         console.log("Error Text",this.state.errorText)
         this.setState({
             curCourse:{
+                id :course.id ,
                 name : course.name ,
                 duration :event.target.value,
                 noOfDept : course.noOfDept
@@ -265,7 +277,7 @@ class Course extends React.Component{
     addCourse(){
         let newCourse = this.state.newCourse
         let newDuration = this.state.newDuration
-        axios.post('/localhost:3166/api/course/addCourse',{
+        axios.post('http://localhost:3166/api/course/addCourse',{
             courseName : newCourse,
             duration : newDuration
         })
@@ -275,10 +287,10 @@ class Course extends React.Component{
         this.props = props
     }
     componentWillMount(){
-        axios.get('localhost:3166/api/course/getCourses').then((response)=>{
+        axios.get('http://localhost:3166/api/course/getCourses').then((response)=>{
             console.log(response)
             this.setState({
-                course:response
+                course:response.data
             })
         })
         .catch((response)=>{

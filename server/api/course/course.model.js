@@ -53,7 +53,8 @@ let init=function(){
                             name:setData.course_name
                         }
                     }).then((data)=>{
-                        if(data.status==='f'){
+                        console.log("data-----------",typeof(data[0]))
+                        if(data.length==0){
                             db.course.create({
                                 name:setData.course_name,
                                 duration:setData.duration
@@ -65,12 +66,33 @@ let init=function(){
                                 sendData(response)
                             })
                         }
-                        else{
-                            response={
-                                status:0,
-                                content:'Course Already exists.'
+                        else {
+                            let course = data
+                            let flag = 1
+                            for (let index in course) {
+                                if (course[index].dataValues.status == true) {
+                                    flag = 0
+                                }
                             }
-                            sendData(response)
+                            if (1 === flag) {
+                                db.course.create({
+                                    name: setData.course_name,
+                                    duration: setData.duration
+                                }).then((data) => {
+                                    response = {
+                                        status: 1,
+                                        content: data
+                                    }
+                                    sendData(response)
+                                })
+                            }
+                            else {
+                                response = {
+                                    status: 0,
+                                    content: 'Course Already exists.'
+                                }
+                                sendData(response)
+                            }
                         }
                     })
                 },

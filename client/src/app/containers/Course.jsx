@@ -1,8 +1,4 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
-import {Button} from 'react-bootstrap'
-import cookie from 'react-cookie'
-import {Link} from 'react-router'
 import {Tabs, Tab} from 'material-ui/Tabs';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 import FlatButton from 'material-ui/FlatButton';
@@ -12,6 +8,8 @@ import Dialog from 'material-ui/Dialog';
 import NumberInput from 'material-ui-number-input';
 import axios from 'axios'
 import Snackbar from 'material-ui/Snackbar';
+require('rc-pagination/assets/index.css');
+const Pagination = require('rc-pagination');
 
 const styles = {
     headline: {
@@ -28,6 +26,9 @@ class Course extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
+            currentPage : 1 ,
+            totalPages : 1,
+            pagedCourses : [],
             snackbarMessage : "" ,
             snackbarOpen:false,
             deleteDialog : false,
@@ -115,13 +116,26 @@ class Course extends React.Component{
         this.addCourseDuration = this.addCourseDuration.bind(this)
         this.addCourse = this.addCourse.bind(this)
     }
-    resetNewCourse = () => {
-        console.log("sss");
+    pageChange = (currentPage , size) =>{
+        console.log("inside page change")
         this.setState({
-            newCourse: "",
-            newDuration : ""
+            currentPage : currentPage
         })
-        console.log("new course",this.state.newCourse)
+        let course = this.state.course
+        let start = (currentPage-1)*10
+        let end = start + 10
+        console.log("start",start)
+        console.log("end",end)
+        let pagedCourses = []
+        for(let index in course){
+            if(index>=start && index<end){
+                console.log("inside loop")
+                pagedCourses.push(course[index])
+            }
+        }
+        this.setState({
+            pagedCourses:pagedCourses
+        })
     };
     snackbarHandleRequestClose = () => {
         this.setState({
@@ -151,6 +165,21 @@ class Course extends React.Component{
             }
             this.setState({
                 course : course
+            })
+            let size= this.state.course
+            console.log("size after delete",size)
+            this.setState({
+                totalPages:size
+            })
+            course = this.state.course
+            let pagedCourses = []
+            for(let index in course ){
+                if(index<10){
+                    pagedCourses.push(course[index])
+                }
+            }
+            this.setState({
+                pagedCourses:pagedCourses
             })
         })
         .catch((response)=>{
@@ -320,6 +349,27 @@ class Course extends React.Component{
                     snackbarOpen : true,
                     snackbarMessage : "Course Added"
                 })
+                let newCourse = response.data.content
+                console.log("newCourse",newCourse)
+                let course = this.state.course
+                course.push(newCourse)
+                this.setState({
+                    course:course
+                })
+                let size = course.length
+                // let totalPages = Math.floor(size/10) +1
+                this.setState({
+                    totalPages:size
+                })
+                let pagedCourses = []
+                for(let index in course){
+                    if(index<10){
+                        pagedCourses.push(course[index])
+                    }
+                }
+                this.setState({
+                    pagedCourses:pagedCourses
+                })
             }
             else {
                 this.setState({
@@ -337,17 +387,36 @@ class Course extends React.Component{
         this.props = props
     }
     componentWillMount(){
+
         axios.get('http://localhost:3166/api/course/getCourses').then((response)=>{
             console.log(response)
             this.setState({
                 course:response.data
             })
+            let course = response.data
+            let size = course.length
+            console.log("size",size)
+            // let totalPages = Math.floor(size /10 )+1
+            this.setState({
+                totalPages : size
+            })
+            let pagedCourses = []
+            for(let index in course ){
+                if(index<10){
+                    pagedCourses.push(course[index])
+                }
+            }
+            this.setState({
+                pagedCourses:pagedCourses
+            })
+
         })
         .catch((response)=>{
             console.log(response)
         })
     }
     render(){
+        console.log("pagedcourses",this.state)
         const dialogActions = [
             <FlatButton
                 label="No"
@@ -422,7 +491,7 @@ class Course extends React.Component{
                                 </TableHeader>
                                 <TableBody displayRowCheckbox={false}>
                                     {
-                                        this.state.course.map((data,index)=>{
+                                        this.state.pagedCourses.map((data,index)=>{
                                             return (
                                                     <TableRow>
                                                         <TableRowColumn><FlatButton label={data.name}/></TableRowColumn>
@@ -438,6 +507,7 @@ class Course extends React.Component{
                                 </TableBody>
                             </Table>
                         </div>
+                        <Pagination className="ant-pagination" defaultCurrent={1} total={this.state.totalPages} current={this.state.currentPage} defaultPageSize={10} onChange={this.pageChange}/>
                     </Tab>
                     <Tab label="Add" value="b">
                         <div>

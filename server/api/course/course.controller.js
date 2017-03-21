@@ -5,7 +5,6 @@ let db=sql()
 let courseFunctions = {
     getCourses:(req,res)=>{
         model().getCourse(db,function (data){
-            console.log('controller',data)
             res.send(data)
         })
     },
@@ -18,7 +17,6 @@ let courseFunctions = {
             duration
         }
         model().addNewCourse(db,setCourseData,function(data){
-            console.log('controller')
             res.send(data)
         })
     },
@@ -36,8 +34,6 @@ let courseFunctions = {
         })
     },
     deleteCourse:(req,res)=>{
-        console.log("-------------------",req.body);
-        console.log(req);
         let id=req.body.id
         model().deleteCourse(db,id,(data)=>{
             res.send(data)

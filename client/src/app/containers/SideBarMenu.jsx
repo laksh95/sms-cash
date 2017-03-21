@@ -12,7 +12,6 @@ import Divider from 'material-ui/Divider';
 import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
 import DashBoard from './DashBoard.jsx';
 import Course  from './Course.jsx'
-let RenderIf = require('react-renderif');
 
 const events = [
     {

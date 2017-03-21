@@ -28,7 +28,6 @@ let sql = function(){
             classMethods : {
                 associate : function(models){
                     let teacher = models.teacher
-                    
                     teacher.hasMany(club,{
                         foreignKey : "faculty_advisor"
                     })

@@ -2,7 +2,6 @@ let data = require('./../../config/db');
 let sequelize = data.sequelize;
 let connection = data.connection;
 let axios = require('axios')
-
 module.exports=function(){
 let academicCalendar= connection.define('academic_calendar',{
    id: {

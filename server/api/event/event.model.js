@@ -37,7 +37,6 @@ let sql = function(){
                 associate : function(models){
                     let userDetail  = models.user_detail
                     let event = models.event
-                   
                     userDetail.hasMany(event,{
                         foreignKey : "creator_id"
                     })
@@ -53,8 +52,6 @@ let sql = function(){
                     event.belongsToMany(club,{
                         through : "club_event"
                     })
-
-
                 }
             }
         }

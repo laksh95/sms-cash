@@ -22,11 +22,12 @@ let init = function(){
     },{
         classMethods:{
             associate:function(model){
-                let teacher=model.teacher
+                let userDetail=model.user_detail
                 let hod=model.hod
-                hod.belongsTo(teacher,{
-                    foreignKey:'teacher_id'
-                })
+                
+                hod.belongsTo(userDetail,{
+                   foreignKey:'user_detail_id'
+               })
             }
         }
     })

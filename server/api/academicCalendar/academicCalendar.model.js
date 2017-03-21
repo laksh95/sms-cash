@@ -25,7 +25,7 @@ let academicCalendar= connection.define('academic_calendar',{
     content: {
        type: sequelize.TEXT,
        allowNull: false
-     }
+    }
   },
   {
     classMethods : {

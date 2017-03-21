@@ -24,14 +24,14 @@ var dashboardHandler = {
 		})
 		.then((totalTeachers)=>{
 			dataToClient.totalTeachers = totalTeachers
-			return personalCalendar().fetchPersonalCalendarList(db)
+			return personalCalendar().fetchPersonalCalendarList(db, request.body.userId)
 		}).
 		then((userPersonalCalendar)=>{
 			dataToClient.personalCalendar = userPersonalCalendar
-			return academicCalendar().fetchHolidayList(db, request.body.userId)
+			return academicCalendar().fetchHolidayList(db)
 		})
 		.then((holidays)=>{
-			dataToClient.totalHoliday = holidays
+			dataToClient.totalHoliday= holidays
 			response.send(dataToClient)
 		})
 	},

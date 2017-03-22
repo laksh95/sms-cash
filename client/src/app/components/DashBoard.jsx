@@ -50,7 +50,6 @@ class DashBoard extends React.Component {
 		}
 	componentWillMount(){
 		let ob=this;
-		console.log("inside comonenWillMount:",this.props.events)
 		BigCalendar.momentLocalizer(moment);
 	}
 	getChildContext() {
@@ -82,7 +81,7 @@ class DashBoard extends React.Component {
 	handleTouchTapSlot = (event) => {
 		let endDate=event.end.toDateString();
 		let startDate=event.start.toDateString();
-		let endTime=event.end.toTimeString();
+		let endTime=moment(event.end).format('hh:mm A')
 		let starTime=event.start.toTimeString();
 		this.setState({
 			open1: true,
@@ -146,7 +145,7 @@ class DashBoard extends React.Component {
 					popup
 					selectable
 					events={this.props.events}
-					culture='en'
+					culture='en-GB'
 					step={15}
 					timeslots={8}
 					defaultView='week'

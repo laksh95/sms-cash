@@ -12,12 +12,12 @@ import Divider from 'material-ui/Divider';
 import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
 import DashBoard from './DashBoard.jsx';
 import Course  from './Course.jsx'
-let RenderIf = require('react-renderif');
-
+import renderIf from 'render-if'
+import Student from './Student.jsx'
 const events = [
     {
-        start: '2015-07-20',
-        end: '2015-07-02',
+        start:'2015-07-20',
+        end:'2015-07-02',
         eventClasses: 'optionalEvent',
         title: 'test event',
         description: 'This is a test description of an event',
@@ -34,15 +34,25 @@ export default class DrawerOpenRightExample extends React.Component {
   constructor(props) {
     super(props);
     this.state= {
-        course : false
+        course : false,
+        student: false
+
     }
     this.course= this.course.bind(this)
+      this.student=this.student(bind)
   }
   course(){
     console.log("inside course")
     this.setState({
-        course : true
+        course : true,
+        student:false
     })
+  }
+  student(){
+      this.setState({
+        student:true,
+          course:false
+      })
   }
   componentWillReceiveProps(props){
       this.props = props
@@ -112,9 +122,21 @@ export default class DrawerOpenRightExample extends React.Component {
 
       <div style={contentStyle}>
           {
-             <Course/>
+              renderIf(this.state.course)
+              (
+                    <Course/>
+              )
           }
       </div>
+            <div style={contentStyle}>
+                {
+                    renderIf(this.state.student)
+                    (
+                        <Student/>
+                    )
+                }
+            </div>
+
     </div>
     );
   }

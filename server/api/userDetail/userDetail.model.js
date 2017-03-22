@@ -58,15 +58,9 @@ module.exports=function(){
                 getUserByCredential: function(models, userName, cb){
 
                     let userDetail= models.user_detail;
-                    let director= models.director;
-                    let admin= models.admin;
-                    let hod=models.hod;
-                    let teacher= models.teacher;
-                    let student=models.student;
                     let user={};
-                    let role=[];
                     let login=false;
-                    let userId=0;
+                    let userId;
 
                     userDetail.findOne({attributes:['id', 'name', 'password'], 
                         where: {username: userName, status:true}
@@ -77,35 +71,7 @@ module.exports=function(){
                                 user.id= userId;
                                 user.name= result.dataValues.name;
                                 user.password= result.dataValues.password;
-                                admin.findOne({attributes: ['id'], where: {user_detail_id: userId}}).
-                                then((resultAdmin)=> {
-                                    if(resultAdmin){
-                                        role.push('admin');
-                                    }
-                                    return director.findOne({attributes: ['id'], where: {user_detail_id: userId}})   
-                                })
-                                .then((resultDirector)=>{
-                                    if(resultDirector){
-                                        role.push('director');
-                                    }
-                                    return hod.findOne({attributes: ['id'], where: {user_detail_id: userId}})
-                                })
-                                .then((resultHod)=>{
-                                    if(resultHod){
-                                        role.push('hod');
-                                    }
-                                    return teacher.findOne({attributes: ['id'], where: {user_detail_id: userId}})
-                                })
-                                .then((resultTeacher)=> {
-                                    if(resultTeacher){
-                                        role.push('teacher');
-                                    }
-                                    return student.findOne({attributes: ['id'], where: {user_detail_id: userId}})
-                                })
-                                .then((resultStudent)=> {
-                                    if(resultStudent){
-                                        role.push('student');
-                                    }
+                                this.getUserRole(models, userId, function(role){
                                     user.role=role;
                                     cb(null,user);
                                 })
@@ -125,20 +91,66 @@ module.exports=function(){
                 findUserById: function(models, id, cb){
                     let userDetail= models.user_detail;
                     let user={};
+                    let userId;
                     userDetail.findOne({attributes:['id', 'name'], 
                     where: {id: id, status:true}
                     }).then((result)=> {
                         if(result){
                             user.login=true;
-                            user.id= result.dataValues.id;
+                            userId= result.dataValues.id;
+                            user.id= userId;
                             user.name= result.dataValues.name;
-                            cb(null,user);
+                            this.getUserRole(models, userId, function(role){
+                                user.role=role;
+                                cb(null,user);
+                            })
                         }
                         else{
                             user.login=false;
                             cb(error);
                         }
                     })
+                },
+
+                getUserRole: function(models, userId, cb){
+                    let role=[];
+                    let director= models.director;
+                    let admin= models.admin;
+                    let hod=models.hod;
+                    let teacher= models.teacher;
+                    let student=models.student;
+                    admin.findOne({attributes: ['id'], where: {user_detail_id: userId}}).
+                        then((resultAdmin)=> {
+                            if(resultAdmin){
+                                role.push('admin');
+                            }
+                            return director.findOne({attributes: ['id'], where: {user_detail_id: userId}})   
+                        })
+                        .then((resultDirector)=>{
+                            if(resultDirector){
+                                role.push('director');
+                            }
+                            return hod.findOne({attributes: ['id'], where: {user_detail_id: userId}})
+                        })
+                        .then((resultHod)=>{
+                            if(resultHod){
+                                role.push('hod');
+                            }
+                            return teacher.findOne({attributes: ['id'], where: {user_detail_id: userId}})
+                        })
+                        .then((resultTeacher)=> {
+                            if(resultTeacher){
+                                role.push('teacher');
+                            }
+                            return student.findOne({attributes: ['id'], where: {user_detail_id: userId}})
+                        })
+                        .then((resultStudent)=> {
+                            if(resultStudent){
+                                role.push('student');
+                            }
+                            cb(role);
+                        })
+
                 }
 
 

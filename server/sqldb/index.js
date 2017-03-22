@@ -25,9 +25,7 @@ Object.keys(db).forEach(function(modelName){
    }
 });
 data.connection.sync();
-console.log("Here");
 let sql = function(){
-	console.log("Inside here funcn");
    	return db;
 }
 module.exports  = sql;

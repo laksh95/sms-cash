@@ -1,7 +1,6 @@
+let checkRole= require('./../config/roleCheck');
 
-module.exports=function(app){
-	console.log("In routes file------------------------",app);
-
-	app.use('/department',require('../api/department'));
-    app.use('/course',require('../api/course'));
+module.exports=function(){
+	app.use('/department', checkRole(['admin']), require('../api/department'));
+    app.use('/course', checkRole(['teacher']), require('../api/course'));
 };

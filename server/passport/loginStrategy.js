@@ -19,14 +19,10 @@ module.exports= new passportLocalStrategy({
 			username: username.trim(),
 			password: password.trim()
 		}
-	console.log("In local strategy file");
-	console.log("userData:", userData);
 
 	return userDetail.getUserByCredential(models, userData.username, (err, user)=> {
-		console.log("Called database with credential");
 		if (err) { console.log("Passport received error", err); return cb(err); }
 		if (!user) {
-			console.log("Passport: Invalid username");
 			const error = new Error('Incorrect username or password'); 
 			error.name = 'IncorrectCredentialsError';
 			return cb(error); 
@@ -42,7 +38,11 @@ module.exports= new passportLocalStrategy({
 		}
 
 		// create a token string
-      	const token = jwt.sign(payload, config.jwtSecret);
+      	const token = jwt.sign(payload, config.jwtSecret
+      		// , {
+        // 		expiresInMinute: 1440
+      		// 	}
+      	);
       	const data = {
 	        name: user.name,
 	        role: user.role

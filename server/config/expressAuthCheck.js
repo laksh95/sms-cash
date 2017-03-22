@@ -8,12 +8,10 @@ let models  = require('./../sqldb')();
  */
  module.exports = (req, res, next)=> {
  	if (!req.headers.authorization) {
- 		console.log("sending error");
     	return res.status(401).end();
  }
 
 // get the last part from a authorization header string like "bearer token-value"
-	console.log("authorization: ", req.headers.authorization);
  	const token = req.headers.authorization.split(' ')[1];
 
 // decode the token using a secret key-phrase
@@ -28,9 +26,7 @@ let models  = require('./../sqldb')();
 		    if (userErr || !user) {
 		    	return res.status(401).end();
 		    }
-		//console.log("Authorized user------------------------------- ") ;
-		//console.log(req) ;
-		//console.log("Authorized user-------------------------------") ;
+		req.user= user;
 		return next();
 		});
 	})

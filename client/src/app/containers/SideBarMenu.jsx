@@ -12,8 +12,7 @@ import Divider from 'material-ui/Divider';
 import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
 import DashBoard from './DashBoard.jsx';
 import Course  from './Course.jsx'
-let RenderIf = require('react-renderif');
-
+import renderIf from 'render-if'
 const events = [
     {
         start: '2015-07-20',
@@ -112,7 +111,11 @@ export default class DrawerOpenRightExample extends React.Component {
 
       <div style={contentStyle}>
           {
-             <Course/>
+              renderIf(this.state.course)
+              (
+                    <Course/>
+              )
+
           }
       </div>
     </div>

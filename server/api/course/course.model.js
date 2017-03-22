@@ -10,8 +10,7 @@ let init=function(){
             },
             name:{
                 type:sequelize.STRING,
-                allowNull:false,
-                unique:true
+                allowNull:false
             },
             duration:{
                 type:sequelize.FLOAT,
@@ -28,7 +27,7 @@ let init=function(){
                 associate:(model)=>{
 
                 },
-                getCourse:(db,cb)=>{
+                getCourse:(db,sendData)=>{
                     let course=db.course
                     let department=db.department
                     course.findAll({
@@ -42,18 +41,62 @@ let init=function(){
                             attributes:[]
                         }]
                     }).then((data)=>{
-                        cb(data)
+                        sendData(data)
                     })
                 },
-                addNewCourse:(db,setData,cb)=>{
-                    db.course.create({
-                        name:setData.course_name,
-                        duration:setData.duration
+                addNewCourse:(db,setData,sendData)=>{
+                    let course=db.course
+                    let response={}
+                    course.findAll({
+                        attributes:['name','status'],
+                        where:{
+                            name:setData.course_name
+                        }
                     }).then((data)=>{
-                        cb(data)
+                        console.log("data-----------",typeof(data[0]))
+                        if(data.length==0){
+                            db.course.create({
+                                name:setData.course_name,
+                                duration:setData.duration
+                            }).then((data)=>{
+                                response={
+                                    status:1,
+                                    content:data
+                                }
+                                sendData(response)
+                            })
+                        }
+                        else {
+                            let course = data
+                            let flag = 1
+                            for (let index in course) {
+                                if (course[index].dataValues.status == true) {
+                                    flag = 0
+                                }
+                            }
+                            if (1 === flag) {
+                                db.course.create({
+                                    name: setData.course_name,
+                                    duration: setData.duration
+                                }).then((data) => {
+                                    response = {
+                                        status: 1,
+                                        content: data
+                                    }
+                                    sendData(response)
+                                })
+                            }
+                            else {
+                                response = {
+                                    status: 0,
+                                    content: 'Course Already exists.'
+                                }
+                                sendData(response)
+                            }
+                        }
                     })
                 },
-                editCourse:(db,updateData,cb)=>{
+                editCourse:(db,updateData,sendData)=>{
                     let course=db.course
                     course.update({
                         name:updateData.name,
@@ -63,20 +106,21 @@ let init=function(){
                             id:updateData.id
                         }
                     }).then((data)=>{
-                        cb(data)
+                        sendData(data)
                     })
 
                 },
-                deleteCourse:(db,deleteId,cb)=>{
+                deleteCourse:(db,deleteId,sendData)=>{
                     let course = db.course
                     course.update({
                         status:'f'
                     },{
                         where:{
-                            id:deleteId
+                            id:deleteId,
+                            status:'t'
                         }
                     }).then((data)=>{
-                        cb(data)
+                        sendData(data)
                     })
                 }
             }

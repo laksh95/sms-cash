@@ -14,11 +14,22 @@ import DashBoard from './../components/DashBoard.jsx';
 import DashBoardNumberOfRole from './../components/DashBoardNumberOfRole.jsx';
 import {store} from "../store.js";
 import {connect} from "react-redux";
-import {getParentCount,getStudentCount,getTeacherCount,getEvents} from '../actions/getDataAction.jsx'
+import {getParentCount,getStudentCount,getTeacherCount,getEvents} from '../actions/getDataAction.jsx';
+import renderIf from 'render-if';
 
 class DrawerOpenRightExample extends React.Component {
   constructor(props) {
-    super(props);
+    super(props);   
+    this.state= {
+        dashboard : true
+    }
+    this.dashboard= this.dashboard.bind(this)
+  }
+  dashboard(){
+    console.log("inside dashboard")
+    this.setState({
+        dashboard : true
+    })
   }
   componentWillMount(){
       axios.post('http://localhost:1234/api/academicCalendar/dashboard/getInitialData',{
@@ -81,7 +92,7 @@ class DrawerOpenRightExample extends React.Component {
                     primaryText="DashBoard"
                     leftAvatar={<Avatar src={require('./../images/user.png')} />}
                     labelStyle={{ color: '#2196F3' }}
-                    onClick={<DashBoard />}
+                    onClick={()=>this.dashboard()}
                 />
                 <ListItem
                     primaryText="Course"
@@ -118,9 +129,16 @@ class DrawerOpenRightExample extends React.Component {
             </List>
         </Drawer>
       <div style={contentStyle}>
-          
-        <DashBoard events={this.props.data.events}/>
-        <DashBoardNumberOfRole parentNo={this.props.data.parentCount} studentNo={this.props.data.studentCount} teacherNo={this.props.data.teacherCount}/>
+      {
+          renderIf(this.state.dashboard)
+              (
+                  <div>
+                    <DashBoard events={this.props.data.events}/>
+                    <DashBoardNumberOfRole parentNo={this.props.data.parentCount} studentNo={this.props.data.studentCount} teacherNo={this.props.data.teacherCount}/>
+                  </div>
+
+              )
+        }
         </div>
     </div>
     );

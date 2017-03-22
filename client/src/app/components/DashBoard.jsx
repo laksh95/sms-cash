@@ -70,12 +70,9 @@ class DashBoard extends React.Component {
 		holidayName: this.state.content  
    	})
 	.then(function (response) {
-		console.log("success",response);
 	})
 	.catch(function (response) {
-		console.log("failure",response);
 	});
-		console.log("state",this.state)
 	};
 	handleRequestCloseButton = () => {
 		this.setState({
@@ -113,7 +110,6 @@ class DashBoard extends React.Component {
 		});
 	};
 	handleChange = (newDate) => {
-		console.log("newDate", newDate);
 		return this.setState({date: newDate});
 	}
 	handleChangeStartDate=(event)=>{
@@ -142,7 +138,6 @@ class DashBoard extends React.Component {
     });
 	}
 	render() {
-		console.log("inside render",this.state.events)
 		let obj=this
 		const {date, format, mode, inputFormat} = this.state;
 		return(

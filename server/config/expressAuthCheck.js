@@ -15,7 +15,6 @@ let models  = require('./../sqldb')();
 // get the last part from a authorization header string like "bearer token-value"
 	console.log("authorization: ", req.headers.authorization);
  	const token = req.headers.authorization.split(' ')[1];
- 	console.log("Token: ", token);
 
 // decode the token using a secret key-phrase
 	return jwt.verify(token, config.jwtSecret, (err, decoded) => {
@@ -26,14 +25,13 @@ let models  = require('./../sqldb')();
 
 		 // check if a user exists
 		return userDetail.findUserById(models, userId, (userErr, user) => {
-			console.log("userErr: ", userErr);
-			console.log("user: ", user);
 		    if (userErr || !user) {
 		    	return res.status(401).end();
 		    }
-
+		//console.log("Authorized user------------------------------- ") ;
+		//console.log(req) ;
+		//console.log("Authorized user-------------------------------") ;
 		return next();
-		//return;
 		});
 	})
 };

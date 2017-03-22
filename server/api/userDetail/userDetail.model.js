@@ -56,7 +56,6 @@ module.exports=function(){
         {
             classMethods: {
                 getUserByCredential: function(models, userName, cb){
-                    console.log("In Db get user by credential");
 
                     let userDetail= models.user_detail;
                     let director= models.director;

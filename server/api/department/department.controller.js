@@ -12,7 +12,6 @@ let departmentFunctions={
            course_name
        }
        model().addDepartment(db,newDept,function(data){
-           console.log(data)
            res.send(data)
        })
    }

@@ -2,11 +2,15 @@ let path = require("path")
 let DIST_DIR = path.resolve(__dirname+'/client/dist/')
 let SRC_DIR = path.resolve(__dirname+'/client/src/')
 let config = {
-	entry: SRC_DIR + "/app/index.jsx",
+	entry: __dirname + '/client/src/app/index.jsx',
 	output: {
 		path: DIST_DIR + "/app",
 		filename: "bundle.js",
 		publicPath: "/"
+	},
+	devServer:{
+		publicPath:'/',
+		contentBase:'./client/src'
 	},
 	devtool : 'source-map',
 	module: {

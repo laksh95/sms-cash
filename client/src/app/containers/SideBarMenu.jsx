@@ -39,7 +39,7 @@ export default class DrawerOpenRightExample extends React.Component {
 
     }
     this.course= this.course.bind(this)
-      this.student=this.student(bind)
+      this.student=this.student.bind(this)
   }
   course(){
     console.log("inside course")
@@ -92,6 +92,7 @@ export default class DrawerOpenRightExample extends React.Component {
                 />
                 <ListItem
                     primaryText="Student"
+                    onClick={()=>this.student()}
                     leftAvatar={<Avatar src={require('./../images/user.png')} />}
                 />
                 <ListItem
@@ -119,7 +120,6 @@ export default class DrawerOpenRightExample extends React.Component {
                 />
             </List>
         </Drawer>
-
       <div style={contentStyle}>
           {
               renderIf(this.state.course)
@@ -128,14 +128,14 @@ export default class DrawerOpenRightExample extends React.Component {
               )
           }
       </div>
-            <div style={contentStyle}>
-                {
-                    renderIf(this.state.student)
-                    (
-                        <Student/>
-                    )
-                }
-            </div>
+        <div style={contentStyle}>
+            {
+                renderIf(this.state.student)
+                (
+                    <Student/>
+                )
+            }
+        </div>
 
     </div>
     );

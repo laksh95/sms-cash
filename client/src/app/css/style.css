@@ -1,21 +1,40 @@
-.chatApp{
-  position:fixed;
-  bottom:0;
-  width:100%;
-}
-
-.chatwithme{
-   margin-left:200px;
-}
-
-.chatBox{
-  position:fixed;
-  width:26%;
-  bottom:0px;
-  right:0px;
-  
-}
-
 .content{
  height:100%; width:100%;
+}
+#main{
+    height: 100%;
+}
+.mymain{
+    height: 100%;
+}
+#AddStudent{
+    border:1px solid gray;
+    width: 80%;
+    margin:auto;
+    margin-top:15px;
+}
+#StudentHeader{
+    background-color: gray;
+    color:white;
+    font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+}
+#addForm{
+    width:50%;
+    margin:auto;
+    overflow:hidden;
+    font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
+
+}
+#fieldNames{
+    float:left;
+    width:50%;
+    padding-top: 16px;
+}
+#fieldValues{
+    float:left;
+    width:50%;
+}
+.extra_space {
+    margin-bottom: 28px;
 }

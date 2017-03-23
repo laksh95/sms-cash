@@ -11,12 +11,12 @@ let init=function() {
        name:{
            type:sequelize.STRING,
            allowNull:false,
-           unique:true
+           unique:'uniqueDepartment'
        },
        abbreviated_name:{
            type:sequelize.STRING,
            allowNull:false,
-           unique:true
+           unique:'uniqueDepartment'
        },
        status:{
            type:sequelize.BOOLEAN,
@@ -29,7 +29,8 @@ let init=function() {
                let course=model.course
                let dept=model.department
                course.hasOne(dept,{
-                   foreignKey:'course_id'
+                   foreignKey:'course_id',
+                   unique:'uniqueDepartment'
                })
            },
             addDepartment:function(model,setData,cb){

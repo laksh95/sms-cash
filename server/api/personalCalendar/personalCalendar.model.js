@@ -24,42 +24,58 @@ let personalCalendar= connection.define('personal_calendar',{
     end_date: {
        type: sequelize.DATE,
        allowNull: false
+    },
+    status: {
+      type: sequelize.BOOLEAN,
+      allowNull: false,
+      defaultValue: true
     }
   },
  {
  classMethods : {
-    associate : function(models){
+    associate : (models) => {
       let personalCalendar  = models.personal_calendar
       let userDetail  = models.user_detail
       userDetail.hasMany(personalCalendar,{
         foreignKey : "user_id"
       })
     },
-    fetchPersonalCalendarList: function(db, userId){
+    fetchPersonalCalendarList: (db, userId) => {
       personalCalendar = db.personal_calendar
 
       return personalCalendar.findAll({
-        attributes: ['heading', 'end_date', 'start_date', 'content'],
-        where: { user_id: userId}
-      }).then((data) => {
+        attributes: ['id','heading', 'end_date', 'start_date', 'content'],
+        where: {
+          user_id: userId,
+          status: true
+        }
+      })
+      .then((data) => {
         return data
       })
     },
-    addPersonalEvent: function(db, inputData, cb){
+    addPersonalEvent: (db, inputData, cb) => {
       personalCalendar = db.personal_calendar
 
-      personalCalendar.create({
+    return personalCalendar.create({
         heading: inputData.heading,
         end_date: inputData.endDate,
         start_date: inputData.startDate,
-        content: inputData.content
+        content: inputData.content,
+        user_id: inputData.userId
       })
       .then((data)=>{
-        console.log("DONE CREATE")
         cb({
           status: 1,
-          message: "Created an entry"
-        }) 
+          message: "Created an entry",
+          data: {
+            heading: data.heading,
+            end_date: data.end_date,
+            start_date: data.start_date,
+            content: data.content,
+            id: data.id
+          }
+        })
       })
       .catch((data)=>{
         cb({
@@ -67,6 +83,31 @@ let personalCalendar= connection.define('personal_calendar',{
           message: "Failed to create an entry"
         })
       })
+    },
+    deletePersonalEvent: (db, inputData, cb) => {
+      personalCalendar = db.personal_calendar
+
+      personalCalendar.update({
+            status: false
+          },{
+           where:{
+            id:inputData
+          }
+         })
+         .then((data)=>{
+           cb({
+           status: 1,
+           message: "Deleted event",
+           data: inputData
+         })
+        })
+        .catch((data)=>{
+          cb({
+            status: 0,
+            message: "Failed to delete entry",
+            data: inputData
+          })
+        })
     }
   }
 },

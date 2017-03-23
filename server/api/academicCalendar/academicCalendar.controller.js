@@ -31,7 +31,7 @@ var dashboardHandler = {
 			return academicCalendar().fetchHolidayList(db)
 		})
 		.then((holidays)=>{
-			dataToClient.totalHoliday= holidays
+			dataToClient.totalEvent= holidays
 			response.send(dataToClient)
 		})
 	},

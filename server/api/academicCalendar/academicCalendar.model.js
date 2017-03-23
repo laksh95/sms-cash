@@ -57,9 +57,7 @@ let academicCalendar= connection.define('academic_calendar',{
         academicCalendar = db.academic_calendar
 
         return academicCalendar.findAll({
-
-          attributes: ['type', 'end_date', 'start_date', 'content'] 
-          
+          attributes: ['id' , 'type' , 'end_date', 'start_date', 'content']
         }).then((data) => {
           return data
         })
@@ -78,7 +76,7 @@ let academicCalendar= connection.define('academic_calendar',{
           cb({
           status: 1,
           message: "Created an entry"
-          }) 
+          })
         })
         .catch((data)=>{
           cb({

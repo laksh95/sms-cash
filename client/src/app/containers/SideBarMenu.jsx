@@ -33,7 +33,8 @@ const events = [
         data: 'you can add what ever random data you may want to use later',
     },
 ];
-export default class DrawerOpenRightExample extends React.Component {
+
+export default class SideBarMenu extends React.Component {
   constructor(props) {
     super(props);
     this.state= {
@@ -62,9 +63,7 @@ export default class DrawerOpenRightExample extends React.Component {
   componentWillReceiveProps(props){
       this.props = props
   }
-  componentWillMount(){
 
-  }
   getChildContext() {
     return { muiTheme: getMuiTheme(baseTheme) };
    }
@@ -88,12 +87,10 @@ export default class DrawerOpenRightExample extends React.Component {
                     primaryText="Course"
                     onClick={()=>this.course()}
                     leftAvatar={<Avatar src={require('./../images/user.png')} />}
-                    labelStyle={{ color: '#2196F3' }}
                 />
                 <ListItem
                     primaryText="DashBoard "
                     leftAvatar={<Avatar src={require('./../images/user.png')} />}
-                    labelStyle={{ color: '#2196F3' }}
                 />
                 <ListItem
                     primaryText="Student"
@@ -144,6 +141,7 @@ export default class DrawerOpenRightExample extends React.Component {
     );
   }
 }
-DrawerOpenRightExample.childContextTypes = {
+
+SideBarMenu.childContextTypes = {
   muiTheme : React.PropTypes.object.isRequired
 };

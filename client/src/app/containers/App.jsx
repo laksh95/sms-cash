@@ -1,6 +1,6 @@
 import React from 'react';
-import DrawerOpenRightExample from './SideBarMenu.jsx';
-import TopBar from './TopBar.jsx'; 
+import SideBarMenu from './SideBarMenu.jsx';
+import TopBar from './TopBar.jsx';
 let a = require('./../css/style.css');
 export default class App extends React.Component {
    constructor(props) {
@@ -26,7 +26,7 @@ export default class App extends React.Component {
         <div style={contentStyle}>
          <TopBar handleToggle = {this.handleToggle} open = {this.state.open}/>
         </div>
-       <DrawerOpenRightExample handleToggle = {this.handleToggle} open = {this.state.open} />
+       <SideBarMenu handleToggle = {this.handleToggle} open = {this.state.open} />
       </div>
     );
   }

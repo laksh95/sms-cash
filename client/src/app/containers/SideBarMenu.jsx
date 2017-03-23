@@ -12,6 +12,9 @@ import Divider from 'material-ui/Divider';
 import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
 import DashBoard from './DashBoard.jsx';
 import Course  from './Course.jsx'
+import Teacher from './Teacher.jsx'
+import renderIf from 'render-if'
+
 let RenderIf = require('react-renderif');
 
 const events = [
@@ -34,16 +37,28 @@ export default class DrawerOpenRightExample extends React.Component {
   constructor(props) {
     super(props);
     this.state= {
-        course : false
+        course : false,
+        teacher : false
     }
     this.course= this.course.bind(this)
+    this.teacher = this.teacher.bind(this)
   }
+
   course(){
-    console.log("inside course")
     this.setState({
-        course : true
+        course : true,
+        teacher : false
     })
   }
+
+  teacher(){
+    this.setState({
+        course : false,
+        teacher : true
+    })
+  }
+
+
   componentWillReceiveProps(props){
       this.props = props
   }
@@ -86,6 +101,7 @@ export default class DrawerOpenRightExample extends React.Component {
                 />
                 <ListItem
                     primaryText="Teacher"
+                    onTouchTap={()=>this.teacher()}
                     leftAvatar={<Avatar src={require('./../images/user.png')} />}
                 />
                 <ListItem
@@ -96,9 +112,9 @@ export default class DrawerOpenRightExample extends React.Component {
                 primaryText="Events"
                 leftAvatar={<Avatar src={require('./../images/user.png')} />}
               />
-            </List>
-            <Divider />
-            <List>
+              </List>
+              <Divider />
+              <List>
                 <ListItem
                     primaryText="Important"
                     leftAvatar={<Avatar src={require('./../images/user.png')} />}
@@ -112,7 +128,16 @@ export default class DrawerOpenRightExample extends React.Component {
 
       <div style={contentStyle}>
           {
-             <Course/>
+            renderIf(this.state.course)
+            (
+              <Course/>
+            )
+          }
+          {
+            renderIf(this.state.teacher)
+            (
+              <Teacher/>
+            )
           }
       </div>
     </div>
@@ -120,5 +145,5 @@ export default class DrawerOpenRightExample extends React.Component {
   }
 }
 DrawerOpenRightExample.childContextTypes = {
-            muiTheme : React.PropTypes.object.isRequired
-        };
+  muiTheme : React.PropTypes.object.isRequired
+};

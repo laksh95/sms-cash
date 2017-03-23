@@ -84,12 +84,12 @@ export default class SideBarMenu extends React.Component {
            onLeftIconButtonTouchTap = {this.props.handleToggle} />
             <List>
                 <ListItem
-                    primaryText="Course"
-                    onClick={()=>this.course()}
+                    primaryText="DashBoard "
                     leftAvatar={<Avatar src={require('./../images/user.png')} />}
                 />
                 <ListItem
-                    primaryText="DashBoard "
+                    primaryText="Course"
+                    onClick={()=>this.course()}
                     leftAvatar={<Avatar src={require('./../images/user.png')} />}
                 />
                 <ListItem

@@ -40,12 +40,12 @@ class TopBar extends React.Component {
     this.handle = this.handle.bind(this);
     this.handleRequestCurrentSessionClose = this.handleRequestCurrentSessionClose.bind(this);
     this.state = {
-                  name: "Manipal University",
-                  open: false,
-                  currentSession : false,
-                  openCoursePop: false,
-                  currentlySelectedCourse: null
-                 };
+      name: "Manipal University",
+      open: false,
+      currentSession : false,
+      openCoursePop: false,
+      currentlySelectedCourse: "BTech"
+    };
   }
 
   componentDidMount(){
@@ -80,20 +80,35 @@ class TopBar extends React.Component {
       openCoursePop: false
     });
   }
+  openAlCourses = (event) => {
+    event.preventDefault();
+    this.setState({
+     openCoursePop : true,
+     anchorCourse: event.currentTarget
+    });
+  }
+  changeSelectedCourse = (event ,value) => {
+    console.log(value)
+    this.setState({
+      currentlySelectedCourse: value
+    })
+  }
   handle(event){
-      event.preventDefault();
-
+    event.preventDefault();
     this.setState({
      currentSession : true,
       anchorEl: event.currentTarget,
     });
-
   }
+
  render() {
   return(
     <AppBar
-    title={<span  style={myStyle}><center>{ this.state.name }</center></span>}
-    iconElementLeft={<span  style={myStyle}><FlatButton label="Current Session: 2013 - 2017" style={buttonStyle3} /></span>   }
+    title={<span  style={myStyle}>
+      <center>{ this.state.name }</center></span>}
+    iconElementLeft={
+      <span  style={myStyle}>
+        <FlatButton label="Current Session: 2013 - 2017" style={buttonStyle3} /></span>}
     onLeftIconButtonTouchTap = {this.handle}
     >
       <Popover
@@ -110,21 +125,22 @@ class TopBar extends React.Component {
         </Menu>
       </Popover>
 
+      <FlatButton label={this.state.currentlySelectedCourse} style={buttonStyle} onTouchTap={this.openAlCourses}/>
       <Popover
       open={this.state.openCoursePop}
-      anchorEl={this.state.anchorEl}
+      anchorEl={this.state.anchorCourse}
       anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
       targetOrigin={{horizontal: 'left', vertical: 'top'}}
       onRequestClose={this.handleRequestCurrentCourseClose}
       >
-      <Menu>
-      {
-        this.props.adminReducer.allCourses.map((data, index) => {
-          return(
-              <MenuItem primaryText={data.name} />
-          )
-        })
-      }
+        <Menu onChange={this.changeSelectedCourse}>
+          {
+            this.props.adminReducer.allCourses.map((data, index) => {
+              return(
+                <MenuItem key={index} primaryText={data.name} value={data.name}/>
+              )
+            })
+          }
         </Menu>
       </Popover>
 

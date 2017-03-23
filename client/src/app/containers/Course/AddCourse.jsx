@@ -13,7 +13,14 @@ export default class App extends React.Component {
         super(props);
         this.handleToggle =  this.handleToggle.bind(this);
         this.state = {
-            open: true
+            errorText3:"",
+            errorText4:"",
+            validateNewCourseName : false,
+            validateNewCourseDuration:false,
+            newCourse:"",
+            newDuration:"",
+
+            course :[]
         };
         this.onError1 = (error) => {
             let errorText;
@@ -46,9 +53,108 @@ export default class App extends React.Component {
             }
             this.setState({ errorText4: errorText });
         };
+        this.addCourseName = this.addCourseName.bind(this)
+        this.addCourseDuration = this.addCourseDuration.bind(this)
+        this.addCourse = this.addCourse.bind(this)
     }
     handleToggle(){
         this.setState({open: !this.state.open});
+    }
+    snackbarHandleRequestClose = () => {
+        this.setState({
+            snackbarOpen: false,
+        });
+    };
+    addCourseName(event){
+        let name = event.target.value
+        if(name.trim()==''){
+            this.setState({
+                errorText3:"Course Name required",
+                validateNewCourseName : false
+            })
+        }
+        else if(name.length>20){
+            this.setState({
+                errorText3:"Length should be less than 20 characters",
+                validateNewCourseName:false
+            })
+        }
+        else {
+            this.setState({
+                errorText3:"",
+                validateNewCourseName:true,
+                newCourse:name
+            })
+        }
+    }
+    addCourseDuration(event){
+        let duration = event.target.value
+
+        if(duration.trim()==''){
+            this.setState({
+                validateNewCourseDuration:false
+            })
+        }
+        else if(this.state.errorText4==undefined || this.state.errorText4==""){
+            this.setState({
+                validateNewCourseDuration:true
+            })
+        }
+        else
+            this.setState({
+                validateNewCourseDuration:false
+            })
+        this.setState({
+            newDuration : duration
+        })
+    }
+    addCourse(){
+        let newCourse = this.state.newCourse
+        let newDuration = this.state.newDuration
+        axios.post('http://localhost:3166/api/course/addCourse',{
+            courseName : newCourse,
+            duration : newDuration
+        }).then((response)=>{
+            if(response.data.status==1){
+                this.setState({
+                    value : 'a',
+                    snackbarOpen : true,
+                    snackbarMessage : "Course Added"
+                })
+                let newCourse = response.data.content
+                let course = this.state.course
+                course.push(newCourse)
+                this.setState({
+                    course:course
+                })
+                let size = course.length
+                // let totalPages = Math.floor(size/10) +1
+                this.setState({
+                    totalPages:size
+                })
+                this.setState({
+                    currentPage:1
+                })
+                let pagedCourses = []
+                for(let index in course){
+                    if(index<10){
+                        pagedCourses.push(course[index])
+                    }
+                }
+                this.setState({
+                    pagedCourses:pagedCourses
+                })
+            }
+            else {
+                this.setState({
+                    snackbarOpen  : true ,
+                    snackbarMessage : response.data.content,
+                })
+            }
+        })
+            .catch((response)=>{
+                console.log(response)
+            })
     }
     render(){
         const {state, onChange, onError1, onKeyDown, onValid, onRequestValue} = this;

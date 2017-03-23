@@ -16,11 +16,20 @@ export default class ViewCourse extends React.Component {
         super(props);
         this.handleToggle =  this.handleToggle.bind(this);
         this.state = {
-            open: true,
+            currentPage : 1 ,
+            totalPages : 1,
+            snackbarMessage : "" ,
+            snackbarOpen:false,
+            deleteDialog : false,
             pagedCourses : [],
-            curCourse:{}
+            curCourse:{},
+            errorText1 :"",
+            errorText :"",
+            validateCourseName :true,
+            validateCourseDuration : true
         };
         this.setCourseName = this.setCourseName.bind(this)
+        this.setCourseDuration = this.setCourseDuration.bind(this)
         this.onError = (error) => {
             let errorText;
             console.log(error);
@@ -53,12 +62,56 @@ export default class ViewCourse extends React.Component {
             this.setState({ errorText: errorText });
         };
     }
+    pageChange = (currentPage , size) =>{
+        this.setState({
+            currentPage : currentPage
+        })
+        let course = this.state.course
+        let start = (currentPage-1)*10
+        let end = start + 10
+        let pagedCourses = []
+        for(let index in course){
+            if(index>=start && index<end){
+                pagedCourses.push(course[index])
+            }
+        }
+        this.setState({
+            pagedCourses:pagedCourses
+        })
+    };
     handleDeleteOpen = (index,data) => {
         this.setState({
             curCourse : data
         })
         this.setState({deleteDialog: true});
     };
+    snackbarHandleRequestClose = () => {
+        this.setState({
+            snackbarOpen: false,
+        });
+    };
+    setCourseDuration(event){
+        let course = this.state.curCourse
+        let duration = event.target.value
+        if(this.state.errorText==undefined || this.state.errorText==""){
+            this.setState({
+                validateCourseDuration:true
+            })
+        }
+        else
+            this.setState({
+                validateCourseDuration:false
+            })
+        this.setState({
+            curCourse:{
+                id :course.id ,
+                name : course.name ,
+                duration :event.target.value,
+                noOfDept : course.noOfDept
+            }
+        })
+    }
+
     handleDeleteClose = () => {
         this.setState({deleteDialog: false});
     };

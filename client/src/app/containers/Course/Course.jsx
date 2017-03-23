@@ -23,7 +23,6 @@ class Course extends React.Component{
             deleteDialog : false,
             value: 'a',
             open: false,
-            curCourse:{},
             errorText :"",
             errorText1 :"",
             errorText3:"",
@@ -39,7 +38,7 @@ class Course extends React.Component{
 
 
         /*bindings*/
-        this.setCourseName = this.setCourseName.bind(this)
+
         this.addCourseName = this.addCourseName.bind(this)
         this.setCourseDuration = this.setCourseDuration.bind(this)
         this.addCourseDuration = this.addCourseDuration.bind(this)
@@ -70,149 +69,15 @@ class Course extends React.Component{
             snackbarOpen: false,
         });
     };
-    handleDeleteOpen = (index,data) => {
-        this.setState({
-            curCourse : data
-        })
-        this.setState({deleteDialog: true});
-    };
 
-    handleDeleteClose = () => {
-        this.setState({deleteDialog: false});
-    };
-    handleDeleteCloseWithUpdate = () => {
-        let data = this.state.curCourse
-        axios.put('http://localhost:3166/api/course/deleteCourse',data).then((response)=>{
-            let course = this.state.course
-            for(let index in course){
-                if(course[index].id==data.id){
-                    course.splice(index,1)
-                }
-            }
-            this.setState({
-                course : course
-            })
-            let size= this.state.course
-            this.setState({
-                totalPages:size
-            })
-            course = this.state.course
-            this.setState({
-                currentPage : 1
-            })
-            this.setState({
-                snackbarOpen:true,
-                snackbarMessage:"Course Deleted"
-            })
-            let pagedCourses = []
-            for(let index in course ){
-                if(index<10){
-                    pagedCourses.push(course[index])
-                }
-            }
-            this.setState({
-                pagedCourses:pagedCourses
-            })
-        })
-            .catch((response)=>{
-                console.log(response)
-            })
-        this.setState({deleteDialog: false});
-    };
+
+
     handleChange = (value) => {
         this.setState({
             value: value,
         });
     };
-    handleOpen = (key,data) => {
-        this.setState({open: true});
-        this.setState({
-            curCourse : data
-        })
-    };
-    handleClose = (key) => {
-        this.setState({open: false});
 
-    };
-    handleCloseWithEdit = (key) => {
-        this.setState({open: false});
-        let data = this.state.curCourse
-        axios.put('http://localhost:3166/api/course/editCourse',data).then((response)=>{
-            let course = this.state.course
-            for(let index in course){
-                if(course[index].id===data.id){
-                    course[index] = data
-                }
-            }
-            this.setState({
-                course : course
-            })
-            let size = course.length
-            // let totalPages = Math.floor(size/10) +1
-            this.setState({
-                totalPages:size
-            })
-            this.setState({
-                currentPage:1
-            })
-            let pagedCourses = []
-            for(let index in course){
-                if(index<10){
-                    pagedCourses.push(course[index])
-                }
-            }
-            this.setState({
-                pagedCourses:pagedCourses
-            })
-            this.setState({
-                snackbarMessage:"Field Edited Successfully",
-                snackbarOpen:true
-            })
-
-
-        })
-            .catch((response)=>{
-                console.log(response)
-            })
-    };
-
-    setCourseName(event){
-        let course = this.state.curCourse
-        let name = event.target.value
-        if(name.trim()=='') {
-            this.setState({
-                errorText1:"Course Name required"
-            })
-            this.setState({
-                validateCourseName:false
-            })
-        }
-        else if(name.length>20){
-            this.setState({
-                errorText1:"Length Should be less than 20 characters "
-            })
-
-            this.setState({
-                validateCourseName:false
-            })
-        }
-        else {
-            this.setState({
-                errorText1:""
-            })
-            this.setState({
-                validateCourseName:true
-            })
-        }
-        this.setState({
-            curCourse:{
-                id : course.id,
-                name : event.target.value ,
-                duration :course.duration,
-                noOfDept : course.noOfDept
-            }
-        })
-    }
     setCourseDuration(event){
         let course = this.state.curCourse
         let duration = event.target.value
@@ -331,18 +196,7 @@ class Course extends React.Component{
     }
 
     render(){
-        const dialogActions = [
-            <FlatButton
-                label="No"
-                primary={true}
-                onTouchTap={this.handleDeleteClose}
-            />,
-            <FlatButton
-                label="Yes"
-                primary={true}
-                onTouchTap={this.handleDeleteCloseWithUpdate}
-            />,
-        ];
+
         const {onError,onValid, onRequestValue} = this;
 
         return (

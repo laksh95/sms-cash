@@ -18,7 +18,9 @@ export default class ViewCourse extends React.Component {
         this.state = {
             open: true,
             pagedCourses : [],
+            curCourse:{}
         };
+        this.setCourseName = this.setCourseName.bind(this)
         this.onError = (error) => {
             let errorText;
             console.log(error);
@@ -51,6 +53,98 @@ export default class ViewCourse extends React.Component {
             this.setState({ errorText: errorText });
         };
     }
+    handleDeleteOpen = (index,data) => {
+        this.setState({
+            curCourse : data
+        })
+        this.setState({deleteDialog: true});
+    };
+    handleDeleteClose = () => {
+        this.setState({deleteDialog: false});
+    };
+    handleDeleteCloseWithUpdate = () => {
+        let data = this.state.curCourse
+        axios.put('http://localhost:3166/api/course/deleteCourse',data).then((response)=>{
+            let course = this.state.course
+            for(let index in course){
+                if(course[index].id==data.id){
+                    course.splice(index,1)
+                }
+            }
+            this.setState({
+                course : course
+            })
+            let size= this.state.course
+            this.setState({
+                totalPages:size
+            })
+            course = this.state.course
+            this.setState({
+                currentPage : 1
+            })
+            this.setState({
+                snackbarOpen:true,
+                snackbarMessage:"Course Deleted"
+            })
+            let pagedCourses = []
+            for(let index in course ){
+                if(index<10){
+                    pagedCourses.push(course[index])
+                }
+            }
+            this.setState({
+                pagedCourses:pagedCourses
+            })
+        })
+            .catch((response)=>{
+                console.log(response)
+            })
+        this.setState({deleteDialog: false});
+    };
+    handleClose = (key) => {
+        this.setState({open: false});
+
+    };
+    handleCloseWithEdit = (key) => {
+        this.setState({open: false});
+        let data = this.state.curCourse
+        axios.put('http://localhost:3166/api/course/editCourse',data).then((response)=>{
+            let course = this.state.course
+            for(let index in course){
+                if(course[index].id===data.id){
+                    course[index] = data
+                }
+            }
+            this.setState({
+            })
+            let size = course.length
+            // let totalPages = Math.floor(size/10) +1
+            this.setState({
+                totalPages:size
+            })
+            this.setState({
+                currentPage:1
+            })
+            let pagedCourses = []
+            for(let index in course){
+                if(index<10){
+                    pagedCourses.push(course[index])
+                }
+            }
+            this.setState({
+                pagedCourses:pagedCourses
+            })
+            this.setState({
+                snackbarMessage:"Field Edited Successfully",
+                snackbarOpen:true
+            })
+
+
+        })
+            .catch((response)=>{
+                console.log(response)
+            })
+    };
     handleOpen = (key,data) => {
         this.setState({open: true});
         this.setState({
@@ -59,6 +153,43 @@ export default class ViewCourse extends React.Component {
     };
     handleToggle(){
         this.setState({open: !this.state.open});
+    }
+    setCourseName(event){
+        let course = this.state.curCourse
+        let name = event.target.value
+        if(name.trim()=='') {
+            this.setState({
+                errorText1:"Course Name required"
+            })
+            this.setState({
+                validateCourseName:false
+            })
+        }
+        else if(name.length>20){
+            this.setState({
+                errorText1:"Length Should be less than 20 characters "
+            })
+
+            this.setState({
+                validateCourseName:false
+            })
+        }
+        else {
+            this.setState({
+                errorText1:""
+            })
+            this.setState({
+                validateCourseName:true
+            })
+        }
+        this.setState({
+            curCourse:{
+                id : course.id,
+                name : event.target.value ,
+                duration :course.duration,
+                noOfDept : course.noOfDept
+            }
+        })
     }
     componentWillMount(){
 
@@ -88,6 +219,18 @@ export default class ViewCourse extends React.Component {
             })
     }
     render(){
+        const dialogActions = [
+            <FlatButton
+                label="No"
+                primary={true}
+                onTouchTap={this.handleDeleteClose}
+            />,
+            <FlatButton
+                label="Yes"
+                primary={true}
+                onTouchTap={this.handleDeleteCloseWithUpdate}
+            />,
+        ];
         const actions = [
             <FlatButton
                 label="Cancel"

@@ -72,12 +72,10 @@ export default class DrawerOpenRightExample extends React.Component {
                     primaryText="Course"
                     onClick={()=>this.course()}
                     leftAvatar={<Avatar src={require('./../images/user.png')} />}
-                    labelStyle={{ color: '#2196F3' }}
                 />
                 <ListItem
                     primaryText="DashBoard "
                     leftAvatar={<Avatar src={require('./../images/user.png')} />}
-                    labelStyle={{ color: '#2196F3' }}
                 />
                 <ListItem
                     primaryText="Student"

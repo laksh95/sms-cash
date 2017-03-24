@@ -15,7 +15,6 @@ let academicCalendar= connection.define('academic_calendar',{
        type: sequelize.ENUM('EXAM','HOLIDAY','RESULT','OTHERS'),
        allowNull: false,
        validate: {
-         isIn: [['EXAM','HOLIDAY','RESULT','OTHERS']],
          notEmpty: true
        }
      },

@@ -58,6 +58,9 @@ class ViewCourse extends React.Component {
                 case 'max':
                     errorText = 'You are trying to enter number greater than 12';
                     break;
+                case 'none':
+                    errorText='';
+                    break
             }
             this.setState({ errorText: errorText });
         };
@@ -93,9 +96,15 @@ class ViewCourse extends React.Component {
         this.props.setSnackbarOpen(false)
     };
     setCourseDuration(event){
-        let course = this.state.curCourse
+        console.log("inside set duration")
         let duration = event.target.value
-        if(this.state.errorText==undefined || this.state.errorText==""){
+        let course = this.state.curCourse
+        if(duration.trim()==''){
+            this.setState({
+                validateCourseDuration:false
+            })
+        }
+        else if(this.state.errorText==undefined || this.state.errorText==""){
             this.setState({
                 validateCourseDuration:true
             })
@@ -272,7 +281,8 @@ class ViewCourse extends React.Component {
         })
     }
     render(){
-        console.log('viewCourse.jsx',this.props.courseReducer)
+        if(this.state.errorText=='none'||this.state.errorText.trim()=='')
+            this.state.validateCourseDuration=true
         const dialogActions = [
             <FlatButton
                 label="No"
@@ -329,8 +339,8 @@ class ViewCourse extends React.Component {
                         strategy="warn"
                         errorText={this.state.errorText}
                         onValid={onValid}
-                        onChange={this.setCourseDuration}
                         onError={onError}
+                        onChange={this.setCourseDuration}
                         onRequestValue={onRequestValue} />
                     <br />
                 </Dialog>

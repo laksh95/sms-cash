@@ -2,6 +2,8 @@ let data = require('./../../config/db');
 let sequelize = data.sequelize;
 let connection = data.connection;
 let axios = require('axios')
+let validator = require('validator')
+
 module.exports=function(){
 let academicCalendar= connection.define('academic_calendar',{
    id: {
@@ -10,25 +12,43 @@ let academicCalendar= connection.define('academic_calendar',{
        autoIncrement: true
      },
    type: {
-       type: sequelize.ENUM('exam','holiday','result','others'),
+       type: sequelize.ENUM('EXAM','HOLIDAY','RESULT','OTHERS'),
        allowNull: false,
+       validate: {
+         isIn: [['EXAM','HOLIDAY','RESULT','OTHERS']],
+         notEmpty: true
+       }
      },
    start_date: {
        type: sequelize.DATE,
-       allowNull: false
+       allowNull: false,
+       validate: {
+         isDate: true,
+         notEmpty: true
+       }
     },
     end_date: {
        type: sequelize.DATE,
-       allowNull: false
+       allowNull: false,
+       validate: {
+         isDate: true,
+         notEmpty: true
+       }
     },
     content: {
        type: sequelize.TEXT,
-       allowNull: false
+       allowNull: false,
+       validate: {
+         notEmpty: true
+       }
     },
     status: {
       type: sequelize.BOOLEAN,
       allowNull: false,
-      defaultValue: true
+      defaultValue: true,
+      validate: {
+        isBoolean: true
+      },
     }
   },
   {

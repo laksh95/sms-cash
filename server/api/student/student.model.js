@@ -1,6 +1,8 @@
 let data = require('./../../config/db');
 let sequelize = data.sequelize;
 let connection = data.connection;
+let validator = require('validator')
+
 module.exports=function(){
 let student= connection.define('student',{
     id: {
@@ -10,7 +12,10 @@ let student= connection.define('student',{
     },
     status:  {
       type: sequelize.BOOLEAN,
-      default: true
+      default: true,
+      validate: {
+        isBoolean: true
+      }
     },
     admission_no: {
       type: sequelize.INTEGER,

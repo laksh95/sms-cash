@@ -1,6 +1,7 @@
 let database=require('../../config/db')
 let sequelize=database.sequelize
 let connection=database.connection
+let validator = require('validator')
 
 let init = function(){
     return teacher = connection.define('teacher',{
@@ -11,21 +12,39 @@ let init = function(){
             },
             joining_date: {
                 type: sequelize.DATE,
-                allowNull:false
+                allowNull:false,
+                validate: {
+                  isDate: true,
+                  notEmpty: true
+                }
             },
             designation: {
                 type: sequelize.STRING,
-                allowNull: false
+                allowNull: false,
+                validate: {
+                  notEmpty: true,
+                  isAlpha: true
+                }
             },
             experience_years: {
                 type: sequelize.INTEGER,
-                allowNull: false
+                allowNull: false,
+                validate: {
+                  notEmpty: true,
+                  isInt: true
+                }
             },
             experience_description: {
-                type: sequelize.TEXT
+                type: sequelize.TEXT,
+                validate: {
+                  notEmpty: true
+                }
             },
             status: {
-                type: sequelize.BOOLEAN
+                type: sequelize.BOOLEAN,
+                validate: {
+                  isBoolean: true
+                }
             }
         },
         {

@@ -8,10 +8,12 @@ var personalCalendar = require('./../personalCalendar/personalCalendar.model.js'
 var db=require('./../../sqldb')();
 
 var dashboardHandler = {
-	getAllHolidys: function(request, response){
-		academicCalendar().getAllHolidys(db)
+	getAllHolidays: (request, response)=>{ //loading all holidays from API into the database
+		academicCalendar().getAllHolidys(db, (status)=>{
+			response.send(status)
+		})
 	},
-	getInitialData : function(request, response){
+	getInitialData : (request, response)=>{ //fetching parent count, student count, teacher count, personal events and all academic events
 		let dataToClient = {}
 		parent().totalParent(db)
 		.then((data)=>{
@@ -24,31 +26,39 @@ var dashboardHandler = {
 		})
 		.then((totalTeachers)=>{
 			dataToClient.totalTeachers = totalTeachers
-			return personalCalendar().fetchPersonalCalendarList(db, request.body.userId)
+			return personalCalendar().fetchPersonalCalendarList(db, request.body.id)
 		}).
 		then((userPersonalCalendar)=>{
 			dataToClient.personalCalendar = userPersonalCalendar
-			return academicCalendar().fetchHolidayList(db)
+			return academicCalendar().fetchEventList(db)
 		})
-		.then((holidays)=>{
-			dataToClient.totalEvent= holidays
+		.then((events)=>{
+			dataToClient.totalEvent= events
 			response.send(dataToClient)
 		})
 	},
-	addHoliday: function(request, response){
+	addEvent: (request, response)=>{  //adding event to academic calendar
 		let inputData = getData(request, response)
-		academicCalendar().addHolidays(db, inputData, (status)=>{
+		academicCalendar().addEvent(db, inputData, (status)=>{
+			response.send(status)
+		})
+	},
+	deleteEvent: (request, response)=>{ //deleting event from academic calendar
+		console.log("inside deleteEvent")
+		let inputData = request.body.id
+		academicCalendar().deleteEvent(db, inputData, (status)=>{
 			response.send(status)
 		})
 	}
 }
 
-function getData(request, response){
+function getData(request, response){ //getting data from frontend via post, put
 	let data = {
 		type: request.body.type,
-    	startDate: new Date(request.body.startDate),
-    	endDate: new Date(request.body.endDate),
-    	holidayName: request.body.holidayName
+    startDate: new Date(request.body.startDate),
+    endDate: new Date(request.body.endDate),
+    eventName: request.body.eventName,
+		academicYear: request.body.academicYear
 	}
 	return data;
 }

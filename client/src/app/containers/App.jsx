@@ -1,7 +1,12 @@
 import React from 'react';
 import SideBarMenu from './SideBarMenu.jsx';
 import TopBar from './TopBar.jsx';
-export default class App extends React.Component {
+import {setCourse,setPagedCourse,setSnackbarOpen,setSnackbarMessage,setValue} from './../actions/courseAction.jsx'
+import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
+import { Router, Route, browserHistory } from 'react-router'
+import {connect} from 'react-redux'
+import store from './../store.jsx'
+class App extends React.Component {
     constructor(props) {
         super(props);
         this.handleToggle =  this.handleToggle.bind(this);
@@ -41,3 +46,31 @@ export default class App extends React.Component {
         );
     }
 }
+
+const history = syncHistoryWithStore(browserHistory, store)
+
+const mapStateToProps = (state) => {
+    return {
+        courseReducer: state.courseReducer
+    };
+};
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setCourse : (course)=>{
+            dispatch(setCourse(course))
+        },
+        setPagedCourse : (course)=>{
+            dispatch(setPagedCourse(course))
+        },
+        setSnackbarOpen :(data)=>{
+            dispatch(setSnackbarOpen(data))
+        },
+        setSnackbarMessage:(data)=>{
+            dispatch(setSnackbarMessage(data))
+        },
+        setValue:(value)=>{
+            dispatch(setValue(value))
+        }
+    };
+};
+export  default connect(mapStateToProps,mapDispatchToProps)(App);

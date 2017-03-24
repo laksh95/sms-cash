@@ -7,7 +7,7 @@ import NumberInput from 'material-ui-number-input';
 import axios from 'axios'
 import Snackbar from 'material-ui/Snackbar';
 require('rc-pagination/assets/index.css');
-import {setCourse,setPagedCourse} from './../../actions/courseAction.jsx'
+import {setCourse,setPagedCourse,setSnackbarOpen,setSnackbarMessage,setValue} from './../../actions/courseAction.jsx'
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 import { Router, Route, browserHistory } from 'react-router'
 import store from './../../store.jsx'
@@ -21,8 +21,6 @@ class ViewCourse extends React.Component {
         this.state = {
             currentPage : 1 ,
             totalPages : 1,
-            snackbarMessage : "" ,
-            snackbarOpen:false,
             deleteDialog : false,
             curCourse:{},
             errorText1 :"",
@@ -60,9 +58,15 @@ class ViewCourse extends React.Component {
                 case 'max':
                     errorText = 'You are trying to enter number greater than 12';
                     break;
+                case 'none':
+                    errorText='';
+                    break
             }
             this.setState({ errorText: errorText });
         };
+    }
+    componentWillReceiveProps(props){
+        this.props= props
     }
     pageChange = (currentPage , size) =>{
         this.setState({
@@ -88,14 +92,19 @@ class ViewCourse extends React.Component {
         this.setState({deleteDialog: true});
     };
     snackbarHandleRequestClose = () => {
-        this.setState({
-            snackbarOpen: false,
-        });
+
+        this.props.setSnackbarOpen(false)
     };
     setCourseDuration(event){
-        let course = this.state.curCourse
+        console.log("inside set duration")
         let duration = event.target.value
-        if(this.state.errorText==undefined || this.state.errorText==""){
+        let course = this.state.curCourse
+        if(duration.trim()==''){
+            this.setState({
+                validateCourseDuration:false
+            })
+        }
+        else if(this.state.errorText==undefined || this.state.errorText==""){
             this.setState({
                 validateCourseDuration:true
             })
@@ -135,19 +144,15 @@ class ViewCourse extends React.Component {
             this.setState({
                 currentPage : 1
             })
-            this.setState({
-                snackbarOpen:true,
-                snackbarMessage:"Course Deleted"
-            })
+
+            this.props.setSnackbarOpen(true)
+            this.props.setSnackbarMessage("Course Deleted")
             let pagedCourses = []
             for(let index in course ){
                 if(index<10){
                     pagedCourses.push(course[index])
                 }
             }
-            // this.setState({
-            //     pagedCourses:pagedCourses
-            // })
             this.props.setPagedCourse(pagedCourses)
         })
             .catch((response)=>{
@@ -189,16 +194,12 @@ class ViewCourse extends React.Component {
                 }
                 console.log("-----------",pagedCourses)
                 this.props.setPagedCourse(pagedCourses)
-                this.setState({
-                    snackbarMessage:"Field Edited Successfully",
-                    snackbarOpen:true
-                })
+                this.props.setSnackbarMessage("Field Edited Successfully")
+                this.props.setSnackbarOpen(true)
             }
             else {
-                this.setState({
-                    snackbarMessage : "Internal Server Error",
-                    snackbarOpen:true
-                })
+                this.props.setSnackbarMessage("Internal Server Error")
+                this.props.setSnackbarOpen(true)
             }
         })
         .catch((response)=>{
@@ -206,6 +207,7 @@ class ViewCourse extends React.Component {
         })
     };
     handleOpen = (key,data) => {
+        console.log("******************",data)
         this.setState({open: true});
         this.setState({
             curCourse : data
@@ -279,7 +281,8 @@ class ViewCourse extends React.Component {
         })
     }
     render(){
-        console.log('viewCourse.jsx',this.props.courseReducer)
+        if(this.state.errorText=='none'||this.state.errorText.trim()=='')
+            this.state.validateCourseDuration=true
         const dialogActions = [
             <FlatButton
                 label="No"
@@ -312,6 +315,7 @@ class ViewCourse extends React.Component {
         if (this.state.open) {
             contentStyle.marginLeft = 230;
         }
+        console.log("++++++++++++++++++++",this.state.curCourse.duration)
         return (
 
             <div>
@@ -330,13 +334,13 @@ class ViewCourse extends React.Component {
                     <NumberInput
                         id="num"
                         hintText="Duration"
-                        value={this.state.curCourse.duration}
+                        defaultValue={this.state.curCourse.duration}
                         required
                         strategy="warn"
                         errorText={this.state.errorText}
                         onValid={onValid}
-                        onChange={this.setCourseDuration}
                         onError={onError}
+                        onChange={this.setCourseDuration}
                         onRequestValue={onRequestValue} />
                     <br />
                 </Dialog>
@@ -380,8 +384,8 @@ class ViewCourse extends React.Component {
                     Are you sure you want to delete ?
                 </Dialog>
                 <Snackbar
-                    open={this.state.snackbarOpen}
-                    message={this.state.snackbarMessage}
+                    open={this.props.courseReducer.snackbarOpen}
+                    message={this.props.courseReducer.snackbarMessage}
                     autoHideDuration={4000}
                     onRequestClose={this.snackbarHandleRequestClose}
                 />
@@ -403,6 +407,15 @@ const mapDispatchToProps = (dispatch) => {
         },
         setPagedCourse : (course)=>{
             dispatch(setPagedCourse(course))
+        },
+        setSnackbarOpen :(data)=>{
+            dispatch(setSnackbarOpen(data))
+        },
+        setSnackbarMessage:(data)=>{
+            dispatch(setSnackbarMessage(data))
+        },
+        setValue:(value)=>{
+            dispatch(setValue(value))
         }
     };
 };

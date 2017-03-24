@@ -9,14 +9,14 @@ require('rc-pagination/assets/index.css');
 const Pagination = require('rc-pagination');
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import {setCourse,setPagedCourse} from './../../actions/courseAction.jsx'
+import {setCourse,setPagedCourse,setSnackbarOpen,setSnackbarMessage,setValue} from './../../actions/courseAction.jsx'
 import {connect} from 'react-redux'
 
 class Course extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-            value: 'a',
+
             open: false,
         };
     }
@@ -24,9 +24,7 @@ class Course extends React.Component{
         return { muiTheme: getMuiTheme(baseTheme) };
     }
     handleChange = (value) => {
-        this.setState({
-            value: value,
-        });
+        this.props.setValue(value)
     };
     componentWillReceiveProps(props){
         this.props = props
@@ -37,7 +35,7 @@ class Course extends React.Component{
         return (
             <div>
                 <Tabs
-                    value={this.state.value}
+                    value={this.props.courseReducer.value}
                     onChange={this.handleChange}
                 >
                     <Tab label="View" value="a">
@@ -69,6 +67,15 @@ const mapDispatchToProps = (dispatch) => {
         },
         setPagedCourse : (course)=>{
             dispatch(setPagedCourse(course))
+        },
+        setSnackbarOpen :(data)=>{
+            dispatch(setSnackbarOpen(data))
+        },
+        setSnackbarMessage:(data)=>{
+            dispatch(setSnackbarMessage(data))
+        },
+        setValue:(value)=>{
+            dispatch(setValue(value))
         }
     };
 };

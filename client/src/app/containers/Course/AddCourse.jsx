@@ -3,11 +3,12 @@ import RaisedButton from 'material-ui/RaisedButton'
 import TextField from 'material-ui/TextField'
 import NumberInput from 'material-ui-number-input'
 import Snackbar from 'material-ui/Snackbar'
-import {setCourse,setPagedCourse} from './../../actions/courseAction.jsx'
+import {setCourse,setPagedCourse,setSnackbarOpen,setSnackbarMessage,setValue} from './../../actions/courseAction.jsx'
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 import { Router, Route, browserHistory } from 'react-router'
 import store from './../../store.jsx'
 import {connect} from 'react-redux'
+import axios from 'axios'
 class AddCourse extends React.Component {
     constructor(props) {
         super(props);
@@ -55,13 +56,15 @@ class AddCourse extends React.Component {
         this.addCourseDuration = this.addCourseDuration.bind(this)
         this.addCourse = this.addCourse.bind(this)
     }
+    componentWillReceiveProps(props){
+        this.props= props
+    }
     handleToggle(){
         this.setState({open: !this.state.open});
     }
     snackbarHandleRequestClose = () => {
-        this.setState({
-            snackbarOpen: false,
-        });
+
+        this.props.setSnackbarOpen(false)
     };
     addCourseName(event){
         let name = event.target.value
@@ -110,17 +113,17 @@ class AddCourse extends React.Component {
         let newCourse = this.state.newCourse
         let newDuration = this.state.newDuration
         axios.post('http://localhost:3166/api/course/addCourse',{
-            courseName : newCourse,
+            course_name : newCourse,
             duration : newDuration
         }).then((response)=>{
             if(response.data.status==1){
-                this.setState({
-                    value : 'a',
-                    snackbarOpen : true,
-                    snackbarMessage : "Course Added"
-                })
+
+                this.props.setSnackbarOpen(true)
+                this.props.setSnackbarMessage("Course Added")
+                this.props.setValue('a')
                 let newCourse = response.data.content
-                let course = this.props.courseReducer.course
+                let course = this.props.courseReducer.course.data
+
                 course.push(newCourse)
                 this.props.setCourse(course)
                 let size = course.length
@@ -140,10 +143,8 @@ class AddCourse extends React.Component {
                 this.props.setPagedCourse(pagedCourses)
             }
             else {
-                this.setState({
-                    snackbarOpen  : true ,
-                    snackbarMessage : response.data.content,
-                })
+                this.props.setSnackbarMessage(response.data.content)
+                this.props.setSnackbarOpen(true)
             }
         })
             .catch((response)=>{
@@ -188,8 +189,8 @@ class AddCourse extends React.Component {
                               disabled = {!(this.state.validateNewCourseName && this.state.validateNewCourseDuration)}
                 />
                 <Snackbar
-                    open={this.state.snackbarOpen}
-                    message={this.state.snackbarMessage}
+                    open={this.props.courseReducer.snackbarOpen}
+                    message={this.props.courseReducer.snackbarMessage}
                     autoHideDuration={4000}
                     onRequestClose={this.snackbarHandleRequestClose}
                 />
@@ -211,6 +212,15 @@ const mapDispatchToProps = (dispatch) => {
         },
         setPagedCourse : (course)=>{
             dispatch(setPagedCourse(course))
+        },
+        setSnackbarOpen :(data)=>{
+            dispatch(setSnackbarOpen(data))
+        },
+        setSnackbarMessage:(data)=>{
+            dispatch(setSnackbarMessage(data))
+        },
+        setValue:(value)=>{
+            dispatch(setValue(value))
         }
     };
 };

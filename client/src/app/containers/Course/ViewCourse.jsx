@@ -7,7 +7,7 @@ import NumberInput from 'material-ui-number-input';
 import axios from 'axios'
 import Snackbar from 'material-ui/Snackbar';
 require('rc-pagination/assets/index.css');
-import {setCourse,setPagedCourse} from './../../actions/courseAction.jsx'
+import {setCourse,setPagedCourse,setSnackbarOpen,setSnackbarMessage,setValue} from './../../actions/courseAction.jsx'
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 import { Router, Route, browserHistory } from 'react-router'
 import store from './../../store.jsx'
@@ -21,8 +21,6 @@ class ViewCourse extends React.Component {
         this.state = {
             currentPage : 1 ,
             totalPages : 1,
-            snackbarMessage : "" ,
-            snackbarOpen:false,
             deleteDialog : false,
             curCourse:{},
             errorText1 :"",
@@ -64,6 +62,9 @@ class ViewCourse extends React.Component {
             this.setState({ errorText: errorText });
         };
     }
+    componentWillReceiveProps(props){
+        this.props= props
+    }
     pageChange = (currentPage , size) =>{
         this.setState({
             currentPage : currentPage
@@ -88,9 +89,8 @@ class ViewCourse extends React.Component {
         this.setState({deleteDialog: true});
     };
     snackbarHandleRequestClose = () => {
-        this.setState({
-            snackbarOpen: false,
-        });
+
+        this.props.setSnackbarOpen(false)
     };
     setCourseDuration(event){
         let course = this.state.curCourse
@@ -135,19 +135,15 @@ class ViewCourse extends React.Component {
             this.setState({
                 currentPage : 1
             })
-            this.setState({
-                snackbarOpen:true,
-                snackbarMessage:"Course Deleted"
-            })
+
+            this.props.setSnackbarOpen(true)
+            this.props.setSnackbarMessage("Course Deleted")
             let pagedCourses = []
             for(let index in course ){
                 if(index<10){
                     pagedCourses.push(course[index])
                 }
             }
-            // this.setState({
-            //     pagedCourses:pagedCourses
-            // })
             this.props.setPagedCourse(pagedCourses)
         })
             .catch((response)=>{
@@ -189,16 +185,12 @@ class ViewCourse extends React.Component {
                 }
                 console.log("-----------",pagedCourses)
                 this.props.setPagedCourse(pagedCourses)
-                this.setState({
-                    snackbarMessage:"Field Edited Successfully",
-                    snackbarOpen:true
-                })
+                this.props.setSnackbarMessage("Field Edited Successfully")
+                this.props.setSnackbarOpen(true)
             }
             else {
-                this.setState({
-                    snackbarMessage : "Internal Server Error",
-                    snackbarOpen:true
-                })
+                this.props.setSnackbarMessage("Internal Server Error")
+                this.props.setSnackbarOpen(true)
             }
         })
         .catch((response)=>{
@@ -380,8 +372,8 @@ class ViewCourse extends React.Component {
                     Are you sure you want to delete ?
                 </Dialog>
                 <Snackbar
-                    open={this.state.snackbarOpen}
-                    message={this.state.snackbarMessage}
+                    open={this.props.courseReducer.snackbarOpen}
+                    message={this.props.courseReducer.snackbarMessage}
                     autoHideDuration={4000}
                     onRequestClose={this.snackbarHandleRequestClose}
                 />
@@ -403,6 +395,15 @@ const mapDispatchToProps = (dispatch) => {
         },
         setPagedCourse : (course)=>{
             dispatch(setPagedCourse(course))
+        },
+        setSnackbarOpen :(data)=>{
+            dispatch(setSnackbarOpen(data))
+        },
+        setSnackbarMessage:(data)=>{
+            dispatch(setSnackbarMessage(data))
+        },
+        setValue:(value)=>{
+            dispatch(setValue(value))
         }
     };
 };

@@ -5,7 +5,7 @@ let a = require('./../css/style.css');
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 import store from './../store.jsx'
 import { Router, Route, browserHistory } from 'react-router'
-import {setCourse} from './../actions/courseAction.jsx'
+import {setCourse,setSnackbarMessage,setSnackbarOpen,setPagedCourse,setValue} from './../actions/courseAction.jsx'
 import {connect} from 'react-redux'
 class App extends React.Component{
    constructor(props) {
@@ -44,10 +44,23 @@ const mapStateToProps = (state) => {
         courseReducer: state.courseReducer
     };
 };
+
 const mapDispatchToProps = (dispatch) => {
     return {
         setCourse : (course)=>{
             dispatch(setCourse(course))
+        },
+        setPagedCourse : (course)=>{
+            dispatch(setPagedCourse(course))
+        },
+        setSnackbarOpen :(data)=>{
+            dispatch(setSnackbarOpen(data))
+        },
+        setSnackbarMessage:(data)=>{
+            dispatch(setSnackbarMessage(data))
+        },
+        setValue:(value)=>{
+            dispatch(setValue(value))
         }
     };
 };

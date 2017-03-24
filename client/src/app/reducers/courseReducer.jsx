@@ -1,6 +1,9 @@
 const courseReducer = (state = {
     course : [],
-    pagedCourses: []
+    pagedCourses: [],
+    snackbarOpen:"",
+    snackbarMessage:"",
+    value : "a"
 },action) => {
     switch(action.type){
         case "setCourse":
@@ -14,6 +17,25 @@ const courseReducer = (state = {
                 ...state ,
                 pagedCourses:action.payload
             }
+            break
+        case "setSnackbarOpen":
+            state ={
+                ...state ,
+                snackbarOpen:action.payload
+            }
+            break
+        case "setSnackbarMessage":
+            state ={
+                ...state ,
+                snackbarMessage : action.payload
+            }
+            break
+        case "setValue":
+            state = {
+                ...state,
+                value : action.payload
+            }
+            break
     }
     return state
 }

@@ -7,7 +7,7 @@ import{Provider} from "react-redux";
 import {store} from "./store.js";
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
-render(  
+render( 
 	<Provider store={store} >
 		<App />
 	</Provider>,

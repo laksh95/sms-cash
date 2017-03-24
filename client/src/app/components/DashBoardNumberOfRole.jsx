@@ -5,50 +5,33 @@ import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 class DashBoard extends React.Component { 
 	constructor(props) {
-			super(props);
+		super(props);
 	}
 	render() {
 		return(
 			<div className="smallerDiv">
-				<p/>
-				<p/>	     		
-				<Card style={{backgroundColor:'#00a65a'}}>
+				<Card className='imgp'>
 					<CardHeader
 						title={this.props.studentNo}
-						subtitle="Subtitle"
+						subtitle="Total number of students"
 						style={{color:'white', fontWeight: 'bold'}}
-					/>
-					<CardText 
-						style={{color:'white'}}>
-						Total number of students
-					</CardText>
+					/>					
 				</Card>
-				<p/>
-				<p/>
-
-				<Card style={{backgroundColor:'#f56954'}}>
+				<br/><br/>
+				<Card className='imgt'>
 					<CardHeader
 						title={this.props.teacherNo}
-						subtitle="Subtitle"
+						subtitle="Total number of teachers"
 						style={{color:'white', fontWeight: 'bold'}}
-					/>
-					<CardText 
-						style={{color:'white'}}>
-						Total number of teachers
-					</CardText>
+					/>					
 				</Card>
-				<p/>
-				<p/>
-				<Card style={{backgroundColor:'#0073b7'}}>
+				<br/><br/>
+				<Card className='imgs'>
 					<CardHeader
 						title={this.props.parentNo}
-						subtitle="Subtitle"
+						subtitle="Total no of parents"
 						style={{color:'white', fontWeight: 'bold'}}
 					/>
-					<CardText 
-						style={{color:'white'}}>
-						Total no of parents
-					</CardText>
 				</Card>
 			</div>
 		);

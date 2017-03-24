@@ -10,6 +10,10 @@ var config = {
 		filename: "bundle.js",
 		publicPath: "/"
 	},
+  devServer:{
+        publicPath:'/',
+        contentBase:'./client/src'
+    },
 	devtool : 'source-map',
 	module: {
         loaders: [

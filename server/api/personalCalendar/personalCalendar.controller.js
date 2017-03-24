@@ -20,9 +20,9 @@ var dashboardHandler = {
 function getData(request, response){
 	let data = {
 		heading: request.body.heading,
-    startDate: new Date(request.body.startDate),
-    endDate: new Date(request.body.endDate),
-    content: request.body.content,
+    	startDate: new Date(request.body.startDate),
+    	endDate: new Date(request.body.endDate),
+    	content: request.body.content,
 		userId: request.user.id
 	}
 	return data;

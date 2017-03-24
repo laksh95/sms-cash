@@ -39,10 +39,22 @@ let init = function(){
                     user_detail.hasOne(teacher, {foreignKey: 'user_id'});
                     department.hasOne(teacher, {foreignKey: 'department_id'});
                 },
-                totalTeacher: function(db, cb){
+                totalTeacher: function(db, cb){ //counting number of teachers
                     let teacher = db.teacher
-                    return teacher.findAndCountAll().then((data)=>{
-                        return data.count
+                    return teacher.findAndCountAll()
+                    .then((data)=>{
+                      dataToSend = {
+                        count: data.count,
+                        status: 1,
+                        message: "Loaded"
+                      }
+                      return dataToSend
+                    })
+                    .catch((data)=>{
+                        return({
+                            status: 0,
+                            message: "Failed to load data"
+                        })
                     })
                 }
             }

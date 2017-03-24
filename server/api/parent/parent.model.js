@@ -33,7 +33,7 @@ module.exports=function(){
         },
         {
             classMethods: {
-                addParentDetail: function(db, inputData, cb){
+                addParentDetail: function(db, inputData, cb){ //creating a parent entry
                     let parent = db.parent
 
                     parent.create({
@@ -48,7 +48,7 @@ module.exports=function(){
                         cb({
                             status: 1,
                             message: "Created an entry"
-                        }) 
+                        })
                     })
                     .catch((data)=>{
                         cb({
@@ -57,12 +57,22 @@ module.exports=function(){
                         })
                     })
                 },
-                totalParent: function(db, cb){
+                totalParent: function(db, cb){ //counting total number of parents
                     let parent = db.parent
-
                     return parent.findAndCountAll()
                     .then((data)=>{
-                        return data.count
+                      dataToSend = {
+                        count: data.count,
+                        status: 1,
+                        message: "Loaded"
+                      }
+                      return dataToSend
+                    })
+                    .catch((data)=>{
+                        return({
+                            status: 0,
+                            message: "Failed to load data"
+                        })
                     })
                 }
 

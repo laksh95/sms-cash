@@ -24,67 +24,117 @@ let academicCalendar= connection.define('academic_calendar',{
     content: {
        type: sequelize.TEXT,
        allowNull: false
+    },
+    status: {
+      type: sequelize.BOOLEAN,
+      allowNull: false,
+      defaultValue: true
     }
   },
   {
     classMethods : {
-      associate : function(models){
+      associate : (models)=>{
         let academicCalendar  = models.academic_calendar
         let academicYear = models.academic_year
         academicYear.hasMany(academicCalendar,{
           foreignKey : "academic_year"
         })
       },
-      getAllHolidys : function(db){
-        axios.get("https://holidayapi.com/v1/holidays?key=c56f72dd-088b-4eaa-a2be-5448e9426aaf&country=IN&year=2017&month=01").then((data) => {
+      getAllHolidys : (db, cb)=>{ //loading all holidays from API into the database
+        axios.get("https://holidayapi.com/v1/holidays?key=c56f72dd-088b-4eaa-a2be-5448e9426aaf&country=IN&year=2017&month=02").then((data) => {
           data.data.holidays.map((theData, i) => {
             db.academic_calendar.create({
               type: "holiday",
               start_date: new Date(theData.date),
               end_date: new Date(theData.date),
-              content: theData.name
+              content: theData.name,
+              academic_year: 1
             })
             .then((data)=>{
-              console.log("DONE CREATE")
+              cb("Done Create")
             })
           })
         })
         .catch((data) => {
-          console.log("ERROR IN LOADING DATA TO DATABASE")
+          cb("ERROR IN LOADING DATA TO DATABASE")
         })
       },
-      fetchHolidayList : function(db, cb){
+      fetchEventList : (db, cb)=>{ //fetching all events from academic calendar
         academicCalendar = db.academic_calendar
-
+        console.log("fetching AC")
         return academicCalendar.findAll({
-          attributes: ['id' , 'type' , 'end_date', 'start_date', 'content']
-        }).then((data) => {
-          return data
-        })
+          attributes: ['id' , 'type' , 'end_date', 'start_date', 'content', 'academic_year']
+        ,
+        where: {
+          status: true
+        },
+    })
+      .then((data) => {
+        dataToSend = {
+          data,
+          status: 1,
+          message: "Loaded"
+        }
+        return dataToSend
+      })
+      .catch(()=>{
+        return {
+          status: 0,
+          message: "Failed to load data"
+        }
+      })
       },
-      addHolidays: function(db, inputData, cb){
+      addEvent: (db, inputData, cb)=>{  //adding event to academic calendar
         academicCalendar = db.academic_calendar
 
         academicCalendar.create({
           type: inputData.type,
           start_date: inputData.startDate,
           end_date: inputData.endDate,
-          content: inputData.holidayName
+          content: inputData.eventName,
+          academic_year: inputData.academicYear
         })
         .then((data)=>{
-          console.log("DONE CREATE")
           cb({
           status: 1,
-          message: "Created an entry"
+          message: "Created an entry",
+          data: inputData
           })
+        })
+        .catch((data)=>{
+          console.log(data)
+          cb({
+            status: 0,
+            message: "Failed to create an entry",
+            data: inputData
+          })
+        })
+      },
+      deleteEvent: (db, eventId, cb)=>{ //deleting event from academic calendar
+        academicCalendar = db.academic_calendar
+
+        academicCalendar.update({
+            status: false
+          },{
+           where:{
+            id:eventId
+          }
+         })
+         .then((data)=>{
+           cb({
+           status: 1,
+           message: "Deleted event",
+           data: eventId
+         })
         })
         .catch((data)=>{
           cb({
             status: 0,
-            message: "Failed to create an entry"
+            message: "Failed to delete entry",
+            data: eventId
           })
         })
-      }
+      },
     }
   }
 );

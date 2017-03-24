@@ -40,21 +40,26 @@ let personalCalendar= connection.define('personal_calendar',{
         foreignKey : "user_id"
       })
     },
-    fetchPersonalCalendarList: (db, userId) => {
+    fetchPersonalCalendarList: (db, userId) => { //fetching all personalCalendar details for a particular user
       personalCalendar = db.personal_calendar
 
       return personalCalendar.findAll({
-        attributes: ['id','heading', 'end_date', 'start_date', 'content'],
+        attributes: ['id' ,'heading', 'end_date', 'start_date', 'content'],
         where: {
           user_id: userId,
           status: true
         }
       })
       .then((data) => {
-        return data
+        dataToSend = {
+          data,
+          status: 1,
+          message: "Loaded"
+        }
+        return dataToSend
       })
     },
-    addPersonalEvent: (db, inputData, cb) => {
+    addPersonalEvent: (db, inputData, cb) => { //adding event from personal calendar for a prticular user
       personalCalendar = db.personal_calendar
 
     return personalCalendar.create({
@@ -84,7 +89,7 @@ let personalCalendar= connection.define('personal_calendar',{
         })
       })
     },
-    deletePersonalEvent: (db, inputData, cb) => {
+    deletePersonalEvent: (db, inputData, cb) => { ////deleting event from personal calendar for a particular user
       personalCalendar = db.personal_calendar
 
       personalCalendar.update({

@@ -149,7 +149,6 @@ class AddStudent extends React.Component {
                         <DatePicker
                             hintText="Date of Birth"
                             onChange={this.handleDateChange}
-                            defaultDate={new Date()}
                             container='inline'
                             shouldDisableDate={this.disablePreviousDates(startDate)}
                         />

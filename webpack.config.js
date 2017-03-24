@@ -10,7 +10,8 @@ let config = {
 	},
 	devServer:{
 		publicPath:'/',
-		contentBase:'./client/src'
+		contentBase:'./client/src',
+		port:8082
 	},
 	devtool : 'source-map',
 	module: {

@@ -13,7 +13,7 @@ import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bu
 import DashBoard from './DashBoard.jsx';
 import Course  from './Course.jsx'
 import renderIf from 'render-if'
-import Student from './Student.jsx'
+import Student from './student/Student.jsx'
 import {Link} from 'react-router'
 const events = [
     {

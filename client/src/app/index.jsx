@@ -4,7 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom'
 import App from './containers/App.jsx';
 import {Provider} from 'react-redux'
-import Student from './containers/Student.jsx'
+import Student from './containers/student/Student.jsx'
 import Course from './containers/Course.jsx'
 import {Router, Route,IndexRoute, browserHistory} from 'react-router'
 import store from './store.jsx'

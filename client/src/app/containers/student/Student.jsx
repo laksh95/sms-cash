@@ -4,6 +4,7 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import {Tabs, Tab} from 'material-ui/Tabs'
 import AddStudent from './adminAddStudent.jsx'
+import AddBulkStudent from './addBulkStudent.jsx'
 
 class Student extends React.Component { 
    constructor(props) {
@@ -32,7 +33,8 @@ class Student extends React.Component {
                        <Tab label="Add Student" value="a">
                           <AddStudent/>
                        </Tab>
-                       <Tab label="Add Bulk Students" value="b">
+                       <Tab label="Add Bulk Students" className="addBulk" value="b">
+                           <AddBulkStudent/>
                        </Tab >
                        <Tab label="Student Information" value="c">
                        </Tab>

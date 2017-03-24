@@ -163,35 +163,43 @@ class ViewCourse extends React.Component {
         this.setState({open: false});
         let data = this.state.curCourse
         axios.put('http://localhost:3166/api/course/editCourse',data).then((response)=>{
-            console.log("response",response)
-            let course = this.props.courseReducer.course.data
-            console.log("course-----------",course)
-            for(let index in course){
-                if(course[index].id===data.id){
-                    course[index] = data
+            console.log("response",response.data[0])
+            if(response.data[0]==1){
+                let course = this.props.courseReducer.course.data
+                console.log("course-----------",course)
+                for(let index in course){
+                    if(course[index].id===data.id){
+                        course[index] = data
+                    }
                 }
-            }
-            this.props.setCourse(course)
-            let size = course.length
-            // let totalPages = Math.floor(size/10)+1
-            this.setState({
-                totalPages:size
-            })
-            this.setState({
-                currentPage:1
-            })
-            let pagedCourses = []
-            for(let index in course){
-                if(index<10){
-                    pagedCourses.push(course[index])
+                this.props.setCourse(course)
+                let size = course.length
+                // let totalPages = Math.floor(size/10)+1
+                this.setState({
+                    totalPages:size
+                })
+                this.setState({
+                    currentPage:1
+                })
+                let pagedCourses = []
+                for(let index in course){
+                    if(index<10){
+                        pagedCourses.push(course[index])
+                    }
                 }
+                console.log("-----------",pagedCourses)
+                this.props.setPagedCourse(pagedCourses)
+                this.setState({
+                    snackbarMessage:"Field Edited Successfully",
+                    snackbarOpen:true
+                })
             }
-            console.log("-----------",pagedCourses)
-            this.props.setPagedCourse(pagedCourses)
-            this.setState({
-                snackbarMessage:"Field Edited Successfully",
-                snackbarOpen:true
-            })
+            else {
+                this.setState({
+                    snackbarMessage : "Internal Server Error",
+                    snackbarOpen:true
+                })
+            }
         })
         .catch((response)=>{
             console.log(response)

@@ -1,14 +1,14 @@
 import React from 'react'
-import {Tabs, Tab} from 'material-ui/Tabs';
-import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
-import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
-import Dialog from 'material-ui/Dialog';
-import NumberInput from 'material-ui-number-input';
-import axios from 'axios'
-import Snackbar from 'material-ui/Snackbar';
-export default class App extends React.Component {
+import RaisedButton from 'material-ui/RaisedButton'
+import TextField from 'material-ui/TextField'
+import NumberInput from 'material-ui-number-input'
+import Snackbar from 'material-ui/Snackbar'
+import {setCourse,setPagedCourse} from './../../actions/courseAction.jsx'
+import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
+import { Router, Route, browserHistory } from 'react-router'
+import store from './../../store.jsx'
+import {connect} from 'react-redux'
+class AddCourse extends React.Component {
     constructor(props) {
         super(props);
         this.handleToggle =  this.handleToggle.bind(this);
@@ -18,9 +18,7 @@ export default class App extends React.Component {
             validateNewCourseName : false,
             validateNewCourseDuration:false,
             newCourse:"",
-            newDuration:"",
-
-            course :[]
+            newDuration:""
         };
         this.onError1 = (error) => {
             let errorText;
@@ -122,11 +120,9 @@ export default class App extends React.Component {
                     snackbarMessage : "Course Added"
                 })
                 let newCourse = response.data.content
-                let course = this.state.course
+                let course = this.props.courseReducer.course
                 course.push(newCourse)
-                this.setState({
-                    course:course
-                })
+                this.props.setCourse(course)
                 let size = course.length
                 // let totalPages = Math.floor(size/10) +1
                 this.setState({
@@ -141,9 +137,7 @@ export default class App extends React.Component {
                         pagedCourses.push(course[index])
                     }
                 }
-                this.setState({
-                    pagedCourses:pagedCourses
-                })
+                this.props.setPagedCourse(pagedCourses)
             }
             else {
                 this.setState({
@@ -157,6 +151,7 @@ export default class App extends React.Component {
             })
     }
     render(){
+        console.log('addCourse.jsx')
         const {state, onChange, onError1, onKeyDown, onValid, onRequestValue} = this;
         const contentStyle = {
             marginLeft: 70 ,transition: 'margin-left 100ms cubic-bezier(0.23, 1, 0.32, 1)'
@@ -200,6 +195,24 @@ export default class App extends React.Component {
         );
     }
 }
+const history = syncHistoryWithStore(browserHistory, store)
+
+const mapStateToProps = (state) => {
+    return {
+        courseReducer: state.courseReducer
+    };
+};
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setCourse : (course)=>{
+            dispatch(setCourse(course))
+        },
+        setPagedCourse : (course)=>{
+            dispatch(setPagedCourse(course))
+        }
+    };
+};
+export  default connect(mapStateToProps,mapDispatchToProps)(AddCourse);
 
 
 

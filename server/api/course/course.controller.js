@@ -9,7 +9,7 @@ let courseFunctions = {
         })
     },
     addCourse:(req,res)=>{
-        let course_name=req.body.courseName
+        let course_name=req.body.course_name
         let duration=req.body.duration
 
         let setCourseData={

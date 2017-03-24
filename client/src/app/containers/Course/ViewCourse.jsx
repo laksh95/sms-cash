@@ -1,17 +1,20 @@
 import React from 'react'
-import {Tabs, Tab} from 'material-ui/Tabs';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import Dialog from 'material-ui/Dialog';
 import NumberInput from 'material-ui-number-input';
 import axios from 'axios'
 import Snackbar from 'material-ui/Snackbar';
 require('rc-pagination/assets/index.css');
+import {setCourse,setPagedCourse} from './../../actions/courseAction.jsx'
+import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
+import { Router, Route, browserHistory } from 'react-router'
+import store from './../../store.jsx'
+import {connect} from 'react-redux'
 
 const Pagination = require('rc-pagination');
-export default class ViewCourse extends React.Component {
+class ViewCourse extends React.Component {
     constructor(props) {
         super(props);
         this.handleToggle =  this.handleToggle.bind(this);
@@ -21,7 +24,6 @@ export default class ViewCourse extends React.Component {
             snackbarMessage : "" ,
             snackbarOpen:false,
             deleteDialog : false,
-            pagedCourses : [],
             curCourse:{},
             errorText1 :"",
             errorText :"",
@@ -66,7 +68,7 @@ export default class ViewCourse extends React.Component {
         this.setState({
             currentPage : currentPage
         })
-        let course = this.state.course
+        let course = this.props.courseReducer.course
         let start = (currentPage-1)*10
         let end = start + 10
         let pagedCourses = []
@@ -106,7 +108,7 @@ export default class ViewCourse extends React.Component {
             curCourse:{
                 id :course.id ,
                 name : course.name ,
-                duration :event.target.value,
+                duration :duration,
                 noOfDept : course.noOfDept
             }
         })
@@ -118,20 +120,18 @@ export default class ViewCourse extends React.Component {
     handleDeleteCloseWithUpdate = () => {
         let data = this.state.curCourse
         axios.put('http://localhost:3166/api/course/deleteCourse',data).then((response)=>{
-            let course = this.state.course
+            let course = this.props.courseReducer.course
             for(let index in course){
                 if(course[index].id==data.id){
                     course.splice(index,1)
                 }
             }
-            this.setState({
-                course : course
-            })
-            let size= this.state.course
+            this.props.setCourse(course)
+            let size= this.props.courseReducer.course.length
             this.setState({
                 totalPages:size
             })
-            course = this.state.course
+            course = this.props.courseReducer.course
             this.setState({
                 currentPage : 1
             })
@@ -145,9 +145,10 @@ export default class ViewCourse extends React.Component {
                     pagedCourses.push(course[index])
                 }
             }
-            this.setState({
-                pagedCourses:pagedCourses
-            })
+            // this.setState({
+            //     pagedCourses:pagedCourses
+            // })
+            this.props.setPagedCourse(pagedCourses)
         })
             .catch((response)=>{
                 console.log(response)
@@ -162,16 +163,17 @@ export default class ViewCourse extends React.Component {
         this.setState({open: false});
         let data = this.state.curCourse
         axios.put('http://localhost:3166/api/course/editCourse',data).then((response)=>{
-            let course = this.state.course
+            console.log("response",response)
+            let course = this.props.courseReducer.course.data
+            console.log("course-----------",course)
             for(let index in course){
                 if(course[index].id===data.id){
                     course[index] = data
                 }
             }
-            this.setState({
-            })
+            this.props.setCourse(course)
             let size = course.length
-            // let totalPages = Math.floor(size/10) +1
+            // let totalPages = Math.floor(size/10)+1
             this.setState({
                 totalPages:size
             })
@@ -184,19 +186,16 @@ export default class ViewCourse extends React.Component {
                     pagedCourses.push(course[index])
                 }
             }
-            this.setState({
-                pagedCourses:pagedCourses
-            })
+            console.log("-----------",pagedCourses)
+            this.props.setPagedCourse(pagedCourses)
             this.setState({
                 snackbarMessage:"Field Edited Successfully",
                 snackbarOpen:true
             })
-
-
         })
-            .catch((response)=>{
-                console.log(response)
-            })
+        .catch((response)=>{
+            console.log(response)
+        })
     };
     handleOpen = (key,data) => {
         this.setState({open: true});
@@ -245,11 +244,11 @@ export default class ViewCourse extends React.Component {
         })
     }
     componentWillMount(){
-
         axios.get('http://localhost:3166/api/course/getCourses').then((response)=>{
-            this.setState({
-                course:response.data
-            })
+            this.props.setCourse(response)
+            // this.setState({
+            //     course:response.data
+            // })
             let course = response.data
             let size = course.length
             // let totalPages = Math.floor(size /10 )+1
@@ -262,16 +261,17 @@ export default class ViewCourse extends React.Component {
                     pagedCourses.push(course[index])
                 }
             }
-            this.setState({
-                pagedCourses:pagedCourses
-            })
-
+            // this.setState({
+            //     pagedCourses:pagedCourses
+            // })
+            this.props.setPagedCourse(pagedCourses)
         })
-            .catch((response)=>{
-                console.log(response)
-            })
+        .catch((response)=>{
+            console.log(response)
+        })
     }
     render(){
+        console.log('viewCourse.jsx',this.props.courseReducer)
         const dialogActions = [
             <FlatButton
                 label="No"
@@ -346,7 +346,7 @@ export default class ViewCourse extends React.Component {
                         </TableHeader>
                         <TableBody displayRowCheckbox={false}>
                             {
-                                this.state.pagedCourses.map((data,index)=>{
+                                this.props.courseReducer.pagedCourses.map((data,index)=>{
                                     return (
                                         <TableRow>
                                             <TableRowColumn><FlatButton label={data.name}/></TableRowColumn>
@@ -381,7 +381,24 @@ export default class ViewCourse extends React.Component {
         );
     }
 }
+const history = syncHistoryWithStore(browserHistory, store)
 
+const mapStateToProps = (state) => {
+    return {
+        courseReducer: state.courseReducer
+    };
+};
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setCourse : (course)=>{
+            dispatch(setCourse(course))
+        },
+        setPagedCourse : (course)=>{
+            dispatch(setPagedCourse(course))
+        }
+    };
+};
+export  default connect(mapStateToProps,mapDispatchToProps)(ViewCourse);
 
 
 

@@ -53,7 +53,7 @@ export default class DrawerOpenRightExample extends React.Component {
     return { muiTheme: getMuiTheme(baseTheme) };
    }
   render() {
-    const bool = this.state.cours
+    console.log("sidebarmenu.jsx")
     const contentStyle = { marginTop:10, marginLeft: 90 ,transition: 'margin-left 100ms cubic-bezier(0.23, 1, 0.32, 1)' };
     if (this.props.open) {
       contentStyle.marginLeft = 250;
@@ -109,11 +109,7 @@ export default class DrawerOpenRightExample extends React.Component {
 
       <div style={contentStyle}>
           {
-              renderIf(this.state.course)
-              (
                     <Course/>
-              )
-
           }
       </div>
     </div>

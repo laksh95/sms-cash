@@ -152,6 +152,7 @@ class AddCourse extends React.Component {
     }
     render(){
         console.log('addCourse.jsx')
+        const margin = {marginBottom : 10}
         const {state, onChange, onError1, onKeyDown, onValid, onRequestValue} = this;
         const contentStyle = {
             marginLeft: 70 ,transition: 'margin-left 100ms cubic-bezier(0.23, 1, 0.32, 1)'
@@ -172,6 +173,7 @@ class AddCourse extends React.Component {
                     id="num1"
                     hintText="Duration"
                     required
+
                     strategy="warn"
                     errorText={this.state.errorText4}
                     onValid={onValid}

@@ -200,12 +200,6 @@ let init=function() {
                                 status : true
                             }
                         }))
-
-                        //     .then((result)=>{
-                        //     let count = result.count
-                        //     cur_dep['total_no_of_students']=count
-                        //     departments.push(cur_dep)
-                        // })
                     })
                     Promise.all(promises).then(values=>{
                         data.map((dept,index)=>{

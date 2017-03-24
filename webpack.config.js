@@ -8,9 +8,12 @@ let config = {
         filename: "bundle.js",
         publicPath: "/"
     },
-    devServer :{
-        publicPath : '/',
-        contentBase : './client/src'
+    devServer:{
+        publicPath:'/',
+        contentBase:'./client/src',
+        historyApiFallback: {
+            index: 'index.html'
+        }
     },
     devtool : 'source-map',
     module: {
@@ -32,5 +35,5 @@ let config = {
             {test: /\.(png|jpg|jpeg|gif|woff)$/, loader: 'url-loader?limit=8192' }
         ]
     }
-};
+}
 module.exports = config;

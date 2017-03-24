@@ -3,6 +3,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import ReactDOM from 'react-dom';
 import App from './containers/App.jsx';
+import Course from './containers/Course/Course.jsx'
 import store from "./store.jsx"
 import {Provider} from 'react-redux'
 import { Router, Route, browserHistory } from 'react-router'
@@ -20,7 +21,9 @@ ReactDOM.render(
     <Provider store={store}>
         <div>
             <Router history={history}>
-                <Route path="/" component={App}/>
+                <Route path="/" component={App}>
+                    <Route path="/course" component={Course} />
+                </Route>
             </Router>
         </div>
     </Provider>

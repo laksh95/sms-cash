@@ -3,7 +3,7 @@ let sequelize = data.sequelize;
 let connection = data.connection;
 
 module.exports=function(){
-let academicYear= connection.define('academic_year',{
+let academicYear = connection.define('academic_year',{
    id: {
        type: sequelize.INTEGER,
        primaryKey: true,

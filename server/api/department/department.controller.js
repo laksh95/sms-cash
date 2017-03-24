@@ -12,7 +12,7 @@ let departmentFunctions={
             course_id
         }
         model.addDepartment(db,newDept,function(data){
-            res.send(data)
+            res.status(404).send(data)
         })
     },
     editDepartment : function(req,res){
@@ -20,7 +20,6 @@ let departmentFunctions={
         let abbreviated_name = req.body.abbreviated_name
         let id = req.body.id
         let course_id = req.body.course_id
-
         let curDept = {
             name ,
             abbreviated_name,
@@ -29,14 +28,10 @@ let departmentFunctions={
         model.editDepartment(db,curDept,function(data){
             res.send(data)
         })
-
     },
     deleteDepartment : function(req,res){
-        // let name  = req.body.name
-        // let abbreviated_name = req.body.abbreviated_name
-        let id = req.body.id
-        // let course_id = req.body.course_id
 
+        let id = req.body.id
         model.deleteDepartment(db,id,function(data){
             res.send(data)
         })

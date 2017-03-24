@@ -1,5 +1,7 @@
 import React from 'react'
 import {Tabs, Tab} from 'material-ui/Tabs';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -22,6 +24,7 @@ const styles = {
 const style = {
     margin: 12,
 };
+
 class Course extends React.Component{
     constructor(props) {
         super(props);
@@ -47,6 +50,7 @@ class Course extends React.Component{
             validateNewCourseName : false,
             validateNewCourseDuration:false,
         };
+
         this.onError = (error) => {
             let errorText;
             console.log(error);
@@ -115,6 +119,9 @@ class Course extends React.Component{
         this.setCourseDuration = this.setCourseDuration.bind(this)
         this.addCourseDuration = this.addCourseDuration.bind(this)
         this.addCourse = this.addCourse.bind(this)
+    }
+    getChildContext() {
+        return { muiTheme: getMuiTheme(baseTheme) };
     }
     pageChange = (currentPage , size) =>{
         console.log("inside page change")
@@ -589,4 +596,7 @@ class Course extends React.Component{
         )
     }
 }
+(Course).childContextTypes = {
+    muiTheme: React.PropTypes.object.isRequired,
+};
 export default Course

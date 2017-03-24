@@ -4,6 +4,7 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import {Tabs, Tab} from 'material-ui/Tabs'
 import AddStudent from './adminAddStudent.jsx'
+
 class Student extends React.Component { 
    constructor(props) {
        super(props);
@@ -12,6 +13,9 @@ class Student extends React.Component {
        }
        this.handleChange=this.handleChange.bind(this)
   }
+    getChildContext() {
+        return { muiTheme: getMuiTheme(baseTheme) };
+    }
   handleChange=(value)=>{
        this.setState({
            value:value
@@ -42,6 +46,10 @@ class Student extends React.Component {
        )
    }
 }
+(Student).childContextTypes = {
+    muiTheme: React.PropTypes.object.isRequired,
+};
+
 export default Student;
 
 

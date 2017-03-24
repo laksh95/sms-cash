@@ -14,6 +14,7 @@ import DashBoard from './DashBoard.jsx';
 import Course  from './Course.jsx'
 import renderIf from 'render-if'
 import Student from './Student.jsx'
+import {Link} from 'react-router'
 const events = [
     {
         start:'2015-07-20',
@@ -30,7 +31,7 @@ const events = [
         data: 'you can add what ever random data you may want to use later',
     },
 ];
-export default class DrawerOpenRightExample extends React.Component {
+export default class SideBarMenu extends React.Component {
   constructor(props) {
     super(props);
     this.state= {
@@ -64,11 +65,6 @@ export default class DrawerOpenRightExample extends React.Component {
     return { muiTheme: getMuiTheme(baseTheme) };
    }
   render() {
-    const bool = this.state.cours
-    const contentStyle = { marginTop:10, marginLeft: 90 ,transition: 'margin-left 100ms cubic-bezier(0.23, 1, 0.32, 1)' };
-    if (this.props.open) {
-      contentStyle.marginLeft = 250;
-    }
     let sizeWidth = 230;
     if( this.props.open === false){
      sizeWidth = 70;
@@ -80,21 +76,24 @@ export default class DrawerOpenRightExample extends React.Component {
            onLeftIconButtonTouchTap = {this.props.handleToggle} />
             <List>
                 <ListItem
-                    primaryText="Course"
-                    onClick={()=>this.course()}
-                    leftAvatar={<Avatar src={require('./../images/user.png')} />}
-                    labelStyle={{ color: '#2196F3' }}
-                />
-                <ListItem
                     primaryText="DashBoard "
                     leftAvatar={<Avatar src={require('./../images/user.png')} />}
-                    labelStyle={{ color: '#2196F3' }}
+
                 />
+                <Link to="course">
+                    <ListItem
+                        primaryText="Course"
+                        onClick={()=>this.course()}
+                        leftAvatar={<Avatar src={require('./../images/user.png')} />}
+                    />
+                </Link>
+                <Link to="student">
                 <ListItem
                     primaryText="Student"
                     onClick={()=>this.student()}
                     leftAvatar={<Avatar src={require('./../images/user.png')} />}
                 />
+                </Link>
                 <ListItem
                     primaryText="Teacher"
                     leftAvatar={<Avatar src={require('./../images/user.png')} />}
@@ -120,27 +119,11 @@ export default class DrawerOpenRightExample extends React.Component {
                 />
             </List>
         </Drawer>
-      <div style={contentStyle}>
-          {
-              renderIf(this.state.course)
-              (
-                    <Course/>
-              )
-          }
-      </div>
-        <div style={contentStyle}>
-            {
-                renderIf(this.state.student)
-                (
-                    <Student/>
-                )
-            }
-        </div>
 
     </div>
     );
   }
 }
-DrawerOpenRightExample.childContextTypes = {
+SideBarMenu.childContextTypes = {
             muiTheme : React.PropTypes.object.isRequired
         };

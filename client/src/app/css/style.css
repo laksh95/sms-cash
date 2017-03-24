@@ -11,7 +11,7 @@
     border:1px solid gray;
     width: 80%;
     margin:auto;
-    margin-top:15px;
+    margin-top: 15px;
 }
 #StudentHeader{
     background-color: gray;
@@ -24,8 +24,12 @@
     margin:auto;
     overflow:hidden;
     font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
-
 }
+#buttons{
+    margin-left:40px;
+    margin-bottom: 10px;
+}
+
 #fieldNames{
     float:left;
     width:50%;

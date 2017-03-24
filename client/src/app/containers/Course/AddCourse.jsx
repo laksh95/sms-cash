@@ -25,9 +25,7 @@ class AddCourse extends React.Component {
             let errorText;
             console.log(error);
             switch (error) {
-                case 'required':
-                    errorText = 'This field is required';
-                    break;
+
                 case 'invalidSymbol':
                     errorText = 'You are trying to enter none number symbol';
                     break;
@@ -70,7 +68,7 @@ class AddCourse extends React.Component {
         let name = event.target.value
         if(name.trim()==''){
             this.setState({
-                errorText3:"Course Name required",
+                errorText3:"",
                 validateNewCourseName : false
             })
         }
@@ -171,10 +169,10 @@ class AddCourse extends React.Component {
                     errorText={this.state.errorText3}
                 /><br />
                 <NumberInput
-                    id="num1"
+                    id="num"
                     hintText="Duration"
-                    required
 
+                    defaultValue=""
                     strategy="warn"
                     errorText={this.state.errorText4}
                     onValid={onValid}

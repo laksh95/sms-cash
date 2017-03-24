@@ -198,6 +198,7 @@ class ViewCourse extends React.Component {
         })
     };
     handleOpen = (key,data) => {
+        console.log("******************",data)
         this.setState({open: true});
         this.setState({
             curCourse : data
@@ -304,6 +305,7 @@ class ViewCourse extends React.Component {
         if (this.state.open) {
             contentStyle.marginLeft = 230;
         }
+        console.log("++++++++++++++++++++",this.state.curCourse.duration)
         return (
 
             <div>
@@ -322,7 +324,7 @@ class ViewCourse extends React.Component {
                     <NumberInput
                         id="num"
                         hintText="Duration"
-                        value={this.state.curCourse.duration}
+                        defaultValue={this.state.curCourse.duration}
                         required
                         strategy="warn"
                         errorText={this.state.errorText}

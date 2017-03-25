@@ -1,4 +1,5 @@
 let bodyParser=require('body-parser')
+let express=require('express')
 let init = function (app) {
     app.use(function(req, res, next) {
         res.header("Access-Control-Allow-Origin", req.headers.origin);
@@ -9,5 +10,6 @@ let init = function (app) {
     })
     app.use(bodyParser.urlencoded());
     app.use(bodyParser.json());
+    app.use(express.static(__dirname+'../../client'))
 };
 module.exports=init

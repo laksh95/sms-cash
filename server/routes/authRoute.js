@@ -51,8 +51,9 @@ router.post('/login', (req, res, next) => {
 
   	return passport.authenticate('local-login',(err, token, userData) => {
   		if(err){
-  			console.log("Error:", err);
+  			// console.log("Error:", err);
   			if(err.name==='IncorrectCredentialsError'){
+                console.log("Incorrect");
   				return res.status(400).json({
   					success: false,
          			message: err.message

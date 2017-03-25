@@ -1,33 +1,19 @@
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import React from 'react'
 import { render } from 'react-dom'; 
-//import {connect} from 'react-redux'
-//import {syncHistoryWithStore,routerReducer} from 'react-router-redux'
+import {connect} from 'react-redux'
+import {syncHistoryWithStore,routerReducer} from 'react-router-redux'
 //import store from './store.jsx'
-//import {Router, Route , browserHistory} from 'react-router'
-import App from './components/App.jsx'; 
-
-class Main extends React.Component {
-    constructor(props){
-        super(props)
-        
-    }
-    componentWillReceiveProps(props){
-       
-        this.props= props
-    }
-    render(){
-
-      console.log("Hello");
-        return(
-         <App />
-            );
-    }
-}
-
+import {Router, Route ,IndexRoute, browserHistory} from 'react-router'
+import login from './components/App.jsx'; 
+import sidebar from './components/Dashboard/App.jsx'; 
+ 
 injectTapEventPlugin();
   
 render(  
- <Main />,
+<Router history = {browserHistory}>
+      <Route path = "/" component = {login}/>
+      <Route path = "/dashboard" component = {sidebar} />  
+   </Router>,
  document.getElementById('app')
 );

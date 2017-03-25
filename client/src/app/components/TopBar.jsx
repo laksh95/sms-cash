@@ -12,7 +12,7 @@ const muiTheme = getMuiTheme({
   },
   appBar: {
     height: 100,
-  fontFamily: 'Roboto, sans-serif'
+    fontFamily: 'Roboto, sans-serif'
   },
 });
 
@@ -22,40 +22,32 @@ class TopBar extends React.Component {
     super(props);
     this.handleToggle =  this.handleToggle.bind(this);
     this.state = {open: false,           
-                 };
-  
+         };
   }
 
   getChildContext() {
       return { muiTheme: getMuiTheme(baseTheme) };
-    }
-  
-   handleToggle() { this.setState({open: !this.state.open});}
+  }
+
+  handleToggle() { this.setState({open: !this.state.open});}
 
 
- render() {
-
-
-  return(
-
-   <MuiThemeProvider muiTheme={muiTheme}>
-  <AppBar
-   
-    title={<span  style={{ marginLeft:'0%'}}>M A N I P A L &nbsp;&nbsp; U N I V E R S I T Y </span>}
-    iconClassNameRight=""
-    iconClassNameLeft={<center></center>}
-
-     
-  />
-  </MuiThemeProvider>
-);
-
-}
+  render() {
+    return(
+      <MuiThemeProvider muiTheme={muiTheme}>
+       <AppBar
+         title={<span  style={{ marginLeft:'0%'}}>M A N I P A L &nbsp;&nbsp; U N I V E R S I T Y </span>}
+         iconClassNameRight=""
+         iconClassNameLeft=""   
+       />
+     </MuiThemeProvider>
+    );
+  }
 }
 
 TopBar.childContextTypes = {
-            muiTheme: React.PropTypes.object.isRequired,
-        };
+     muiTheme: React.PropTypes.object.isRequired,
+};
 export default TopBar;
 
 

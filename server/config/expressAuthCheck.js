@@ -8,6 +8,7 @@ let models  = require('./../sqldb')();
  */
  module.exports = (req, res, next)=> {
  	if (!req.headers.authorization) {
+ 		console.log("No Header");
     	return res.status(401).end();
  }
 

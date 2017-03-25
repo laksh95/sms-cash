@@ -27,10 +27,10 @@ let sql = function(){
      venue : {
          type: sequelize.STRING,
      },
-     status : {
-      type:sequelize.BOOLEAN,
-      allowNull:false,
-      default: true
+     status:{
+         type:sequelize.BOOLEAN,
+         allowNull:false,
+         defaultValue:true
      }
  },
        {

@@ -15,6 +15,11 @@ let init=function(){
        total_seats:{
            type:sequelize.INTEGER,
            allowNull:false
+       },
+       status:{
+           type:sequelize.BOOLEAN,
+           allowNull:false,
+           defaultValue:true
        }
    },{
        classMethods:{

@@ -7,10 +7,15 @@ let init = function(){
             type: sequelize.INTEGER,
             primaryKey: true,
             autoIncrement: true
+        },
+        status:{
+            type:sequelize.BOOLEAN,
+            allowNull:false,
+            defaultValue:true
         }
     },
     {
-        classMethods: {    
+        classMethods: {
             associate: function(models){
                 let teacher = models.teacher
                 let student = models.student

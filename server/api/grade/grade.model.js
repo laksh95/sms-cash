@@ -18,10 +18,15 @@ let init = function(){
 		},
 		end_marks:{
 			type: sequelize.INTEGER,
+		},
+		status:{
+				type:sequelize.BOOLEAN,
+				allowNull:false,
+				defaultValue:true
 		}
 	},
 	{
-		classMethods: {	
+		classMethods: {
 			associate: function(models){
 				let exam = models.exam
 				let grade = models.grade

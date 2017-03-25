@@ -9,13 +9,14 @@ let init = function(){
 			primaryKey: true,
 			autoIncrement: true
 		},
-		status: {
-			type: sequelize.ENUM('ACTIVE', 'INACTIVE'),
-			allowNull:false
+		status:{
+				type:sequelize.BOOLEAN,
+				allowNull:false,
+				defaultValue:true
 		}
 	},
 	{
-		classMethods: {	
+		classMethods: {
 			associate: function(models){
 				let uploadResult = models.upload_result
 				let userDetail = models.user_detail

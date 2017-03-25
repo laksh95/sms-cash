@@ -31,7 +31,7 @@ module.exports=function(){
                 unique: true
             },
             gender: {
-                type: sequelize.STRING,
+                type: sequelize.ENUM('MALE','FEMALE','OTHERS'),
                 allowNull: false,
                 unique: true
             },
@@ -51,6 +51,11 @@ module.exports=function(){
             status:  {
                 type: sequelize.BOOLEAN,
                 default : true
+            },
+            status:{
+                type:sequelize.BOOLEAN,
+                allowNull:false,
+                defaultValue:true
             }
         },
         {

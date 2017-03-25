@@ -19,6 +19,11 @@ let init=function(){
         },
         end_marks:{
             type:sequelize.INTEGER
+        },
+        status:{
+            type:sequelize.BOOLEAN,
+            allowNull:false,
+            defaultValue:true
         }
     },{
         classMethods:{

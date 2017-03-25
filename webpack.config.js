@@ -11,7 +11,10 @@ let config = {
 	devServer:{
 		publicPath:'/',
 		contentBase:'./client/src',
-		port:8082
+		port:8082,
+        historyApiFallback: {
+            index: 'index.html'
+        }
 	},
 	devtool : 'source-map',
 	module: {

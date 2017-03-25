@@ -17,8 +17,9 @@ let init=function(){
             allowNull:false
         },
         status:{
-            type:sequelize.ENUM('ACTIVE','INACTIVE'),
-            allowNull:false
+            type:sequelize.BOOLEAN,
+            allowNull:false,
+            defaultValue:true
         }
     },{
         classMethods:{

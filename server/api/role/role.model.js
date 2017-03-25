@@ -17,6 +17,11 @@ let init = function(){
             access_level: {
                 type: sequelize.INTEGER,
                 allowNull:false
+            },
+            status:{
+                type:sequelize.BOOLEAN,
+                allowNull:false,
+                defaultValue:true
             }
         },
         {

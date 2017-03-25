@@ -1,6 +1,8 @@
 let data = require('./../../config/db');
 let sequelize = data.sequelize;
 let connection = data.connection;
+let axios = require('axios')
+let validator = require('validator')
 
 module.exports=function(){
 let academicCalendar= connection.define('academic_calendar',{
@@ -10,8 +12,8 @@ let academicCalendar= connection.define('academic_calendar',{
        autoIncrement: true
      },
    type: {
-       type: sequelize.ENUM('exam','holiday','result','others'),
-       allowNull: false,
+       type: sequelize.ENUM('EXAM','HOLIDAY','RESULT','OTHERS'),
+       allowNull: false
      },
    start_date: {
        type: sequelize.DATE,
@@ -24,22 +26,24 @@ let academicCalendar= connection.define('academic_calendar',{
     content: {
        type: sequelize.TEXT,
        allowNull: false
-     }
-  },
- {
- classMethods : {
-    associate : function(models){
-    let academicCalendar  = models.academic_calendar
-    let academicYear = models.academic_year
-    academicYear.hasMany(academicCalendar,{
-      foreignKey : "academic_year"
-    })
-    }
-    }
     },
-    {
-     instanceMethods:{}
+    status: {
+      type: sequelize.BOOLEAN,
+      allowNull: false,
+      defaultValue: true
     }
-    );
- return academicCalendar;
+  },
+  {
+    classMethods : {
+      associate : (models)=>{
+        let academicCalendar  = models.academic_calendar
+        let academicYear = models.academic_year
+        academicYear.hasMany(academicCalendar,{
+          foreignKey : "academic_year"
+        })
+      },
+    }
+  }
+);
+return academicCalendar;
 };

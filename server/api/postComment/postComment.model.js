@@ -11,6 +11,11 @@ let sql = function(){
             content : {
                 type : sequelize.TEXT ,
                 allowNull : false
+            },
+            status:{
+                type:sequelize.BOOLEAN,
+                allowNull:false,
+                defaultValue:true
             }
         },
         {

@@ -26,9 +26,10 @@ module.exports=function(){
                 type: sequelize.STRING
             },
             country_code: sequelize.INTEGER,
-            status:  {
-                type: sequelize.BOOLEAN,
-                defaultValue: true
+            status:{
+                type:sequelize.BOOLEAN,
+                allowNull:false,
+                defaultValue:true
             }
         },
         {

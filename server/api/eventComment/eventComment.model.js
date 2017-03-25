@@ -8,6 +8,11 @@ module.exports=function(){
          type: sequelize.INTEGER,
          primaryKey: true,
          autoIncrement: true
+      },
+      status:{
+          type:sequelize.BOOLEAN,
+          allowNull:false,
+          defaultValue:true
       }
   },
    {

@@ -4,7 +4,11 @@ let connection=database.connection
 
 let init = function(){
  return teacherSubjectAllocation = connection.define('teacher_subject_allocation',{
- 
+   status:{
+       type:sequelize.BOOLEAN,
+       allowNull:false,
+       defaultValue:true
+   }
  },
  {
    classMethods: {

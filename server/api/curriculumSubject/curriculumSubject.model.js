@@ -7,6 +7,11 @@ let init = function(){
             credit: {
                 type: sequelize.INTEGER,
                 allowNull: false
+            },
+            status : {
+                type : sequelize.BOOLEAN,
+                allowNull: false,
+                defaultValue : true
             }
         },
         {

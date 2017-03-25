@@ -12,6 +12,7 @@ import Divider from 'material-ui/Divider';
 import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
 import DashBoard from './DashBoard.jsx';
 import Course  from './Course.jsx'
+import Department from './AdminDepartment/Department.jsx'
 import renderIf from 'render-if'
 const events = [
     {
@@ -72,12 +73,14 @@ export default class DrawerOpenRightExample extends React.Component {
                     primaryText="Course"
                     onClick={()=>this.course()}
                     leftAvatar={<Avatar src={require('./../images/user.png')} />}
-                    labelStyle={{ color: '#2196F3' }}
                 />
                 <ListItem
                     primaryText="DashBoard "
                     leftAvatar={<Avatar src={require('./../images/user.png')} />}
-                    labelStyle={{ color: '#2196F3' }}
+                />
+                 <ListItem
+                    primaryText="Department "
+                    leftAvatar={<Avatar src={require('./../images/user.png')} />}
                 />
                 <ListItem
                     primaryText="Student"
@@ -117,6 +120,7 @@ export default class DrawerOpenRightExample extends React.Component {
               )
 
           }
+          <Department/>
       </div>
     </div>
     );

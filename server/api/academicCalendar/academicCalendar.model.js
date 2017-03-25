@@ -10,7 +10,7 @@ let academicCalendar= connection.define('academic_calendar',{
        autoIncrement: true
      },
    type: {
-       type: sequelize.ENUM('exam','holiday','result','others'),
+       type: sequelize.ENUM('EXAM','HOLIDAY','RESULT','OTHERS'),
        allowNull: false,
      },
    start_date: {
@@ -24,7 +24,12 @@ let academicCalendar= connection.define('academic_calendar',{
     content: {
        type: sequelize.TEXT,
        allowNull: false
-     }
+     },
+    status: {
+      type: sequelize.BOOLEAN,
+      allowNull: false,
+      defaultValue: true
+    }
   },
  {
  classMethods : {

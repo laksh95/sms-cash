@@ -31,9 +31,8 @@ module.exports=function(){
                 unique: true
             },
             gender: {
-                type: sequelize.STRING,
-                allowNull: false,
-                unique: true
+                type: sequelize.ENUM('MALE','FEMALE','OTHER'),
+                allowNull: false
             },
             permanent_address: sequelize.STRING,
             current_address: sequelize.STRING,

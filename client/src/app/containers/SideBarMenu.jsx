@@ -6,12 +6,13 @@ import { Button } from 'react-bootstrap';
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import Avatar from 'material-ui/Avatar';
-import {List, ListItem} from 'material-ui/List';
+import {List, ListItem,makeSelectable} from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
 import Divider from 'material-ui/Divider';
 import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
 import DashBoard from './DashBoard.jsx';
 import Course  from './Course.jsx'
+let SelectableList = makeSelectable(List);
 
 const events = [
     {
@@ -52,6 +53,12 @@ export default class DrawerOpenRightExample extends React.Component {
   getChildContext() {
     return { muiTheme: getMuiTheme(baseTheme) };
    }
+
+  onClick = (event, menuItem, index) => {
+   $('#menuItem' + this.state.currentSelection).attr('class', '');
+   $('#menuItem' + index).attr('class', 'activeNavItem');
+   this.setState({currentSelection: index});
+ }
   render() {
     const bool = this.state.cours
     const contentStyle = { marginTop:10, marginLeft: 90 ,transition: 'margin-left 100ms cubic-bezier(0.23, 1, 0.32, 1)' };

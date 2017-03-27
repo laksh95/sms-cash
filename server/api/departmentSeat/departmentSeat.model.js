@@ -27,7 +27,7 @@ let init=function(){
 
                let dept=model.department
                let seats=model.department_seat
-               seats.hasMany(dept,{
+               dept.hasMany(seats,{
                    foreignKey:'department_seats_id'
                })
            }

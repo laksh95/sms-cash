@@ -14,6 +14,7 @@ export default class App extends React.Component {
        this.setState({open: !this.state.open});
    }
   render(){
+    console.log('this is app.jsx')
     const contentStyle = {
         marginLeft: 70 ,transition: 'margin-left 100ms cubic-bezier(0.23, 1, 0.32, 1)'
     };

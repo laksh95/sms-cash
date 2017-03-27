@@ -11,6 +11,9 @@ let init = function(app){
 		res.header("Access-Control-Allow-Credentials", true);
 		res.header("Access-Control-Allow-Methods", "POST, GET, PUT, DELETE, OPTIONS")
 		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+		if(req.method=='OPTIONS'){
+			res.status(200)
+		}
 		next();
 	});
 }

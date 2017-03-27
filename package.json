@@ -13,7 +13,9 @@
   "author": "CronJ_Rookies2017",
   "license": "ISC",
   "homepage": "https://bitbucket.org/cronj-dev/student-management-system-web#readme",
-
+  "transformIgnorePatterns": [
+    "node_modules/(?!react-native|my-project|react-native-button)/"
+  ],
   "dependencies": {
     "axios": "^0.15.3",
     "babel-core": "6.23.1",
@@ -24,20 +26,26 @@
     "body-parser": "^1.16.1",
     "express": "^4.14.1",
     "lodash": "^4.17.4",
+    "material-ui-number-input": "^5.0.17",
     "pg": "^6.1.2",
     "react": "^15.4.2",
     "react-bootstrap": "^0.30.7",
     "react-cookie": "^1.0.4",
     "react-dom": "^15.4.2",
     "react-redux": "^5.0.3",
+    "react-render-if": "^0.2.1",
     "react-router": "^3.0.2",
     "react-router-redux": "^4.0.8",
     "redux": "3.6.0",
     "redux-logger": "2.8.1",
     "redux-promise-middleware": "^4.2.0",
     "redux-thunk": "^2.2.0",
+    "render-if": "^0.1.1",
     "sequelize": "^3.30.2",
     "webpack": "^1.13.1",
     "webpack-dev-server": "^1.14.1"
+  },
+  "devDependencies": {
+    "babel-register": "^6.24.0"
   }
 }

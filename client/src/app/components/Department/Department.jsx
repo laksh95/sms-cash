@@ -4,7 +4,7 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 //import events from './events.jsx';
 
-class Student extends React.Component { 
+class Department extends React.Component { 
    constructor(props) {
     super(props);
 
@@ -18,14 +18,15 @@ class Student extends React.Component {
  render() {
    return(
      <div>
-      <div>Student</div>
+        <h1>Department</h1> 
      </div>
     );
   }
 }
-DashBoard.childContextTypes = {
+
+Department.childContextTypes = {
             muiTheme: React.PropTypes.object.isRequired,
         };
-export default Student;
+export default Department;
 
 

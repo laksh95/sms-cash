@@ -7,12 +7,13 @@ let config = {
         path: DIST_DIR + "/app",
         filename: "bundle.js",
         publicPath: "/"
-    }, devServer:{
+    }, 
+    devServer:{
         publicPath:'/',
         contentBase:'./client/src',
         historyApiFallback: {
-        index: 'index.html'
-    }
+          index: 'index.html'
+        }
     },
     devtool : 'source-map',
     module: {
@@ -33,6 +34,6 @@ let config = {
            {test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=image/svg+xml'},
            {test: /\.(png|jpg|jpeg|gif|woff)$/, loader: 'url-loader?limit=8192' }
         ]
-    }
+  }
 };
 module.exports = config;

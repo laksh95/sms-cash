@@ -9,7 +9,7 @@ import LinearProgress from 'material-ui/LinearProgress';
 import {Link} from 'react-router'
 import {Router, browserHistory} from 'react-router';
 import axios from 'axios';
-import Auth from './Auth.js';
+import Auth from './../Auth.js';
 import Snackbar from 'material-ui/Snackbar';
 
 

@@ -1,37 +1,39 @@
 import React from 'react'
-import RaisedButton from 'material-ui/RaisedButton'
+/*import RaisedButton from 'material-ui/RaisedButton'*/
+import LinearProgress from 'material-ui/LinearProgress'
+import DropZone from 'react-dropzone'
 class AddBulkStudent extends React.Component{
     constructor(props){
         super(props)
-    }
-    fileLoadHandler=(event)=>{
-        console.log('---------loading-------')
-        let csv=event.target.value
-        console.log(csv)
-        processData(csv)
-        console.log(csv)
-    }
-    fileErrorHandler=(event)=>{
-
-    }
-    handleFileUpload=()=>{
-        let file = this.refs.bulkStudentFile.files[0]
-        console.log(this.refs.bulkStudentFile)
-        console.log(file)
-        let reader=new FileReader()
-        reader.readAsText(file)
-        console.log(reader)
-        reader.onLoad=(event)=>{
-            console.log('----------')
-            console.log(event.target.value)
-
-        }
-        reader.onError=(error)=>{
-            console.log(event.target.model,error)
-
+        this.state={
+            completed:0
         }
     }
+    componentDidMount(){
+        /*this.timer = setTimeout( () =>this.progress(5), 1000)*/
+    }
+    componentWillMount(){
+        clearTimeout(this.timeout)
+    }
+    onDrop = (acceptedFiles,rejectedFiles)=>{
+        console.log(acceptedFiles)
+        this.timer = setTimeout( () =>this.progress(5), 500)
 
+    }
+    progress=(completed) =>{
+        if (completed > 100) {
+            this.setState({completed: 100});
+        } else {
+            this.setState({completed});
+            const diff = Math.random() * 35;
+            this.timer = setTimeout(() => this.progress(completed + diff), 1000);
+        }
+    }
+    displayLabel=()=>{
+        if(this.state.completed < 100){
+            return (<span>Click Here/Drop the file to upload</span>)
+        }
+    }
     render(){
         let styles = {
             exampleImageInput: {
@@ -47,9 +49,13 @@ class AddBulkStudent extends React.Component{
         }
         return(
             <div className="addBulk">
-                <RaisedButton label="Choose file" labelPosition="before">
-                    <input type="file" style={styles.exampleImageInput} ref="bulkStudentFile" onChange={this.handleFileUpload} />
-                </RaisedButton>
+                <form>
+                    <DropZone multiple={false} onDrop={this.onDrop}/>
+                    {
+                        this.displayLabel()
+                    }
+                    <LinearProgress mode="determinate" value={this.state.completed} />
+                </form>
             </div>
         )
     }

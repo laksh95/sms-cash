@@ -64,3 +64,10 @@ export default class App extends React.Component {
   }
 }
 
+App.childContextTypes = {
+            muiTheme: React.PropTypes.object.isRequired,
+};
+App.contextTypes = { 
+    router: React.PropTypes.object.isRequired
+};
+

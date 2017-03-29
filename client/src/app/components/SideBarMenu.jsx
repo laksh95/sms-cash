@@ -27,9 +27,11 @@ export default class SideBarMenu extends React.Component {
   }
 
 
-  getChildContext() {
+ 
+ getChildContext(){
     return { muiTheme: getMuiTheme(baseTheme) };
-   }
+ }
+  
   
  handleTouchTap = (item , event) => {
         this.setState({
@@ -129,10 +131,8 @@ export default class SideBarMenu extends React.Component {
 
 
 SideBarMenu.childContextTypes = {
-     muiTheme : React.PropTypes.object.isRequired
+            muiTheme: React.PropTypes.object.isRequired,
 };
-
-SideBarMenu.ContextTypes = {
+SideBarMenu.contextTypes = { 
     router: React.PropTypes.object.isRequired
-}
-
+};

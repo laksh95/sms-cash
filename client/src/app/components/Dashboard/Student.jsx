@@ -11,10 +11,10 @@ class Student extends React.Component {
 
   getChildContext() {
       return { muiTheme: getMuiTheme(baseTheme) };
-    }
+  }
  
 
- render() {
+ render(){
    return(
      <div>
       <div>Student</div>
@@ -22,9 +22,6 @@ class Student extends React.Component {
     );
   }
 }
-DashBoard.childContextTypes = {
-            muiTheme: React.PropTypes.object.isRequired,
-        };
 export default Student;
 
 

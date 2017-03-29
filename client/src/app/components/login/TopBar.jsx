@@ -30,9 +30,11 @@ class TopBar extends React.Component {
          };
   }
 
+  
   getChildContext() {
-      return { muiTheme: getMuiTheme(baseTheme) };
-  }
+    return { muiTheme: getMuiTheme(baseTheme) };
+   }
+  
 
   handleToggle =() => { this.setState({open: !this.state.open});}
 
@@ -51,8 +53,12 @@ class TopBar extends React.Component {
 }
 
 TopBar.childContextTypes = {
-     muiTheme: React.PropTypes.object.isRequired,
+    muiTheme: React.PropTypes.object.isRequired,
 };
+TopBar.contextTypes = { 
+    router: React.PropTypes.object.isRequired
+};
+
 export default TopBar;
 
 

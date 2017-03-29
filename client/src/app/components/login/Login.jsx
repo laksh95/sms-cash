@@ -19,7 +19,8 @@ var style = {
     fontFamily: 'Roboto, sans-serif',
     color:'grey',
     marginLeft:'33%',
-    fontSize: '23px'
+    fontSize: '23px',
+    marginTop:'30%'
   },
 
   "descriptionText":{
@@ -39,6 +40,8 @@ var style = {
  var HANDLE_CODES = {
     
      "ON_LOGIN": "login",
+     "PASSWORD_CHANGE":"passwordChange",
+     "USERNAME_CHANGE":"textChange"
   }
 export default class Login extends React.Component  {
 
@@ -59,27 +62,28 @@ export default class Login extends React.Component  {
     };
   }
 
+  
+  getChildContext() {
+    return { muiTheme: getMuiTheme(baseTheme) };
+   }
+  
 
   handleTouchTap = (item,event) => {
     console.log(item);
     switch(item){
-     
     case HANDLE_CODES.ON_LOGIN:
                
-       if( this.state.errorText === '' && this.state.errorTextPassword === '' && this.state.username != '' && this.state.password != '')
+       if(this.state.username != '' && this.state.password != '')
           {
                    var bodyParameters = {
                       "username": this.state.username,
                        "password": this.state.password
                     }
 
-                     axios.post( 
-                      'http://localhost:8084/auth/login',
-                      
-                      bodyParameters
-
-
-                     ).then( ( response ) => {
+                    axios.post( 
+                      'http://localhost:8084/auth/login', 
+                       bodyParameters
+                     ).then(( response ) => {
                            this.setState({
                           completed: 100,
                            });
@@ -98,10 +102,18 @@ export default class Login extends React.Component  {
  
               break;
 
+    case HANDLE_CODES.PASSWORD_CHANGE:
+                this.setState({ password: event.target.value , errorTextPassword: '' });
+              break;
+
+    case HANDLE_CODES.USERNAME_CHANGE:
+                this.setState({ username:event.target.value ,  errorText: '' });
+
+              break;
      
     }
+   }
   
-  };
 
     updateDimensions = () => {
     this.setState({   message: false  });
@@ -119,7 +131,7 @@ export default class Login extends React.Component  {
      }else{
         this.setState({width: width, height: height, mobileView:true});
       }
-    };
+    }
 
     componentWillMount() {
     this.updateDimensions();
@@ -146,7 +158,7 @@ export default class Login extends React.Component  {
       .catch((response ) => {
              
       })
-  }
+    }
 
     }
 
@@ -165,9 +177,6 @@ export default class Login extends React.Component  {
     }
 
 
- getChildContext() {
-      return { muiTheme: getMuiTheme(baseTheme) };
-    }
   
 
 render() {
@@ -287,6 +296,8 @@ return(
           }
         }
      >
+
+      <CardHeader/>
      
       <CardText>
      
@@ -297,13 +308,14 @@ return(
        <TextField
         hintText="Username"
         style={{marginTop:'10%'}}
+        onChange={this.handleTouchTap.bind(this , HANDLE_CODES.USERNAME_CHANGE)}
        />
    
      
        <TextField
         hintText="Password"
-        hintText="Password"
         type="password"
+        onChange={this.handleTouchTap.bind(this , HANDLE_CODES.PASSWORD_CHANGE)}
         style={{marginTop:'5%'}}
         />
 
@@ -330,9 +342,15 @@ return(
   );
  }
 }
+
 Login.childContextTypes = {
-            muiTheme: React.PropTypes.object.isRequired,
-            router: React.PropTypes.object.isRequired
+       muiTheme: React.PropTypes.object.isRequired,
 };
+Login.contextTypes = { 
+    router: React.PropTypes.object.isRequired
+};
+
+
+
 
 

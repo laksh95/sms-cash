@@ -23,10 +23,12 @@ class Department extends React.Component {
     );
   }
 }
-
 Department.childContextTypes = {
             muiTheme: React.PropTypes.object.isRequired,
-        };
+};
+Department.contextTypes = { 
+    router: React.PropTypes.object.isRequired
+};
 export default Department;
 
 

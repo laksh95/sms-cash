@@ -13,6 +13,7 @@ import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bu
 import DashBoard from './Dashboard/DashBoard.jsx'; 
 let userImage =  require('./../images/user.png');
 import {Link} from 'react-router';
+import { browserHistory} from 'react-router';
 
 export default class SideBarMenu extends React.Component {
   
@@ -27,7 +28,9 @@ export default class SideBarMenu extends React.Component {
   
   
   render() { 
-
+    if(!this.props.isLogin){
+        browserHistory.push('/');
+    }
     const contentStyle = {
        marginTop:10, marginLeft: 90 ,transition: 'margin-left 100ms cubic-bezier(0.23, 1, 0.32, 1)' 
      };
@@ -46,13 +49,36 @@ export default class SideBarMenu extends React.Component {
           <AppBar title="Menu"
            onLeftIconButtonTouchTap = {this.props.handleToggle} />
 
+            {//(this.props.user) ?
+            //  browserHistory.push('/') : null}
+          }
+           
+
             <List>
+
+               {this.props.user.role.isAdmin?
+              <Link to ="/testAdmin" style={{textDecoration: 'none'}}>
+                <ListItem
+                  primaryText="TEST ADMIN"
+                  leftAvatar={<Avatar src={userImage} />} 
+                />
+              </Link> : null}
+
+               {(this.props.user.role.isTeacher || this.props.user.role.isDirector) ?
+              <Link to ="/testTeacher" style={{textDecoration: 'none'}}>
+                <ListItem
+                  primaryText="TEST TEACHER"
+                  leftAvatar={<Avatar src={userImage} />} 
+                />
+              </Link> : null}
+
+              {this.props.user.role.isAdmin ?
               <Link to ="/dashboard" style={{textDecoration: 'none'}}>
                 <ListItem
                   primaryText="DashBoard"
                   leftAvatar={<Avatar src={userImage} />} 
                 />
-              </Link>
+              </Link> : null}
               <Link to ="/department" style={{textDecoration: 'none'}}>
                 <ListItem
                   primaryText="Department"

@@ -62,13 +62,14 @@ module.exports=function(){
                     let login=false;
                     let userId;
 
-                    userDetail.findOne({attributes:['id', 'name', 'password'], 
+                    userDetail.findOne({attributes:['id', 'username', 'name', 'password'], 
                         where: {username: userName, status:true}
                          }).then((result)=> {
                             if(result){
                                 user.login=true;
                                 userId= result.dataValues.id;
                                 user.id= userId;
+                                user.username= username;
                                 user.name= result.dataValues.name;
                                 user.password= result.dataValues.password;
                                 this.getUserRole(models, userId, function(role){
@@ -92,13 +93,14 @@ module.exports=function(){
                     let userDetail= models.user_detail;
                     let user={};
                     let userId;
-                    userDetail.findOne({attributes:['id', 'name'], 
+                    userDetail.findOne({attributes:['id', 'username', 'name'], 
                     where: {id: id, status:true}
                     }).then((result)=> {
                         if(result){
                             user.login=true;
                             userId= result.dataValues.id;
                             user.id= userId;
+                            user.username= result.dataValues.username;
                             user.name= result.dataValues.name;
                             this.getUserRole(models, userId, function(role){
                                 user.role=role;
@@ -107,9 +109,13 @@ module.exports=function(){
                         }
                         else{
                             user.login=false;
-                            cb(error);
+                            cb(null);
                         }
-                    })
+                    }).catch(function(error){
+                                console.log(error);
+                                cb(error);
+                    });
+
                 },
 
                 getUserRole: function(models, userId, cb){

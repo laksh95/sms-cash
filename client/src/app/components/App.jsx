@@ -2,10 +2,12 @@ import React from 'react';
 import SideBarMenu from './SideBarMenu.jsx';
 import TopBar from './TopBar.jsx'; 
 import Auth from './Auth.js';
+import {checkLogin, logoutUser} from "./../actions/loginActions";
+import {connect} from "react-redux";
+import {Router, browserHistory} from 'react-router';
 
 
-
-export default class App extends React.Component {
+class App extends React.Component {
 
     constructor(props){
         super(props);
@@ -19,7 +21,30 @@ export default class App extends React.Component {
       this.setState({open: !this.state.open});
     }
 
+    componentWillMount() {
+      var token = Auth.getToken();
+      var authString = `bearer ${Auth.getToken()}`
+      
+      if(token !=null){
+
+        //axios.defaults.headers.commons['Authorization'] = authString;
+          let config = {
+             headers: {
+               'Authorization': authString
+             }
+          }
+
+        this.props.checkLogin(config);
+
+      }
+    }
+
+
+
    render() {
+    if(!this.props.login.isLogin){
+        browserHistory.push('/');
+    }
     const contentStyle = {
       marginLeft: 70 ,transition: 'margin-left 100ms cubic-bezier(0.23, 1, 0.32, 1)' 
     };
@@ -33,9 +58,12 @@ export default class App extends React.Component {
     return(       
       <div className="mymain">         
         <div style={contentStyle}>
-              <TopBar handleToggle = {this.handleToggle} open = {this.state.open}/>
+              <TopBar handleToggle = {this.handleToggle} open = {this.state.open} 
+              logoutUser= {() => this.props.logoutUser()} />
         </div>
-        <SideBarMenu handleToggle = {this.handleToggle} open = {this.state.open} />   
+        <SideBarMenu handleToggle = {this.handleToggle} open = {this.state.open}
+          user= {this.props.login.loginUser} isLogin= {this.props.login.isLogin}
+        />   
         <div style={centerContent}><h1>Student Management system</h1>
           {this.props.children}  
         </div>
@@ -45,5 +73,26 @@ export default class App extends React.Component {
 }
 
 App.contextTypes = {
-   router: React.PropTypes.func.isRequired
+   router: React.PropTypes.object.isRequired
 };
+
+
+const mapStateToProps= (state) => {
+  return{
+    login: state.login
+  };
+};
+
+
+const mapDispatchToProps= (dispatch) => {
+  return{
+    logoutUser: () =>{
+      dispatch(logoutUser());
+    },
+    checkLogin: (config) =>{
+      dispatch(checkLogin(config));
+    } 
+  };
+};
+
+export default connect(mapStateToProps,mapDispatchToProps)(App);

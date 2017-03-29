@@ -69,12 +69,11 @@ class TopBar extends React.Component {
     });
   };
 
-   handleLogoutTap(event) {
-    // This prevents ghost click.
-   
-
+  handleLogoutTap(event) {  
      browserHistory.push('/');
      Auth.deauthenticateUser();
+     this.props.logoutUser();
+     
   };
 
   handleRequestClose() {
@@ -110,11 +109,7 @@ class TopBar extends React.Component {
     title={<span  style={myStyle}><center>{ this.state.name }</center></span>}
      iconElementLeft={<span  style={myStyle}><FlatButton label="Current Session: 2013 - 2017" style={buttonStyle3} /></span>   }
     onLeftIconButtonTouchTap = {this.handle}
-   
-   
-
-     
-  >      
+>      
 
          
            <Popover

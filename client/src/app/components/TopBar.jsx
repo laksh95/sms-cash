@@ -191,6 +191,7 @@ TopBar.childContextTypes = {
             muiTheme: React.PropTypes.object.isRequired,
         };
 
+
 const mapStateToProps = (state) => {
   return {
     adminReducer: state.adminReducer
@@ -213,4 +214,3 @@ const mapDispatchToProps = (dispatch) => {
       }
     }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(TopBar);

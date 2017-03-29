@@ -25,6 +25,9 @@ class DashBoard extends React.Component {
 DashBoard.childContextTypes = {
             muiTheme: React.PropTypes.object.isRequired,
 };
+DashBoard.contextTypes = { 
+    router: React.PropTypes.object.isRequired
+};
 
 export default DashBoard;
 

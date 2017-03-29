@@ -7,7 +7,9 @@ import Popover from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import Auth from './Auth.js';
-import {Router, browserHistory} from 'react-router';
+import {Router, browserHistory} from 'react-router'
+import { connect } from 'react-redux'
+import { getSession, getBatch, getCourse, getDepartment } from '../actions/adminActions.jsx'
 
   var style = {
 
@@ -58,13 +60,13 @@ import {Router, browserHistory} from 'react-router';
   }
 
 
-class TopBar extends React.Component { 
+class TopBar extends React.Component {
    constructor(props) {
     super(props);
 
     this.state = {
-      name: "Manipal University",  
-      open: false,               
+      name: "Manipal University",
+      open: false,
       currentSession : false,
       currentSessionValue : sessions[0]
     };
@@ -74,14 +76,14 @@ class TopBar extends React.Component {
   getChildContext() {
       return { muiTheme: getMuiTheme(baseTheme) };
     }
-  
+
   handleTouchTap = (item,event) => {
 
     console.log(item);
 
     switch(item){
 
-      case HANDLE_CODES.SETTINGS_OPEN: 
+      case HANDLE_CODES.SETTINGS_OPEN:
               event.preventDefault();
               this.setState({
                open: true,
@@ -114,12 +116,12 @@ class TopBar extends React.Component {
                 });
               break;
     }
-  
+
   };
 
 
  render(){
-     
+
      var allSessions = sessions.map(function(item , id){
        return (
           <MenuItem key={id} primaryText={item} />
@@ -139,13 +141,13 @@ class TopBar extends React.Component {
          iconElementLeft={
                   <span  style={style.myStyle} >
                       <FlatButton label={this.state.currentSessionValue} style={style.CurrentSessionElement} />
-                  </span> 
+                  </span>
                 }
-         
+
          onLeftIconButtonTouchTap ={
                 this.handleTouchTap.bind(this, HANDLE_CODES.OPEN_CURRENT_SESSION)
               }
-       >        
+       >
        <Popover
           open={this.state.currentSession}
           anchorEl={this.state.anchorEl}
@@ -156,16 +158,14 @@ class TopBar extends React.Component {
            <Menu>
              {allSessions}
            </Menu>
- 
+
         </Popover>
 
        <FlatButton label="Admin" style={style.adminButton} />
-       <FlatButton label="Settings" style={style.settingsButton} 
-          onTouchTap={this.handleTouchTap.bind(this, HANDLE_CODES.SETTINGS_OPEN)}  
+       <FlatButton label="Settings" style={style.settingsButton}
+          onTouchTap={this.handleTouchTap.bind(this, HANDLE_CODES.SETTINGS_OPEN)}
        />
-
-     
-       <Popover
+      <Popover
           open={this.state.open}
           anchorEl={this.state.anchorEl}
           anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
@@ -174,13 +174,13 @@ class TopBar extends React.Component {
         >
           <Menu>
             <MenuItem primaryText="Edit Profile" />
-            <MenuItem primaryText="Change Password" />        
+            <MenuItem primaryText="Change Password" />
           </Menu>
         </Popover>
 
-      <FlatButton label="Logout" style={style.logoutButton} 
+      <FlatButton label="Logout" style={style.logoutButton}
          onTouchTap={this.handleTouchTap.bind(this, HANDLE_CODES.LOGOUT_HANDLE)} />
-   
+
   </AppBar>
 );
 
@@ -190,6 +190,28 @@ class TopBar extends React.Component {
 TopBar.childContextTypes = {
             muiTheme: React.PropTypes.object.isRequired,
         };
-export default TopBar;
 
+        const mapStateToProps = (state) => {
+          return {
+            adminReducer: state.adminReducer
+            }
+        }
 
+        const mapDispatchToProps = (dispatch) => {
+          return {
+              getSession: () => {
+                dispatch(getSession())
+              },
+              getBatch: (item) => {
+                dispatch(getBatch(item))
+              },
+              getCourse: () => {
+                dispatch(getCourse())
+              },
+              getDepartment: (item) => {
+                dispatch(getDepartment(item))
+              }
+            }
+        }
+
+        export default connect(mapStateToProps, mapDispatchToProps)(TopBar);

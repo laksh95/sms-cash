@@ -4,11 +4,15 @@ import thunk from 'redux-thunk'
 import promise from 'redux-promise-middleware'
 import {routerReducer} from 'react-router-redux'
 import adminReducer from './reducers/adminReducer.jsx'
+import login from './reducers/loginReducer'
 
-const store = createStore(
- combineReducers({adminReducer}),
- {} ,
- applyMiddleware(logger(),thunk, promise())
+export default createStore(
+    combineReducers({
+    	login,
+    	adminReducer,
+    	routing: routerReducer
+    }),
+    {},
+    applyMiddleware(logger(),thunk , promise())
 )
 
-export default store

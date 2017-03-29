@@ -8,19 +8,16 @@ import TextField from 'material-ui/TextField';
 import LinearProgress from 'material-ui/LinearProgress';
 import {Link} from 'react-router'
 import {Router, browserHistory} from 'react-router';
-import axios from 'axios';
 import Auth from './../Auth.js';
 import Snackbar from 'material-ui/Snackbar';
 
 var style = {
 
-
   "cardTextStyle":{
     fontFamily: 'Roboto, sans-serif',
     color:'grey',
     marginLeft:'33%',
-    fontSize: '23px',
-    marginTop:'30%'
+    fontSize: '23px'
   },
 
   "descriptionText":{
@@ -37,8 +34,8 @@ var style = {
   }
 }
 
- var HANDLE_CODES = {
-    
+
+ var HANDLE_CODES = {   
      "ON_LOGIN": "login",
      "PASSWORD_CHANGE":"passwordChange",
      "USERNAME_CHANGE":"textChange"
@@ -47,8 +44,8 @@ export default class Login extends React.Component  {
 
   constructor(props) {
     super(props);
- 
-    this.state = {
+
+   this.state = {
       completed: 0,
       width: window.screen.availWidth,
       height: window.screen.availHeight,
@@ -62,47 +59,33 @@ export default class Login extends React.Component  {
     };
   }
 
-  
   getChildContext() {
     return { muiTheme: getMuiTheme(baseTheme) };
    }
   
-
   handleTouchTap = (item,event) => {
-    console.log(item);
     switch(item){
-    case HANDLE_CODES.ON_LOGIN:
-               
-       if(this.state.username != '' && this.state.password != '')
-          {
-                   var bodyParameters = {
-                      "username": this.state.username,
-                       "password": this.state.password
-                    }
 
-                    axios.post( 
-                      'http://localhost:8084/auth/login', 
-                       bodyParameters
-                     ).then(( response ) => {
-                           this.setState({
-                          completed: 100,
-                           });
-                        browserHistory.push('/dashboard');
-                        console.log(response.data.user);
-                        Auth.authenticateUser(response.data.token);
-                     })
-                     .catch( function(response ) {
-                                this.setState({   message: true  });  
-                     }.bind(this));
-                    
-                      }
-                     else{
-                       this.setState({   message: true  });
-                     }
- 
-              break;
 
-    case HANDLE_CODES.PASSWORD_CHANGE:
+      case HANDLE_CODES.ON_LOGIN:
+
+        if( this.state.username != '' && this.state.password != '')
+         {
+          console.log("Login button clicked");
+           var bodyParameters = {
+              "username": this.state.username,
+               "password": this.state.password
+            }
+
+            this.props.loginUser(bodyParameters);
+            
+              }
+               else{
+                 this.setState({   message: true  });
+               }
+
+      break;
+     case HANDLE_CODES.PASSWORD_CHANGE:
                 this.setState({ password: event.target.value , errorTextPassword: '' });
               break;
 
@@ -110,12 +93,13 @@ export default class Login extends React.Component  {
                 this.setState({ username:event.target.value ,  errorText: '' });
 
               break;
-     
     }
-   }
   
+};
 
-    updateDimensions = () => {
+
+    updateDimensions() {
+
     this.setState({   message: false  });
     var w = window,
         d = document,
@@ -133,38 +117,47 @@ export default class Login extends React.Component  {
       }
     }
 
-    componentWillMount() {
+  componentWillMount() {
     this.updateDimensions();
     this.setState({   message: false  });
     var token = Auth.getToken();
     var authString = `bearer ${Auth.getToken()}`
     
-   if(token !=null){
-    console.log(token);
+    if(token !=null){
+      console.log(token);
       var bodyParameters = {
-          "username": "",
-          "password": ""
-         }
+        "username": "",
+        "password": ""
+      }
 
-   axios.defaults.headers.get['Authorization'] = authString;
-    axios.get( 
-        'http://localhost:8084/api/check'
-      ).then( ( response ) => {
+      //axios.defaults.headers.commons['Authorization'] = authString;
+        let config = {
+           headers: {
+             'Authorization': authString
+           }
+        }
+
+      this.props.checkLogin(config);
+
+    }
+
+    if(this.props.isLogin){
         browserHistory.push('/dashboard');
-
-        console.log(response.data.user);
-        Auth.authenticateUser(response.data.token);
-      } )
-      .catch((response ) => {
-             
-      })
+        console.log(this.props.user);
+        Auth.authenticateUser(this.props.token);
     }
-
-    }
-
+  }
 
     componentDidMount() {
         window.addEventListener("resize", this.updateDimensions);
+    }
+
+    componentWillReceiveProps(nextProps) {
+       if(this.props.isLogin){
+        browserHistory.push('/dashboard');
+        console.log(this.props.user);
+        Auth.authenticateUser(this.props.token);
+      }
     }
 
     componentWillUnmount(){
@@ -175,9 +168,6 @@ export default class Login extends React.Component  {
          this.setState({   message: false  });
         window.addEventListener("resize", this.updateDimensions);
     }
-
-
-  
 
 render() {
      let fixedWidth = window.screen.availWidth;
@@ -194,8 +184,9 @@ render() {
      let sizeText = '31px';
      let textWidth = width/2;
      let centerPosition = 'left';
+
      
-   if( this.state.mobileView === true)
+  if( this.state.mobileView === true)
    { 
     
       positionCard =width/4;
@@ -297,8 +288,9 @@ return(
         }
      >
 
+
       <CardHeader/>
-     
+
       <CardText>
      
         <span style={style.cardTextStyle}>
@@ -315,7 +307,9 @@ return(
        <TextField
         hintText="Password"
         type="password"
+
         onChange={this.handleTouchTap.bind(this , HANDLE_CODES.PASSWORD_CHANGE)}
+
         style={{marginTop:'5%'}}
         />
 
@@ -346,11 +340,6 @@ return(
 Login.childContextTypes = {
        muiTheme: React.PropTypes.object.isRequired,
 };
-Login.contextTypes = { 
-    router: React.PropTypes.object.isRequired
+Login.contextTypes = {
+   router: React.PropTypes.object.isRequired
 };
-
-
-
-
-

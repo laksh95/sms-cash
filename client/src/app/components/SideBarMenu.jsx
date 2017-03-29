@@ -13,6 +13,7 @@ import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bu
 import DashBoard from './Dashboard/DashBoard.jsx'; 
 let userImage =  require('./../images/user.png');
 import {Link} from 'react-router';
+import { browserHistory} from 'react-router';
 
 
 
@@ -26,12 +27,21 @@ export default class SideBarMenu extends React.Component {
     };
   }
 
+  componentWillMount() {
+     if(!this.props.isLogin){
+        browserHistory.push('/');
+    }
+  }
 
+  componentWillReceiveProps(nextProps) {
+    if(!this.props.isLogin){
+        browserHistory.push('/');
+    }
+  }
  
  getChildContext(){
     return { muiTheme: getMuiTheme(baseTheme) };
  }
-  
   
  handleTouchTap = (item , event) => {
         this.setState({
@@ -39,8 +49,7 @@ export default class SideBarMenu extends React.Component {
                 });
    };
   
-  render(){ 
-
+  render() { 
     var list = [
       "Department":'white',
       "Dashboard":'white',
@@ -57,13 +66,35 @@ export default class SideBarMenu extends React.Component {
     if( this.props.open === false){
      sizeWidth = 70;
     }
+
     return (
       <div>
         <Drawer width={sizeWidth} openSecondary={false} docked={true} zDepth={2} open={true} >
           <AppBar title="Menu"
            onLeftIconButtonTouchTap = {this.props.handleToggle} />
 
-            <List>
+            {
+              (this.props.user.role) ?       
+
+           ( <List>
+
+               {this.props.user.role.isAdmin?
+              <Link to ="/testAdmin" style={{textDecoration: 'none'}}>
+                <ListItem
+                  primaryText="TEST ADMIN"
+                  leftAvatar={<Avatar src={userImage} />} 
+                />
+              </Link> : null}
+
+               {(this.props.user.role.isTeacher || this.props.user.role.isDirector) ?
+              <Link to ="/testTeacher" style={{textDecoration: 'none'}}>
+                <ListItem
+                  primaryText="TEST TEACHER"
+                  leftAvatar={<Avatar src={userImage} />} 
+                />
+              </Link> : null}
+
+              {this.props.user.role.isAdmin ?
               <Link to ="/dashboard" style={{textDecoration: 'none'}}>
                 <ListItem
                   primaryText="DashBoard"
@@ -72,7 +103,7 @@ export default class SideBarMenu extends React.Component {
                    style={{backgroundColor: list["Dashboard"]}}
                    onTouchTap = {this.handleTouchTap.bind(this, "Dashboard")}
                 />
-              </Link>
+              </Link> : null}
               <Link to ="/department" style={{textDecoration: 'none'}}>
                 <ListItem
                   primaryText="Department"
@@ -106,7 +137,7 @@ export default class SideBarMenu extends React.Component {
                  style={{backgroundColor: list["Events"]}}
                  onTouchTap = {this.handleTouchTap.bind(this,"Events")}
               />
-            </List>
+            </List>): null}
             <Divider />
             <List>
               <ListItem

@@ -1,14 +1,14 @@
 0 info it worked if it ends with ok
-1 verbose cli [ '/usr/bin/nodejs', '/usr/local/bin/npm', 'start' ]
-2 info using npm@4.0.5
-3 info using node@v7.4.0
+1 verbose cli [ '/usr/local/bin/node', '/usr/local/bin/npm', 'start' ]
+2 info using npm@4.1.2
+3 info using node@v7.6.0
 4 verbose run-script [ 'prestart', 'start', 'poststart' ]
 5 info lifecycle sms@1.0.0~prestart: sms@1.0.0
 6 silly lifecycle sms@1.0.0~prestart: no script for prestart, continuing
 7 info lifecycle sms@1.0.0~start: sms@1.0.0
 8 verbose lifecycle sms@1.0.0~start: unsafe-perm in lifecycle true
-9 verbose lifecycle sms@1.0.0~start: PATH: /usr/local/lib/node_modules/npm/bin/node-gyp-bin:/home/cronj/Desktop/Assignment/student-management-system-web/node_modules/.bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games
-10 verbose lifecycle sms@1.0.0~start: CWD: /home/cronj/Desktop/Assignment/student-management-system-web
+9 verbose lifecycle sms@1.0.0~start: PATH: /usr/local/lib/node_modules/npm/bin/node-gyp-bin:/home/ankit/Ankit/cronjSMS/student-management-system-web/node_modules/.bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+10 verbose lifecycle sms@1.0.0~start: CWD: /home/ankit/Ankit/cronjSMS/student-management-system-web
 11 silly lifecycle sms@1.0.0~start: Args: [ '-c', 'webpack-dev-server --hot' ]
 12 silly lifecycle sms@1.0.0~start: Returned: code: 1  signal: null
 13 info lifecycle sms@1.0.0~start: Failed to exec start script
@@ -16,18 +16,18 @@
 14 verbose stack Exit status 1
 14 verbose stack     at EventEmitter.<anonymous> (/usr/local/lib/node_modules/npm/lib/utils/lifecycle.js:279:16)
 14 verbose stack     at emitTwo (events.js:106:13)
-14 verbose stack     at EventEmitter.emit (events.js:191:7)
+14 verbose stack     at EventEmitter.emit (events.js:192:7)
 14 verbose stack     at ChildProcess.<anonymous> (/usr/local/lib/node_modules/npm/lib/utils/spawn.js:40:14)
 14 verbose stack     at emitTwo (events.js:106:13)
-14 verbose stack     at ChildProcess.emit (events.js:191:7)
-14 verbose stack     at maybeClose (internal/child_process.js:885:16)
+14 verbose stack     at ChildProcess.emit (events.js:192:7)
+14 verbose stack     at maybeClose (internal/child_process.js:890:16)
 14 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:226:5)
 15 verbose pkgid sms@1.0.0
-16 verbose cwd /home/cronj/Desktop/Assignment/student-management-system-web/server
-17 error Linux 4.2.0-42-generic
-18 error argv "/usr/bin/nodejs" "/usr/local/bin/npm" "start"
-19 error node v7.4.0
-20 error npm  v4.0.5
+16 verbose cwd /home/ankit/Ankit/cronjSMS/student-management-system-web/server
+17 error Linux 4.4.0-66-generic
+18 error argv "/usr/local/bin/node" "/usr/local/bin/npm" "start"
+19 error node v7.6.0
+20 error npm  v4.1.2
 21 error code ELIFECYCLE
 22 error sms@1.0.0 start: `webpack-dev-server --hot`
 22 error Exit status 1

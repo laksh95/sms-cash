@@ -7,6 +7,7 @@ let models  = require('./../sqldb')();
  *  The Auth Checker middleware function.
  */
  module.exports = (req, res, next)=> {
+ 	console.log("In auth check");
  	if (!req.headers.authorization) {
  		console.log("No Header");
     	return res.status(401).end();
@@ -18,7 +19,10 @@ let models  = require('./../sqldb')();
 // decode the token using a secret key-phrase
 	return jwt.verify(token, config.jwtSecret, (err, decoded) => {
     // the 401 code is for unauthorized status
-    	if (err) { return res.status(401).end(); }
+    	if (err) { 
+    		return res.status(401).end(); 
+    		console.log("Not Authorized!: ", err);
+    	}
 
 		const userId = decoded.sub;
 
@@ -28,6 +32,7 @@ let models  = require('./../sqldb')();
 		    	return res.status(401).end();
 		    }
 		req.user= user;
+		console.log("Yes user:", user);
 		return next();
 		});
 	})

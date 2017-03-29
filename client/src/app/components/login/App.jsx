@@ -8,7 +8,6 @@ let loginStyle = require('./../../css/login.css');
 export default class App extends React.Component {
 
   render() {
-    console.log("Inside App");
     return (
        <div className={loginStyle.mymain} >
          <TopBar />  

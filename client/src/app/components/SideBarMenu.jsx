@@ -14,10 +14,16 @@ import DashBoard from './Dashboard/DashBoard.jsx';
 let userImage =  require('./../images/user.png');
 import {Link} from 'react-router';
 
+
+
 export default class SideBarMenu extends React.Component {
   
   constructor(props) {
     super(props); 
+
+    this.state = {
+      selected:"Dashboard"
+    };
   }
 
 
@@ -25,17 +31,26 @@ export default class SideBarMenu extends React.Component {
     return { muiTheme: getMuiTheme(baseTheme) };
    }
   
+ handleTouchTap = (item , event) => {
+        this.setState({
+              selected: item
+                });
+   };
   
-  render() { 
+  render(){ 
 
-    const contentStyle = {
-       marginTop:10, marginLeft: 90 ,transition: 'margin-left 100ms cubic-bezier(0.23, 1, 0.32, 1)' 
-     };
+    var list = [
+      "Department":'white',
+      "Dashboard":'white',
+      "Students":'white',
+      "Teacher":'white',
+      "Subjects":'white',
+      "Events":'white',
+      "Important":'white',
+      "T/S":'white'
+      ];
 
-    if (this.props.open) {
-      contentStyle.marginLeft = 250;
-    }
-
+    list[this.state.selected] = '#e3e7ea';
     let sizeWidth = 230;
     if( this.props.open === false){
      sizeWidth = 70;
@@ -50,31 +65,44 @@ export default class SideBarMenu extends React.Component {
               <Link to ="/dashboard" style={{textDecoration: 'none'}}>
                 <ListItem
                   primaryText="DashBoard"
-                  leftAvatar={<Avatar src={userImage} />} 
+                  leftAvatar={<Avatar src={userImage}
+                   />} 
+                   style={{backgroundColor: list["Dashboard"]}}
+                   onTouchTap = {this.handleTouchTap.bind(this, "Dashboard")}
                 />
               </Link>
               <Link to ="/department" style={{textDecoration: 'none'}}>
                 <ListItem
                   primaryText="Department"
                   leftAvatar={<Avatar src={userImage} />} 
+                   style={{backgroundColor: list["Department"]}}
+                      onTouchTap = {this.handleTouchTap.bind(this,"Department")}
                 />
               </Link>
               <ListItem
                 primaryText="Student" 
                 leftAvatar={<Avatar src={userImage} />}
+                  style={{backgroundColor: list["Student"]}}
+                      onTouchTap = {this.handleTouchTap.bind(this,"Student")}
               />
               <ListItem
                 primaryText="Teacher"
                 leftAvatar={<Avatar src={userImage} />}
+                 style={{backgroundColor: list["Teacher"]}}
+                 onTouchTap = {this.handleTouchTap.bind(this,"Teacher")}
               />
               <ListItem
                 primaryText="Subjects"
                 leftAvatar={<Avatar src={userImage} />}
+                 style={{backgroundColor: list["Subjects"]}}
+                 onTouchTap = {this.handleTouchTap.bind(this,"Subjects")}
                 
               />
               <ListItem
                 primaryText="Events"
                 leftAvatar={<Avatar src={userImage} />} 
+                 style={{backgroundColor: list["Events"]}}
+                 onTouchTap = {this.handleTouchTap.bind(this,"Events")}
               />
             </List>
             <Divider />
@@ -82,10 +110,14 @@ export default class SideBarMenu extends React.Component {
               <ListItem
                 primaryText="Important"
                 leftAvatar={<Avatar src={userImage} />}
+                  style={{backgroundColor: list["Important"]}}
+                 onTouchTap = {this.handleTouchTap.bind(this,"Important")}
               />
               <ListItem
                 primaryText="Teachers/Students"
                 leftAvatar={<Avatar src={userImage} />}
+                  style={{backgroundColor: list["T/S"]}}
+                 onTouchTap = {this.handleTouchTap.bind(this,"T/S")}
               />
             </List>
         </Drawer>
@@ -95,12 +127,12 @@ export default class SideBarMenu extends React.Component {
   }
 }
 
+
 SideBarMenu.childContextTypes = {
-            muiTheme : React.PropTypes.object.isRequired
-};
-SideBarMenu
-.contextTypes = {
-    router: React.PropTypes.object.isRequired
+     muiTheme : React.PropTypes.object.isRequired
 };
 
+SideBarMenu.ContextTypes = {
+    router: React.PropTypes.object.isRequired
+}
 

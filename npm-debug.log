@@ -2,8 +2,8 @@
 1 verbose cli [ '/usr/local/bin/node',
 1 verbose cli   '/usr/local/bin/npm',
 1 verbose cli   'install',
-1 verbose cli   'url-loader',
-1 verbose cli   '00save' ]
+1 verbose cli   '--save',
+1 verbose cli   'react-media' ]
 2 info using npm@4.1.2
 3 info using node@v7.6.0
 4 verbose stack Error: Cannot find module 'internal/fs'
@@ -17,9 +17,9 @@
 4 verbose stack     at Object.Module._extensions..js (module.js:580:10)
 4 verbose stack     at Module.load (module.js:488:32)
 4 verbose stack     at tryModuleLoad (module.js:447:12)
-5 verbose cwd /home/ankit/Ankit/Login-febe
-6 error Linux 4.4.0-21-generic
-7 error argv "/usr/local/bin/node" "/usr/local/bin/npm" "install" "url-loader" "00save"
+5 verbose cwd /home/ankit/Ankit/cronjSMS/student-management-system-web
+6 error Linux 4.4.0-66-generic
+7 error argv "/usr/local/bin/node" "/usr/local/bin/npm" "install" "--save" "react-media"
 8 error node v7.6.0
 9 error npm  v4.1.2
 10 error code MODULE_NOT_FOUND

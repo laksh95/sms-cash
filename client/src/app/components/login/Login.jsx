@@ -12,23 +12,39 @@ import axios from 'axios';
 import Auth from './../Auth.js';
 import Snackbar from 'material-ui/Snackbar';
 
+var style = {
 
+
+  "cardTextStyle":{
+    fontFamily: 'Roboto, sans-serif',
+    color:'grey',
+    marginLeft:'33%',
+    fontSize: '23px'
+  },
+
+  "descriptionText":{
+    marginTop:'4%',
+    marginLeft:'0%',
+    fontSize: '14px'
+  },
+
+  "loginButton":{
+    fontFamily: 'Roboto, sans-serif',
+    color:'grey',
+    marginLeft:'30%',
+    fontSize: '20px'
+  }
+}
+
+ var HANDLE_CODES = {
+    
+     "ON_LOGIN": "login",
+  }
 export default class Login extends React.Component  {
 
   constructor(props) {
     super(props);
-    const storedMessage = localStorage.getItem('successMessage');
  
-     if (storedMessage) {
-      successMessage = storedMessage;
-      localStorage.removeItem('successMessage');
-    }
-
-    let successMessage = '';
-    this.componentWillMount = this.componentWillMount.bind(this);
-    this.updateDimensions = this.updateDimensions.bind(this);   
-    this.onChange = this.onChange.bind(this);
-    this.handleTouchTap = this.handleTouchTap.bind(this);
     this.state = {
       completed: 0,
       width: window.screen.availWidth,
@@ -42,9 +58,52 @@ export default class Login extends React.Component  {
       success:'false'
     };
   }
-   
 
-    updateDimensions() {
+
+  handleTouchTap = (item,event) => {
+    console.log(item);
+    switch(item){
+     
+    case HANDLE_CODES.ON_LOGIN:
+               
+       if( this.state.errorText === '' && this.state.errorTextPassword === '' && this.state.username != '' && this.state.password != '')
+          {
+                   var bodyParameters = {
+                      "username": this.state.username,
+                       "password": this.state.password
+                    }
+
+                     axios.post( 
+                      'http://localhost:8084/auth/login',
+                      
+                      bodyParameters
+
+
+                     ).then( ( response ) => {
+                           this.setState({
+                          completed: 100,
+                           });
+                        browserHistory.push('/dashboard');
+                        console.log(response.data.user);
+                        Auth.authenticateUser(response.data.token);
+                     })
+                     .catch( function(response ) {
+                                this.setState({   message: true  });  
+                     }.bind(this));
+                    
+                      }
+                     else{
+                       this.setState({   message: true  });
+                     }
+ 
+              break;
+
+     
+    }
+  
+  };
+
+    updateDimensions = () => {
     this.setState({   message: false  });
     var w = window,
         d = document,
@@ -60,7 +119,7 @@ export default class Login extends React.Component  {
      }else{
         this.setState({width: width, height: height, mobileView:true});
       }
-    }
+    };
 
     componentWillMount() {
     this.updateDimensions();
@@ -106,62 +165,6 @@ export default class Login extends React.Component  {
     }
 
 
-   onChange(event) {
-    if (event.target.value.match("^[a-zA-Z0-9_-]{3,15}$")) {
-      this.setState({ username:event.target.value ,  errorText: '' })
-       } else 
-       {
-         this.setState({ username:event.target.value ,  errorText: 'Minimum 8 characters   Uppercase Alphabet or  Lowercase Alphabet or Numbers or hypher or underscore' });
-      }
-    }
-
-    onPasswordChange(event) {
-
-    if (event.target.value.match("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^\w\s]).{8,}$")) {
-      this.setState({   password: event.target.value , errorTextPassword: '' });
-       } else{
-         this.setState({ password: event.target.value , errorTextPassword: 'Minimum 8 characters at least 1 Uppercase Alphabet, 1 Lowercase Alphabet and 1 Number' })
-       }
-       
-    }
-
-
-    handleTouchTap() {
-     if( this.state.errorText === '' && this.state.errorTextPassword === '' && this.state.username != '' && this.state.password != '')
-       {
-      
-        var bodyParameters = {
-          "username": this.state.username,
-          "password": this.state.password
-         }
-
-     axios.post( 
-      'http://localhost:8084/auth/login',
-      
-      bodyParameters
-
-
-     ).then( ( response ) => {
-           this.setState({
-          completed: 100,
-           });
-        browserHistory.push('/dashboard');
-        console.log(response.data.user);
-        Auth.authenticateUser(response.data.token);
-     })
-     .catch( function(response ) {
-                this.setState({   message: true  });  
-     }.bind(this));
-    
-      }
-     else{
-       this.setState({   message: true  });
-     }
- 
- 
-  };
-
-
  getChildContext() {
       return { muiTheme: getMuiTheme(baseTheme) };
     }
@@ -195,8 +198,6 @@ render() {
       heightCard = fixedHeight/2 - fixedHeight/10;
       centerPosition = 'center';
        cardWidth = width;
-   
-     
      
     }
     if(width < 600){
@@ -218,33 +219,83 @@ render() {
 
 return(
     <div >
-      <LinearProgress mode="determinate" value={this.state.completed} style={{color:'grey', marginTop:'0.1%',height:'10px'}}
+     
+     <LinearProgress
+       mode="determinate" 
+       value={this.state.completed}
+       style={{color:'grey', marginTop:'0.1%',height:'10px'}}
       />
    
-      <div style={{ color:'grey', fontFamily: 'Roboto, sans-serif' ,  height:heightText, width:textWidth , marginTop:textHeight, marginLeft:'5%'}}>
+     <div 
+       style={
+        { color:'grey',
+          fontFamily: 'Roboto, sans-serif',
+          height:heightText,
+          width:textWidth,
+          marginTop:textHeight,
+          marginLeft:'5%'}
+        }
+      >
 
-      <span style={{display: 'block' ,fontFamily: 'Roboto, sans-serif' ,textAlign: centerPosition, fontSize: sizeText}}><b>Welcome to the Student Management System</b></span>
+       <span
+         style={
+           {
+            display: 'block',
+            fontFamily:'Roboto, sans-serif',
+            textAlign: centerPosition,
+            fontSize: sizeText
+           }
+         }
+        >
+
+         <b>Welcome to the Student Management System</b>
+
+      </span>
      
       < hr/>
 
-     <div style={{display: visible, marginTop:'4%' , marginLeft:'0%', fontSize: '14px'}}>Now you can manage all your college activities through this application. Your feedback is extremely valuable to us. We hope you have an amazing time.  </div>
-     </div>
+       <span
+         style={
+            {
+              display: visible
+            }
+          }
+        >
 
-    <Card
-    style={{ display:'block' ,align:centerPosition, width: fixedWidth/4, height:'400px' , marginTop:-heightCard, marginLeft:positionCard}}>
-     <CardHeader   
-     />
-   
-     <CardText>
+       <div
+        style={
+           style.descriptionText 
+         }
+       >
+      
+         Now you can manage all your college activities through this application. Your feedback is extremely valuable to us. We hope you have an amazing time.
+    
+       </div>
+     </span>
+
+   </div>
+
+     <Card
+        style={
+           {
+             display:'block',
+             align:centerPosition,
+             width: fixedWidth/4,
+             height:'400px',
+             marginTop:-heightCard,
+             marginLeft:positionCard
+          }
+        }
+     >
      
-        <span style={{fontFamily: 'Roboto, sans-serif' ,color:'grey', marginLeft:'33%', fontSize: '23px'}}>
+      <CardText>
+     
+        <span style={style.cardTextStyle}>
           Login
         </span>
       
        <TextField
         hintText="Username"
-        errorText= {this.state.errorText}
-        onChange={this.onChange.bind(this)}
         style={{marginTop:'10%'}}
        />
    
@@ -253,37 +304,35 @@ return(
         hintText="Password"
         hintText="Password"
         type="password"
-        errorText= {this.state.errorTextPassword}
-        onChange={this.onPasswordChange.bind(this)}
         style={{marginTop:'5%'}}
         />
 
-        <br/><br/>
-         <span style={{fontFamily: 'Roboto, sans-serif' ,color:'grey', marginLeft:'30%', fontSize: '20px'}}>
+        
+        <span style={style.loginButton}>
 
-        <RaisedButton
-            label="Login"
-            onTouchTap={this.handleTouchTap}
-            style={{marginTop:'5%'}}
-         />
-     </span>
-    </CardText>
-  </Card>
+          <RaisedButton
+              label="Login"
+              onTouchTap={this.handleTouchTap.bind(this, HANDLE_CODES.ON_LOGIN)}
+              style={{marginTop:'5%'}}
+           />
+       </span>
 
-  <Snackbar
-       open={this.state.message}
-       message={"Please enter proper credentials"}
-       autoHideDuration={5000}
-       width={this.state.width}
-    />
+      </CardText>
+     </Card>
+
+     <Snackbar
+        open={this.state.message}
+        message={"Please enter proper credentials"}
+        autoHideDuration={5000}
+        width={this.state.width}
+     />
   </div>
   );
  }
 }
 Login.childContextTypes = {
             muiTheme: React.PropTypes.object.isRequired,
+            router: React.PropTypes.object.isRequired
 };
-Login.contextTypes = { 
-    router: React.PropTypes.object.isRequired
-};
+
 

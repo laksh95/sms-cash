@@ -5,7 +5,14 @@ import {cyan500} from 'material-ui/styles/colors';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
+var style = {
 
+  "titleStyle":{
+     marginLeft:'0%'
+  }
+
+
+}
 const muiTheme = getMuiTheme({
   palette: {
     textColor: cyan500,
@@ -16,11 +23,9 @@ const muiTheme = getMuiTheme({
   },
 });
 
-
 class TopBar extends React.Component { 
    constructor(props) {
     super(props);
-    this.handleToggle =  this.handleToggle.bind(this);
     this.state = {open: false,           
          };
   }
@@ -29,14 +34,14 @@ class TopBar extends React.Component {
       return { muiTheme: getMuiTheme(baseTheme) };
   }
 
-  handleToggle() { this.setState({open: !this.state.open});}
+  handleToggle =() => { this.setState({open: !this.state.open});}
 
 
   render() {
     return(
       <MuiThemeProvider muiTheme={muiTheme}>
        <AppBar
-         title={<span  style={{ marginLeft:'0%'}}>M A N I P A L &nbsp;&nbsp; U N I V E R S I T Y </span>}
+         title={<span  style={style.titleStyle}>M A N I P A L &nbsp;&nbsp; U N I V E R S I T Y </span>}
          iconClassNameRight=""
          iconClassNameLeft=""   
        />

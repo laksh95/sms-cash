@@ -9,152 +9,178 @@ import MenuItem from 'material-ui/MenuItem';
 import Auth from './Auth.js';
 import {Router, browserHistory} from 'react-router';
 
-/**
- * A simple example of `AppBar` with an icon on the right.
- * By default, the left icon is a navigation-menu.
- */
+  var style = {
 
+     "titleStyle" : {
+       color: "white"
+     },
 
-const myStyle = {
-    color: "white"
-};
+     "CurrentSessionElement":{
+       backgroundColor: 'transparent',
+       color: 'white',
+       marginTop:12
+     },
 
- var buttonStyle = {
-    backgroundColor: 'transparent',
-    color: 'white',
-    marginTop:12
-  };
+     "adminButton":{
+        backgroundColor: 'transparent',
+        color: 'white',
+        marginLeft:0,
+        marginTop:12
+     },
 
-  var buttonStyle1 = {
-    backgroundColor: 'transparent',
-    color: 'white',
-    marginLeft:0,
-    marginTop:12
-  };
+     "settingsButton":{
+        backgroundColor: 'transparent',
+        color: 'white',
+        marginTop:12
+     },
 
- var buttonStyle3 = {
-    backgroundColor: 'transparent',
-    color: 'white',
-  
-  };
+     "logoutButton":{
+        backgroundColor: 'transparent',
+        color: 'white',
+        marginLeft:0,
+        marginTop:12
+     }
+  }
+
+  var sessions = [
+     "2013 - 2017",
+     "2012 - 2016",
+     "2011 - 2015",
+     "2010 - 2014"
+  ];
+
+  var HANDLE_CODES = {
+     "SETTINGS_OPEN" : "settingsOpen",
+     "OPEN_CURRENT_SESSION": "openCurrentSession",
+     "CLOSE_CURRENT_SESSION" : "closeCurrentSession",
+     "LOGOUT_HANDLE":"handleLogout",
+     "SETTINGS_CLOSE":"settingsClose"
+  }
+
 
 class TopBar extends React.Component { 
    constructor(props) {
     super(props);
-    this.handleTouchTap = this.handleTouchTap.bind(this);
-    this.handleLogoutTap = this.handleLogoutTap.bind(this);
-    this.handleRequestClose = this.handleRequestClose.bind(this);
-    this.handle = this.handle.bind(this);
-    this.handleRequestCurrentSessionClose = this.handleRequestCurrentSessionClose.bind(this);
 
     this.state = {
       name: "Manipal University",  
       open: false,               
-      currentSession : false
+      currentSession : false,
+      currentSessionValue : sessions[0]
     };
-  
   }
+
 
   getChildContext() {
       return { muiTheme: getMuiTheme(baseTheme) };
     }
   
-  handleTouchTap(event) {
-    // This prevents ghost click.
-    event.preventDefault();
+  handleTouchTap = (item,event) => {
 
-    this.setState({
-      open: true,
-      anchorEl: event.currentTarget,
-    });
+    console.log(item);
+
+    switch(item){
+
+      case HANDLE_CODES.SETTINGS_OPEN: 
+              event.preventDefault();
+              this.setState({
+               open: true,
+               anchorEl: event.currentTarget,
+              });
+            break;
+
+      case HANDLE_CODES.OPEN_CURRENT_SESSION:
+               event.preventDefault();
+               this.setState({
+                  currentSession : true,
+                  anchorEl: event.currentTarget,
+               });
+              break;
+
+      case HANDLE_CODES.LOGOUT_HANDLE:
+               browserHistory.push('/');
+               Auth.deauthenticateUser();
+              break;
+
+      case HANDLE_CODES.SETTINGS_CLOSE:
+               this.setState({
+                 open: false,
+               });
+              break;
+
+      case HANDLE_CODES.CLOSE_CURRENT_SESSION:
+               this.setState({
+                 currentSession: false,
+                });
+              break;
+    }
+  
   };
 
-   handleLogoutTap(event) {
-    // This prevents ghost click.
-   
 
-     browserHistory.push('/');
-     Auth.deauthenticateUser();
-  };
-
-  handleRequestClose() {
-    this.setState({
-      open: false,
-    });
-  };
-
-   handleRequestCurrentSessionClose() {
-    this.setState({
-      currentSession: false,
-    });
-  };
-
-
-  handle(event){
-      event.preventDefault();
-
-    this.setState({
-     currentSession : true,
-      anchorEl: event.currentTarget,
-    });
-
-  }
-
-
- render() {
-
-
-  return(
-  <AppBar
-   
-    title={<span  style={myStyle}><center>{ this.state.name }</center></span>}
-     iconElementLeft={<span  style={myStyle}><FlatButton label="Current Session: 2013 - 2017" style={buttonStyle3} /></span>   }
-    onLeftIconButtonTouchTap = {this.handle}
-   
-   
-
+ render(){
      
-  >      
+     var allSessions = sessions.map(function(item , id){
+       return (
+          <MenuItem key={id} primaryText={item} />
+        );
+     });
 
+    return(
+      <AppBar
+         title={
+               <span  style={style.titleStyle} >
+                    <center>
+                        { this.state.name }
+                     </center>
+                </span>
+               }
+
+         iconElementLeft={
+                  <span  style={style.myStyle} >
+                      <FlatButton label={this.state.currentSessionValue} style={style.CurrentSessionElement} />
+                  </span> 
+                }
          
-           <Popover
+         onLeftIconButtonTouchTap ={
+                this.handleTouchTap.bind(this, HANDLE_CODES.OPEN_CURRENT_SESSION)
+              }
+       >        
+       <Popover
           open={this.state.currentSession}
           anchorEl={this.state.anchorEl}
           anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
           targetOrigin={{horizontal: 'left', vertical: 'top'}}
-          onRequestClose={this.handleRequestCurrentSessionClose}
+          onRequestClose={this.handleTouchTap.bind(this, HANDLE_CODES.CLOSE_CURRENT_SESSION)}
         >
-          <Menu>
-            <MenuItem primaryText="2011-2012" />
-            <MenuItem primaryText="2012-2013" />
-           <MenuItem primaryText="2013-2014" />
-           
-          </Menu>
+           <Menu>
+             {allSessions}
+           </Menu>
+ 
         </Popover>
 
-       <FlatButton label="Admin" style={buttonStyle} />
-          <FlatButton label="Settings" style={buttonStyle} 
-          onTouchTap={this.handleTouchTap}
-          />
+       <FlatButton label="Admin" style={style.adminButton} />
+       <FlatButton label="Settings" style={style.settingsButton} 
+          onTouchTap={this.handleTouchTap.bind(this, HANDLE_CODES.SETTINGS_OPEN)}  
+       />
 
-             <Popover
+     
+       <Popover
           open={this.state.open}
           anchorEl={this.state.anchorEl}
           anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
           targetOrigin={{horizontal: 'left', vertical: 'top'}}
-          onRequestClose={this.handleRequestClose}
+          onRequestClose={this.handleTouchTap.bind(this, HANDLE_CODES.SETTINGS_CLOSE)}
         >
           <Menu>
             <MenuItem primaryText="Edit Profile" />
-            <MenuItem primaryText="Change Password" />
-           
+            <MenuItem primaryText="Change Password" />        
           </Menu>
         </Popover>
-      <FlatButton label="Logout" style={buttonStyle} 
-         onTouchTap={this.handleLogoutTap} />
+
+      <FlatButton label="Logout" style={style.logoutButton} 
+         onTouchTap={this.handleTouchTap.bind(this, HANDLE_CODES.LOGOUT_HANDLE)} />
    
-
-
   </AppBar>
 );
 

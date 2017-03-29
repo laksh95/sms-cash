@@ -3,7 +3,7 @@ import axios from 'axios'
 export function getDepartment(courseId){
 	return {
 		type: "GET_DEPARTMENTS",
-		payload: axios.post('http://192.168.1.176:3166/api/department/getDepartments',courseId)
+		payload: axios.post('http://192.168.1.108:3166/api/department/getDepartments',courseId)
 			.then((response) => {
 				return response.data
 		})

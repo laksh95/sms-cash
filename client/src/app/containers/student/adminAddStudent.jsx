@@ -48,7 +48,7 @@ class AddStudent extends React.Component {
         })
     }
     handleChange=(event,index,value)=>{
-        if((value!='M' || value!='F' || value!='Others')){
+        if((value!=='M' || value!=='F' || value!=='Others')){
             this.setState({
                 gender:value
             },()=>{
@@ -60,9 +60,12 @@ class AddStudent extends React.Component {
                 errorGender:'Mandatory Field'
             })
         }
-        console.log('value----',value)
+        console.log('------value----',value)
 
     }
+    /********************************************************
+    Prevent user from selecting future dates as  Date of Birth
+    *********************************************************/
     disablePreviousDates = (startDate)=>{
         const start=Date.parse(startDate)
         return (date)=>{
@@ -118,7 +121,9 @@ class AddStudent extends React.Component {
                         <label className="extra_space">Name</label><br/>
                         <label className="extra_space">Gender</label><br/>
                         <label className="extra_space">Date of Birth</label><br/>
-                        <label className="extra_space">Permanent Address</label><br/>
+                        <label className="extra_space">Permanent Address</label>
+
+                        <br/>
                         <label className="extra_space">Current Address</label><br/>
                         <label className="extra_space">Contact Number</label><br/>
                         <label className="extra_space">Alternate Number</label><br/>

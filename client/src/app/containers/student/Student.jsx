@@ -25,7 +25,6 @@ class Student extends React.Component {
  render() {
        return(
            <div>
-               <div>Student</div>
                <div>
                    <Tabs
                        value={this.state.value}

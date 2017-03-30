@@ -7,6 +7,11 @@ let sql = function(){
                 type :sequelize.INTEGER ,
                 primaryKey : true ,
                 autoIncrement : true,
+            },
+            status:{
+                type:sequelize.BOOLEAN,
+                allowNull:false,
+                defaultValue:true
             }
         },
         {
@@ -28,3 +33,4 @@ let sql = function(){
     return postFollowed;
 }
 module.exports = sql;
+

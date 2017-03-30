@@ -1,5 +1,5 @@
-let address={
-    ip_address:'127.0.0.1',
-    port:3166
-}
-module.exports=address
+var socket={
+	jwtSecret: "499i83w!"
+};
+module.exports=socket;
+

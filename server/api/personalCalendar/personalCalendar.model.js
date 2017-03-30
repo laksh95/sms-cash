@@ -25,10 +25,10 @@ let personalCalendar= connection.define('personal_calendar',{
        type: sequelize.DATE,
        allowNull: false
     },
-    status: {
-      type: sequelize.BOOLEAN,
-      allowNull: false,
-      defaultValue: true
+    status:{
+        type:sequelize.BOOLEAN,
+        allowNull:false,
+        defaultValue:true
     }
   },
  {

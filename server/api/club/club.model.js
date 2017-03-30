@@ -21,6 +21,7 @@ let sql = function(){
             },
             status : {
                 type : sequelize.BOOLEAN,
+                allowNull: false,
                 defaultValue : true
             }
         },
@@ -42,3 +43,4 @@ let sql = function(){
     return club;
 }
 module.exports = sql;
+

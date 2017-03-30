@@ -15,6 +15,11 @@ let init=function(){
        total_seats:{
            type:sequelize.INTEGER,
            allowNull:false
+       },
+       status:{
+           type:sequelize.BOOLEAN,
+           allowNull:false,
+           defaultValue:true
        }
    },{
        classMethods:{
@@ -22,7 +27,7 @@ let init=function(){
 
                let dept=model.department
                let seats=model.department_seat
-               seats.hasMany(dept,{
+               dept.hasMany(seats,{
                    foreignKey:'department_seats_id'
                })
            }

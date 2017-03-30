@@ -3,19 +3,22 @@ let connection = data.connection
 let sequelize = data.sequelize
 let sql = function(){
     let publicEvent = connection.define('public_event',{
-
-        },
-        {
-            classMethods : {
-                associate : function(models){
-                    let event  = models.event
-                    event.hasMany(publicEvent,{
-                        foreignKey : 'event_id'
-                    })
-                }
-            }
+      status:{
+          type:sequelize.BOOLEAN,
+          allowNull:false,
+          defaultValue:true
+      }
+    },
+    {
+      classMethods : {
+        associate : function(models){
+          let event  = models.event
+          event.hasMany(publicEvent,{
+            foreignKey : 'event_id'
+          })
         }
-    );
-    return publicEvent;
+      }
+    });
+  return publicEvent;
 }
 module.exports = sql;

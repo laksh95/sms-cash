@@ -4,7 +4,12 @@ let connection=database.connection
 
 let init = function(){
  return teacherSubjectAllocation = connection.define('teacher_subject_allocation',{
- 
+
+   status:{
+       type:sequelize.BOOLEAN,
+       allowNull:false,
+       defaultValue:true
+   }
  },
  {
    classMethods: {
@@ -16,10 +21,10 @@ let init = function(){
        subject.hasMany(teacherSubjectAllocation, {foreignKey: 'subject_id', unique: 'teacherSubjectAllocation'})
        teacher.hasMany(teacherSubjectAllocation, {foreignKey: 'teacher_id', unique: 'teacherSubjectAllocation'})
        section.hasMany(teacherSubjectAllocation, {foreignKey: 'section_id', unique: 'teacherSubjectAllocation'})
-
      }
    }
  })
 }
 
 module.exports = init
+

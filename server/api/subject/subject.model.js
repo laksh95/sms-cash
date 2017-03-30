@@ -16,9 +16,10 @@ let init = function () {
             allowNull:false,
             unique:true
         },
-        status: {
-            type: sequelize.BOOLEAN,
-            allowNull:false
+        status:{
+            type:sequelize.BOOLEAN,
+            allowNull:false,
+            defaultValue:true
         }
     },
     {
@@ -27,7 +28,6 @@ let init = function () {
                 var subject = models.subject
                 var skill = models.skill
                 skill.hasMany(subject, {foreignKey: 'skills_set'});
-
                 let department = models.department
                 department.hasOne(subject, {foreignKey: 'department_id'});
             }

@@ -3,7 +3,7 @@ let sequelize=database.sequelize
 let connection=database.connection
 let init=function() {
    return department = connection.define('department',{
-       id:{
+     id:{
            type:sequelize.INTEGER,
            primaryKey:true,
            autoIncrement:true
@@ -23,6 +23,7 @@ let init=function() {
            allowNull:false,
            defaultValue:true
        }
+
    },{
        classMethods:{
            associate:function(model){
@@ -55,5 +56,5 @@ let init=function() {
             }
        }
    })
-}
+   }
 module.exports=init

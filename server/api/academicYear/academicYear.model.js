@@ -10,17 +10,22 @@ let academicYear= connection.define('academic_year',{
        autoIncrement: true
      },
    name: {
-       type: sequelize.STRING,
-       allowNull: false,
-       unique: true
-     },
+      type: sequelize.STRING,
+      allowNull: false,
+      unique: true
+   },
    start_date: {
-       type: sequelize.DATE,
-       allowNull: false
+      type: sequelize.DATE,
+      allowNull: false
     },
    end_date: {
-       type: sequelize.DATE,
-       allowNull: false
+      type: sequelize.DATE,
+      allowNull: false
+    },
+    status : {
+      type : sequelize.BOOLEAN,
+      allowNull: false,
+      defaultValue : true
     }
  },
  {
@@ -33,3 +38,4 @@ let academicYear= connection.define('academic_year',{
 );
  return academicYear;
 };
+

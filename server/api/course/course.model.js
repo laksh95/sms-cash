@@ -27,9 +27,7 @@ let init=function(){
                 associate:(model)=>{
 
                 },
-
                 getCourse:(db,sendData)=>{
-
                     let course=db.course
                     let department=db.department
                     course.findAll({
@@ -55,7 +53,7 @@ let init=function(){
                             name:setData.course_name
                         }
                     }).then((data)=>{
-                        console.log("data-----------",typeof(data[0]))
+                    // console.log("data-----------",typeof(data[0]))
                         if(data.length==0){
                             db.course.create({
                                 name:setData.course_name,
@@ -118,7 +116,8 @@ let init=function(){
                         status:'f'
                     },{
                         where:{
-                            id:deleteId
+                            id:deleteId,
+                            status:'t'
                         }
                     }).then((data)=>{
                         sendData(data)

@@ -1,6 +1,3 @@
-/**
- * Created by mustang on 16/03/17.
- */
 let database=require('../../config/db')
 let sequelize=database.sequelize
 let connection=database.connection
@@ -18,7 +15,9 @@ let init=function(){
         },
         status:{
             type:sequelize.ENUM('ACTIVE','INACTIVE'),
-            allowNull:false
+            allowNull: false,
+            defaultValue: 'ACTIVE'
+
         }
     },{
         classMethods:{

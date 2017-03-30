@@ -1,13 +1,18 @@
-let sequelize=require('sequelize')
-let option={
-    define:{
-        underscored:true,
-        freezeTableName:true
-    }
+
+let Sequelize =require('sequelize') ;
+let config =require('./environment/index');
+let lodash=require('lodash');
+var connection = new Sequelize(config.sequelize.uri, config.sequelize.options);
+let options = {
+   define:{
+       underscored:true,
+       freezeTableName:true
+   }
 }
-let connection=new sequelize('postgres://postgres:cronj123@192.168.1.223:5432/sms', option)
 let data={
-    sequelize:sequelize,
-    connection:connection
+   sequelize:Sequelize,
+   connection:connection
 }
 module.exports=data
+
+

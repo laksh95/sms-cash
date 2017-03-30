@@ -19,9 +19,10 @@ let sql = function(){
             image : {
                 type : sequelize.STRING
             },
-            status : {
-                type : sequelize.BOOLEAN,
-                defaultValue : true
+            status:{
+                type:sequelize.BOOLEAN,
+                allowNull:false,
+                defaultValue:true
             }
         },
         {
@@ -38,3 +39,4 @@ let sql = function(){
     return post;
 }
 module.exports = sql;
+

@@ -21,6 +21,11 @@ let init = function(){
             type: {
                 type: sequelize.ENUM('BAD', 'AVERAGE', 'GOOD', 'VERY GOOD', 'EXCELLENT'),
                 allowNull: false
+            },
+            status:{
+                type:sequelize.BOOLEAN,
+                allowNull:false,
+                defaultValue:true
             }
         },
         {
@@ -28,5 +33,4 @@ let init = function(){
             }
         })
 }
-
 module.exports = init

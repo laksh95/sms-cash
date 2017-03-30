@@ -2,7 +2,6 @@ var pg = require("pg");
 var express = require('express');
 var personalCalendar = require('./../personalCalendar/personalCalendar.model.js')
 var db=require('./../../sqldb')();
-
 var dashboardHandler = {
 	addPersonalEvent: function(request, response){ //adding event from personal calendar
 		let inputData = getData(request, response)
@@ -16,14 +15,13 @@ var dashboardHandler = {
 		})
 	}
 }
-
 function getData(request, response){ //fetching data from front end
 	let data = {
 		heading: request.body.heading,
-    startDate: new Date(request.body.startDate),
-    endDate: new Date(request.body.endDate),
-    content: request.body.content,
-		userId: request.body.id
+    	startDate: new Date(request.body.startDate),
+    	endDate: new Date(request.body.endDate),
+    	content: request.body.content,
+		userId: request.user.id
 	}
 	return data;
 }

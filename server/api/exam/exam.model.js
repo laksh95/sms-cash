@@ -26,17 +26,16 @@ let init = function(){
 		}
 	},
 	{
-		classMethods: {
+		classMethods: {	
 			associate: function(models){
 				let exam = models.exam
 				let exam_type = models.exam_type
 				exam_type.hasMany(exam, {foreignKey: 'type_id'});
-
-				let curriculum = models.curriculum
+				var curriculum = models.curriculum
 				curriculum.hasMany(exam, {foreignKey: 'curriculum_id'});
 			}
 		}
 	})
 }
-
 module.exports = init
+

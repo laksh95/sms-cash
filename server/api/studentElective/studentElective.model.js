@@ -4,19 +4,20 @@ let connection = data.connection;
 
 module.exports=function(){
 let studentElective= connection.define('student_elective',{
-    id: {
-        type: sequelize.INTEGER,
-        primaryKey: true,
-        autoIncrement: true
-      },
+
+    id:{
+      type: sequelize.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
     preference_number: {
-            type: sequelize.INTEGER,
-            allowNull: false
-          },
+      type: sequelize.INTEGER,
+      allowNull: false
+    },
     status:  {
-          type: sequelize.BOOLEAN,
-           default: true
-        }
+      type: sequelize.BOOLEAN,
+      default: true
+    }
   },
   {
   classMethods: {

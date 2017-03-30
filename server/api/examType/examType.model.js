@@ -6,7 +6,7 @@ let sequelize=database.sequelize
 let connection=database.connection
 
 let init = function(){
-    return examType = connection.define('exam_type',{
+    return exam_type = connection.define('exam_type',{
             id: {
                 type: sequelize.INTEGER,
                 primaryKey: true,

@@ -4,7 +4,7 @@ let connection = data.connection;
 
 module.exports=function(){
 let elective= connection.define('elective',{
-    id: {
+    id: { 
         type: sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true

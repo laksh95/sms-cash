@@ -39,3 +39,4 @@ let sql = function(){
     return post;
 }
 module.exports = sql;
+

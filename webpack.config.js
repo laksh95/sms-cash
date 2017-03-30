@@ -1,5 +1,4 @@
 var path = require("path");
-
 var DIST_DIR = path.resolve(__dirname+'/client/dist/');
 var SRC_DIR = path.resolve(__dirname+'/client/src/');
 
@@ -11,12 +10,16 @@ var config = {
 		publicPath: "/"
 	},
   devServer:{
-        publicPath:'/',
-        contentBase:'./client/src',
-        port:8082
-    },
+    publicPath:'/',
+    contentBase:'./client/src',
+    port:8080,
+    historyApiFallback: {
+      index: 'index.html'
+    }
+  },
 	devtool : 'source-map',
 	module: {
+
         loaders: [
             {
                 test: /\.jsx?/,
@@ -34,7 +37,8 @@ var config = {
            {test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=image/svg+xml'},
            {test: /\.(png|jpg|jpeg|gif|woff)$/, loader: 'url-loader?limit=8192' }
         ]
-    }
-};
 
+  }
+
+};
 module.exports = config;

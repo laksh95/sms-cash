@@ -1,4 +1,4 @@
-    let database=require('../../config/db')
+let database=require('../../config/db')
 let sequelize=database.sequelize
 let connection=database.connection
 let init = function(){
@@ -14,8 +14,9 @@ let init = function(){
             defaultValue:true
         }
     },
+
     {
-        classMethods: {
+        classMethods: {    
             associate: function(models){
                 let teacher = models.teacher
                 let student = models.student

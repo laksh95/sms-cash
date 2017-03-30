@@ -4,7 +4,7 @@ let connection = data.connection;
 
 module.exports=function(){
 let director= connection.define('director',{
-    id: {
+    id: { 
         type: sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true

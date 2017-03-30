@@ -1,6 +1,3 @@
-/**
- * Created by mustang on 16/03/17.
- */
 let database=require('../../config/db')
 let sequelize=database.sequelize
 let connection=database.connection
@@ -17,9 +14,10 @@ let init=function(){
             allowNull:false
         },
         status:{
-            type:sequelize.BOOLEAN,
-            allowNull:false,
-            defaultValue:true
+            type:sequelize.ENUM('ACTIVE','INACTIVE'),
+            allowNull: false,
+            defaultValue: 'ACTIVE'
+
         }
     },{
         classMethods:{

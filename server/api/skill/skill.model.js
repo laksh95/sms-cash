@@ -23,3 +23,4 @@ let SkillData=function(){
     return skill;
 }
 module.exports=SkillData;
+

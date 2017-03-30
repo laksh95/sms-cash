@@ -3,7 +3,7 @@ let sequelize = data.sequelize;
 let connection = data.connection;
 
 module.exports=function(){
-  let eventLike= connection.define('event_like',{
+  return eventLike= connection.define('event_like',{
       id: {
          type: sequelize.INTEGER,
          primaryKey: true,
@@ -31,5 +31,6 @@ module.exports=function(){
      }
   }
 );
- return eventLike;
+
 };
+

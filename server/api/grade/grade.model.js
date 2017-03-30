@@ -26,7 +26,7 @@ let init = function(){
 		}
 	},
 	{
-		classMethods: {
+		classMethods: {	
 			associate: function(models){
 				let exam = models.exam
 				let grade = models.grade
@@ -35,5 +35,5 @@ let init = function(){
 		}
 	})
 }
-
 module.exports = init
+

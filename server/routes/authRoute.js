@@ -30,10 +30,6 @@ function validateLoginForm(payload) {
 	if (!isFormValid) {
 	    message = 'Please provide both username and  the details to login!';
 	}
-
-	console.log("success: ", isFormValid);
-	console.log("message: ", message);
-	console.log("errors:", errors);
 	return {
 	    success: isFormValid,
 	    message,
@@ -53,7 +49,6 @@ router.post('/login', (req, res, next) => {
 
   	return passport.authenticate('local-login',(err, token, userData) => {
   		if(err){
-  			// console.log("Error:", err);
   			if(err.name==='IncorrectCredentialsError'){
                 console.log("Incorrect");
   				return res.status(400).json({

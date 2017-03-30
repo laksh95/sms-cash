@@ -10,7 +10,7 @@ import {List, ListItem} from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
 import Divider from 'material-ui/Divider';
 import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
-import DashBoard from './Dashboard/DashBoard.jsx'; 
+import DashBoard from './dashboard/DashBoard.jsx'; 
 let userImage =  require('./../images/user.png');
 import {Link} from 'react-router';
 import { browserHistory} from 'react-router';

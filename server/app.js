@@ -3,11 +3,8 @@ let express = require('express')
 let app = express()
 let db=require('./config/db')
 
-let passport = require('passport');
 require('./config/express')(app)
 require('./routes/route.js')(app)
-const localLoginStrategy = require('./passport/loginStrategy');
-passport.use('local-login', localLoginStrategy);
 
 function startServer() {
 	app.listen(config.port, config.ip, function() {
@@ -17,6 +14,6 @@ function startServer() {
 db.connection.sync().then(function() {
 		startServer()
 	});
-// Expose app
+
 exports = module.exports = app;
 

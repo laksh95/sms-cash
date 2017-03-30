@@ -6,10 +6,8 @@ let models  = require('./../sqldb')();
 /**
  *  The Auth Checker middleware function.
  */
- module.exports = (req, res, next)=> {
- 	console.log("In auth check");
+ module.exports = (req, res, next)=> {;
  	if (!req.headers.authorization) {
- 		console.log("No Header");
     	return res.status(401).end();
  }
 
@@ -21,7 +19,6 @@ let models  = require('./../sqldb')();
     // the 401 code is for unauthorized status
     	if (err) { 
     		return res.status(401).end(); 
-    		console.log("Not Authorized!: ", err);
     	}
 
 		const userId = decoded.sub;
@@ -32,7 +29,6 @@ let models  = require('./../sqldb')();
 		    	return res.status(401).end();
 		    }
 		req.user= user;
-		console.log("Yes user:", user);
 		return next();
 		});
 	})

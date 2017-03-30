@@ -8,7 +8,7 @@ import TextField from 'material-ui/TextField';
 import LinearProgress from 'material-ui/LinearProgress';
 import {Link} from 'react-router'
 import {Router, browserHistory} from 'react-router';
-import Auth from './../Auth.js';
+import Auth from './../../Auth.js';
 import Snackbar from 'material-ui/Snackbar';
 
 var style = {
@@ -71,10 +71,9 @@ export default class Login extends React.Component  {
 
         if( this.state.username != '' && this.state.password != '')
          {
-          console.log("Login button clicked");
            var bodyParameters = {
               "username": this.state.username,
-               "password": this.state.password
+              "password": this.state.password
             }
 
             this.props.loginUser(bodyParameters);
@@ -109,8 +108,6 @@ export default class Login extends React.Component  {
         height = w.innerHeight|| documentElement.clientHeight|| body.clientHeight;
 
        if(width > 760){
-          
-        console.log("width is : " + width + " Height : "+height);
         this.setState({width: width, height: height, mobileView:false});
      }else{
         this.setState({width: width, height: height, mobileView:true});
@@ -121,43 +118,14 @@ export default class Login extends React.Component  {
     this.updateDimensions();
     this.setState({   message: false  });
     var token = Auth.getToken();
-    var authString = `bearer ${Auth.getToken()}`
     
     if(token !=null){
-      console.log(token);
-      var bodyParameters = {
-        "username": "",
-        "password": ""
-      }
-
-      //axios.defaults.headers.commons['Authorization'] = authString;
-        let config = {
-           headers: {
-             'Authorization': authString
-           }
-        }
-
-      this.props.checkLogin(config);
-
-    }
-
-    if(this.props.isLogin){
-        browserHistory.push('/dashboard');
-        console.log(this.props.user);
-        Auth.authenticateUser(this.props.token);
+      this.props.checkLogin();
     }
   }
 
     componentDidMount() {
-        window.addEventListener("resize", this.updateDimensions);
-    }
-
-    componentWillReceiveProps(nextProps) {
-       if(this.props.isLogin){
-        browserHistory.push('/dashboard');
-        console.log(this.props.user);
-        Auth.authenticateUser(this.props.token);
-      }
+      window.addEventListener("resize", this.updateDimensions);
     }
 
     componentWillUnmount(){

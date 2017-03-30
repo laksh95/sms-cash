@@ -1,7 +1,7 @@
 import React from 'react';
 import SideBarMenu from './../components/SideBarMenu.jsx';
 import TopBar from './TopBar.jsx'; 
-import Auth from './../components/Auth.js';
+import Auth from './../Auth.js';
 import {checkLogin, logoutUser} from "./../actions/loginActions";
 import {connect} from "react-redux";
 import {browserHistory} from 'react-router';
@@ -47,7 +47,7 @@ class App extends React.Component {
              }
           }
 
-        this.props.checkLogin(config);
+        this.props.checkLogin();
 
       }
     }
@@ -112,8 +112,8 @@ const mapDispatchToProps= (dispatch) => {
     logoutUser: () =>{
       dispatch(logoutUser());
     },
-    checkLogin: (config) =>{
-      dispatch(checkLogin(config));
+    checkLogin: () =>{
+      dispatch(checkLogin());
     } 
   };
 };

@@ -1,24 +1,29 @@
 import React from 'react'
-/*import RaisedButton from 'material-ui/RaisedButton'*/
 import LinearProgress from 'material-ui/LinearProgress'
 import DropZone from 'react-dropzone'
+import {connect} from 'react-redux'
+import {addBulkStudent} from '../../actions/addBulkStudentAction'
+import axios from 'axios'
 class AddBulkStudent extends React.Component{
     constructor(props){
         super(props)
         this.state={
-            completed:0
+            completed:0,
+            files:[]
         }
     }
-    componentDidMount(){
-        /*this.timer = setTimeout( () =>this.progress(5), 1000)*/
+    componentWillReceiveProps(nextProps){
+        this.props=nextProps
     }
     componentWillMount(){
         clearTimeout(this.timeout)
     }
+    componentDidMount(){
+        console.log('component did mount')
+    }
     onDrop = (acceptedFiles,rejectedFiles)=>{
-        console.log(acceptedFiles)
         this.timer = setTimeout( () =>this.progress(5), 500)
-
+        this.props.addStudent(acceptedFiles)
     }
     progress=(completed) =>{
         if (completed > 100) {
@@ -30,9 +35,7 @@ class AddBulkStudent extends React.Component{
         }
     }
     displayLabel=()=>{
-        if(this.state.completed < 100){
-            return (<span>Click Here/Drop the file to upload</span>)
-        }
+        console.log('---------------label--------------',this.props.file)
     }
     render(){
         let styles = {
@@ -50,14 +53,31 @@ class AddBulkStudent extends React.Component{
         return(
             <div className="addBulk">
                 <form>
-                    <DropZone multiple={false} onDrop={this.onDrop}/>
-                    {
-                        this.displayLabel()
-                    }
+                    <DropZone
+                        multiple={false}
+                        onDrop={this.onDrop}
+                        accept='text/csv'
+                    />
                     <LinearProgress mode="determinate" value={this.state.completed} />
-                </form>
+                </form>{
+                        this.displayLabel()
+            }
             </div>
         )
     }
 }
-export default AddBulkStudent
+const mapStateToProps = (state)=>{
+    return{
+        file:state.addBulkStudent
+    }
+}
+const mapDispatchtoProps = (dispatch)=>{
+    return{
+        addStudent: (file)=>{
+            dispatch(addBulkStudent(file))
+        }
+    }
+
+
+}
+export default connect(mapStateToProps,mapDispatchtoProps)(AddBulkStudent)

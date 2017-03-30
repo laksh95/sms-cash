@@ -40,7 +40,7 @@ export default class SideBarMenu extends React.Component {
 
     }
     this.course= this.course.bind(this)
-      this.student=this.student.bind(this)
+      /*this.student=this.student.bind(this)*/
   }
   course(){
     console.log("inside course")
@@ -49,12 +49,12 @@ export default class SideBarMenu extends React.Component {
         student:false
     })
   }
-  student(){
+/*  student(){
       this.setState({
         student:true,
           course:false
       })
-  }
+  }*/
   componentWillReceiveProps(props){
       this.props = props
   }
@@ -90,7 +90,6 @@ export default class SideBarMenu extends React.Component {
                 <Link to="student">
                 <ListItem
                     primaryText="Student"
-                    onClick={()=>this.student()}
                     leftAvatar={<Avatar src={require('./../images/user.png')} />}
                 />
                 </Link>

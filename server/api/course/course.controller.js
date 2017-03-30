@@ -21,21 +21,12 @@ let courseFunctions = {
        })
    },
    editCourse:(req,res)=>{
-       let name=req.body.name
-       let duration=req.body.duration
-       let id=req.body.id
-       let updateDetails={
-           name,
-           duration,
-           id
-       }
-       model.editCourse(db,updateDetails,(data)=>{
+       model.editCourse(db,req.body,(data)=>{
            res.send(data)
        })
    },
    deleteCourse:(req,res)=>{
-       let id=req.body.id
-       model.deleteCourse(db,id,(data)=>{
+       model.deleteCourse(db,req.body,(data)=>{
            res.send(data)
        })
    }

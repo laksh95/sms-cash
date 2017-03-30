@@ -18,7 +18,7 @@ import { browserHistory} from 'react-router';
 
 
 export default class SideBarMenu extends React.Component {
-  
+
   constructor(props) {
     super(props); 
 
@@ -50,17 +50,17 @@ export default class SideBarMenu extends React.Component {
    };
   
   render() { 
-    var list = [
-      "Department":'white',
-      "Dashboard":'white',
-      "Students":'white',
-      "Teacher":'white',
-      "Subjects":'white',
-      "Events":'white',
-      "Important":'white',
-      "T/S":'white'
-      ];
-
+    let list = {
+        "Department": 'white',
+        "Dashboard": 'white',
+        "Course": "white",
+        "Students": 'white',
+        "Teacher": 'white',
+        "Subjects": 'white',
+        "Events": 'white',
+        "Important": 'white',
+        "T/S": 'white'
+    }
     list[this.state.selected] = '#e3e7ea';
     let sizeWidth = 230;
     if( this.props.open === false){
@@ -72,10 +72,8 @@ export default class SideBarMenu extends React.Component {
         <Drawer width={sizeWidth} openSecondary={false} docked={true} zDepth={2} open={true} >
           <AppBar title="Menu"
            onLeftIconButtonTouchTap = {this.props.handleToggle} />
-
             {
-              (this.props.user.role) ?       
-
+              (this.props.user.role) ?
            ( <List>
 
                {this.props.user.role.isAdmin?
@@ -93,6 +91,16 @@ export default class SideBarMenu extends React.Component {
                   leftAvatar={<Avatar src={userImage} />} 
                 />
               </Link> : null}
+
+               {(this.props.user.role.isAdmin || this.props.user.role.isDirector) ?
+                   <Link to ="/course" style={{textDecoration: 'none'}}>
+                       <ListItem
+                           primaryText="Course"
+                           leftAvatar={<Avatar src={userImage} />}
+                           style={{backgroundColor: list["Course"]}}
+                           onTouchTap = {this.handleTouchTap.bind(this,"Course")}
+                       />
+                   </Link> : null}
 
               {this.props.user.role.isAdmin ?
               <Link to ="/dashboard" style={{textDecoration: 'none'}}>
@@ -159,8 +167,6 @@ export default class SideBarMenu extends React.Component {
     );
   }
 }
-
-
 SideBarMenu.childContextTypes = {
             muiTheme: React.PropTypes.object.isRequired,
 };

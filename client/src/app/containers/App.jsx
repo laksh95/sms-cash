@@ -1,18 +1,16 @@
 import React from 'react';
 import SideBarMenu from './../components/SideBarMenu.jsx';
 import TopBar from './TopBar.jsx'; 
-import Auth from './../components/Auth.js';
+import Auth from '../Auth.js';
 import {checkLogin, logoutUser} from "./../actions/loginActions";
 import {connect} from "react-redux";
 import {browserHistory} from 'react-router';
 
 let style = {
-
    "MainContentStyle":{
        marginLeft: 70 ,
        transition: 'margin-left 100ms cubic-bezier(0.23, 1, 0.32, 1)' 
    },
-
    "ContentTitle":{
        marginTop:10, 
        marginLeft: 70,
@@ -74,7 +72,7 @@ class App extends React.Component {
         <SideBarMenu handleToggle = {this.handleToggle} open = {this.state.open}
           user= {this.props.login.loginUser} isLogin= {this.props.login.isLogin}
         />   
-        <div style={style.ContentTitle}><h1>Student Management system</h1>
+        <div style={style.ContentTitle}>
           {this.props.children}  
         </div>
      
@@ -117,7 +115,22 @@ const mapDispatchToProps= (dispatch) => {
     },
     setValue:(value)=>{
         dispatch(setValue(value))
-    }
+    },
+      setCourse : (course)=>{
+          dispatch(setCourse(course))
+      },
+      setPagedCourse : (course)=>{
+          dispatch(setPagedCourse(course))
+      },
+      setSnackbarOpen :(data)=>{
+          dispatch(setSnackbarOpen(data))
+      },
+      setSnackbarMessage:(data)=>{
+          dispatch(setSnackbarMessage(data))
+      },
+      setValue:(value)=>{
+          dispatch(setValue(value))
+      }
   };
 };
 export default connect(mapStateToProps,mapDispatchToProps)(App);

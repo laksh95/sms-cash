@@ -37,11 +37,10 @@ App.contextTypes = {
 
 const mapStateToProps= (state) => {
 	return{
-		login: state.login
+		login: state.login,
+        courseReducer: state.courseReducer
 	};
 };
-
-
 const mapDispatchToProps= (dispatch) => {
 	return{
 		loginUser: (credential) =>{

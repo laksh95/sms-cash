@@ -1,7 +1,7 @@
 import React from 'react'
 import {Tabs, Tab} from 'material-ui/Tabs';
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
-import store from './../../store.jsx'
+import store from './../../store'
 import { Router, Route, browserHistory } from 'react-router'
 import AddCourse from './AddCourse.jsx'
 import ViewCourse from './ViewCourse.jsx'
@@ -73,6 +73,18 @@ const mapDispatchToProps = (dispatch) => {
         },
         setValue:(value)=>{
             dispatch(setValue(value))
+        },
+        getCourses:()=>{
+            dispatch(getCourses())
+        },
+        addCourse:(data) =>{
+            dispatch(addCourse(data))
+        },
+        editCourse:(data) =>{
+            dispatch(editCourse(data))
+        },
+        deleteCourse:(data) =>{
+            dispatch(deleteCourse(data))
         }
     };
 };

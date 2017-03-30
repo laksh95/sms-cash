@@ -89,7 +89,7 @@ let init=function(){
                             else {
                                 response = {
                                     status: 0,
-                                    content: 'Course Already exists.'
+                                    content: 'course Already exists.'
                                 }
                                 sendData(response)
                             }
@@ -106,21 +106,32 @@ let init=function(){
                             id:updateData.id
                         }
                     }).then((data)=>{
-                        sendData(data)
+                        let response = {
+                            status : 1 ,
+                            msg : "Edited Successfully",
+                            data : updateData
+                        }
+                        sendData(response)
                     })
 
                 },
                 deleteCourse:(db,deleteId,sendData)=>{
+                    console.log("modellllllllllll",deleteId)
                     let course = db.course
                     course.update({
                         status:'f'
                     },{
                         where:{
-                            id:deleteId,
+                            id:deleteId.id,
                             status:'t'
                         }
                     }).then((data)=>{
-                        sendData(data)
+                        let response = {
+                            msg : "Deleted Successfully",
+                            data : deleteId ,
+                            status : data[0]
+                        }
+                        sendData(response)
                     })
                 }
             }

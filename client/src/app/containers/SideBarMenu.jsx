@@ -1,35 +1,13 @@
 import React from 'react';
 import Drawer from 'material-ui/Drawer';
 import AppBar from 'material-ui/AppBar';
-import RaisedButton from 'material-ui/RaisedButton';
-import { Button } from 'react-bootstrap';
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import Avatar from 'material-ui/Avatar';
 import {List, ListItem,makeSelectable} from 'material-ui/List';
-import Subheader from 'material-ui/Subheader';
 import Divider from 'material-ui/Divider';
-import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
-import DashBoard from './DashBoard.jsx';
-import Course  from './Course.jsx'
+import Course  from './Course/Course.jsx'
 let SelectableList = makeSelectable(List);
-
-const events = [
-    {
-        start: '2015-07-20',
-        end: '2015-07-02',
-        eventClasses: 'optionalEvent',
-        title: 'test event',
-        description: 'This is a test description of an event',
-    },
-    {
-        start: '2015-07-19',
-        end: '2015-07-25',
-        title: 'test event',
-        description: 'This is a test description of an event',
-        data: 'you can add what ever random data you may want to use later',
-    },
-];
 export default class DrawerOpenRightExample extends React.Component {
   constructor(props) {
     super(props);
@@ -39,7 +17,6 @@ export default class DrawerOpenRightExample extends React.Component {
     this.course= this.course.bind(this)
   }
   course(){
-    console.log("inside course")
     this.setState({
         course : true
     })
@@ -115,7 +92,6 @@ export default class DrawerOpenRightExample extends React.Component {
                 />
             </List>
         </Drawer>
-
       <div style={contentStyle}>
           {
              <Course/>

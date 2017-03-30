@@ -87,7 +87,6 @@ class TopBar extends React.Component {
      currentSession : true,
       anchorEl: event.currentTarget,
     });
-
   }
  render() {
   return(

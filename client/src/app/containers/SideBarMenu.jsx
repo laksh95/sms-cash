@@ -12,8 +12,9 @@ import Divider from 'material-ui/Divider';
 import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
 import DashBoard from './DashBoard.jsx';
 import Course  from './Course.jsx'
-import Teacher from './Teacher.jsx'
+import Teacher from './teacher/Teacher.jsx'
 import renderIf from 'render-if'
+import { Link } from 'react-router'
 
 let RenderIf = require('react-renderif');
 
@@ -96,11 +97,13 @@ export default class SideBarMenu extends React.Component {
                     primaryText="Student"
                     leftAvatar={<Avatar src={require('./../images/user.png')} />}
                 />
-                <ListItem
-                    primaryText="Teacher"
-                    onTouchTap={()=>this.teacher()}
-                    leftAvatar={<Avatar src={require('./../images/user.png')} />}
-                />
+
+                <Link to = '/teacher'>
+                  <ListItem
+                      primaryText="Teacher"
+                      leftAvatar={<Avatar src={require('./../images/user.png')} />}
+                  />
+                </Link>
                 <ListItem
                     primaryText="Subjects"
                     leftAvatar={<Avatar src={require('./../images/user.png')} />}
@@ -122,21 +125,6 @@ export default class SideBarMenu extends React.Component {
                 />
             </List>
         </Drawer>
-
-      <div style={contentStyle}>
-          {
-            renderIf(this.state.course)
-            (
-              <Course/>
-            )
-          }
-          {
-            renderIf(this.state.teacher)
-            (
-              <Teacher/>
-            )
-          }
-      </div>
     </div>
     );
   }

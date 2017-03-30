@@ -1,22 +1,21 @@
-/* eslint-disable import/default */
-import 'babel-polyfill' ;
-import React from 'react';
-import { render } from 'react-dom';
-import App from './containers/App.jsx';
-import store from './store.jsx'
-import Teacher  from './containers/Teacher.jsx'
-import { Provider } from 'react-redux'
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import { Router, Route, IndexRoute, browserHistory } from 'react-router'
-
+import React from 'react'
+import { render } from 'react-dom';
+import {syncHistoryWithStore,routerReducer} from 'react-router-redux'
+import {Router, Route ,IndexRoute, browserHistory} from 'react-router'
+import App from './containers/App.jsx';
+import { Provider } from 'react-redux'
+import store from './store.js'
+import Teacher from './containers/teacher/Teacher.jsx'
 injectTapEventPlugin();
 
-render(
-  <Provider store={store}>
-  	<Router history={browserHistory}>
-  		<Route path="/" component= {App} />
-  		<Route path="/teacher" component= {Teacher} />
-  	</Router>
-  </Provider>,
-  document.getElementById('main')
-)
+
+render((
+ <Provider store={store}>
+       <Router history = {browserHistory}>
+          <Route path = "/" component = {App}>
+             <Route path = "/teacher" component = {Teacher} />
+          </Route>
+       </Router>
+ </Provider>
+), document.getElementById('app'))

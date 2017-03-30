@@ -4,16 +4,17 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 
 
-class DashBoard extends React.Component { 
+class DashBoard extends React.Component {
    constructor(props) {
     super(props);
-
   }
+
   getChildContext() {
       return { muiTheme: getMuiTheme(baseTheme) };
   }
-     render() {
-      return(
+
+  render() {
+    return(
         <div>
         <div>DashBoard</div>
         </div>
@@ -21,8 +22,6 @@ class DashBoard extends React.Component {
     }
 }
 DashBoard.childContextTypes = {
-            muiTheme: React.PropTypes.object.isRequired,
-        };
+  muiTheme: React.PropTypes.object.isRequired,
+};
 export default DashBoard;
-
-

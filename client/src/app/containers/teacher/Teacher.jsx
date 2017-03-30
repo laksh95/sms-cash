@@ -7,6 +7,8 @@ import AllTeacher from './AllTeacher.jsx'
 import AddTeacher from './AddTeacher.jsx'
 import ApproverDetails from './ApproverDetails.jsx'
 import renderIf from 'render-if'
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 
 class Teacher extends React.Component{
     constructor(props) {
@@ -18,19 +20,20 @@ class Teacher extends React.Component{
         addTeacher : false,
         approveDetails : false
       }
-
       this.allTeacher = this.allTeacher.bind(this)
       this.addTeacher = this.addTeacher.bind(this)
       this.approveDetails = this.approveDetails.bind(this)
     }
 
+    getChildContext() {
+       return { muiTheme: getMuiTheme(baseTheme) };
+    }
     allTeacher(){
     this.setState({
       allTeacher : true,
       addTeacher : false,
       approveDetails : false
     })
-    console.log(this.state)
     }
 
     addTeacher(){
@@ -39,7 +42,6 @@ class Teacher extends React.Component{
       addTeacher : true,
       approveDetails : false
     })
-    console.log(this.state)
     }
 
     approveDetails(){
@@ -48,12 +50,11 @@ class Teacher extends React.Component{
       addTeacher : false,
       approveDetails : true
     })
-    console.log(this.state)
     }
 
     render(){
       const contentStyle = { marginTop:10, marginLeft: 90 ,transition: 'margin-left 100ms cubic-bezier(0.23, 1, 0.32, 1)' };
-      const tabStyle = { marginTop:10, marginLeft: 0, marginRight: 30 ,transition: 'margin-left 100ms cubic-bezier(0.23, 1, 0.32, 1)' }
+      const tabStyle = { marginTop:10, marginLeft: 250, marginRight: 20 ,transition: 'margin-left 100ms cubic-bezier(0.23, 1, 0.32, 1)' }
       return(
         <div>
           <Tabs style={tabStyle}>
@@ -89,4 +90,8 @@ class Teacher extends React.Component{
       )
     }
 }
+
+(Teacher).childContextTypes = {
+   muiTheme: React.PropTypes.object.isRequired,
+};
 export default Teacher

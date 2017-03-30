@@ -26,7 +26,10 @@ export default class App extends React.Component {
         <div style={contentStyle}>
          <TopBar handleToggle = {this.handleToggle} open = {this.state.open}/>
         </div>
-       <SideBarMenu handleToggle = {this.handleToggle} open = {this.state.open} />
+        <SideBarMenu handleToggle = {this.handleToggle} open = {this.state.open} />
+        <div>
+          {this.props.children}
+        </div>
       </div>
     );
   }

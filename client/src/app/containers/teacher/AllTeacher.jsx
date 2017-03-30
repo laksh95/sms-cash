@@ -25,7 +25,7 @@ class AllTeacher extends React.Component{
           department: "CSE"
     		},
         {
-          name: "laksh",
+          name: "Mukherjee",
     			designation: "intern",
           department: "MECH"
         }

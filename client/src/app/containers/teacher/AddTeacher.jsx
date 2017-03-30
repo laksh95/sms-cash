@@ -25,7 +25,7 @@ class AddTeacher extends React.Component{
           designation: ""
       }
     }
-    handleChange = (event ,index ,value ,type) => {
+    handleChange = (event , type, data) => {
       switch (type) {
         case 'addUser': () => {
           let details = {
@@ -38,7 +38,7 @@ class AddTeacher extends React.Component{
           this.props.addUser(details)
         }
         break
-        case 'hadleChangeDepartment': (event, index, value) => {
+        case 'hadleChangeDepartment': (event, data.index, data.value) => {
           this.setState({
             departmentSelected: value
           })
@@ -46,7 +46,7 @@ class AddTeacher extends React.Component{
         break
         case 'getName': (event) => {
           this.setState({
-            teacherName: event.target.value
+            teacherName: event.target.values
           })
         }
         break
@@ -76,7 +76,7 @@ class AddTeacher extends React.Component{
           <SelectField
           floatingLabelText="Department"
           value={this.state.departmentSelected}
-          onChange={this.handleChange(event ,handleChangeDepartment)}
+          onChange={ (event ,hadleChangeDepartment, null) => this.handleChange }
           >
           {
             this.state.allDepartments.map((data,index)=>{

@@ -13,6 +13,8 @@ var init=function(app){
      res.header("Access-Control-Allow-Credentials", true);
      res.header("Access-Control-Allow-Methods", "POST, GET, PUT, DELETE, OPTIONS")
      res.header("Access-Control-Allow-Headers", "x-requested-with, Content-Type, origin, authorization, accept, client-security-token");
+     	if('OPTIONS' == req.method)
+           res.send(200);
      next();
     });
 

@@ -15,12 +15,12 @@ injectTapEventPlugin();
 
 render((
 	<Provider store={store}>
-	   <Router history = {history}>
-	      <Route path = "/" component = {Login}/>
+	   <Router history = {history}>	      
 	      <Route path = "/dashboard" component = {App}>
 	         <IndexRoute component = {Dashboard} />	         
 	         <Route path = "/department" component = {Department} />
 	      </Route>
+	      <Route path = "/" component = {Login}/>
 	   </Router>
 	</Provider>
 ), document.getElementById('app'))

@@ -8,6 +8,7 @@ let models  = require('./../sqldb')();
  */
  module.exports = (req, res, next)=> {;
  	if (!req.headers.authorization) {
+ 		console.log("Error auth check: Empty header")
     	return res.status(401).end();
  }
 
@@ -18,6 +19,7 @@ let models  = require('./../sqldb')();
 	return jwt.verify(token, config.jwtSecret, (err, decoded) => {
     // the 401 code is for unauthorized status
     	if (err) { 
+    		console.log("Error auth check ", err);
     		return res.status(401).end(); 
     	}
 
@@ -26,8 +28,10 @@ let models  = require('./../sqldb')();
 		 // check if a user exists
 		return userDetail.findUserById(models, userId, (userErr, user) => {
 		    if (userErr || !user) {
+		    	console.log("No user exists ");
 		    	return res.status(401).end();
 		    }
+		console.log("Succesfull auth check");
 		req.user= user;
 		return next();
 		});

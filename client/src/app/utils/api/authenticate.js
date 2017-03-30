@@ -23,6 +23,7 @@ const utils = {
         		'Authorization': authString
    	 		}
 		}
+		console.log("token: ", token);
 		let url = serverAddress + '/api/check';
 		return axios.get(url, config);
 	}

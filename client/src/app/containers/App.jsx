@@ -1,7 +1,7 @@
 import React from 'react';
 import SideBarMenu from './../components/SideBarMenu.jsx';
 import TopBar from './TopBar.jsx';
-import Auth from './../components/Auth.js';
+import Auth from '../Auth.js';
 import {checkLogin, logoutUser} from "./../actions/loginActions";
 import {connect} from "react-redux";
 import {browserHistory} from 'react-router';
@@ -57,6 +57,7 @@ class App extends React.Component {
         }
     }
     render() {
+        const centerContent = { marginTop:10, marginLeft: 250 ,transition: 'margin-left 100ms cubic-bezier(0.23, 1, 0.32, 1)' }
         if (this.state.open) {
             style.MainContentStyle.marginLeft = 230;
             style.ContentTitle.marginLeft =  250;
@@ -74,7 +75,9 @@ class App extends React.Component {
                 <SideBarMenu handleToggle = {this.handleToggle} open = {this.state.open}
                              user= {this.props.login.loginUser} isLogin= {this.props.login.isLogin}
                 />
+                <div className={centerContent}>
                     {this.props.children}
+                </div>
                 </div>
 
         );

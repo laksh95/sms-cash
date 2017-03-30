@@ -18,6 +18,9 @@ class AddBulkStudent extends React.Component{
     componentWillMount(){
         clearTimeout(this.timeout)
     }
+    componentDidMount(){
+        console.log('component did mount')
+    }
     onDrop = (acceptedFiles,rejectedFiles)=>{
         this.timer = setTimeout( () =>this.progress(5), 500)
         this.props.addStudent(acceptedFiles)
@@ -57,7 +60,7 @@ class AddBulkStudent extends React.Component{
                     />
                     <LinearProgress mode="determinate" value={this.state.completed} />
                 </form>{
-                        this.displayLabel()
+                this.displayLabel()
             }
             </div>
         )

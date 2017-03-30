@@ -1,7 +1,7 @@
 import React from 'react';
 import SideBarMenu from './SideBarMenu.jsx';
 import TopBar from './TopBar.jsx';
-import {setCourse,setPagedCourse,setSnackbarOpen,setSnackbarMessage,setValue} from './../actions/courseAction.jsx'
+import {setCourse,setPagedCourse,setSnackbarOpen,setSnackbarMessage,setValue} from '../actions/courseActions.jsx'
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 import { Router, Route, browserHistory } from 'react-router'
 import {connect} from 'react-redux'

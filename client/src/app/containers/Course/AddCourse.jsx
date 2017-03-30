@@ -3,7 +3,7 @@ import RaisedButton from 'material-ui/RaisedButton'
 import TextField from 'material-ui/TextField'
 import NumberInput from 'material-ui-number-input'
 import Snackbar from 'material-ui/Snackbar'
-import {setCourse,setPagedCourse,setSnackbarOpen,setSnackbarMessage,setValue} from './../../actions/courseAction.jsx'
+import {setCourse,setPagedCourse,setSnackbarOpen,setSnackbarMessage,setValue} from '../../actions/courseActions.jsx'
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 import { Router, Route, browserHistory } from 'react-router'
 import store from './../../store.jsx'
@@ -50,9 +50,6 @@ class AddCourse extends React.Component {
             }
             this.setState({ errorText4: errorText });
         };
-        this.addCourseName = this.addCourseName.bind(this)
-        this.addCourseDuration = this.addCourseDuration.bind(this)
-        this.addCourse = this.addCourse.bind(this)
     }
     componentWillReceiveProps(props){
         this.props= props
@@ -64,7 +61,7 @@ class AddCourse extends React.Component {
 
         this.props.setSnackbarOpen(false)
     };
-    addCourseName(event){
+    addCourseName = (event) =>{
         let name = event.target.value
         if(name.trim()==''){
             this.setState({
@@ -86,7 +83,7 @@ class AddCourse extends React.Component {
             })
         }
     }
-    addCourseDuration(event){
+    addCourseDuration = (event) => {
         let duration = event.target.value
 
         if(duration.trim()==''){
@@ -107,47 +104,13 @@ class AddCourse extends React.Component {
             newDuration : duration
         })
     }
-    addCourse(){
+    addCourse = () => {
         let newCourse = this.state.newCourse
         let newDuration = this.state.newDuration
-        axios.post('http://localhost:3166/api/course/addCourse',{
+        this.props.addCourse({
             course_name : newCourse,
             duration : newDuration
-        }).then((response)=>{
-            if(response.data.status==1){
-
-                this.props.setSnackbarOpen(true)
-                this.props.setSnackbarMessage("Course Added")
-                this.props.setValue('a')
-                let newCourse = response.data.content
-                let course = this.props.courseReducer.course.data
-
-                course.push(newCourse)
-                this.props.setCourse(course)
-                let size = course.length
-                // let totalPages = Math.floor(size/10) +1
-                this.setState({
-                    totalPages:size
-                })
-                this.setState({
-                    currentPage:1
-                })
-                let pagedCourses = []
-                for(let index in course){
-                    if(index<10){
-                        pagedCourses.push(course[index])
-                    }
-                }
-                this.props.setPagedCourse(pagedCourses)
-            }
-            else {
-                this.props.setSnackbarMessage(response.data.content)
-                this.props.setSnackbarOpen(true)
-            }
         })
-            .catch((response)=>{
-                console.log(response)
-            })
     }
     render(){
         console.log('addCourse.jsx')

@@ -7,7 +7,7 @@ import NumberInput from 'material-ui-number-input';
 import axios from 'axios'
 import Snackbar from 'material-ui/Snackbar';
 require('rc-pagination/assets/index.css');
-import {setCourse,setPagedCourse,setSnackbarOpen,setSnackbarMessage,setValue} from './../../actions/courseAction.jsx'
+import {setCourse,setPagedCourse,setSnackbarOpen,setSnackbarMessage,setValue} from '../../actions/courseActions.jsx'
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 import { Router, Route, browserHistory } from 'react-router'
 import store from './../../store.jsx'
@@ -129,31 +129,7 @@ class ViewCourse extends React.Component {
     handleDeleteCloseWithUpdate = () => {
         let data = this.state.curCourse
         axios.put('http://localhost:3166/api/course/deleteCourse',data).then((response)=>{
-            let course = this.props.courseReducer.course
-            for(let index in course){
-                if(course[index].id==data.id){
-                    course.splice(index,1)
-                }
-            }
-            this.props.setCourse(course)
-            let size= this.props.courseReducer.course.length
-            this.setState({
-                totalPages:size
-            })
-            course = this.props.courseReducer.course
-            this.setState({
-                currentPage : 1
-            })
 
-            this.props.setSnackbarOpen(true)
-            this.props.setSnackbarMessage("Course Deleted")
-            let pagedCourses = []
-            for(let index in course ){
-                if(index<10){
-                    pagedCourses.push(course[index])
-                }
-            }
-            this.props.setPagedCourse(pagedCourses)
         })
             .catch((response)=>{
                 console.log(response)
@@ -167,45 +143,8 @@ class ViewCourse extends React.Component {
     handleCloseWithEdit = (key) => {
         this.setState({open: false});
         let data = this.state.curCourse
-        axios.put('http://localhost:3166/api/course/editCourse',data).then((response)=>{
-            console.log("response",response.data[0])
-            if(response.data[0]==1){
-                let course = this.props.courseReducer.course.data
-                console.log("course-----------",course)
-                for(let index in course){
-                    if(course[index].id===data.id){
-                        course[index] = data
-                    }
-                }
-                this.props.setCourse(course)
-                let size = course.length
-                // let totalPages = Math.floor(size/10)+1
-                this.setState({
-                    totalPages:size
-                })
-                this.setState({
-                    currentPage:1
-                })
-                let pagedCourses = []
-                for(let index in course){
-                    if(index<10){
-                        pagedCourses.push(course[index])
-                    }
-                }
-                console.log("-----------",pagedCourses)
-                this.props.setPagedCourse(pagedCourses)
-                this.props.setSnackbarMessage("Field Edited Successfully")
-                this.props.setSnackbarOpen(true)
-            }
-            else {
-                this.props.setSnackbarMessage("Internal Server Error")
-                this.props.setSnackbarOpen(true)
-            }
-        })
-        .catch((response)=>{
-            console.log(response)
-        })
-    };
+        this.props.editCourse(data)
+    }
     handleOpen = (key,data) => {
         console.log("******************",data)
         this.setState({open: true});
@@ -254,31 +193,7 @@ class ViewCourse extends React.Component {
         })
     }
     componentWillMount(){
-        axios.get('http://localhost:3166/api/course/getCourses').then((response)=>{
-            this.props.setCourse(response)
-            // this.setState({
-            //     course:response.data
-            // })
-            let course = response.data
-            let size = course.length
-            // let totalPages = Math.floor(size /10 )+1
-            this.setState({
-                totalPages : size
-            })
-            let pagedCourses = []
-            for(let index in course ){
-                if(index<10){
-                    pagedCourses.push(course[index])
-                }
-            }
-            // this.setState({
-            //     pagedCourses:pagedCourses
-            // })
-            this.props.setPagedCourse(pagedCourses)
-        })
-        .catch((response)=>{
-            console.log(response)
-        })
+        this.props.getCourses()
     }
     render(){
         if(this.state.errorText=='none'||this.state.errorText.trim()=='')

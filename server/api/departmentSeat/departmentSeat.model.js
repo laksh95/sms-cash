@@ -19,7 +19,6 @@ let init=function(){
    },{
        classMethods:{
            associate:function(model){
-
                let dept=model.department
                let seats=model.department_seat
                seats.hasMany(dept,{
@@ -29,4 +28,4 @@ let init=function(){
        }
    })
 }
-module.exports=init
+module.exports = init

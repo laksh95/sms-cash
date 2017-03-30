@@ -5,18 +5,17 @@ import store from './../../store.jsx'
 import { Router, Route, browserHistory } from 'react-router'
 import AddCourse from './AddCourse.jsx'
 import ViewCourse from './ViewCourse.jsx'
-require('rc-pagination/assets/index.css');
-const Pagination = require('rc-pagination');
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import {setCourse,setPagedCourse,setSnackbarOpen,setSnackbarMessage,setValue} from './../../actions/courseAction.jsx'
+import {setCourse,setPagedCourse,setSnackbarOpen,setSnackbarMessage,setValue} from '../../actions/courseActions.jsx'
 import {connect} from 'react-redux'
+const Pagination = require('rc-pagination');
+require('rc-pagination/assets/index.css');
 
 class Course extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-
             open: false,
         };
     }
@@ -30,8 +29,6 @@ class Course extends React.Component{
         this.props = props
     }
     render(){
-        console.log('course.jsx')
-        const {onError,onValid, onRequestValue} = this;
         return (
             <div>
                 <Tabs

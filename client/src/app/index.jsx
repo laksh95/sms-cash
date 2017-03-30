@@ -1,30 +1,26 @@
-import 'babel-polyfill' ;
-import React from 'react';
-import { render } from 'react-dom';
-import ReactDOM from 'react-dom';
-import App from './containers/App.jsx';
-import Course from './containers/Course/Course.jsx'
-import store from "./store.jsx"
-import {Provider} from 'react-redux'
-import { Router, Route, browserHistory } from 'react-router'
-import { syncHistoryWithStore } from 'react-router-redux'
 import injectTapEventPlugin from 'react-tap-event-plugin';
-const history = syncHistoryWithStore(browserHistory, store)
+import React from 'react'
+import { render } from 'react-dom';
+import {syncHistoryWithStore,routerReducer} from 'react-router-redux'
+import {Router, Route ,IndexRoute, browserHistory} from 'react-router'
+import Login from './containers/login/App.jsx';
+import App from './containers/App.jsx';
+import Dashboard from './components/Dashboard/DashBoard.jsx';
+import Department from './components/Department/Department.jsx'
+import { Provider } from 'react-redux'
+import store from './store.js'
+
+const history = syncHistoryWithStore(browserHistory, store);
 injectTapEventPlugin();
-// ReactDOM.render(
-//     <Provider store={store}>
-//         <App />,
-//         document.getElementById('main')
-//     </Provider>
-// );
-ReactDOM.render(
-    <Provider store={store}>
-        <div>
-            <Router history={history}>
-                <Route path="/" component={App}>
-                    <Route path="/course" component={Course} />
-                </Route>
-            </Router>
-        </div>
-    </Provider>
-    , window.document.getElementById('main'));
+
+render((
+	<Provider store={store}>
+	   <Router history = {history}>
+	      <Route path = "/" component = {Login}/>
+	      <Route path = "/dashboard" component = {App}>
+	         <IndexRoute component = {Dashboard} />	         
+	         <Route path = "/department" component = {Department} />
+	      </Route>
+	   </Router>
+	</Provider>
+), document.getElementById('app'))

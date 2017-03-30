@@ -45,7 +45,6 @@ let init=function(){
                     })
                 },
                 addNewCourse:(db,setData,sendData)=>{
-                    console.log("----------------",setData)
                     let course=db.course
                     let response={}
                     course.findAll({

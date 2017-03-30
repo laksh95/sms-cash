@@ -16,6 +16,11 @@ let init = function(){
                 type: sequelize.STRING,
                 allowNull:false,
                 unique:true
+            },
+            status:{
+                type:sequelize.BOOLEAN,
+                allowNull:false,
+                defaultValue:true
             }
         },
         {

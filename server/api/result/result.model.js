@@ -12,6 +12,11 @@ let init = function(){
 		marks_scored: {
 			type: sequelize.INTEGER,
 			allowNull:false
+		},
+		status:{
+				type:sequelize.BOOLEAN,
+				allowNull:false,
+				defaultValue:true
 		}
 	},
 	{
@@ -29,5 +34,4 @@ let init = function(){
 		}
 	})
 }
-
 module.exports = init

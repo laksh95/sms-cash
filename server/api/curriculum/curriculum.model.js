@@ -28,6 +28,11 @@ let init = function(){
         sem_end_date:{
             type:sequelize.DATE,
             allowNull:false
+        },
+        status : {
+            type : sequelize.BOOLEAN,
+            allowNull: false,
+            defaultValue : true
         }
     },{
         classMethods:{

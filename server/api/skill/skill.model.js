@@ -12,6 +12,11 @@ let SkillData=function(){
             name: {
                 allowNull: false,
                 type: database.sequelize.STRING,
+            },
+            status:{
+                type:sequelize.BOOLEAN,
+                allowNull:false,
+                defaultValue:true
             }
         }
     );

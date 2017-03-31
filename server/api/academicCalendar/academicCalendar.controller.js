@@ -8,59 +8,69 @@ var personalCalendar = require('./../personalCalendar/personalCalendar.model.js'
 var db=require('./../../sqldb')();
 
 var dashboardHandler = {
-	getAllHolidays: (request, response)=>{ //loading all holidays from API into the database
+	//loading all holidays from API into the database
+	getAllHolidays: (request, response)=>{
 		academicCalendar().getAllHolidys(db, (status)=>{
 			response.send(status)
 		})
 	},
-	getInitialData : (request, response)=>{ //fetching parent count, student count, teacher count, personal events and all academic events
+	 //fetching parent count, student count, teacher count, personal events and all academic events
+	getInitialData : (request, response)=>{
+		console.log("inside controller")
 		let dataToClient = {}
-		parent().totalParent(db)
-		.then((data)=>{
-			dataToClient.totalParent = data
-			return student().totalStudent(db)
-		})
-		.then((totalStudents)=>{
-			dataToClient.totalStudents = totalStudents
-			return teacher().totalTeacher(db)
-		})
-		.then((totalTeachers)=>{
-			dataToClient.totalTeachers = totalTeachers
-			return personalCalendar().fetchPersonalCalendarList(db, request.body.id)
-		}).
-		then((userPersonalCalendar)=>{
-			dataToClient.personalCalendar = userPersonalCalendar
-			return academicCalendar().fetchEventList(db)
-		})
-		.then((events)=>{
-			dataToClient.totalEvent= events
-			response.send(dataToClient)
-		})
-	},
-	addEvent: (request, response)=>{  //adding event to academic calendar
-		let inputData = getData(request, response)
-		academicCalendar().addEvent(db, inputData, (status)=>{
-			response.send(status)
-		})
-	},
-	deleteEvent: (request, response)=>{ //deleting event from academic calendar
-		console.log("inside deleteEvent")
-		let inputData = request.body.id
-		academicCalendar().deleteEvent(db, inputData, (status)=>{
-			response.send(status)
-		})
-	}
-}
+		if(request !== null && request != undefined && request.body != undefined && Object.keys(request).length!==0 && Object.keys(request.body).length!==0 || request.user != null)
+		{
+			parent().totalParent(db)
+			.then((data)=>{
+				dataToClient.totalParent = data
+				return student().totalStudent(db)
+			})
+			.then((totalStudents)=>{
+				dataToClient.totalStudents = totalStudents
+				return teacher().totalTeacher(db)
+			})
+			.then((totalTeachers)=>{
+				dataToClient.totalTeachers = totalTeachers
+				return personalCalendar().fetchPersonalCalendarList(db, request.user)
+			}).
+			then((userPersonalCalendar)=>{
+				dataToClient.personalCalendar = userPersonalCalendar
+				return academicCalendar().fetchEventList(db)
+			})
+			.then((events)=>{
+				dataToClient.totalEvent= events
+				response.send(dataToClient)
+			})
+		}
+		else{
+			response.status(400).end()
+		}
 
-function getData(request, response){ //getting data from frontend via post, put
-	let data = {
-		type: request.body.type,
-    startDate: new Date(request.body.startDate),
-    endDate: new Date(request.body.endDate),
-    eventName: request.body.eventName,
-		academicYear: request.body.academicYear
+	},
+	//adding event to academic calendar
+	addEvent: (request, response)=>{
+		if(request !== null && request != undefined && request.body != undefined && Object.keys(request).length!==0 && Object.keys(request.body).length!==0){
+			academicCalendar().addEvent(db, request.body, (status)=>{
+				response.send(status)
+			})
+		}
+		else{
+			response.status(400).end()
+		}
+
+	},
+	//deleting event from academic calendar
+	deleteEvent: (request, response)=>{
+		console.log("inside controller")
+		if(request !== null && request != undefined && request.body != undefined && Object.keys(request).length!==0 && Object.keys(request.body).length!==0){
+			academicCalendar().deleteEvent(db, request.body, (status)=>{
+				response.send(status)
+			})
+		}
+		else{
+			response.status(400).end()
+		}
 	}
-	return data;
 }
 
 module.exports = dashboardHandler;

@@ -63,7 +63,7 @@ let academicCalendar= connection.define('academic_calendar',{
         axios.get("https://holidayapi.com/v1/holidays?key=c56f72dd-088b-4eaa-a2be-5448e9426aaf&country=IN&year=2017&month=02").then((data) => {
           data.data.holidays.map((theData, i) => {
             db.academic_calendar.create({
-              type: "holiday",
+              type: "HOLIDAY",
               start_date: new Date(theData.date),
               end_date: new Date(theData.date),
               content: theData.name,
@@ -91,66 +91,65 @@ let academicCalendar= connection.define('academic_calendar',{
       .then((data) => {
         dataToSend = {
           data,
-          status: 1,
-          message: "Loaded"
+          status: 200,
+          message: "Success"
         }
         return dataToSend
       })
-      .catch(()=>{
+      .catch((err)=>{
         return {
-          status: 0,
-          message: "Failed to load data"
+          status: 500,
+          message: err.toString()
         }
       })
       },
-      addEvent: (db, inputData, cb)=>{  //adding event to academic calendar
+      addEvent: (db, request, cb)=>{  //adding event to academic calendar
         academicCalendar = db.academic_calendar
-
+        console.log("drequest object", request.type)
         academicCalendar.create({
-          type: inputData.type,
-          start_date: inputData.startDate,
-          end_date: inputData.endDate,
-          content: inputData.eventName,
-          academic_year: inputData.academicYear
+          type: request.type,
+          start_date: new Date(request.startDate),
+          end_date: new Date(request.endDate),
+          content: request.eventName,
+          academic_year: request.academicYear
         })
         .then((data)=>{
           cb({
-          status: 1,
-          message: "Created an entry",
-          data: inputData
+          status: 200,
+          message: "Success",
+          data: request
           })
         })
-        .catch((data)=>{
+        .catch((err)=>{
           console.log(data)
           cb({
-            status: 0,
-            message: "Failed to create an entry",
-            data: inputData
+            status: 500,
+            message: err.toString()
           })
         })
       },
-      deleteEvent: (db, eventId, cb)=>{ //deleting event from academic calendar
+      deleteEvent: (db, request, cb)=>{ //deleting event from academic calendar
         academicCalendar = db.academic_calendar
 
         academicCalendar.update({
             status: false
           },{
            where:{
-            id:eventId
+            id: request.id
           }
          })
          .then((data)=>{
            cb({
-           status: 1,
-           message: "Deleted event",
-           data: eventId
+           status: 200,
+           message: "Success",
+           data: request.id
          })
         })
-        .catch((data)=>{
+        .catch((err)=>{
           cb({
-            status: 0,
-            message: "Failed to delete entry",
-            data: eventId
+            status: 500,
+            message: err.toString(),
+            data: request.id
           })
         })
       },

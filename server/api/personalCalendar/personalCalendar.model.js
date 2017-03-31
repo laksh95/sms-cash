@@ -1,6 +1,7 @@
 let data = require('./../../config/db');
 let sequelize = data.sequelize;
 let connection = data.connection;
+let validator = require('validator')
 
 module.exports=function(){
 let personalCalendar= connection.define('personal_calendar',{
@@ -12,23 +13,40 @@ let personalCalendar= connection.define('personal_calendar',{
    heading: {
         type: sequelize.TEXT,
        allowNull: false,
+       validate: {
+         notEmpty: true
+       }
      },
     content: {
        type: sequelize.TEXT,
-       allowNull: false
+       allowNull: false,
+       validate: {
+         notEmpty: true
+       }
      },
    start_date: {
        type: sequelize.DATE,
-       allowNull: false
+       allowNull: false,
+       validate: {
+         isDate: true,
+         notEmpty: true
+       }
     },
     end_date: {
        type: sequelize.DATE,
-       allowNull: false
+       allowNull: false,
+       validate: {
+         isDate: true,
+         notEmpty: true
+       }
     },
     status: {
       type: sequelize.BOOLEAN,
       allowNull: false,
-      defaultValue: true
+      defaultValue: true,
+      validate: {
+        isBoolean: true
+      },
     }
   },
  {
@@ -40,39 +58,45 @@ let personalCalendar= connection.define('personal_calendar',{
         foreignKey : "user_id"
       })
     },
-    fetchPersonalCalendarList: (db, userId) => { //fetching all personalCalendar details for a particular user
+    fetchPersonalCalendarList: (db, request) => { //fetching all personalCalendar details for a particular user
       personalCalendar = db.personal_calendar
 
       return personalCalendar.findAll({
         attributes: ['id' ,'heading', 'end_date', 'start_date', 'content'],
         where: {
-          user_id: userId,
+          user_id: request.id,
           status: true
         }
       })
       .then((data) => {
         dataToSend = {
           data,
-          status: 1,
-          message: "Loaded"
+          status: 200,
+          message: "Success"
         }
         return dataToSend
       })
+      .catch((err)=>{
+        return {
+          status: 500,
+          message: err.toString()
+        }
+      })
     },
-    addPersonalEvent: (db, inputData, cb) => { //adding event from personal calendar for a prticular user
+    addPersonalEvent: (db, request, cb) => { //adding event from personal calendar for a prticular user
       personalCalendar = db.personal_calendar
 
     return personalCalendar.create({
-        heading: inputData.heading,
-        end_date: inputData.endDate,
-        start_date: inputData.startDate,
-        content: inputData.content,
-        user_id: inputData.userId
+        heading: request.body.heading,
+        end_date: request.body.endDate,
+        start_date: request.body.startDate,
+        content: request.body.content,
+        user_id: request.user.id
       })
       .then((data)=>{
         cb({
-          status: 1,
-          message: "Created an entry",
+          status: 200,
+          message: "Success",
           data: {
             heading: data.heading,
             end_date: data.end_date,
@@ -84,33 +108,33 @@ let personalCalendar= connection.define('personal_calendar',{
       })
       .catch((data)=>{
         cb({
-          status: 0,
-          message: "Failed to create an entry"
+          status: 500,
+          message: err.toString()
         })
       })
     },
-    deletePersonalEvent: (db, inputData, cb) => { ////deleting event from personal calendar for a particular user
+    deletePersonalEvent: (db, request, cb) => { ////deleting event from personal calendar for a particular user
       personalCalendar = db.personal_calendar
 
       personalCalendar.update({
             status: false
           },{
            where:{
-            id:inputData
+            id:request.id
           }
          })
          .then((data)=>{
            cb({
-           status: 1,
-           message: "Deleted event",
-           data: inputData
+           status: 200,
+           message: "Success",
+           data: request.id
          })
         })
         .catch((data)=>{
           cb({
-            status: 0,
-            message: "Failed to delete entry",
-            data: inputData
+            status: 200,
+            message: err.toString(),
+            data: request.id
           })
         })
     }

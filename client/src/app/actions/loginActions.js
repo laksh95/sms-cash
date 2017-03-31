@@ -16,7 +16,6 @@ export function loginUser(credential){
 
 
 export function checkLogin(config){
-
 	return {
 		type: types.CHECK_IS_LOGIN,
 		payload: 	
@@ -33,3 +32,20 @@ export function logoutUser(){
 		type: types.LOGOUT
 	}
 }
+
+
+export function setUrl(path){
+	return {
+		type: types.SETPREVPATH,
+		payload: path
+	}
+}
+
+export function setReceivedResponse(value){
+	return {
+		type: types.RES_PENDING,
+		payload: value
+
+	}
+}
+

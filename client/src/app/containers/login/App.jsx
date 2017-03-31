@@ -11,23 +11,30 @@ import Auth from './../../Auth.js';
 
 class App extends React.Component {
 
+  componentWillMount() {
+    if(this.props.login.isLogin){
+        browserHistory.push(this.props.login.prevPathName);
+        Auth.authenticateUser(this.props.login.token);
+    }
+  }
+
   componentDidMount() {
       if(this.props.login.isLogin){
-        browserHistory.push('/dashboard');
+        browserHistory.push(this.props.login.prevPathName);
         Auth.authenticateUser(this.props.login.token);
       }
   }
 
-  componentWillReceiveProps(nextProps) {
-    if(this.props.login.isLogin){
-      browserHistory.push('/dashboard');
-      Auth.authenticateUser(this.props.login.token);
-    }
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   if(this.props.login.isLogin){
+  //     browserHistory.push(this.props.login.prevPathName);
+  //     Auth.authenticateUser(this.props.login.token);
+  //   }
+  // }
 
   componentDidUpdate(prevProps, prevState) {
     if(this.props.login.isLogin){
-      browserHistory.push('/dashboard'); 
+      browserHistory.push(this.props.login.prevPathName);
       Auth.authenticateUser(this.props.login.token);
     }
   }

@@ -98,7 +98,7 @@ class TopBar extends React.Component {
               break;
 
       case HANDLE_CODES.LOGOUT_HANDLE:
-               browserHistory.push('/');
+               //browserHistory.push('/');
                Auth.deauthenticateUser();
                this.props.logoutUser();
               break;

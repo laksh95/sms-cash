@@ -1,15 +1,23 @@
 import * as types from './../constants';
+import Auth from './../Auth.js';
 
 const initialLoginState={
 	isLogin : false,
 	loginUser: {},
-	token: ""
-}
+	token: "",
+    prevPathName: "/",
+    receivedResponse: true
+} 
 
 const loginReducer= (state=initialLoginState, action) => {
     switch(action.type){
-        case types.LOGIN + "_FULFILLED":
         case types.CHECK_IS_LOGIN + "_FULFILLED":
+            state={
+                ...state,
+                receivedResponse: true 
+            }
+        case types.LOGIN + "_FULFILLED":
+        
         	let response= action.payload;
             let user= response.user;
 
@@ -39,6 +47,7 @@ const loginReducer= (state=initialLoginState, action) => {
             }
             user.role=role;
         	if(response.isLogin){
+                Auth.authenticateUser(response.token);
         		state= {
                 	...state,
                 	isLogin:true,
@@ -48,15 +57,44 @@ const loginReducer= (state=initialLoginState, action) => {
         	}            
         break; 
 
+        case types.CHECK_IS_LOGIN + "_PENDING":
+        case types.LOGIN + "_PENDING":
+            state= {
+                ...state,
+                receivedResponse: false
+            } 
+        break; 
+
+
+        case types.RES_PENDING:
+            state= {
+                ...state,
+                receivedResponse: action.payload
+            } 
+        break;  
+
+        case types.CHECK_IS_LOGIN + "_REJECTED":
+            state={
+                ...state,
+                receivedResponse: true 
+            }
         case types.LOGOUT:
         case types.LOGIN + "_REJECTED":
-        case types.CHECK_IS_LOGIN + "_REJECTED":
+            Auth.deauthenticateUser();
             state={
                 ...state,
                 isLogin: false,
                 token: "", 
                 loginUser: {}
             }
+        break;
+
+        case types.SETPREVPATH:
+            state={
+                ...state,
+                prevPathName: action.payload
+            }
+        break;
     }
     return state;
 };

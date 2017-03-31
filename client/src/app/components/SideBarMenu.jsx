@@ -28,15 +28,15 @@ export default class SideBarMenu extends React.Component {
   }
 
   componentWillMount() {
-     if(!this.props.isLogin){
-        browserHistory.push('/');
-    }
+    //  if(!this.props.isLogin){
+    //     browserHistory.push('/');
+    // }
   }
 
   componentWillReceiveProps(nextProps) {
-    if(!this.props.isLogin){
-        browserHistory.push('/');
-    }
+    // if(!this.props.isLogin){
+    //     browserHistory.push('/');
+    // }
   }
  
  getChildContext(){
@@ -95,7 +95,7 @@ export default class SideBarMenu extends React.Component {
               </Link> : null}
 
               {this.props.user.role.isAdmin ?
-              <Link to ="/dashboard" style={{textDecoration: 'none'}}>
+              <Link to ="/" style={{textDecoration: 'none'}}>
                 <ListItem
                   primaryText="DashBoard"
                   leftAvatar={<Avatar src={userImage}

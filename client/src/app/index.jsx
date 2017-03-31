@@ -13,15 +13,17 @@ import store from './store.js'
 const history = syncHistoryWithStore(browserHistory, store);
 injectTapEventPlugin();
 
+
 render((
 	<Provider store={store}>
 	   <Router history = {history}>	      
-	      <Route path = "/dashboard" component = {App}>
+	      <Route path = "/" component = {App}>
 	         <IndexRoute component = {Dashboard} />	         
 	         <Route path = "/department" component = {Department} />
 	      </Route>
-	      <Route path = "/" component = {Login}/>
+	      <Route path = "/login" component = {Login}/>
 	   </Router>
 	</Provider>
 ), document.getElementById('app'))
 
+	

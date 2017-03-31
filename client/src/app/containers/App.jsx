@@ -2,7 +2,7 @@ import React from 'react';
 import SideBarMenu from './../components/SideBarMenu.jsx';
 import TopBar from './TopBar.jsx'; 
 import Auth from './../Auth.js';
-import {checkLogin, logoutUser} from "./../actions/loginActions";
+import {checkLogin, logoutUser, setUrl, setReceivedResponse} from "./../actions/loginActions";
 import {connect} from "react-redux";
 import {browserHistory} from 'react-router';
 
@@ -36,33 +36,43 @@ class App extends React.Component {
 
     componentWillMount() {
       var token = Auth.getToken();
-      var authString = `bearer ${Auth.getToken()}`
+      let path= this.props.location.pathname;
+
+      this.props.setUrl(path);
+      this.props.setReceivedResponse(false);
       
       if(token !=null){
-
-        //axios.defaults.headers.commons['Authorization'] = authString;
-          let config = {
-             headers: {
-               'Authorization': authString
-             }
-          }
-
         this.props.checkLogin();
-
       }
+      else if(!this.props.login.isLogin){
+        console.log("In will mount, goinf to login: ");
+        console.log("token: ", token);
+        console.log("login: ", this.props.login);
+        browserHistory.push('/login');
+      }
+
     }
 
-    componentDidMount() {
-      if(!this.props.login.isLogin){
-        browserHistory.push('/');
-      }
-    }
+    // componentDidMount() {
+    //   var token = Auth.getToken();
+    //   if(!token || token.trim()==""){
+    //     browserHistory.push('/');
+    //   }
+    // }
 
     componentWillReceiveProps(nextProps) {
-       if(!this.props.login.isLogin){
-        browserHistory.push('/');
+     
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+      console.log("In Component will receive props,  going to login: ");
+      console.log("Login state: ", this.props.login);
+      if(this.props.login.receivedResponse && !this.props.login.isLogin){
+        browserHistory.push('/login');
       }
     }
+
+
 
    render() {
 
@@ -114,6 +124,12 @@ const mapDispatchToProps= (dispatch) => {
     },
     checkLogin: () =>{
       dispatch(checkLogin());
+    },
+    setUrl: (path) =>{
+      dispatch(setUrl(path));
+    },
+    setReceivedResponse: (value) => {
+       dispatch(setReceivedResponse(value));
     } 
   };
 };

@@ -2,7 +2,6 @@ let data = require('./../../config/db');
 let sequelize = data.sequelize;
 let connection = data.connection;
 let validator = require('validator')
-
 module.exports=function(){
 let student= connection.define('student',{
     id: {

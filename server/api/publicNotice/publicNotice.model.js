@@ -23,8 +23,9 @@ let notice= connection.define('public_notice',{
        allowNull: false
     },
     status:{
-       type: sequelize.BOOLEAN,
-       default: true
+        type:sequelize.BOOLEAN,
+        allowNull:false,
+        defaultValue:true
     }
  },
  {

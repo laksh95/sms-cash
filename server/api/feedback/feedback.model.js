@@ -1,4 +1,4 @@
-    let database=require('../../config/db')
+let database=require('../../config/db')
 let sequelize=database.sequelize
 let connection=database.connection
 let init = function(){
@@ -7,6 +7,11 @@ let init = function(){
             type: sequelize.INTEGER,
             primaryKey: true,
             autoIncrement: true
+        },
+        status:{
+            type:sequelize.BOOLEAN,
+            allowNull:false,
+            defaultValue:true
         }
     },
     {
@@ -38,5 +43,4 @@ let init = function(){
         }
     })
 }
-
 module.exports = init

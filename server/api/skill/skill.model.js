@@ -7,11 +7,16 @@ let SkillData=function(){
                 allowNull: false,
                 autoIncrement: true,
                 primaryKey: true,
-                type: sequelize.INTEGER,
+                type: database.sequelize.INTEGER,
             },
             name: {
                 allowNull: false,
-                type: sequelize.STRING,
+                type: database.sequelize.STRING,
+            },
+            status:{
+                type:sequelize.BOOLEAN,
+                allowNull:false,
+                defaultValue:true
             }
         }
     );

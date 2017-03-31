@@ -7,10 +7,10 @@ import NumberInput from 'material-ui-number-input';
 import axios from 'axios'
 import Snackbar from 'material-ui/Snackbar';
 require('rc-pagination/assets/index.css');
-import {setCourse,setPagedCourse,setSnackbarOpen,setSnackbarMessage,setValue} from '../../actions/courseActions.jsx'
+import {setCourse,setPagedCourse,setSnackbarOpen,setSnackbarMessage,setValue,editCourse,addCourse , deleteCourse,getCourses} from '../../actions/courseActions.jsx'
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 import { Router, Route, browserHistory } from 'react-router'
-import store from './../../store.jsx'
+import store from './../../store'
 import {connect} from 'react-redux'
 
 const Pagination = require('rc-pagination');
@@ -122,18 +122,13 @@ class ViewCourse extends React.Component {
             }
         })
     }
-
     handleDeleteClose = () => {
         this.setState({deleteDialog: false});
     };
     handleDeleteCloseWithUpdate = () => {
         let data = this.state.curCourse
-        axios.put('http://localhost:3166/api/course/deleteCourse',data).then((response)=>{
-
-        })
-            .catch((response)=>{
-                console.log(response)
-            })
+        console.log("inside handle",data)
+        this.props.deleteCourse(data)
         this.setState({deleteDialog: false});
     };
     handleClose = (key) => {
@@ -143,6 +138,7 @@ class ViewCourse extends React.Component {
     handleCloseWithEdit = (key) => {
         this.setState({open: false});
         let data = this.state.curCourse
+        console.log("~~~~~~~~~~~~~~~~~",data)
         this.props.editCourse(data)
     }
     handleOpen = (key,data) => {
@@ -160,7 +156,7 @@ class ViewCourse extends React.Component {
         let name = event.target.value
         if(name.trim()=='') {
             this.setState({
-                errorText1:"Course Name required"
+                errorText1:"course Name required"
             })
             this.setState({
                 validateCourseName:false
@@ -193,6 +189,7 @@ class ViewCourse extends React.Component {
         })
     }
     componentWillMount(){
+        console.log("inside will mount ")
         this.props.getCourses()
     }
     render(){
@@ -230,7 +227,6 @@ class ViewCourse extends React.Component {
         if (this.state.open) {
             contentStyle.marginLeft = 230;
         }
-        console.log("++++++++++++++++++++",this.state.curCourse.duration)
         return (
 
             <div>
@@ -331,6 +327,18 @@ const mapDispatchToProps = (dispatch) => {
         },
         setValue:(value)=>{
             dispatch(setValue(value))
+        },
+        getCourses:()=>{
+            dispatch(getCourses())
+        },
+        addCourse:(data) =>{
+            dispatch(addCourse(data))
+        },
+        editCourse:(data) =>{
+            dispatch(editCourse(data))
+        },
+        deleteCourse:(data) =>{
+            dispatch(deleteCourse(data))
         }
     };
 };

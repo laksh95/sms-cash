@@ -6,40 +6,39 @@ const courseReducer = (state = {
     value : "a",
     totalPages : "",
     currentPage : ""
-
 },action) => {
     switch(action.type){
-        case "setCourse":
+        case "SET_COURSE":
             state = {
                 ...state ,
                 course : action.payload
             }
             break
-        case "setPagedCourse":
+        case "SET_PAGED_COURSES":
             state = {
                 ...state ,
                 pagedCourses:action.payload
             }
             break
-        case "setSnackbarOpen":
+        case "SET_SNACKBAR_OPEN":
             state ={
                 ...state ,
                 snackbarOpen:action.payload
             }
             break
-        case "setSnackbarMessage":
+        case "SET_SNACKBAR_MESSAGE":
             state ={
                 ...state ,
                 snackbarMessage : action.payload
             }
             break
-        case "setValue":
+        case "SET_VALUE":
             state = {
                 ...state,
                 value : action.payload
             }
             break
-        case "GET_COURSES" :
+        case "GET_COURSES_FULFILLED" :
             var course  = action.payload
             var size = course.length
             var pagedCourses = []
@@ -55,7 +54,8 @@ const courseReducer = (state = {
                 pagedCourses : pagedCourses
             }
             break
-        case "ADD_COURSE":
+
+        case "ADD_COURSE_FULFILLED":
             var data = action.payload
             if(data.status==1){
                 var newCourse = data.content
@@ -72,7 +72,7 @@ const courseReducer = (state = {
                     ...state ,
                     course : course ,
                     snackbarOpen : true,
-                    snackbarMessage : "Course Added",
+                    snackbarMessage : "course Added",
                     value : 'a',
                     totalPages : size ,
                     currentPage : 1,
@@ -87,10 +87,14 @@ const courseReducer = (state = {
                 }
             }
             break
-        case "EDIT_COURSE":
-            var data = action.payload
-            if(data[0]==1){
+
+        case "EDIT_COURSE_FULFILLED":
+            let content = action.payload
+            console.log("++++++++++++++++++",content)
+            var data = content.data
+            if(content.status==1){
                 let course = state.course
+                // console.log("++++++++++++++++++++++",course)
                 for(let index in course){
                     if(course[index].id===data.id){
                         course[index] = data
@@ -124,8 +128,12 @@ const courseReducer = (state = {
             }
 
             break
-        case "DELETE_COURSE":
+
+        case "DELETE_COURSE_FULFILLED":
+            console.log("===========================",action.payload)
             var course = state.course
+            var data = action.payload.data
+
             for(let index in course){
                 if(course[index].id==data.id){
                     course.splice(index,1)
@@ -144,7 +152,7 @@ const courseReducer = (state = {
                 totalPages : size ,
                 currentPage: 1,
                 snackbarOpen :true ,
-                snackbarMessage : "Course Deleted",
+                snackbarMessage : "course Deleted",
                 pagedCourses:pagedCourses
             }
             break

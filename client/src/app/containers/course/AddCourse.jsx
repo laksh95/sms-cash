@@ -3,10 +3,10 @@ import RaisedButton from 'material-ui/RaisedButton'
 import TextField from 'material-ui/TextField'
 import NumberInput from 'material-ui-number-input'
 import Snackbar from 'material-ui/Snackbar'
-import {setCourse,setPagedCourse,setSnackbarOpen,setSnackbarMessage,setValue} from '../../actions/courseActions.jsx'
+import {setCourse,setPagedCourse,setSnackbarOpen,setSnackbarMessage,setValue,getCourses,editCourse,deleteCourse,addCourse} from '../../actions/courseActions.jsx'
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 import { Router, Route, browserHistory } from 'react-router'
-import store from './../../store.jsx'
+import store from './../../store'
 import {connect} from 'react-redux'
 import axios from 'axios'
 class AddCourse extends React.Component {
@@ -182,10 +182,34 @@ const mapDispatchToProps = (dispatch) => {
         },
         setValue:(value)=>{
             dispatch(setValue(value))
+        },
+        getCourses:()=>{
+            dispatch(getCourses())
+        },
+        addCourse:(data) =>{
+            dispatch(addCourse(data))
+        },
+        editCourse:(data) =>{
+            dispatch(editCourse(data))
+        },
+        deleteCourse:(data) =>{
+            dispatch(deleteCourse(data))
+        },
+        getCourses:()=>{
+            dispatch(getCourses())
+        },
+        addCourse:(data) =>{
+            dispatch(addCourse(data))
+        },
+        editCourse:(data) =>{
+            dispatch(editCourse(data))
+        },
+        deleteCourse:(data) =>{
+            dispatch(deleteCourse(data))
         }
     };
 };
-export  default connect(mapStateToProps,mapDispatchToProps)(AddCourse);
+export default connect(mapStateToProps,mapDispatchToProps)(AddCourse);
 
 
 

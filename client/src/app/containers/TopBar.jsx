@@ -6,7 +6,7 @@ import FlatButton from 'material-ui/FlatButton';
 import Popover from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
-import Auth from './../components/Auth.js';
+import Auth from '../Auth.js';
 import {Router, browserHistory} from 'react-router'
 import { connect } from 'react-redux'
 import { getSession, getBatch, getCourse, getDepartment } from '../actions/adminActions.jsx'
@@ -193,7 +193,8 @@ TopBar.childContextTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    adminReducer: state.adminReducer
+    adminReducer: state.adminReducer,
+    courseReducer : state.courseReducer
     }
 }
 
@@ -210,6 +211,21 @@ const mapDispatchToProps = (dispatch) => {
       },
       getDepartment: (item) => {
         dispatch(getDepartment(item))
+      },
+      setCourse : (course)=>{
+          dispatch(setCourse(course))
+      },
+      setPagedCourse : (course)=>{
+          dispatch(setPagedCourse(course))
+      },
+      setSnackbarOpen :(data)=>{
+          dispatch(setSnackbarOpen(data))
+      },
+      setSnackbarMessage:(data)=>{
+          dispatch(setSnackbarMessage(data))
+      },
+      setValue:(value)=>{
+          dispatch(setValue(value))
       }
     }
 }

@@ -43,6 +43,9 @@ let init=function(){
                     }).then((data)=>{
                         sendData(data)
                     })
+                        .catch((err)=>{
+                            sendData(err.toString())
+                        })
                 },
                 addNewCourse:(db,setData,sendData)=>{
                     let course=db.course
@@ -65,12 +68,15 @@ let init=function(){
                                 }
                                 sendData(response)
                             })
+                                .catch((err)=>{
+                                    sendData(err.toString())
+                                })
                         }
                         else {
                             let course = data
                             let flag = 1
                             for (let index in course) {
-                                if (course[index].dataValues.status == true) {
+                                if (course[index].dataValues.status === true) {
                                     flag = 0
                                 }
                             }
@@ -85,6 +91,9 @@ let init=function(){
                                     }
                                     sendData(response)
                                 })
+                                    .catcH((err)=>{
+                                        sendData(err.toString())
+                                    })
                             }
                             else {
                                 response = {
@@ -108,7 +117,9 @@ let init=function(){
                     }).then((data)=>{
                         sendData(data)
                     })
-
+                        .catch((err)=>{
+                            sendData(err.toString())
+                        })
                 },
                 deleteCourse:(db,deleteId,sendData)=>{
                     let course = db.course
@@ -122,6 +133,9 @@ let init=function(){
                     }).then((data)=>{
                         sendData(data)
                     })
+                        .catch((err)=>{
+                            sendData(err.toString())
+                        })
                 }
             }
         })

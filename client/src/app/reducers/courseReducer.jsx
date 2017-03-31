@@ -40,9 +40,9 @@ const courseReducer = (state = {
             }
             break
         case "GET_COURSES" :
-            let course  = action.payload
-            let size = course.length
-            let pagedCourses = []
+            var course  = action.payload
+            var size = course.length
+            var pagedCourses = []
             for(let index in course ){
                 if(index<10){
                     pagedCourses.push(course[index])
@@ -56,13 +56,13 @@ const courseReducer = (state = {
             }
             break
         case "ADD_COURSE":
-            let data = action.payload
+            var data = action.payload
             if(data.status==1){
-                let newCourse = data.content
-                let course = state.course
+                var newCourse = data.content
+                var course = state.course
                 course.push(newCourse)
-                let size = course.length
-                let pagedCourses = []
+                var size = course.length
+                var pagedCourses = []
                 for(let index  in course){
                     if(index<10){
                         pagedCourses.push(course[index])
@@ -88,7 +88,7 @@ const courseReducer = (state = {
             }
             break
         case "EDIT_COURSE":
-            let data = action.payload
+            var data = action.payload
             if(data[0]==1){
                 let course = state.course
                 for(let index in course){
@@ -96,8 +96,8 @@ const courseReducer = (state = {
                         course[index] = data
                     }
                 }
-                let size = course.length
-                let pagedCourses = []
+                var size = course.length
+                var pagedCourses = []
                 for(let index in course){
                     if(index<10){
                         pagedCourses.push(course[index])
@@ -125,14 +125,14 @@ const courseReducer = (state = {
 
             break
         case "DELETE_COURSE":
-            let course = state.course
+            var course = state.course
             for(let index in course){
                 if(course[index].id==data.id){
                     course.splice(index,1)
                 }
             }
-            let size=course.length
-            let pagedCourses = []
+            var size=course.length
+            var pagedCourses = []
             for(let index in course ){
                 if(index<10){
                     pagedCourses.push(course[index])

@@ -1,1 +1,4 @@
 /node_modules
+client/src/public/
+npm-debug.log
+.idea/misc.xml

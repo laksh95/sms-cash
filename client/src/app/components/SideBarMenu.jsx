@@ -50,16 +50,16 @@ export default class SideBarMenu extends React.Component {
    };
   
   render() { 
-    var list = [
-      "Department":'white',
-      "Dashboard":'white',
-      "Students":'white',
-      "Teacher":'white',
-      "Subjects":'white',
-      "Events":'white',
-      "Important":'white',
-      "T/S":'white'
-      ];
+    var list = {
+        "Department": 'white',
+        "Dashboard": 'white',
+        "Students": 'white',
+        "Teacher": 'white',
+        "Subjects": 'white',
+        "Events": 'white',
+        "Important": 'white',
+        "T/S": 'white'
+        };
 
     list[this.state.selected] = '#e3e7ea';
     let sizeWidth = 230;
@@ -93,6 +93,13 @@ export default class SideBarMenu extends React.Component {
                   leftAvatar={<Avatar src={userImage} />} 
                 />
               </Link> : null}
+               {(this.props.user.role.isAdmin || this.props.user.role.isDirector)?
+                   <Link to = "/course" style={{textDecoration:'none'}}>
+                       <ListItem
+                           primaryText="Course"
+                           leftAvatar={<Avatar src={userImage}/>}
+                       />
+                   </Link> : null}
 
               {this.props.user.role.isAdmin ?
               <Link to ="/dashboard" style={{textDecoration: 'none'}}>

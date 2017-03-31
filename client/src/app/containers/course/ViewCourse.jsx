@@ -127,7 +127,7 @@ class ViewCourse extends React.Component {
     };
     handleDeleteCloseWithUpdate = () => {
         let data = this.state.curCourse
-        console.log("inside handle",data)
+        console.log("Inside Handle",data)
         this.props.deleteCourse(data)
         this.setState({deleteDialog: false});
     };

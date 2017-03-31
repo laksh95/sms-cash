@@ -53,15 +53,16 @@ let init=function(){
                             name:setData.course_name
                         }
                     }).then((data)=>{
-                        // console.log("data-----------",typeof(data[0]))
                         if(data.length==0){
                             db.course.create({
                                 name:setData.course_name,
                                 duration:setData.duration
                             }).then((data)=>{
+                                data['noOfDept'] =0
                                 response={
                                     status:1,
-                                    content:data
+                                    msg : "Added Successfully",
+                                    data:data
                                 }
                                 sendData(response)
                             })
@@ -79,9 +80,11 @@ let init=function(){
                                     name: setData.course_name,
                                     duration: setData.duration
                                 }).then((data) => {
+                                    data['noOfDept'] =0
                                     response = {
                                         status: 1,
-                                        content: data
+                                        data : data,
+                                        msg : "Added Successfully"
                                     }
                                     sendData(response)
                                 })
@@ -89,7 +92,8 @@ let init=function(){
                             else {
                                 response = {
                                     status: 0,
-                                    content: 'course Already exists.'
+                                    msg: 'course Already exists.',
+                                    data : {}
                                 }
                                 sendData(response)
                             }
@@ -116,7 +120,6 @@ let init=function(){
 
                 },
                 deleteCourse:(db,deleteId,sendData)=>{
-                    console.log("modellllllllllll",deleteId)
                     let course = db.course
                     course.update({
                         status:'f'

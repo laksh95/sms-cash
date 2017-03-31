@@ -57,8 +57,9 @@ const courseReducer = (state = {
         case "ADD_COURSE_FULFILLED":
             let data = action.payload
             if(data.status==1){
-                let newCourse = data.content
+                let newCourse = data.data
                 let course = state.course
+                console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",data)
                 course.push(newCourse)
                 let size = course.length
                 let pagedCourses = []
@@ -81,18 +82,16 @@ const courseReducer = (state = {
             else {
                 state = {
                     ...state ,
-                    snackbarMessage : data.content,
+                    snackbarMessage : data.msg,
                     snackbarOpen : true
                 }
             }
             break
         case "EDIT_COURSE_FULFILLED":
             let content = action.payload
-            console.log("++++++++++++++++++",content)
             var data = content.data
             if(content.status==1){
                 let course = state.course
-                // console.log("++++++++++++++++++++++",course)
                 for(let index in course){
                     if(course[index].id===data.id){
                         course[index] = data
@@ -127,7 +126,6 @@ const courseReducer = (state = {
 
             break
         case "DELETE_COURSE_FULFILLED":
-            console.log("===========================",action.payload)
             var course = state.course
             var data = action.payload.data
             for(let index in course){

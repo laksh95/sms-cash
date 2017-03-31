@@ -9,14 +9,7 @@ let courseFunctions = {
        })
    },
    addCourse:(req,res)=>{
-       let course_name=req.body.course_name
-       let duration=req.body.duration
-
-       let setCourseData={
-           course_name,
-           duration
-       }
-       model.addNewCourse(db,setCourseData,function(data){
+       model.addNewCourse(db,req.body,function(data){
            res.send(data)
        })
    },

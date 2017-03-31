@@ -39,9 +39,9 @@ const courseReducer = (state = {
             }
             break
         case "GET_COURSES_FULFILLED" :
-            let course  = action.payload
-            let size = course.length
-            let pagedCourses = []
+            var course  = action.payload
+            var size = course.length
+            var pagedCourses = []
             for(let index in course ){
                 if(index<10){
                     pagedCourses.push(course[index])
@@ -54,15 +54,15 @@ const courseReducer = (state = {
                 pagedCourses : pagedCourses
             }
             break
+
         case "ADD_COURSE_FULFILLED":
-            let data = action.payload
+            var data = action.payload
             if(data.status==1){
                 let newCourse = data.data
                 let course = state.course
-                console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",data)
                 course.push(newCourse)
-                let size = course.length
-                let pagedCourses = []
+                var size = course.length
+                var pagedCourses = []
                 for(let index  in course){
                     if(index<10){
                         pagedCourses.push(course[index])
@@ -87,8 +87,9 @@ const courseReducer = (state = {
                 }
             }
             break
+
         case "EDIT_COURSE_FULFILLED":
-            let content = action.payload
+            var content = action.payload
             var data = content.data
             if(content.status==1){
                 let course = state.course
@@ -97,8 +98,8 @@ const courseReducer = (state = {
                         course[index] = data
                     }
                 }
-                let size = course.length
-                let pagedCourses = []
+                var size = course.length
+                var pagedCourses = []
                 for(let index in course){
                     if(index<10){
                         pagedCourses.push(course[index])
@@ -125,9 +126,11 @@ const courseReducer = (state = {
             }
 
             break
+
         case "DELETE_COURSE_FULFILLED":
             var course = state.course
             var data = action.payload.data
+
             for(let index in course){
                 if(course[index].id==data.id){
                     course.splice(index,1)

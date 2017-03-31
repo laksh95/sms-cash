@@ -43,6 +43,9 @@ let init=function(){
                     }).then((data)=>{
                         sendData(data)
                     })
+                        .catch((err)=>{
+                            sendData(err.toString())
+                        })
                 },
                 addNewCourse:(db,setData,sendData)=>{
                     let course=db.course
@@ -58,20 +61,23 @@ let init=function(){
                                 name:setData.course_name,
                                 duration:setData.duration
                             }).then((data)=>{
-                                data['noOfDept'] =0
+                                data[noOfDept]=0
                                 response={
                                     status:1,
-                                    msg : "Added Successfully",
-                                    data:data
+                                    data,
+                                    msg:'Course Added Successfully'
                                 }
                                 sendData(response)
                             })
+                                .catch((err)=>{
+                                    sendData(err.toString())
+                                })
                         }
                         else {
                             let course = data
                             let flag = 1
                             for (let index in course) {
-                                if (course[index].dataValues.status == true) {
+                                if (course[index].dataValues.status === true) {
                                     flag = 0
                                 }
                             }
@@ -83,17 +89,20 @@ let init=function(){
                                     data['noOfDept'] =0
                                     response = {
                                         status: 1,
-                                        data : data,
-                                        msg : "Added Successfully"
+                                        data,
+                                        msg:'Added Successfully'
                                     }
                                     sendData(response)
                                 })
+                                    .catcH((err)=>{
+                                        sendData(err.toString())
+                                    })
                             }
                             else {
                                 response = {
                                     status: 0,
-                                    msg: 'course Already exists.',
-                                    data : {}
+                                    data:{},
+                                    msg: 'course Already exists.'
                                 }
                                 sendData(response)
                             }
@@ -117,7 +126,9 @@ let init=function(){
                         }
                         sendData(response)
                     })
-
+                        .catch((err)=>{
+                            sendData(err.toString())
+                        })
                 },
                 deleteCourse:(db,deleteId,sendData)=>{
                     let course = db.course
@@ -136,6 +147,9 @@ let init=function(){
                         }
                         sendData(response)
                     })
+                        .catch((err)=>{
+                            sendData(err.toString())
+                        })
                 }
             }
         })

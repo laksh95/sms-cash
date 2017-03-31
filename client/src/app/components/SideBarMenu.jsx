@@ -50,6 +50,7 @@ export default class SideBarMenu extends React.Component {
    };
   
   render() { 
+
     let list = {
         "Department": 'white',
         "Dashboard": 'white',
@@ -91,6 +92,13 @@ export default class SideBarMenu extends React.Component {
                   leftAvatar={<Avatar src={userImage} />} 
                 />
               </Link> : null}
+               {(this.props.user.role.isAdmin || this.props.user.role.isDirector)?
+                   <Link to = "/course" style={{textDecoration:'none'}}>
+                       <ListItem
+                           primaryText="Course"
+                           leftAvatar={<Avatar src={userImage}/>}
+                       />
+                   </Link> : null}
 
                {(this.props.user.role.isAdmin || this.props.user.role.isDirector) ?
                    <Link to ="/course" style={{textDecoration: 'none'}}>

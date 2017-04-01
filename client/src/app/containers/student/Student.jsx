@@ -1,9 +1,8 @@
 import React from 'react';
-import AppBar from 'material-ui/AppBar';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import {Tabs, Tab} from 'material-ui/Tabs'
-import AddStudent from './adminAddStudent.jsx'
+import AddStudent from './addStudent.jsx'
 import AddBulkStudent from './addBulkStudent.jsx'
 
 class Student extends React.Component { 

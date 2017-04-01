@@ -40,7 +40,7 @@
     width:50%;
 }
 .extra_space {
-    margin-bottom: 28px;
+    margin-bottom: 28px; !important;
 }
 .addBulk{
     margin:auto;

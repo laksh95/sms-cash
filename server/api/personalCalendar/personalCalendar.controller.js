@@ -3,27 +3,28 @@ var express = require('express');
 var personalCalendar = require('./../personalCalendar/personalCalendar.model.js')
 var db=require('./../../sqldb')();
 var dashboardHandler = {
-	addPersonalEvent: function(request, response){ //adding event from personal calendar
-		let inputData = getData(request, response)
-		personalCalendar().addPersonalEvent(db, inputData, (status)=>{
-			response.send(status)
-		})
+	//adding event from personal calendar
+	addPersonalEvent: function(request, response){
+		if(request !== null && request != undefined && request.user != null && request.user != undefined && request.body != undefined && Object.keys(request).length!==0 && Object.keys(request.body).length!==0){
+			personalCalendar().addPersonalEvent(db, request, (status)=>{
+				response.send(status)
+			})
+		}
+		else{
+			response.status(400).end()
+		}
 	},
-	deletePersonalEvent: (request, response) => { //deleting event from personal calendar
-		personalCalendar().deletePersonalEvent(db, request.body.id, (status)=>{
-			response.send(status)
-		})
+	//deleting event from personal calendar
+	deletePersonalEvent: (request, response) => {
+		if(request !== null && request != undefined  && request.user != null && request.user != undefined && request.body != undefined && Object.keys(request).length!==0 && Object.keys(request.body).length!==0){
+			personalCalendar().deletePersonalEvent(db, request.body, (status)=>{
+				response.send(status)
+			})
+		}
+		else{
+			response.status(400).end()
+		}
 	}
-}
-function getData(request, response){ //fetching data from front end
-	let data = {
-		heading: request.body.heading,
-    	startDate: new Date(request.body.startDate),
-    	endDate: new Date(request.body.endDate),
-    	content: request.body.content,
-		userId: request.user.id
-	}
-	return data;
 }
 
 module.exports = dashboardHandler;

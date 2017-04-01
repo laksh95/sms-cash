@@ -12,20 +12,32 @@
   bottom:0px;
   right:0px; 
 }
+
+.rbc-month-row {
+display: -ms-flexbox;
+display: flex;
+position: relative;
+-ms-flex-direction: column;
+flex-direction: column;
+-ms-flex: 100px;
+flex: 100px;
+overflow: hidden;
+height: 100%;
+}
 .content{
- height:100%; 
- width:100%;
+ height:100% !important; 
+ width:100% !important;
 }
 .smalldiv{
- height:80%; 
- width:70%; 
+ height:80% !important; 
+ width:70% !important; 
  float:left;
 }
-.smallerdiv{
- height:80%; 
- width:25%;
+.smallerDiv{
+ height:80% !important; 
+ width:25% !important; 
  margin-left: 2%; 
- float:left;
+ float:right;
 }
 .centerMenu{
 	z-index:100;

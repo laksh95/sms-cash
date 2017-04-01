@@ -1,5 +1,5 @@
 import adminDashboard from './../utils/api/adminDashboard';
-import GET_INITIAL_DATA,DELETE_fROM_CALENDER,ADD_TO_CALENDER,SET_SNACK from './../constants';
+import {GET_INITIAL_DATA,DELETE_fROM_CALENDER,ADD_TO_CALENDER,SET_SNACK} from './../constants';
 export function getInitialData(userId){
 	return{
 		type: GET_INITIAL_DATA ,

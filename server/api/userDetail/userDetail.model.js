@@ -59,14 +59,12 @@ module.exports=function(){
         },
         {
             classMethods: {
-
                 getUserByCredential: function(models, userName, cb){
 
                     let userDetail= models.user_detail;
                     let user={};
                     let login=false;
                     let userId;
-
                     userDetail.findOne({attributes:['id', 'username', 'name', 'password'], 
                         where: {username: userName, status:true}
                          }).then((result)=> {
@@ -85,15 +83,13 @@ module.exports=function(){
                             else{
                                 user.login=false;
                                 cb(null, null);  
+
                             }
                          }).catch(function(error){
                                 console.log(error);
                                 cb(error);
                         });
-
-                   
                 },
-                
                 findUserById: function(models, id, cb){
                     let userDetail= models.user_detail;
                     let user={};
@@ -135,7 +131,7 @@ module.exports=function(){
                             if(resultAdmin){
                                 role.push('admin');
                             }
-                            return director.findOne({attributes: ['id'], where: {user_detail_id: userId}})   
+                            return director.findOne({attributes: ['id'], where: {user_detail_id: userId}})
                         })
                         .then((resultDirector)=>{
                             if(resultDirector){
@@ -163,7 +159,6 @@ module.exports=function(){
                         })
 
                 }
-
             }
         },
         {

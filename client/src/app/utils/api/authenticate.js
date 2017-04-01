@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Auth from './../../Auth.js';
 let serverAddress= 'http://localhost:3000';
 
  /**
@@ -14,7 +15,15 @@ const utils = {
 		return axios.post(url, credential);
 	},
 
-	check: (config) => {
+	check: () => {
+		let token = Auth.getToken();
+		let authString = 'bearer ' + token;
+		let config = {
+    		headers: {
+        		'Authorization': authString
+   	 		}
+		}
+		console.log("token: ", token);
 		let url = serverAddress + '/api/check';
 		return axios.get(url, config);
 	}

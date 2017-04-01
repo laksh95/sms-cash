@@ -1,10 +1,3 @@
-// var config = require('./../../config');
-// var adrsFile =require('./addressModel');
-// var sequelize = require('sequelize');
-// var seqConn= config.sequelizeConnection;
-// var models=  require('./../').model;
-
-
 let userDetailDb= require('./userDetail.model')();
 let models  = require('./../../sqldb')();
 

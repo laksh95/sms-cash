@@ -20,44 +20,43 @@ import Snackbar from 'material-ui/Snackbar';
 import RaisedButton from 'material-ui/RaisedButton';
 import {store} from "../../store.js";
 import {connect} from "react-redux";
-import {getEvents} from '../../actions/getDataAction.jsx';
+import {addToCalendar,deleteFromCalendar,openSnack} from '../../actions/getAdminDashboardDataAction.jsx';
 const currentdate=moment().format("YYYY-MM-DD");
 class DashBoard extends React.Component { 
 	constructor(props) {
 		super(props);
 		this.state = {
-		openCard:false,
-		open: false,
-		event:{},
-		type:'',
-		content:'',
-		openbutton: false,
-		startDate:'',
-		endDate:'',			
-		startTime:'',
-		endTime:'',
-		start:'',
-		end:'',
-		typeError:'',
-		contentError:'',
-		c:'',
-		valid:0,
-		message:'',
-		calendarType:''
-	}	
+			openCard:false,
+			open: false,
+			event:{},
+			type:'',
+			content:'',
+			openbutton: false,
+			startDate:'',
+			endDate:'',			
+			startTime:'',
+			endTime:'',
+			start:'',
+			end:'',
+			typeError:'',
+			contentError:'',
+			valid:0,
+			message:'',
+			calendarType:''
+		}	
 	}
 	handleTouch=(event,choice)=>{
 		switch(choice){
 			case 'DELETE_EVENT':
-				let id=this.state.event.id;
-				let events=this.props.data.events;
-				for(let i in events){
+				var id=this.state.event.id;
+				var events=this.props.getDataReducer.events;
+				for(var i in events){
 					if(events[i]==id){
 						index=i;
 						break;
 					}
 				}		
-			break;
+				break;
 			case 'CLOSE_NEW_EVENT_CARD':
 				this.setState({
 					openCard:false,
@@ -67,16 +66,16 @@ class DashBoard extends React.Component {
 					contentError:'',
 					dateError:''
 				})
-			break;
+				break;
 			case 'TAP_CALENDAR_SLOT':
-				let newEvent={};
+				var newEvent={};
 				console.log("event",typeof(event.start))
-				let endDate=moment(event.end).format("YYYY-MM-DD");
-				let startDate=moment(event.start).format("YYYY-MM-DD");
-				let endTime=moment(event.end).format('hh:mm')	
-				let startTime=moment(event.start).format('hh:mm')
-				let start=moment(startDate+" "+startTime, 'HH:mm')._i;
-				let end=moment(endDate+" "+endTime, 'HH:mm')._i;
+				var endDate=moment(event.end).format("YYYY-MM-DD");
+				var startDate=moment(event.start).format("YYYY-MM-DD");
+				var endTime=moment(event.end).format('hh:mm')	
+				var startTime=moment(event.start).format('hh:mm')
+				var start=moment(startDate+" "+startTime, 'HH:mm')._i;
+				var end=moment(endDate+" "+endTime, 'HH:mm')._i;
 				this.setState({
 					openCard: true,
 					start:start,
@@ -91,25 +90,25 @@ class DashBoard extends React.Component {
 					type:'',
 					content:''
 				});
-			break;
+				break;
 			case 'TAP_CALENDER_EVENT':
 				this.setState({
 					openCard: false,
 				});
-			break;
+				break;
 			case 'SHOW_EVENT_DETAILS':
 				this.setState({
 					open: true,
 					event:event
 				});
-			break;
+				break;
 			case 'ADD_EVENT':
-				let valid=0;
-				let start=moment(this.state.startDate+" "+this.state.startTime, 'HH:mm')._i;
-				let end=moment(this.state.endDate+" "+this.state.endTime, 'HH:mm')._i;
-				let typeError='';
-				let contentError='';
-				let dateError='';	
+				var valid=0;
+				var start=moment(this.state.startDate+" "+this.state.startTime, 'HH:mm')._i;
+				var end=moment(this.state.endDate+" "+this.state.endTime, 'HH:mm')._i;
+				var typeError='';
+				var contentError='';
+				var dateError='';	
 				if(this.state.type==''){
 					typeError="*Type empty"
 				}
@@ -129,16 +128,16 @@ class DashBoard extends React.Component {
 					valid++;
 				}
 				if(valid==3){
-					let url='';
-					let newEvent={
+					var url='';
+					var newEvent={
 						heading: this.state.type,
 						startDate:this.state.start,
 						endDate:this.state.end,
 						content: this.state.content,
 						userId: 1
 					}
-					let type='';
-					let method=''
+					var type='';
+					var method=''
 					if(this.state.calendarType='personal'){
 						type='personalCalendar'
 						method='addPersonalEvent'
@@ -152,25 +151,24 @@ class DashBoard extends React.Component {
 				else{
 					valid= 0;
 					this.setState({
-						typeError=typeError,
-						contentError=contentError,
-						dateError=dateError
+						typeError:typeError,
+						contentError:contentError,
+						dateError:dateError
 					});
 				}	
-			};
-			break;
+				break;
 			case 'DELETE_EVENT':
-				let id=this.state.event.id;
-				let events=this.props.data.events;
-				for(let i in events){
+				var id=this.state.event.id;
+				var events=this.props.getDataReducer.events;
+				for(var i in events){
 					if(events[i]==id){
 						index=i;
 						break;
 					}
 				}
-				let type='';
-				let method='';
-				let id=this.state.event.id;
+				var type='';
+				var method='';
+				var id=this.state.event.id;
 				if(this.state.event.calendarType='personal'){
 					type='personalCalendar';
 					method='deletePersonalEvent'
@@ -180,47 +178,47 @@ class DashBoard extends React.Component {
 					method='deleteEvent'
 				}
 				deletefromCalendar(type,method,id)
-			break;
+				break;
 			case 'CHANGE_START_DATE':
 				this.setState({
 					dateError:'',
 		    		startDate: event.target.value,
 		   		 });
-			break;
+				break;
 			case 'CHANGE_START_TIME':
 				this.setState({
 					dateError:'',
 	     			startTime: event.target.value,
 	    		});
-			break;
+				break;
 			case 'CHANGE_END_DATE':
 				this.setState({
 	    			dateError:'',
 					endDate: event.target.value,
 	    	});
-			break;
+				break;
 			case 'CHANGE_END_TIME':
 				this.setState({
 	    			dateError:'',
 					endTime: event.target.value,
 	    		});
-			break;
+				break;
 			case 'CHANGE_CONTENT':
 				this.setState({
 					contentError:'',
 	    			content: event.target.value,
 	    	});
-			break;
+				break;
 			case 'CLOSE_EVENT_CARD':
 				this.setState({
 					open: false,
 				});
-			break;
+				break;
 			case 'SET_SNACK':
-      			let openSnack= false;
-      			let message=''
+      			var openSnack= false;
+      			var message=''
       			this.props.setSnackData(openSnack,message)
-    		break;
+    			break;
 			
 		}
 	}
@@ -228,63 +226,64 @@ class DashBoard extends React.Component {
 		this.setState({
 			calendarType:value	
 		})
-	}	
+	}
 	handleChangeSelect = (event, index, value) =>{
 			this.setState({
 				typeError:'',
 				type:value
 			});
-		}
+	}
 	componentWillMount(){
 		BigCalendar.momentLocalizer(moment);
+	}
+	componentWillReceiveProps(nextProps) {
+		this.props=nextProps
 	}
 	getChildContext() {
 		return { 
 			muiTheme: getMuiTheme(baseTheme) 
 		};
-	
-	handleChange = (newDate) => {
-		return this.setState({date: newDate});
 	}
-	//{(evt) => this.handleRemove(id, evt)}
-	render() {
-		let obj=this
-		console.log(currentdate)
+	handleChange=(newDate)=>{
+		return this.setState({
+			date: newDate
+		});
+	}
+	render(){
 		const {date, format, mode, inputFormat} = this.state;
 		return(
-			<div>
 			<div className="smalldiv">
-				<BigCalendar
-					popup
-					selectable
-					events={this.props.data.events}
-					culture='en-GB'
-					step={15}
-					timeslots={2}
-					defaultView='week'
-					scrollToTime={new Date(1970, 1, 1, 6)}
-					defaultDate={new Date()}
-					onSelectEvent={(evt) => this.handleTouch('SHOW_EVENT_DETAILS', evt)}
-					onSelectSlot={(evt) => this.handleTouch('TAP_CALENDAR_SLOT', evt)}
-				/>
+				 <BigCalendar
+			          popup
+			          selectable
+			          events={this.props.getDataReducer.events}
+			          culture='en-GB'
+			          step={15}
+			          timeslots={2}
+			          defaultView='week'
+			          scrollToTime={new Date()}
+			          defaultDate={new Date()}
+			          onSelectEvent={(event) => this.handleTouch(event,'SHOW_EVENT_DETAILS')}
+			          onSelectSlot={(event) => this.handleTouch(event,'TAP_CALENDAR_SLOT')}
+			        />
 				<Popover
 					style={{marginLeft:'40%', marginTop:'20%', zIndex:'100'}}
 					open={this.state.open}
-					onRequestClose={(evt) => this.handleTouch('CLOSE_EVENT_CARD', evt)}>
+					onRequestClose={(event) => this.handleTouch(event,'CLOSE_EVENT_CARD')}>
 					<Card className='cardName'>
 						<CardHeader
 							title={this.state.event.title}
 							subtitle={this.state.event.content}					              
 						/>
 						<RaisedButton
-							onTouchTap={(evt) => this.handleTouch('DELETE_EVENT', evt)}
+							onTouchTap={(event) => this.handleTouch(event,'DELETE_EVENT')}
 							label="Delete Event"/>
 					</Card>
 				</Popover>
 				<Popover
 					style={{marginLeft:'40%', marginTop:'10%', zIndex:'100'}}
 					open={this.state.openCard}
-					onRequestClose={(evt) => this.handleTouch('CLOSE_NEW_EVENT_CARD', evt)}>
+					onRequestClose={(event) => this.handleTouch(event,'CLOSE_NEW_EVENT_CARD')}>
 					<Card style={{zIndex:'-200'}} className='cardName'>
 						<CardHeader/>
 						<CardText >
@@ -302,24 +301,24 @@ class DashBoard extends React.Component {
 							<TextField
 								value={this.state.content}
 								hintText="Content/Occasion"
-								onChange={(evt) => this.handleTouch('CHANGE_CONTENT', evt)}/>
+								onChange={(event) => this.handleTouch(event,'CHANGE_CONTENT')}/>
 								<br/>
 								<label className="lerr" >{this.state.contentError}</label>						
 							<br/>
 							Start Date:&nbsp;
-								<input type="date" className="style-4" value={this.state.startDate} onChange={(evt) => this.handleTouch('CHANGE_START_DATE', evt)} min={currentdate} />
+								<input type="date" className="style-4" value={this.state.startDate} onChange={(event) => this.handleTouch(event,'CHANGE_START_DATE')} min={currentdate} />
 							<br/><br/>
 							Start Time:&nbsp;
-								<input type="time" className="style-4" value={this.state.startTime} onChange={(evt) => this.handleTouch('CHANGE_START_TIME', evt)}/>
+								<input type="time" className="style-4" value={this.state.startTime} onChange={(event) => this.handleTouch(event,'CHANGE_START_TIME')}/>
 							<br/><br/>
 							End Date:&nbsp;								    
-								<input type="date" className="style-4" value={this.state.endDate} onChange={(evt) => this.handleTouch('CHANGE_END_DATE', evt)} min={currentdate}/>
+								<input type="date" className="style-4" value={this.state.endDate} onChange={(event) => this.handleTouch(event,'CHANGE_END_DATE')} min={currentdate}/>
 							<br/><br/>
 							End Time:&nbsp;
-								<input type="time" value={this.state.endTime} onChange={(evt) => this.handleTouch('CHANGE_END_TIME', evt)}/><br/>
+								<input type="time" value={this.state.endTime} onChange={(event) => this.handleTouch(event,'CHANGE_END_TIME')}/><br/>
 								<label className="lerr" >{this.state.dateError}</label>
 							<br/>
-							<RadioButtonGroup name="calendar" defaultSelected="academic" onChange="handleRadioButton">
+							<RadioButtonGroup name="calendar" defaultSelected="academic" onChange={this.handleRadioButton}>
 								<RadioButton 
 									labelStyle={{font:'110% arial, sans-serif'}}
 							        value="academic"
@@ -333,38 +332,42 @@ class DashBoard extends React.Component {
 							</RadioButtonGroup>
 							<br/>
 							<RaisedButton
-								onTouchTap={(evt) => this.handleTouch('ADD_EVENT', evt)}
+								onTouchTap={(event) => this.handleTouch(event,'ADD_EVENT')}
 								label="Add to my calendar"/>
 								&nbsp;
 							<RaisedButton
-								onTouchTap={(evt) => this.handleTouch('CLOSE_NEW_EVENT_CARD', evt)}
+								onTouchTap={(event) => this.handleTouch(event,'CLOSE_NEW_EVENT_CARD')}
 								label="X"/>
 						</CardText>
 					</Card>
 				</Popover>
 				<Snackbar
-					open={this.state.openSnack}
-					message={this.state.message}
+					open={this.props.getDataReducer.openSnack}
+					message={this.props.getDataReducer.message}
 					autoHideDuration={4000}
 					onRequestClose={this.handleSnackRequestClose}
 		        />
 			</div>
-		<DashBoardNumberOfRole/>
-		</div>
-		);
+		);	
 	}
 }
 const mapStateToProps=(state)=>{
     return{
-        data:state.data
+        getDataReducer:state.getDataReducer
     };
 };
 const mapDispatchToProps=(dispatch)=>{
-    return{
-        getEvents:(events)=>{
-            dispatch(getEvents(events));
-        }
-    };
+    return({
+        	deleteFromCalendar:(type,method,id)=>{
+          	  dispatch(deleteFromCalendar(type,method,id));
+        },
+	    addToCalendar:(type,method,event)=>{
+	        dispatch(addToCalendar(type,method,event));
+	    },
+	    openSnack:(data,message)=>{
+	        dispatch(openSnack(data,message));
+	    }
+    });
 };
 DashBoard.childContextTypes = {
 	muiTheme: React.PropTypes.object.isRequired,

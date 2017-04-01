@@ -8,7 +8,7 @@ import TextField from 'material-ui/TextField';
 import LinearProgress from 'material-ui/LinearProgress';
 import {Link} from 'react-router'
 import {Router, browserHistory} from 'react-router';
-import Auth from './../Auth.js';
+import Auth from '../../Auth.js';
 import Snackbar from 'material-ui/Snackbar';
 
 var style = {

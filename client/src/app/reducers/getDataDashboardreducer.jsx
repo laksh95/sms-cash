@@ -1,29 +1,33 @@
-import GET_INITIAL_DATA,ADD_TO_CALENDER,DELETE_FROM_CALENDER,SET_SNACK as types from './../constants';
-const getDataReducer=(state={
+import {GET_INITIAL_DATA,ADD_TO_CALENDER,DELETE_FROM_CALENDER,SET_SNACK} from './../constants';
+
+var initialState = {
     parentCount:0,
     studentCount:0,
     teacherCount:0,
     openSnack:false,
+    message:'',
     events:[]
-},action)=>{
+}
+
+const getDataReducer = ( state = initialState ,action) => {
 	switch(action.type){
 	    case GET_INITIAL_DATA+"_FULFILLED":
-	    	console.log("success",response);
+	    	console.log("success",action.payload);
 	        let invalid=0;
 	        let messg='';
 	        let teacherCount=0;
 	        let parentCount=0;
 	        let studentCount=0;
-	        let events=this.state.events;
-	          if(response.data.totalEvent.status==1){        
-	            for(let i in response.data.totalEvent){
+	        var events=state.events;
+	          if(action.payload.totalEvent.status==200){        
+	            for(let i in action.payload.totalEvent){
 	              let event1={
-	                id:response.data.totalEvent[i].content,
-	                start:new Date(response.data.totalEvent[i].start_date),
-	                end:new Date(response.data.totalEvent[i].start_date),
-	                content:response.data.totalEvent[i].content,
-	                type:response.data.totalEvent[i].type,
-	                title:response.data.totalEvent[i].content,
+	                id:action.payload.totalEvent[i].content,
+	                start:new Date(action.payload.totalEvent[i].start_date),
+	                end:new Date(action.payload.totalEvent[i].start_date),
+	                content:action.payload.totalEvent[i].content,
+	                type:action.payload.totalEvent[i].type,
+	                title:action.payload.totalEvent[i].content,
 	                calendarType:'academic'
 	              }
 	              events.push(event1)
@@ -33,104 +37,111 @@ const getDataReducer=(state={
 	            invalid++;
 	            messg=''
 	          }
-	          if(response.data.personalCalendar.status==1){
-	            for(let i in response.data.personalCalendar.data){
+	          if(action.payload.personalCalendar.status==200){
+	            for(let i in action.payload.personalCalendar){
 	              let event1={
-	                id:response.data.personalCalendar[i].content,
-	                start:new Date(response.data.personalCalendar[i].start_date),
-	                end:new Date(response.data.personalCalendar[i].start_date),
-	                content:response.personalCalendar[i].content,
-	                type:response.data.personalCalendar[i].heading,
-	                title:response.data.personalCalendar[i].heading,
+	                id:action.payload.personalCalendar[i].content,
+	                start:new Date(action.payload.personalCalendar[i].start_date),
+	                end:new Date(action.payload.personalCalendar[i].start_date),
+	                content:action.payload.personalCalendar[i].content,
+	                type:action.payload.personalCalendar[i].heading,
+	                title:action.payload.personalCalendar[i].heading,
 	                calendarType:'personal'
 	              }
 	              events.push(event1)
 	          }
-	          this.state.setState({events})
+	          state = {
+	          	...state,
+	          	events: events
+	          }
 	        }
 	        else invalid++; 
-	        if(response.data.totalStudents.status==1){
-	          teacherCount=response.data.totalStudents.data;
+	        if(action.payload.totalStudents.status==200){
+	          teacherCount=action.payload.totalStudents;
 	        }
 	        else invalid++;
-	        if(response.data.totalStudents.status==1){
-	          parentCount=response.data.totalParent.data
+	        if(action.payload.totalStudents.status==200){
+	          parentCount=action.payload.totalParent
 	        }
 	        else invalid++;
-	        if(response.data.totalStudents.status==1){
-	          studentCount=response.data.totalTeachers.data;
+	        if(action.payload.totalStudents.status==200){
+	          studentCount=action.payload.totalTeachers;
 	        }
 	        else invalid++;
 	        if(invalid==0){
-	        	this.setState({
+	        	state={ 
+	        		...state,
 	          		openSnack:true,
-	          		message:'data successfully retrieved!!',
+	          		message:action.payload.message,
 	          		teacherCount:teacherCount,
 	          		parentCount:parentCount,
 	          		studentCount:studentCount
-	        	})
+	        	}
 	        }
 	        else{
-	        	this.setState({
+	        	state={ ...state,
 	          		openSnack:true,
-	          		message:'data faultily retrieved!!'
-	        	})
+	          		message:action.payload.message,
+	        	}
 	        }
 	   	 	break;
 	    case GET_INITIAL_DATA+"_REJECTED":
-	    	this.setState({
+	    	state={ ...state,
 	          		openSnack:false,
-	          		message:'error'
-	        	})
+	          		message:action.payload.message,	        	}
 	    	break;
-	    case ADD_TO_CALENDER+"_FULFILLED":
-	    	let events=this.state.events;
-	    	if(response.data.status==1){
+	    case ADD_TO_CALENDER + "_FULFILLED":
+	    	var events=state.events;
+	    	if(action.payload.status==200){
 		   		let event1={
-		            id:response.data.personalCalendar[i].content,
-		            start:new Date(response.data.personalCalendar[i].start_date),
-		            end:new Date(response.data.personalCalendar[i].start_date),
-		            content:response.data.personalCalendar[i].content,
-		            type:response.data.personalCalendar[i].heading,
-		            title:response.data.personalCalendar[i].heading,
+		            id:action.payload.personalCalendar[i].content,
+		            start:new Date(action.payload.personalCalendar[i].start_date),
+		            end:new Date(action.payload.personalCalendar[i].start_date),
+		            content:action.payload.personalCalendar[i].content,
+		            type:action.payload.personalCalendar[i].heading,
+		            title:action.payload.personalCalendar[i].heading,
 	    			calendarType:'personal'
 		        }
 		    	events.push(event1)
 			 }
-			this.setState({
+			state={ ...state,
 					openSnack:true,
-					message:response.data.message
+	          		message:action.payload.message,
 					events:events
-			})
+			}
 	    	break;
 	    case ADD_TO_CALENDER+"_REJECTED":
-	    	this.setState({
+	    	state={ ...state,
 				openSnack:true,
-				message:"Oops! Network Failure"
-			})
+	          		message:action.payload.message,
+			}
 	    	break;
 	    case DELETE_FROM_CALENDER+"_FULFILLED":
-		    let events=this.state.events
-			if(response.data.status==1){
+		    var events=state.events
+			if(action.payload.status==200){
 				   			events.splice(index,1)
 						}
-						this.setState({
+						state={ ...state,
 			   				openSnack:true,
-			   				message:response.data.message
-						})  
-			        this.props.getEvents(events)
+			   				message:action.payload.message
+						}
+			        props.getEvents(events)
 			break;
 	    case DELETE_FROM_CALENDER+"_REJECTED":
-		    this.setState({
+		    state={ ...state,
 					openSnack:true,
-					message:"Oops! Network Failure"
-				})
+	          		message:action.payload.message,
+				}
 	    	break;
 	    case SET_SNACK:
-	    	this.setState({
-				openSnack:action.payload.data,
-				message:action.payload.message
-			})
+	    	state={ ...state,
+				openSnack:action.payload,
+	          		message:action.payload.message,
+			}
 	    	break;
+	    default : 
+	    	return state
 	}
 }	
+
+export default getDataReducer

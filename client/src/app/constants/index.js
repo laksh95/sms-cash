@@ -1,1 +1,5 @@
 export const ADD_USER = 'ADD_USER'
+export const GET_TEACHER = 'GET_TEACHER'
+export const CHANGE_DETAILS = 'CHANGE_DETAILS'
+export const DELETE_TEACHER = 'DELETE_TEACHER'
+export const APPROVE_TEACHER = 'APPROVE_TEACHER'

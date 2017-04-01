@@ -22,12 +22,13 @@ class AddTeacher extends React.Component{
           departmentSelected: null,
           teacherName: null,
           joinDate: "",
-          designation: ""
+          designation: null,
+          email: null
       }
     }
-    handleChange = (event , type, data) => {
+    handleChange = (type, event) => {
       switch (type) {
-        case 'addUser': () => {
+        case "addUser":
           let details = {
             name: this.state.teacherName,
             department: this.state.departmentSelected,
@@ -36,26 +37,40 @@ class AddTeacher extends React.Component{
             designation: this.state.designation
           }
           this.props.addUser(details)
-        }
-        break
-        case 'hadleChangeDepartment': (event, data.index, data.value) => {
+          break
+        case "getName":
           this.setState({
-            departmentSelected: value
+            teacherName: event.target.value
           })
-        }
-        break
-        case 'getName': (event) => {
-          this.setState({
-            teacherName: event.target.values
-          })
-        }
-        break
-        case 'getDesignation' : (event) => {
+          break
+        case "getDesignation" :
           this.setState({
             designation: event.target.value
           })
-        }
+          break
+        case "getEmail" :
+          this.setState({
+            email: event.target.value
+          })
+          break
+        default:
+          break
       }
+    }
+    getDate = (event, date) => {
+      this.setState({
+        joinDate: date
+      })
+    }
+
+    hadleChangeDepartment = (event, index, value) => {
+      this.setState({
+        departmentSelected: value
+      })
+    }
+
+    componentWillGetProps(nextProps){
+      this.props = nextProps
     }
 
     render(){
@@ -76,7 +91,7 @@ class AddTeacher extends React.Component{
           <SelectField
           floatingLabelText="Department"
           value={this.state.departmentSelected}
-          onChange={ (event ,hadleChangeDepartment, null) => this.handleChange }
+          onChange={this.hadleChangeDepartment }
           >
           {
             this.state.allDepartments.map((data,index)=>{
@@ -88,22 +103,23 @@ class AddTeacher extends React.Component{
           </SelectField>
           <br />
           <form>
-          <TextField
-          floatingLabelText="Teacher name"
-          value={this.state.teacherName}
-          onChange={this.getName}
-          />
-          <br />
-          <TextField
-          floatingLabelText="Teacher designation"
-          />
-          <br />
-          <TextField
-          floatingLabelText="Teacher Email ID"
-          />
-          <br /><br />
-          <DatePicker hintText="Join Date"/>
-          <RaisedButton label="ADD" primary={true} style={style} onTouchTap= {this.addUser}/>
+              <TextField
+              floatingLabelText="Teacher name"
+              onChange={ this.handleChange.bind(this, "getName") }
+              />
+              <br />
+              <TextField
+              floatingLabelText="Teacher designation"
+              onChange={this.handleChange.bind(this, "getDesignation")}
+              />
+              <br />
+              <TextField
+              floatingLabelText="Teacher Email ID"
+              onChange={this.handleChange.bind(this, "getEmail")}
+              />
+              <br /><br />
+              <DatePicker hintText="Join Date" mode="landscape" onChange={ this.getDate }/>
+              <RaisedButton  label="ADD" primary={true} style={style} onTouchTap= {this.handleChange.bind(this,"addUser")}/>
           </form>
     		</div>
       </div>

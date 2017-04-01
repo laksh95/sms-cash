@@ -5,7 +5,6 @@ import Slider from 'material-ui/Slider';
 import axios from 'axios'
 import AllTeacher from './AllTeacher.jsx'
 import AddTeacher from './AddTeacher.jsx'
-import ApproverDetails from './ApproverDetails.jsx'
 import renderIf from 'render-if'
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
@@ -29,29 +28,36 @@ class Teacher extends React.Component{
        return { muiTheme: getMuiTheme(baseTheme) };
     }
     allTeacher(){
-    this.setState({
-      allTeacher : true,
-      addTeacher : false,
-      approveDetails : false
-    })
+      this.setState({
+        allTeacher : true,
+        addTeacher : false,
+        approveDetails : false
+      })
     }
 
     addTeacher(){
-    this.setState({
-      allTeacher : false,
-      addTeacher : true,
-      approveDetails : false
-    })
+      this.setState({
+        allTeacher : false,
+        addTeacher : true,
+        approveDetails : false
+      })
     }
 
     approveDetails(){
-    this.setState({
-      allTeacher : false,
-      addTeacher : false,
-      approveDetails : true
-    })
+      this.setState({
+        allTeacher : false,
+        addTeacher : false,
+        approveDetails : true
+      })
     }
 
+    componentWillUnmount() {
+      this.props.getTeacher
+    }
+
+    componentWillGetProps(nextProps){
+      this.props = nextProps
+    }
     render(){
       const contentStyle = { marginTop:10, marginLeft: 90 ,transition: 'margin-left 100ms cubic-bezier(0.23, 1, 0.32, 1)' };
       const tabStyle = { marginTop:10, marginLeft: 250, marginRight: 20 ,transition: 'margin-left 100ms cubic-bezier(0.23, 1, 0.32, 1)' }
@@ -61,8 +67,6 @@ class Teacher extends React.Component{
             <Tab label="Show Teacher" onActive={this.allTeacher}>
             </Tab>
             <Tab label="Add Teachers" onActive={()=>this.addTeacher()}>
-            </Tab>
-            <Tab label="Approve Details" onActive={()=>this.approveDetails()}>
             </Tab>
           </Tabs>
 
@@ -77,12 +81,6 @@ class Teacher extends React.Component{
               renderIf(this.state.addTeacher)
               (
                <AddTeacher/>
-              )
-            }
-            {
-              renderIf(this.state.approveDetails)
-              (
-                <ApproverDetails/>
               )
             }
           </div>

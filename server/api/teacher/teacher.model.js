@@ -21,7 +21,7 @@ let init = function(){
                 type: sequelize.INTEGER,
                 allowNull: false
             },
-            experience_description: {
+            experience_description:
                 type: sequelize.TEXT
             },
             status: {

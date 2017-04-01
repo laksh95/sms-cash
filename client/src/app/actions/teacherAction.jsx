@@ -11,3 +11,48 @@ export function addUser(details){
       })
 	}
 }
+
+export function getTeacher(){
+	return {
+		type: types.GET_TEACHER,
+		payload:
+			teacher.getTeacher()
+			.then((response) => {
+				return response.data
+			})
+	}
+}
+
+export function changeDetails(details){
+	return {
+		type: types.CHANGE_DETAILS,
+		payload:
+			teacher.changeDetails(details)
+			.then((response) => {
+				return response.data
+			})
+	}
+}
+
+export function deleteTeacher(teacherId){
+	return {
+		type: types.DELETE_TEACHER,
+		payload:
+			teacher.deleteTeacher(teacherId)
+			.then((response) => {
+				return response.data
+			})
+	}
+}
+
+export function approveDetails(teacherId) {
+	return {
+		type: types.APPROVE_TEACHER,
+		payload:
+			teacher.approveDetails(teacherId)
+			.then((response) => {
+				return response.data
+			})
+	}
+
+}

@@ -22,6 +22,7 @@ Object.keys(db).forEach(function(modelName){
    }
 });
 
+//test
 let sql = function(){
 	return db;
 }

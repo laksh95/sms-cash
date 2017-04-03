@@ -160,7 +160,7 @@ module.exports=function(){
                                 role.push('student');
                             }
                             cb(role);
-                        })
+                        }).catch((err) => {console.log('---------------------',err.toString())});
 
                 }
 

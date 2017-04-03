@@ -2,7 +2,14 @@ const adminReducer = ( state = {
 	allDepartments: [],
 	allSessions: [],
 	allBatches: [],
-	allCourses: []
+	allCourses: [],
+	initialData : {
+		"course":[],
+		"batch":[]
+	},
+	selectedTab:"",
+	selectedCourse:"Course",
+	selectedSession:"Session"
 } , action) => {
 	switch (action.type){
 		case "GET_DEPARTMENTS":
@@ -23,12 +30,36 @@ const adminReducer = ( state = {
 				allBatches: action.payload
 			}
 			return state
-		case "GET_SESSIONS":
+		case "GET_SELECTED":
 			state = {
 				...state,
-				allSessions: action.payload
+				selectedTab : action.payload
+			}
+			console.log(state.selectedTab);
+			return state
+
+		case "GET_INITIAL_DATA_FULFILLED":
+
+            state = {
+				...state,
+				initialData: action.payload,
 			}
 			return state
+
+		case "SET_CURRENT_SESSION":
+		    state = {
+		    	...state,
+		    	selectedSession: action.payload
+		    }
+		    return state
+        
+        case "SET_CURRENT_COURSE":
+             state = {
+             	...state,
+             	selectedCourse: action.payload
+             }
+             return state
+
 		default:
 			return state
 	}

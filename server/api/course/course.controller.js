@@ -1,15 +1,40 @@
 let model = require('./course.model')()
 let sql= require('../../sqldb')
-
+let batch = require('../batch/batch.model')()
 let db=sql()
 let courseFunctions = {
+    getInitialData: (req,res) => {
+      let dataToClient = {}
+      if(req.body !== null){
+
+        console.log(model +"----------------------------------");
+        model.getCourse(db)
+        .then((allCourse)=>{
+          dataToClient.course = allCourse
+          return batch.getBatch(db)
+        })
+        .then((allBatch)=>{
+          dataToClient.batch = allBatch
+          console.log(dataToClient)
+          res.send(dataToClient)
+        }).
+        catch((data)=>{
+          console.log("Error--------------" + data);
+          res.status(500).end()
+        })
+      }
+      else{
+        res.status(400).end()
+      }
+    },
    getCourses:(req,res)=>{
-       model.getCourse(db,function (data){
-           res.send(data)
+       model.getCourse(db)
+       .then((data)=>{
+         res.send(data)
        })
    },
    addCourse:(req,res)=>{
-       let course_name=req.body.course_name
+       let course_name=req.body.courseName
        let duration=req.body.duration
 
        let setCourseData={

@@ -36,6 +36,10 @@ class TopBar extends React.Component {
    }
   
 
+
+ 
+
+
   handleToggle =() => { this.setState({open: !this.state.open});}
 
 
@@ -43,9 +47,8 @@ class TopBar extends React.Component {
     return(
       <MuiThemeProvider muiTheme={muiTheme}>
        <AppBar
-         title={<span  style={style.titleStyle}>M A N I P A L &nbsp;&nbsp; U N I V E R S I T Y </span>}
-         iconClassNameRight=""
-         iconClassNameLeft=""   
+         title={<span  style={style.titleStyle}>STUDENT&nbsp;&nbsp;MANAGEMENT&nbsp;&nbsp;SYSTEM</span>}
+         iconClassNameLeft="" 
        />
      </MuiThemeProvider>
     );

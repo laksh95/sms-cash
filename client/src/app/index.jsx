@@ -7,6 +7,8 @@ import Login from './containers/login/App.jsx';
 import App from './containers/App.jsx';
 import Dashboard from './components/dashboard/DashBoard.jsx';
 import Department from './components/department/Department.jsx'
+import Teacher from './components/teacher/teacher.jsx'
+import Student from './components/student/student.jsx'
 import { Provider } from 'react-redux'
 import store from './store.js'
 
@@ -18,8 +20,11 @@ render((
 	<Provider store={store}>
 	   <Router history = {history}>	      
 	      <Route path = "/" component = {App}>
-	         <IndexRoute component = {Dashboard} />	         
+	         <IndexRoute component = {Dashboard} />
+	         <Route path = "/dashboard" component = {Dashboard} />	         
 	         <Route path = "/department" component = {Department} />
+	         <Route path = "/teachers" component = {Teacher} />
+	         <Route path = "/student" component = {Student} />
 	      </Route>
 	      <Route path = "/login" component = {Login}/>
 	   </Router>

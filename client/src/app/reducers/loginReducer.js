@@ -2,9 +2,10 @@ import * as types from './../constants';
 import Auth from './../Auth.js';
 
 const initialLoginState={
-	isLogin : false,
-	loginUser: {},
-	token: "",
+  isLogin : false,
+  loginUser: {},
+  token: "",
+      errorText:"",
     prevPathName: "/",
     receivedResponse: true
 } 
@@ -18,7 +19,7 @@ const loginReducer= (state=initialLoginState, action) => {
             }
         case types.LOGIN + "_FULFILLED":
         
-        	let response= action.payload;
+          let response= action.payload;
             let user= response.user;
 
             //getting role object
@@ -46,15 +47,15 @@ const loginReducer= (state=initialLoginState, action) => {
                 role.isStudent =true
             }
             user.role=role;
-        	if(response.isLogin){
+          if(response.isLogin){
                 Auth.authenticateUser(response.token);
-        		state= {
-                	...state,
-                	isLogin:true,
- 					token: response.token,
- 					loginUser: user
-            	}
-        	}            
+            state= {
+                  ...state,
+                  isLogin:true,
+          token: response.token,
+          loginUser: user
+              }
+          }            
         break; 
 
         case types.CHECK_IS_LOGIN + "_PENDING":
@@ -76,18 +77,76 @@ const loginReducer= (state=initialLoginState, action) => {
         case types.CHECK_IS_LOGIN + "_REJECTED":
             state={
                 ...state,
+                errorText:"Incorrect username or Password",
                 receivedResponse: true 
             }
-        case types.LOGOUT:
+     
         case types.LOGIN + "_REJECTED":
-            Auth.deauthenticateUser();
-            state={
-                ...state,
-                isLogin: false,
-                token: "", 
-                loginUser: {}
-            }
+
+             if(action.payload.response === undefined){
+
+                       Auth.deauthenticateUser();
+                      state={
+                         ...state,
+                         isLogin: false,
+                         token: "", 
+                         errorText:action.payload.message,
+                         loginUser: {}
+                     } 
+
+              }else{
+          
+                 switch(action.payload.response.data.errors){
+                      case 'IncorrectCredentialsError':
+                         Auth.deauthenticateUser();
+                           state={
+                            ...state,
+                            isLogin: false,
+                            token: "", 
+                            errorText:action.payload.response.data.message,
+                            loginUser: {}
+                     } 
+                 break;
+                      case 'InternalServerError':
+                         Auth.deauthenticateUser();
+                          state={
+                            ...state,
+                            isLogin: false,
+                            token: "", 
+                            errorText:action.payload.response.data.message,
+                            loginUser: {}
+                          } 
+                 break;
+
+              }
+
+             if(action.payload.response.data.errors.username === 'MissingUsernameError'){
+                   
+                     Auth.deauthenticateUser();
+                     state={
+                        ...state,
+                        isLogin: false,
+                        token: "", 
+                        errorText:action.payload.response.data.message,
+                        loginUser: {}
+                     } 
+               }
+
+           if(action.payload.response.data.errors.password === 'MissingPasswordError'){
+
+               Auth.deauthenticateUser();
+                 state={
+                  ...state,
+                  isLogin: false,
+                  token: "", 
+                  errorText:action.payload.response.data.message,
+                  loginUser: {}
+                 } 
+               }
+ 
+           }
         break;
+          
 
         case types.SETPREVPATH:
             state={
@@ -95,9 +154,20 @@ const loginReducer= (state=initialLoginState, action) => {
                 prevPathName: action.payload
             }
         break;
+
+        case types.LOGOUT:
+
+          Auth.deauthenticateUser();
+                 state={
+                  ...state,
+                  isLogin: false,
+                  token: "", 
+                  errorText:'',
+                  loginUser: {}
+                 } 
+        break;
     }
     return state;
 };
 
 export default loginReducer;
-

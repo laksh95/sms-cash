@@ -25,19 +25,21 @@ class App extends React.Component {
       }
   }
 
-  // componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps) {
+      this.props = nextProps;
+       if(this.props.login.isLogin){
+      browserHistory.push(this.props.login.prevPathName);
+      Auth.authenticateUser(this.props.login.token);
+    }
+    }
+
+  // componentDidUpdate(prevProps, prevState) {
   //   if(this.props.login.isLogin){
+  //     console.log("Heyyyyyyyyyy");
   //     browserHistory.push(this.props.login.prevPathName);
   //     Auth.authenticateUser(this.props.login.token);
   //   }
   // }
-
-  componentDidUpdate(prevProps, prevState) {
-    if(this.props.login.isLogin){
-      browserHistory.push(this.props.login.prevPathName);
-      Auth.authenticateUser(this.props.login.token);
-    }
-  }
 
   render() {
     return (
@@ -47,6 +49,7 @@ class App extends React.Component {
          	isLogin={this.props.login.isLogin}
          	token={this.props.login.token}
          	user={this.props.login.loginUser}
+          errorText = {this.props.login.errorText}
          	loginUser= {(credential) => this.props.loginUser(credential)}
          	checkLogin= {() => this.props.checkLogin()}
          />         

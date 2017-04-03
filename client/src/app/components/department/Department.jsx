@@ -2,23 +2,26 @@ import React from 'react';
 import AppBar from 'material-ui/AppBar';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
-
+import { getSelected } from '../../actions/adminActions.jsx';
+import { connect } from 'react-redux';
 
 class Department extends React.Component { 
    constructor(props) {
     super(props);
-
   }
 
   getChildContext() {
       return { muiTheme: getMuiTheme(baseTheme) };
     }
  
+ componentWillMount() {
+     this.props.getSelected(""+this.props.location.pathname);
+ }
 
  render() {
    return(
      <div>
-        <h1>Department</h1> 
+        <h3>Department</h3> 
      </div>
     );
   }
@@ -29,6 +32,21 @@ Department.childContextTypes = {
 Department.contextTypes = { 
     router: React.PropTypes.object.isRequired
 };
-export default Department;
 
+const mapStateToProps = (state) => {
+  return {
+    adminReducer: state.adminReducer
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+      getSelected: (location) => {
+        dispatch(getSelected(location))
+      }
+     
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Department);
 

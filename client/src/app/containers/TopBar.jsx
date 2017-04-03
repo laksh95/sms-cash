@@ -10,6 +10,8 @@ import Auth from './../Auth.js';
 import {Router, browserHistory} from 'react-router'
 import { connect } from 'react-redux'
 import { getSession, getBatch, getCourse, getDepartment } from '../actions/adminActions.jsx'
+import { getInitialData , setCurrentSession , setCurrentCourse } from '../actions/headerActions.jsx'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
   var style = {
 
@@ -20,7 +22,7 @@ import { getSession, getBatch, getCourse, getDepartment } from '../actions/admin
      "CurrentSessionElement":{
        backgroundColor: 'transparent',
        color: 'white',
-       marginTop:12
+       marginTop:5
      },
 
      "adminButton":{
@@ -44,20 +46,20 @@ import { getSession, getBatch, getCourse, getDepartment } from '../actions/admin
      }
   }
 
-  var sessions = [
-     "2013 - 2017",
-     "2012 - 2016",
-     "2011 - 2015",
-     "2010 - 2014"
-  ];
-
   var HANDLE_CODES = {
-     "SETTINGS_OPEN" : "settingsOpen",
+     "COURSE_OPEN" : "courseOpen",
      "OPEN_CURRENT_SESSION": "openCurrentSession",
      "CLOSE_CURRENT_SESSION" : "closeCurrentSession",
      "LOGOUT_HANDLE":"handleLogout",
-     "SETTINGS_CLOSE":"settingsClose"
+     "COURSE_CLOSE":"courseClose"
   }
+
+  const muiTheme = getMuiTheme({
+  appBar: {
+    height: 30,
+    fontFamily: 'Roboto, sans-serif'
+  },
+});
 
 
 class TopBar extends React.Component {
@@ -65,23 +67,86 @@ class TopBar extends React.Component {
     super(props);
 
     this.state = {
-      name: "Manipal University",
+      name: "STUDENT MANAGEMENT SYSTEM",
       open: false,
       currentSession : false,
-      currentSessionValue : sessions[0]
+      currentSessionValue : this.props.adminReducer.selectedSession,
+      Selectedcourse: this.props.adminReducer.selectedCourse,
+      user: '',
+      width: window.screen.availWidth,
+      height: window.screen.availHeight,
     };
   }
+
+
+     updateDimensions = () =>{
+    
+    this.setState({   message: false  });
+    var w = window,
+        d = document,
+        documentElement = d.documentElement,
+        body = d.getElementsByTagName('body')[0],
+        width = w.innerWidth || documentElement.clientWidth || body.clientWidth,
+        height = w.innerHeight|| documentElement.clientHeight|| body.clientHeight;
+
+       if(width > 760){
+        this.setState({width: width, height: height });
+     }else{
+        this.setState({width: width, height: height });
+      }
+
+      this.props.handleRequest('Topbar');
+    }
+
+  componentWillReceiveProps(nextProps) {
+    this.props = nextProps; 
+     this.setState({
+            user : this.props.loginReducer.loginUser.name
+              });
+
+      let width = this.state.width;
+      let height = this.state.height;
+
+      if(this.props.request === 'Topbar'){
+       if(width <=800){
+        if(this.props.open === true){
+           this.props.handleToggle('Topbar');
+         }
+        }else{
+          if(this.props.open === false){
+            this.props.handleToggle('Topbar');
+          }
+        }
+      }
+  }
+
+
+    componentDidMount() {
+      window.addEventListener("resize", this.updateDimensions);
+    }
+
+    componentWillUnmount(){
+        window.removeEventListener("resize", this.updateDimensions);
+    }
+
 
 
   getChildContext() {
       return { muiTheme: getMuiTheme(baseTheme) };
     }
 
+
+     componentWillMount() {
+      this.updateDimensions();
+     this.props.getInitialData();
+
+  }
+
   handleTouchTap = (item,event) => {
 
     switch(item){
 
-      case HANDLE_CODES.SETTINGS_OPEN:
+      case HANDLE_CODES.COURSE_OPEN:
               event.preventDefault();
               this.setState({
                open: true,
@@ -98,12 +163,11 @@ class TopBar extends React.Component {
               break;
 
       case HANDLE_CODES.LOGOUT_HANDLE:
-               //browserHistory.push('/');
                Auth.deauthenticateUser();
                this.props.logoutUser();
               break;
 
-      case HANDLE_CODES.SETTINGS_CLOSE:
+      case HANDLE_CODES.COURSE_CLOSE:
                this.setState({
                  open: false,
                });
@@ -119,22 +183,40 @@ class TopBar extends React.Component {
   };
 
  render(){
-
-     var allSessions = sessions.map(function(item , id){
+      let that = this;
+      var allSessions = this.props.adminReducer.initialData.batch.map(function(item , id){
        return (
-          <MenuItem key={id} primaryText={item} />
+          <MenuItem key={id} primaryText={item.name} 
+           onTouchTap={ () => {
+          that.props.setCurrentSession(item.name);
+          that.handleTouchTap.bind(that, HANDLE_CODES.CLOSE_CURRENT_SESSION);
+         }
+       }
+           />
         );
      });
 
-    return(
-      <AppBar
-         title={
-               <span  style={style.titleStyle} >
-                    <center>
-                        { this.state.name }
-                     </center>
-                </span>
-               }
+       var allcourses = this.props.adminReducer.initialData.course.map(function(item , id){
+
+       return (
+          <MenuItem key={id} primaryText={item.name}
+           onTouchTap={ () => {
+               that.props.setCurrentCourse(item.name);
+               that.handleTouchTap.bind(that, HANDLE_CODES.COURSE_CLOSE)
+           } 
+         } 
+       />
+        );
+     });
+
+   
+
+
+  return(
+
+        <div>
+        
+        <AppBar
 
          iconElementLeft={
                   <span  style={style.myStyle} >
@@ -146,9 +228,8 @@ class TopBar extends React.Component {
                 this.handleTouchTap.bind(this, HANDLE_CODES.OPEN_CURRENT_SESSION)
               }
        >
+       
        <Popover
-
-
           open={this.state.currentSession}
           anchorEl={this.state.anchorEl}
           anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
@@ -161,27 +242,46 @@ class TopBar extends React.Component {
 
         </Popover>
 
-       <FlatButton label="Admin" style={style.adminButton} />
-       <FlatButton label="Settings" style={style.settingsButton}
-          onTouchTap={this.handleTouchTap.bind(this, HANDLE_CODES.SETTINGS_OPEN)}
+       <FlatButton label={this.props.adminReducer.selectedCourse} style={style.settingsButton}
+          onTouchTap={this.handleTouchTap.bind(this, HANDLE_CODES.COURSE_OPEN)}
        />
       <Popover
           open={this.state.open}
           anchorEl={this.state.anchorEl}
           anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
           targetOrigin={{horizontal: 'left', vertical: 'top'}}
-          onRequestClose={this.handleTouchTap.bind(this, HANDLE_CODES.SETTINGS_CLOSE)}
+          onRequestClose={this.handleTouchTap.bind(this, HANDLE_CODES.COURSE_CLOSE)}
         >
           <Menu>
-            <MenuItem primaryText="Edit Profile" />
-            <MenuItem primaryText="Change Password" />
+            {allcourses}
           </Menu>
         </Popover>
+
+      <FlatButton label={this.state.user} style={style.adminButton} />
 
       <FlatButton label="Logout" style={style.logoutButton}
          onTouchTap={this.handleTouchTap.bind(this, HANDLE_CODES.LOGOUT_HANDLE)} />
 
-  </AppBar>
+      </AppBar>
+     <MuiThemeProvider muiTheme={muiTheme}>
+        <AppBar
+         title={
+               <span  style={style.titleStyle} >
+                    <center>
+                        { this.state.name }
+                     </center>
+                </span>
+               }
+
+         iconElementLeft={
+                  <span  style={style.myStyle} >
+                     
+                  </span>
+                }
+       ></AppBar>
+    </MuiThemeProvider >
+    </div>
+    
 );
 
 }
@@ -194,7 +294,8 @@ TopBar.childContextTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    adminReducer: state.adminReducer
+    adminReducer: state.adminReducer,
+    loginReducer : state.login
     }
 }
 
@@ -211,7 +312,16 @@ const mapDispatchToProps = (dispatch) => {
       },
       getDepartment: (item) => {
         dispatch(getDepartment(item))
-      }
+      },
+      getInitialData : (config) => {
+       dispatch(getInitialData(config));
+     },
+       setCurrentCourse : (item) => {
+       dispatch(setCurrentCourse(item));
+     },
+      setCurrentSession : (item) => {
+       dispatch(setCurrentSession(item));
+     }
     }
 }
 

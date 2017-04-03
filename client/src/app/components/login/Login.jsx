@@ -68,20 +68,13 @@ export default class Login extends React.Component  {
 
 
       case HANDLE_CODES.ON_LOGIN:
-
-        if( this.state.username != '' && this.state.password != '')
-         {
+         event.preventDefault();
            var bodyParameters = {
               "username": this.state.username,
               "password": this.state.password
             }
 
             this.props.loginUser(bodyParameters);
-            
-              }
-               else{
-                 this.setState({   message: true  });
-               }
 
       break;
      case HANDLE_CODES.PASSWORD_CHANGE:
@@ -97,7 +90,7 @@ export default class Login extends React.Component  {
 };
 
 
-    updateDimensions() {
+    updateDimensions = () =>{
 
     this.setState({   message: false  });
     var w = window,
@@ -264,7 +257,7 @@ return(
         <span style={style.cardTextStyle}>
           Login
         </span>
-      
+      <form onSubmit={this.handleTouchTap.bind(this, HANDLE_CODES.ON_LOGIN)}>
        <TextField
         hintText="Username"
         style={{marginTop:'10%'}}
@@ -275,7 +268,7 @@ return(
        <TextField
         hintText="Password"
         type="password"
-
+        errorText={this.props.errorText}
         onChange={this.handleTouchTap.bind(this , HANDLE_CODES.PASSWORD_CHANGE)}
 
         style={{marginTop:'5%'}}
@@ -285,11 +278,13 @@ return(
         <span style={style.loginButton}>
 
           <RaisedButton
-              label="Login"
+              label="Submit"
+              type="submit"
               onTouchTap={this.handleTouchTap.bind(this, HANDLE_CODES.ON_LOGIN)}
               style={{marginTop:'5%'}}
            />
        </span>
+       </form>
 
       </CardText>
      </Card>

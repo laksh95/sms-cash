@@ -14,16 +14,18 @@ import DashBoard from './dashboard/DashBoard.jsx';
 let userImage =  require('./../images/user.png');
 import {Link} from 'react-router';
 import { browserHistory} from 'react-router';
+import { getSelected } from '../actions/adminActions.jsx';
+import { connect } from 'react-redux';
 
 
 
-export default class SideBarMenu extends React.Component {
+class SideBarMenu extends React.Component {
   
   constructor(props) {
     super(props); 
 
     this.state = {
-      selected:"Dashboard"
+      selected:this.props.adminReducer.selectedTab
     };
   }
 
@@ -31,6 +33,8 @@ export default class SideBarMenu extends React.Component {
     //  if(!this.props.isLogin){
     //     browserHistory.push('/');
     // }
+
+    console.log("Hello");
   }
 
   componentWillReceiveProps(nextProps) {
@@ -50,18 +54,22 @@ export default class SideBarMenu extends React.Component {
    };
   
   render() { 
-    var list = [
-      "Department":'white',
-      "Dashboard":'white',
-      "Students":'white',
-      "Teacher":'white',
-      "Subjects":'white',
-      "Events":'white',
-      "Important":'white',
-      "T/S":'white'
-      ];
+   var list = {
+      "/department":'white',
+      "/dashboard":'white',
+      "/students":'white',
+      "/teachers":'white',
+      "/subjects":'white',
+      "/events":'white',
+      "/important":'white'
+      };
 
-    list[this.state.selected] = '#e3e7ea';
+ list[this.props.adminReducer.selectedTab] = '#e3e7ea';
+
+ if(this.props.adminReducer.selectedTab === '/'){
+
+   list['/dashboard'] = '#e3e7ea';
+ }
     let sizeWidth = 230;
     if( this.props.open === false){
      sizeWidth = 70;
@@ -71,71 +79,80 @@ export default class SideBarMenu extends React.Component {
       <div>
         <Drawer width={sizeWidth} openSecondary={false} docked={true} zDepth={2} open={true} >
           <AppBar title="Menu"
-           onLeftIconButtonTouchTap = {this.props.handleToggle} />
+           onLeftIconButtonTouchTap = { () => this.props.handleToggle('Sidebar')} />
 
             {
               (this.props.user.role) ?       
 
            ( <List>
 
-               {this.props.user.role.isAdmin?
+               {
+                /*this.props.user.role.isAdmin?
               <Link to ="/testAdmin" style={{textDecoration: 'none'}}>
-                <ListItem
-                  primaryText="TEST ADMIN"
-                  leftAvatar={<Avatar src={userImage} />} 
-                />
-              </Link> : null}
+                 <ListItem
+                   primaryText="TEST ADMIN"
+                   leftAvatar={<Avatar src={userImage} />} 
+                 />
+              </Link> : null*/
+            }
 
-               {(this.props.user.role.isTeacher || this.props.user.role.isDirector) ?
+               {/*(this.props.user.role.isTeacher || this.props.user.role.isDirector) ?
               <Link to ="/testTeacher" style={{textDecoration: 'none'}}>
-                <ListItem
-                  primaryText="TEST TEACHER"
-                  leftAvatar={<Avatar src={userImage} />} 
-                />
-              </Link> : null}
+                 <ListItem
+                   primaryText="TEST TEACHER"
+                   leftAvatar={<Avatar src={userImage} />} 
+                 />
+              </Link> 
+              : null*/}
 
               {this.props.user.role.isAdmin ?
-              <Link to ="/" style={{textDecoration: 'none'}}>
+              <Link to ="/dashboard" style={{textDecoration: 'none'}}>
                 <ListItem
                   primaryText="DashBoard"
                   leftAvatar={<Avatar src={userImage}
                    />} 
-                   style={{backgroundColor: list["Dashboard"]}}
-                   onTouchTap = {this.handleTouchTap.bind(this, "Dashboard")}
+                   style={{backgroundColor: list["/dashboard"]}}
+                   onTouchTap = {this.handleTouchTap.bind(this, "/dashboard")}
                 />
               </Link> : null}
               <Link to ="/department" style={{textDecoration: 'none'}}>
                 <ListItem
                   primaryText="Department"
                   leftAvatar={<Avatar src={userImage} />} 
-                   style={{backgroundColor: list["Department"]}}
-                      onTouchTap = {this.handleTouchTap.bind(this,"Department")}
+                   style={{backgroundColor: list["/department"]}}
+                      onTouchTap = {this.handleTouchTap.bind(this,"/department")}
+                />
+              </Link>
+
+              <Link to ="/student" style={{textDecoration: 'none'}}>
+               <ListItem
+                 primaryText="Student" 
+                 leftAvatar={<Avatar src={userImage} />}
+                   style={{backgroundColor: list["/student"]}}
+                       onTouchTap = {this.handleTouchTap.bind(this,"/student")}
+               />
+              </Link>
+
+              <Link to ="/teachers" style={{textDecoration: 'none'}}>
+                <ListItem
+                  primaryText="Teacher"
+                  leftAvatar={<Avatar src={userImage} />}
+                  style={{backgroundColor: list["/teachers"]}}
+                  onTouchTap = {this.handleTouchTap.bind(this,"/teachers")}
                 />
               </Link>
               <ListItem
-                primaryText="Student" 
-                leftAvatar={<Avatar src={userImage} />}
-                  style={{backgroundColor: list["Student"]}}
-                      onTouchTap = {this.handleTouchTap.bind(this,"Student")}
-              />
-              <ListItem
-                primaryText="Teacher"
-                leftAvatar={<Avatar src={userImage} />}
-                 style={{backgroundColor: list["Teacher"]}}
-                 onTouchTap = {this.handleTouchTap.bind(this,"Teacher")}
-              />
-              <ListItem
                 primaryText="Subjects"
                 leftAvatar={<Avatar src={userImage} />}
-                 style={{backgroundColor: list["Subjects"]}}
-                 onTouchTap = {this.handleTouchTap.bind(this,"Subjects")}
+                 style={{backgroundColor: list["/subjects"]}}
+                 onTouchTap = {this.handleTouchTap.bind(this,"/subjects")}
                 
               />
               <ListItem
                 primaryText="Events"
                 leftAvatar={<Avatar src={userImage} />} 
-                 style={{backgroundColor: list["Events"]}}
-                 onTouchTap = {this.handleTouchTap.bind(this,"Events")}
+                 style={{backgroundColor: list["/events"]}}
+                 onTouchTap = {this.handleTouchTap.bind(this,"/events")}
               />
             </List>): null}
             <Divider />
@@ -143,15 +160,10 @@ export default class SideBarMenu extends React.Component {
               <ListItem
                 primaryText="Important"
                 leftAvatar={<Avatar src={userImage} />}
-                  style={{backgroundColor: list["Important"]}}
-                 onTouchTap = {this.handleTouchTap.bind(this,"Important")}
+                  style={{backgroundColor: list["/important"]}}
+                 onTouchTap = {this.handleTouchTap.bind(this,"/important")}
               />
-              <ListItem
-                primaryText="Teachers/Students"
-                leftAvatar={<Avatar src={userImage} />}
-                  style={{backgroundColor: list["T/S"]}}
-                 onTouchTap = {this.handleTouchTap.bind(this,"T/S")}
-              />
+              
             </List>
         </Drawer>
 
@@ -167,3 +179,12 @@ SideBarMenu.childContextTypes = {
 SideBarMenu.contextTypes = { 
     router: React.PropTypes.object.isRequired
 };
+
+
+const mapStateToProps = (state) => {
+  return {
+    adminReducer: state.adminReducer
+    }
+}
+
+export default connect(mapStateToProps)(SideBarMenu);

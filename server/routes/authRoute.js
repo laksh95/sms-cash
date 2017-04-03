@@ -38,6 +38,8 @@ function validateLoginForm(payload) {
 }
 
 router.post('/login', (req, res, next) => {
+
+  console.log("Hello Inside ---------------------------------------------------------------");
  	const validationResult = validateLoginForm(req.body);
   	if (!validationResult.success) {
     	return res.status(400).json({

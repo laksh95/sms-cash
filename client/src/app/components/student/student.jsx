@@ -5,38 +5,31 @@ import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import { getSelected } from '../../actions/adminActions.jsx';
 import { connect } from 'react-redux';
 
-
-class DashBoard extends React.Component { 
+class Student extends React.Component { 
    constructor(props) {
     super(props);
-    }
-  
-   getChildContext() {
+  }
+
+  getChildContext() {
       return { muiTheme: getMuiTheme(baseTheme) };
     }
-
-   componentWillReceiveProps(nextProps) {
-      this.props = nextProps;     
-    }
-
-    componentWillMount() {
+ 
+ componentWillMount() {
      this.props.getSelected(""+this.props.location.pathname);
-    }
+ }
 
-  
-   render(){
-     return(
-         <div>
-           <div>DashBoard</div>
-         </div>
-         );
-    }
+ render() {
+   return(
+     <div>
+        <h3>Student</h3> 
+     </div>
+    );
+  }
 }
-
-DashBoard.childContextTypes = {
+Student.childContextTypes = {
             muiTheme: React.PropTypes.object.isRequired,
 };
-DashBoard.contextTypes = { 
+Student.contextTypes = { 
     router: React.PropTypes.object.isRequired
 };
 
@@ -55,8 +48,5 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DashBoard);
-
-
-
+export default connect(mapStateToProps, mapDispatchToProps)(Student);
 

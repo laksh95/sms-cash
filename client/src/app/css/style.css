@@ -7,11 +7,14 @@
 .mymain{
     height: 100%;
 }
+#studentMenu{
+    margin-left:40%
+}
 #AddStudent{
     border:1px solid gray;
     width: 80%;
     margin:auto;
-    margin-top: 15px;
+    margin-top:15px;
 }
 #StudentHeader{
     background-color: gray;
@@ -26,7 +29,7 @@
     font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 #buttons{
-    margin-left:40px;
+    margin-left:40%;
     margin-bottom: 10px;
 }
 
@@ -40,11 +43,19 @@
     width:50%;
 }
 .extra_space {
-    margin-bottom: 28px; !important;
+    display:block;
+    margin-bottom: 10px;
 }
 .addBulk{
     margin:auto;
     text-align:center;
     margin-top:10%;
     margin-left:250px;
+}
+#studentContentHeader{
+    margin:auto;
+    margin-left: 12%;
+    width:90%;
+    overflow:hidden;
+    padding-top:0.2%;
 }

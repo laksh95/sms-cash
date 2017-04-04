@@ -43,7 +43,7 @@ class TopBar extends React.Component {
     return(
       <MuiThemeProvider muiTheme={muiTheme}>
        <AppBar
-         title={<span  style={style.titleStyle}>M A N I P A L &nbsp;&nbsp; U N I V E R S I T Y </span>}
+         title={<span  style={style.titleStyle}>S T U D E N T &nbsp;&nbsp; M A N A G E M E N T &nbsp;&nbsp; S Y S T E M </span>}
          iconClassNameRight=""
          iconClassNameLeft=""   
        />

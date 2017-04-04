@@ -22,16 +22,16 @@ class Student extends React.Component {
        })
   }
  render() {
+
        return(
-           <div>
-               <div>
+           <div id="studentContentHeader">
                    <Tabs
                        value={this.state.value}
                        onChange={this.handleChange}>
                        <Tab label="Add Student" value="a">
                           <AddStudent/>
                        </Tab>
-                       <Tab label="Add Bulk Students" className="addBulk" value="b">
+                       <Tab label="Add Bulk Students"  value="b">
                            <AddBulkStudent/>
                        </Tab >
                        <Tab label="Student Information" value="c">
@@ -39,8 +39,6 @@ class Student extends React.Component {
                        <Tab label="Student Registration" value="d">
                        </Tab>
                    </Tabs>
-               </div>
-
            </div>
 
        )

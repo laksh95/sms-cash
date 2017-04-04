@@ -69,7 +69,7 @@ export default class Login extends React.Component  {
 
       case HANDLE_CODES.ON_LOGIN:
 
-        if( this.state.username != '' && this.state.password != '')
+        if( this.state.username !== '' && this.state.password !=='')
          {
           console.log("Login button clicked");
            var bodyParameters = {
@@ -123,7 +123,7 @@ export default class Login extends React.Component  {
     var token = Auth.getToken();
     var authString = `bearer ${Auth.getToken()}`
     
-    if(token !=null){
+    if(token !== null){
       console.log(token);
       var bodyParameters = {
         "username": "",
@@ -147,11 +147,6 @@ export default class Login extends React.Component  {
         Auth.authenticateUser(this.props.token);
     }
   }
-
-    componentDidMount() {
-        window.addEventListener("resize", this.updateDimensions);
-    }
-
     componentWillReceiveProps(nextProps) {
        if(this.props.isLogin){
         browserHistory.push('/dashboard');

@@ -7,7 +7,7 @@ import RaisedButton from 'material-ui/RaisedButton'
 import Checkbox from 'material-ui/Checkbox'
 const styles = {
     customWidth: {
-        width: 300,
+        width: 300
     },
 }
 class AddStudent extends React.Component {
@@ -19,6 +19,7 @@ class AddStudent extends React.Component {
             name: '',
             gender: 'Select Gender',
             permanent_address: '',
+            disableAddress:false,
             current_address: '',
             contact_number: 0,
             alternate_number: 0,
@@ -42,11 +43,11 @@ class AddStudent extends React.Component {
             errorParentEmail: ''
         }
     }
-    handleDateChange = (event,date)=>{
+  /*  handleDateChange = (event,date)=>{
         this.setState({
             dob:date
         })
-    }
+    }*/
     /********************************************************
     Prevent user from selecting future dates as  Date of Birth
     *********************************************************/
@@ -73,7 +74,7 @@ class AddStudent extends React.Component {
     cancel=(event)=>{
         event.preventDefault()
     }
-    handleGender = (event,index,value)=>{
+   /* handleGender = (event,index,value)=>{
         if((value!=='M' || value!=='F' || value!=='Others')){
             this.setState({
                 gender:value
@@ -86,7 +87,7 @@ class AddStudent extends React.Component {
                 errorGender:'Mandatory Field'
             })
         }
-    }
+    }*/
     /*************************************************************
      onChange fro all text fields, drop down menus and date picker
      are handled in this single function
@@ -163,7 +164,8 @@ class AddStudent extends React.Component {
                 if(value){
                     let current_address=this.state.current_address
                     this.setState({
-                        permanent_address:current_address
+                        permanent_address:current_address,
+                        disableAddress:true
                     })
                 }
                 else{
@@ -226,7 +228,46 @@ class AddStudent extends React.Component {
                     })
                 }
                 break
+            case 'email_id':
+                let email=event.target.value
+                let content = email.test(/\S+@\S+\.\S+/g)
+                console.log(content)
+                if(content !== null){
+                    this.setState({
+                        errorEmail:'Email should be of type: example@example.com'
+                    })
+                }
+                else{
+                    this.setState({
+                        errorEmail:''
+                    })
+                }
+
+                break
             case 'father_name':
+                let father_name=event.target.value
+                if(father_name.trim() === ''){
+                    this.setState({
+                        errorFatherName:'Mandatory Field'
+                    })
+                }
+                else {
+                    let specialCharacter = father_name.match(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g)
+                    let numCharacter=father_name.match(/\d+/g)
+                    if(specialCharacter !== null && numCharacter !== null){
+                        this.setState({
+                            errorFatherName:'Field cannot contain Number and(or) Special character'
+                        })
+                    }
+                    else{
+                        this.setState({
+                            errorFatherName:'',
+                            father_name:father_name
+                        })
+                    }
+                }
+                break
+            case 'mother_name':
                 break
         }
     }
@@ -236,6 +277,7 @@ class AddStudent extends React.Component {
     *******************************************/
 
     render(){
+
         const HANDLE_CODE={
             "NAME":"name",
             "DOB":"dob",
@@ -255,7 +297,7 @@ class AddStudent extends React.Component {
         }
         const startDate=new Date()
         return(
-            <div id="AddStudent">
+            <div id="AddStudent" >
                 <div id="StudentHeader">
                     Add Student
                 </div>
@@ -264,9 +306,9 @@ class AddStudent extends React.Component {
                         <label className="extra_space">Name</label><br/>
                         <label className="extra_space">Gender</label><br/>
                         <label className="extra_space">Date of Birth</label><br/>
-                        <label className="extra_space">Permanent Address</label>
+                        <label className="extra_space">Current Address</label>
                         <br/>
-                        <label className="extra_space">Current Address</label><br/>
+                        <label className="extra_space">Permanent Address</label><br/>
                         <label className="extra_space">Contact Number</label><br/>
                         <label className="extra_space">Alternate Number</label><br/>
                         <label className="extra_space">Email ID</label><br/>
@@ -304,13 +346,14 @@ class AddStudent extends React.Component {
                             hintText={'Current Address'}
                             onChange={this.handleChange.bind(this,HANDLE_CODE.CURRENT_ADDRESS)}
                             ref="current_address"
-                        />
+                        />{/*<br/>
                         <Checkbox
                             label="Permanent Address same as Current Address"
                             onCheck={this.handleChange.bind(this,HANDLE_CODE.CHECK)}
-                        />
+                        /><br/>*/}
                         <TextField
                             hintText={'Permanent Address'}
+                            disabled={this.state.disableAddress}
                             onChange={this.handleChange.bind(this,HANDLE_CODE.PERMANENT_ADDRESS)}
                             ref="permanent_address"
                         />
@@ -368,15 +411,15 @@ class AddStudent extends React.Component {
                             ref="parent_contact_number"
                         />
                     </div>
-                    <div id="buttons">
-                       <RaisedButton label="Add Student" primary={true}
-                                     onClick={this.addStudent}
-                       />
-                        <RaisedButton label="Cancel" secondary={true}
-                                      onClick={this.cancel}
-                        />
-                    </div>
                 </div>
+                <div id="buttons">
+                    <RaisedButton label="Add Student" primary={true}
+                                  onClick={this.addStudent}
+                    />
+                    <RaisedButton label="Cancel" secondary={true}
+                                  onClick={this.cancel}
+                    />
+                 </div>
             </div>
         )
     }

@@ -10,6 +10,7 @@ let config = {
     },
     devServer:{
         publicPath:'/',
+        host:'192.168.1.107',
         port:8080,
         contentBase:'./client/src',
         historyApiFallback: {

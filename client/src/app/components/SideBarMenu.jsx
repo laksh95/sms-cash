@@ -66,23 +66,6 @@ export default class SideBarMenu extends React.Component {
               (this.props.user.role) ?       
 
            ( <List>
-
-               {this.props.user.role.isAdmin?
-              <Link to ="/testAdmin" style={{textDecoration: 'none'}}>
-                <ListItem
-                  primaryText="TEST ADMIN"
-                  leftAvatar={<Avatar src={userImage} />} 
-                />
-              </Link> : null}
-
-               {(this.props.user.role.isTeacher || this.props.user.role.isDirector) ?
-                <Link to ="/testTeacher" style={{textDecoration: 'none'}}>
-                  <ListItem
-                    primaryText="TEST TEACHER"
-                    leftAvatar={<Avatar src={userImage} />} 
-                />
-              </Link> : null}
-
               {this.props.user.role.isAdmin ?
               <Link to ="/dashboard" style={{textDecoration: 'none'}}>
                 <ListItem

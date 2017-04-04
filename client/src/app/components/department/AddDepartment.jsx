@@ -3,6 +3,7 @@ import Divider from 'material-ui/Divider';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import {isEmpty, isLengthInvalid} from './../../utils/validation.js'
+//import RefreshIndicator from 'material-ui/RefreshIndicator';
 
 class AddDepartment extends React.Component{
 
@@ -16,7 +17,7 @@ class AddDepartment extends React.Component{
         errorMessage:""
       };
     }
-    
+
     //validate department short and full name
      handleTextChange= (event, item) => {
       let message= "";
@@ -67,6 +68,18 @@ class AddDepartment extends React.Component{
     }
 
     render(){
+      {
+      // const loaderStyle = {
+      //   container: {
+      //     position: 'relative',
+      //   },
+      //   refresh: {
+      //     display: 'inline-block',
+      //     position: 'relative',
+      //   },
+      // };
+    }
+
         return (
           <div>
            <div className="contentCenter">
@@ -88,6 +101,14 @@ class AddDepartment extends React.Component{
               />
               <br /><br/><br/>
               <RaisedButton label="ADD" primary={true} onTouchTap= {this.addDepartment}/>
+               {//<RefreshIndicator
+              //   size={40}
+              //   left={10}
+              //   top={0}
+              //   status="loading"
+              //   style={loaderStyle.refresh}
+              // />
+            }
               <br/><br/>
               <Divider />
           </div>

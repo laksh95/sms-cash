@@ -9,8 +9,9 @@ import AddDepartment from './../../components/department/AddDepartment.jsx';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import {getDepartmentList, addDepartment, deleteDepartment, editDepartment, 
-  hideSlackBar, updateSlackBarMsg, handleTabChange} from "./../../actions/departmentActions";
+  hideSlackBar, updateSlackBarMsg, handleTabChange, pageChange} from "./../../actions/departmentActions";
 import {connect} from "react-redux";
+
 
 class Department extends React.Component{
 
@@ -37,13 +38,15 @@ class Department extends React.Component{
               <Tab label="Department List" value="list">
                   <DepartmentList 
                     getDepartmentList= {(course) => this.props.getDepartmentList(course)}
-                    departmentList= {this.props.department.departmentList}
+                    departmentList= {this.props.department.pagedDepartment}
                     showSlackBar= {this.props.department.showSlackBar}
                     slackBarMsg= {this.props.department.queryStatusMessage}
                     hideSlackBar= {() => this.props.hideSlackBar()}
                     editDepartment= {(department) => this.props.editDepartment(department)}
                     updateSlackBarMsg= {(message) => this.props.updateSlackBarMsg(message)}
                     deleteDepartment= {(department) => this.props.deleteDepartment(department)}
+                    pagination= {this.props.department.pagination}
+                    pageChange= {(currentPage , size) => this.props.pageChange(currentPage , size)}
                   />
               </Tab>
               <Tab className='contentCenter' label="Add Department"value="add" >
@@ -95,6 +98,9 @@ const mapDispatchToProps= (dispatch) => {
     },
     handleTabChange: (value) =>{
       dispatch(handleTabChange(value));
+    },
+    pageChange: (currentPage , size) =>{
+      dispatch(pageChange(currentPage , size));
     }
   };
 };

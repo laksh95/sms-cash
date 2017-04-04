@@ -4,6 +4,8 @@ import FlatButton from 'material-ui/FlatButton';
 import Snackbar from 'material-ui/Snackbar';
 import EditDepartment  from './EditDepartment.jsx';
 import DeleteDepartment  from './DeleteDepartment.jsx';
+require('rc-pagination/assets/index.css');
+const Pagination = require('rc-pagination');
 
 class DepartmentList extends React.Component{
 
@@ -14,6 +16,7 @@ class DepartmentList extends React.Component{
           	showDelete: false,
           	selectedIndex: ""
     	};
+
     }
 
     handleTouchTap= (item, event) => {
@@ -41,6 +44,7 @@ class DepartmentList extends React.Component{
     		break;
     	}
     }
+
 
 	render(){
 
@@ -89,6 +93,13 @@ class DepartmentList extends React.Component{
 	                  </TableRow>)}
 	                </TableBody>
 	            </Table>
+
+	            <Pagination className="ant-pagination" defaultCurrent={1} 
+	            	total={this.props.pagination.totalPages} 
+	            	current={this.props.pagination.currentPage} 
+	            	defaultPageSize={this.props.pagination.pageSize} 
+	            	onChange={this.props.pageChange}
+	            />
 
 	            {this.state.showEdit? edit: null} 
 

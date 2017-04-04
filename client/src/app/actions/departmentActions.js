@@ -72,6 +72,14 @@ export function handleTabChange(value) {
 }
 
 
+export function pageChange(currentPage , size) {
+	return {
+		type: types.PAGE_CHANGE,
+		payload: currentPage
+	};
+}
+
+
 
 
 

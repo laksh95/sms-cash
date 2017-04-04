@@ -256,7 +256,6 @@ class ViewCourse extends React.Component {
                     <br />
                 </Dialog>
                 <div>
-                    <h2 className="headline">Courses</h2>
                     <Table>
                         <TableHeader adjustForCheckbox={false}>
                             <TableRow >

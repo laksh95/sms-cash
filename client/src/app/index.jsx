@@ -6,7 +6,7 @@ import {Router, Route ,IndexRoute, browserHistory} from 'react-router'
 import Login from './containers/login/App.jsx';
 import App from './containers/App.jsx';
 import Dashboard from './components/dashboard/DashBoard.jsx';
-import Department from './components/department/Department.jsx'
+import Department from './containers/department/Department.jsx'
 import { Provider } from 'react-redux'
 import store from './store.js'
 

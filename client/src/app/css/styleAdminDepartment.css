@@ -12,3 +12,8 @@
 	marginBottom: 12,
 	fontWeight: 400
 }
+
+
+.errorMsg{
+	color: red
+}

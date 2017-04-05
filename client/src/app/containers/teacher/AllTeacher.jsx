@@ -25,14 +25,14 @@ class AllTeacher extends React.Component{
           name: "MECH"
         }],
     		allTeacherList: [{
-    			name: "shilpa",
-    			designation: "intern",
+    			name: "Mr Adam",
+    			designation: "Assistant Professor",
           department: "CSE",
           adminApproved: true
     		},
         {
-          name: "Mukherjee",
-    			designation: "intern",
+          name: "Mr Mukherjee",
+    			designation: "Assistant Professor",
           department: "MECH",
           adminApproved: false
         }],

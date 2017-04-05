@@ -3,12 +3,12 @@ var DIST_DIR = path.resolve(__dirname+'/client/dist/');
 var SRC_DIR = path.resolve(__dirname+'/client/src/');
 
 var config = {
-	entry: SRC_DIR + "/app/index.jsx",
-	output: {
-		path: DIST_DIR + "/app",
-		filename: "bundle.js",
-		publicPath: "/"
-	},
+  entry: SRC_DIR + "/app/index.jsx",
+  output: {
+    path: DIST_DIR + "/app",
+    filename: "bundle.js",
+    publicPath: "/"
+  },
   devServer:{
     publicPath:'/',
     contentBase:'./client/src',
@@ -17,8 +17,8 @@ var config = {
       index: 'index.html'
     }
   },
-	devtool : 'source-map',
-	module: {
+  devtool : 'source-map',
+  module: {
 
         loaders: [
             {

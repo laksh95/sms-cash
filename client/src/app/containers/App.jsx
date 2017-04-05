@@ -122,11 +122,9 @@ class App extends React.Component {
        
         <SideBarMenu handleToggle = {(request) => this.handleToggle(request)} open = {this.state.open}
           user= {this.props.login.loginUser} isLogin= {this.props.login.isLogin}
-        /> 
-
+        />   
         <div style={style.ContentTitle}>
-          <center><h3>Student Management system</h3></center>
-          {content}
+          {this.props.children}  
         </div>
      
      </div>

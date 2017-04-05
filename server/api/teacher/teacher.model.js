@@ -37,7 +37,6 @@ let init = function(){
                    let skill = models.skill
                    let user_detail = models.user_detail
                    let department = models.department
-
                    skill.hasMany(teacher, {foreignKey: 'skill_set'});
                    user_detail.hasOne(teacher, {foreignKey: 'user_detail_id'});
                    department.hasOne(teacher, {foreignKey: 'department_id'});

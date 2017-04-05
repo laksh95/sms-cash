@@ -1,4 +1,3 @@
-
 let Sequelize =require('sequelize') ;
 let config =require('./environment/index');
 let lodash=require('lodash');

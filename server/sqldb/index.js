@@ -1,5 +1,4 @@
 let path = require('path');
-
 let models = ['academicCalendar','academicYear','admin','attendance',
 'batch','club','clubMembers', 'course','curriculum','curriculumSubject',
 'department','departmentNotice','departmentSeat','director',
@@ -27,3 +26,4 @@ let sql = function(){
 	return db;
 }
 module.exports =sql;
+

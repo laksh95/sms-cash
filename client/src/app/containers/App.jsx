@@ -34,24 +34,24 @@ class App extends React.Component {
       this.setState({open: !this.state.open});
     }
 
-    componentWillMount() {
-      var token = Auth.getToken();
-      let path= this.props.location.pathname;
-
-      this.props.setUrl(path);
-      this.props.setReceivedResponse(false);
-      
-      if(token !=null){
-        this.props.checkLogin();
-      }
-      else if(!this.props.login.isLogin){
-        console.log("In will mount, goinf to login: ");
-        console.log("token: ", token);
-        console.log("login: ", this.props.login);
-        browserHistory.push('/login');
-      }
-
-    }
+    // componentWillMount() {
+    //   var token = Auth.getToken();
+    //   let path= this.props.location.pathname;
+    //
+    //   this.props.setUrl(path);
+    //   this.props.setReceivedResponse(false);
+    //
+    //   if(token !=null){
+    //     this.props.checkLogin();
+    //   }
+    //   else if(!this.props.login.isLogin){
+    //     console.log("In will mount, goinf to login: ");
+    //     console.log("token: ", token);
+    //     console.log("login: ", this.props.login);
+    //     browserHistory.push('/login');
+    //   }
+    //
+    // }
 
     // componentDidMount() {
     //   var token = Auth.getToken();
@@ -93,7 +93,7 @@ class App extends React.Component {
         <SideBarMenu handleToggle = {this.handleToggle} open = {this.state.open}
           user= {this.props.login.loginUser} isLogin= {this.props.login.isLogin}
         />   
-        <div style={style.ContentTitle}><h1>Student Management system</h1>
+        <div style={style.ContentTitle}>
           {this.props.children}  
         </div>
      

@@ -9,7 +9,7 @@ import Dashboard from './components/dashboard/DashBoard.jsx';
 import Department from './components/department/Department.jsx'
 import { Provider } from 'react-redux'
 import store from './store.js'
-
+import Blog from './containers/blog/blog.jsx'
 const history = syncHistoryWithStore(browserHistory, store);
 injectTapEventPlugin();
 
@@ -20,6 +20,7 @@ render((
 	      <Route path = "/" component = {App}>
 	         <IndexRoute component = {Dashboard} />	         
 	         <Route path = "/department" component = {Department} />
+			  <Route path = "/blog" component = {Blog} />
 	      </Route>
 	      <Route path = "/login" component = {Login}/>
 	   </Router>

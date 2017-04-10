@@ -1,0 +1,71 @@
+.card {
+    width:75%;
+    margin-left: 100px;
+    text-align: center;
+    display: inline-block;
+    overflow: hidden;
+    max-height: 900px;
+    margin-bottom: 10px;
+}
+.cardHeader{
+    margin-left: 8px;
+}
+.footer{
+    display: inline;
+    color : slategrey;
+    overflow: hidden;
+    float: left ;
+    width:100%;
+}
+h6{
+    line-height: 1;
+}
+.readMore{
+    color : slategrey;
+    text-decoration: none;
+}
+.left {
+    float: left;
+    margin-left: 10px;
+    color : slategrey!important;
+}
+.right {
+    float : right;
+    margin-right: 10px;
+}
+.labelRight {
+    float : right ;
+    font-size :20px ;
+    margin-right:8px ;
+}
+.chip {
+    margin-left : 10px ;
+}
+.font {
+    font-size : 15px ;
+}
+
+.leftContent {
+    float: left;
+    width:60%;
+}
+.rightContent {
+    float:left;
+    /*width:30%;*/
+    margin-top:4% ;
+    text-align: center;
+    overflow: hidden;
+}
+.content{
+    width:100%;
+    float:left ;
+}
+.stats {
+    float : left;
+    margin-left: 100px ;
+    margin-top: 100px ;
+}
+.center {
+    text-align: center;
+    margin-top :15 px ;
+}

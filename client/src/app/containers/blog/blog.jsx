@@ -8,6 +8,21 @@ import FlatButton from 'material-ui/FlatButton';
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import injectTapEventPlugin from 'react-tap-event-plugin';
+import RaisedButton from 'material-ui/RaisedButton';
+import Paper from 'material-ui/Paper';
+import Avatar from 'material-ui/Avatar';
+import Chip from 'material-ui/Chip';
+import Checkbox from 'material-ui/Checkbox';
+import ActionFavorite from 'material-ui/svg-icons/action/favorite';
+
+import ActionFavoriteBorder from 'material-ui/svg-icons/action/favorite-border';
+import Visibility from 'material-ui/svg-icons/action/visibility';
+import VisibilityOff from 'material-ui/svg-icons/action/visibility-off';
+import IconButton from 'material-ui/IconButton';
+
+import FontIcon from 'material-ui/FontIcon';
+import SvgIconFace from 'material-ui/svg-icons/action/face';
+import {blue300, indigo900} from 'material-ui/styles/colors';
 let loginStyle = require('./../../css/login.css');
 class Blog extends React.Component {
     componentWillMount() {
@@ -23,31 +38,117 @@ class Blog extends React.Component {
             Auth.authenticateUser(this.props.login.token);
         }
     }
+    showComments(){
+
+    }
+    handleTouchTap() {
+        alert('You clicked the Chip.');
+    }
     render(){
+        const styles = {
+            chip: {
+                marginLeft: 380,
+            },
+            wrapper: {
+                display: 'flex',
+                flexWrap: 'wrap',
+            },
+            block: {
+                maxWidth: 50,
+            },
+            checkbox: {
+                marginBottom: 16,
+            },
+        };
         return (
-            <div className={loginStyle.mymain} >
-                <RaisedButton label="Add your Post" primary={true}/>
-                <Card>
-                    <CardHeader
-                        title="BLOG HEADING"
-                        subtitle="By Yash Sharma"
-                        actAsExpander={true}
-                        showExpandableButton={true}
-                    />
-                    {/*<CardActions>*/}
-                        {/*<FlatButton label="Likes" />*/}
-                        {/*<FlatButton label="Comments" />*/}
-                    {/*</CardActions>*/}
-                    <CardText expandable={true}>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
-                        Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
-                        Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
-                        <br/>
-                        {0}<FlatButton label="Likes" />
-                        <FlatButton label="Comments" />
-                    </CardText>
-                </Card>
+            <div className={loginStyle.mymain}>
+                <div className="leftContent">
+                    <RaisedButton className="" label="Add your Post" primary={true}/>
+                    <br/><br/>
+                    <Paper className="card" zDepth={2} >
+                        <div>
+                            <Chip
+                                onTouchTap={this.handleTouchTap}
+                                style={styles.chip}
+                            >
+                                <Avatar src="https://cdn-images-1.medium.com/fit/c/32/32/1*owmCbcxxEOLbfF_XGDjxnQ.jpeg" />
+                                Yash Sharma
+                            </Chip>
+                            <label className="font">Posted At</label><br/>
+                        </div>
+                        <h5 className="cardHeader">Cracking the coding interview</h5>
+                        <img src="https://cdn-images-1.medium.com/max/900/1*-8-mWUXKqq6Fk3AfxGpA7w.jpeg" alt="Image" height={200} width={700}/>
+                        <h6><a className='readMore' href="">Read More</a></h6>
+                        <div className="footer">
+                            <Checkbox
+                                checkedIcon={<ActionFavorite />}
+                                uncheckedIcon={<ActionFavoriteBorder />}
+                                label="30"
+                                className="left"
+                                style={{...styles.checkbox,...styles.block}}
+
+                            />
+                            <label className="labelRight">10 responses</label><i className="material-icons right">comment</i>
+                        </div>
+                    </Paper>
+                    <Paper className="card" zDepth={2} >
+                        <div>
+                            <Chip
+                                onTouchTap={this.handleTouchTap}
+                                style={styles.chip}
+                            >
+                                <Avatar src="https://cdn-images-1.medium.com/fit/c/32/32/1*owmCbcxxEOLbfF_XGDjxnQ.jpeg" />
+                                Yash Sharma
+                            </Chip>
+                        </div>
+                        <h5 className="cardHeader">Cracking the coding interview</h5>
+                        <img src="https://cdn-images-1.medium.com/max/900/1*-8-mWUXKqq6Fk3AfxGpA7w.jpeg" alt="Image" height={200} width={700}/>
+                        <h6><a href="">Read More</a></h6>
+                        <div className="footer">
+
+                        </div>
+                    </Paper>
+                    <Paper className="card" zDepth={2} >
+                        <div>
+                            <Chip
+                                onTouchTap={this.handleTouchTap}
+                                style={styles.chip}
+                            >
+                                <Avatar src="https://cdn-images-1.medium.com/fit/c/32/32/1*owmCbcxxEOLbfF_XGDjxnQ.jpeg" />
+                                Yash Sharma
+                            </Chip>
+                        </div>
+                        <h5 className="cardHeader">Cracking the coding interview</h5>
+                        <img src="https://cdn-images-1.medium.com/max/900/1*-8-mWUXKqq6Fk3AfxGpA7w.jpeg" alt="Image" height={200} width={700}/>
+                        <h6><a href="">Read More</a></h6>
+                        <div className="footer">
+
+                        </div>
+                    </Paper>
+                </div>
+                <div className="rightContent">
+                    <label>Statistics about your posts</label>
+                    <div className="center">
+                        <Chip >
+                            <Avatar size={32}>10</Avatar>
+                            Total Number of posts
+                        </Chip><br/><br/>
+                        <Chip >
+                            <Avatar size={32}>5</Avatar>
+                            Total Posts Liked
+                        </Chip><br/><br/>
+                        <Chip >
+                            <Avatar size={32}>9</Avatar>
+                            Total Comments Posted
+                        </Chip><br/><br/>
+                        <Chip >
+                            <Avatar size={32}>23</Avatar>
+                            Total Rating
+                        </Chip>
+                    </div>
+
+                </div>
+
             </div>
         );
     }

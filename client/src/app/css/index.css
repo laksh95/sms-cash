@@ -69,3 +69,20 @@ h6{
     text-align: center;
     margin-top :15 px ;
 }
+.post {
+    width:70%;
+    margin:auto;
+}
+.postHeader{
+    font-size : 33px ;
+}
+.postContent{
+    font-size:28px;
+}
+.postFooter{
+    font-size:22px ;
+}
+.addComment{
+    font-size:25px;
+    color:lightslategrey;
+}

@@ -1,10 +1,10 @@
+import {Link} from 'react-router';
 import React from 'react';
 import {browserHistory} from 'react-router';
 import {connect} from "react-redux";
 import {loginUser, checkLogin} from "./../../actions/loginActions";
 import Auth from './../../Auth.js';
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
-import FlatButton from 'material-ui/FlatButton';
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import injectTapEventPlugin from 'react-tap-event-plugin';
@@ -47,7 +47,7 @@ class Blog extends React.Component {
     render(){
         const styles = {
             chip: {
-                marginLeft: 380,
+                marginLeft: 342,
             },
             wrapper: {
                 display: 'flex',
@@ -65,6 +65,32 @@ class Blog extends React.Component {
                 <div className="leftContent">
                     <RaisedButton className="" label="Add your Post" primary={true}/>
                     <br/><br/>
+                    <Paper className="card" zDepth={2} >
+                        <div>
+                            <Chip
+                                onTouchTap={this.handleTouchTap}
+                                style={styles.chip}
+                            >
+                                <Avatar src="https://cdn-images-1.medium.com/fit/c/32/32/1*owmCbcxxEOLbfF_XGDjxnQ.jpeg" />
+                                Yash Sharma
+                            </Chip>
+                            <label className="font">Posted At</label><br/>
+                        </div>
+                        <h5 className="cardHeader">Cracking the coding interview</h5>
+                        <img src="https://cdn-images-1.medium.com/max/900/1*-8-mWUXKqq6Fk3AfxGpA7w.jpeg" alt="Image" height={200} width={700}/>
+                        <Link to="/post/1"><h6 className="readMore">Read More</h6></Link>
+                        <div className="footer">
+                            <Checkbox
+                                checkedIcon={<ActionFavorite />}
+                                uncheckedIcon={<ActionFavoriteBorder />}
+                                label="30"
+                                className="left"
+                                style={{...styles.checkbox,...styles.block}}
+
+                            />
+                            <label className="labelRight">10 responses</label><i className="material-icons right">comment</i>
+                        </div>
+                    </Paper>
                     <Paper className="card" zDepth={2} >
                         <div>
                             <Chip
@@ -100,29 +126,21 @@ class Blog extends React.Component {
                                 <Avatar src="https://cdn-images-1.medium.com/fit/c/32/32/1*owmCbcxxEOLbfF_XGDjxnQ.jpeg" />
                                 Yash Sharma
                             </Chip>
+                            <label className="font">Posted At</label><br/>
                         </div>
                         <h5 className="cardHeader">Cracking the coding interview</h5>
                         <img src="https://cdn-images-1.medium.com/max/900/1*-8-mWUXKqq6Fk3AfxGpA7w.jpeg" alt="Image" height={200} width={700}/>
-                        <h6><a href="">Read More</a></h6>
+                        <h6><a className='readMore' href="">Read More</a></h6>
                         <div className="footer">
+                            <Checkbox
+                                checkedIcon={<ActionFavorite />}
+                                uncheckedIcon={<ActionFavoriteBorder />}
+                                label="30"
+                                className="left"
+                                style={{...styles.checkbox,...styles.block}}
 
-                        </div>
-                    </Paper>
-                    <Paper className="card" zDepth={2} >
-                        <div>
-                            <Chip
-                                onTouchTap={this.handleTouchTap}
-                                style={styles.chip}
-                            >
-                                <Avatar src="https://cdn-images-1.medium.com/fit/c/32/32/1*owmCbcxxEOLbfF_XGDjxnQ.jpeg" />
-                                Yash Sharma
-                            </Chip>
-                        </div>
-                        <h5 className="cardHeader">Cracking the coding interview</h5>
-                        <img src="https://cdn-images-1.medium.com/max/900/1*-8-mWUXKqq6Fk3AfxGpA7w.jpeg" alt="Image" height={200} width={700}/>
-                        <h6><a href="">Read More</a></h6>
-                        <div className="footer">
-
+                            />
+                            <label className="labelRight">10 responses</label><i className="material-icons right">comment</i>
                         </div>
                     </Paper>
                 </div>

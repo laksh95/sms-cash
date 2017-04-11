@@ -11,10 +11,9 @@ import Subheader from 'material-ui/Subheader';
 import Divider from 'material-ui/Divider';
 import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
 import DashBoard from './dashboard/DashBoard.jsx';
+import {browserHistory } from 'react-router';
 import {Link} from 'react-router';
 let userImage =  require('./../images/user.png');
-
-
 export default class SideBarMenu extends React.Component {
   
   constructor(props) {
@@ -26,15 +25,15 @@ export default class SideBarMenu extends React.Component {
   }
 
   componentWillMount() {
-    //  if(!this.props.isLogin){
-    //     browserHistory.push('/');
-    // }
+      if(!this.props.isLogin){
+         browserHistory.push('/');
+     }
   }
 
   componentWillReceiveProps(nextProps) {
-    // if(!this.props.isLogin){
-    //     browserHistory.push('/');
-    // }
+     if(!this.props.isLogin){
+         browserHistory.push('/');
+     }
   }
  
  getChildContext(){

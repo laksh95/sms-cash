@@ -32,6 +32,18 @@ let sql = function(){
                     userDetail.hasMany(post,{
                         foreignKey:"by"
                     })
+                },
+                addPost:function(models,data,cb){
+                    let heading = data.heading
+                    let content = data.content
+                    let post = models.post
+                    post.create({
+                        heading ,
+                        content ,
+                        by :  1
+                    }).then(function(response){
+                        cb(null,response.dataValues)
+                    })
                 }
             }
         }

@@ -26,15 +26,20 @@ import IconButton from 'material-ui/IconButton';
 import FontIcon from 'material-ui/FontIcon';
 import SvgIconFace from 'material-ui/svg-icons/action/face';
 import {blue300, indigo900} from 'material-ui/styles/colors';
-var Dropzone = require('react-dropzone');
-
-
+let Dropzone = require('react-dropzone');
 let loginStyle = require('./../../css/login.css');
 class AddPost extends React.Component {
     constructor(props) {
         super(props)
-        this.state = { text: '' }
-
+        this.state = {
+                text: '',
+                validateHeading : false ,
+                validateContent : false,
+                heading : false ,
+                content : false,
+                image : ""
+            }
+            this.onDrop= this.onDrop.bind(this)
     }
     componentWillReceiveProps(props){
         this.props= props
@@ -42,23 +47,56 @@ class AddPost extends React.Component {
     getChildContext() {
         return { muiTheme: getMuiTheme(baseTheme) };
     }
-    componentDidUpdate(prevProps, prevState) {
-
-    }
     handleOpen = () => {
         this.props.openModal(true)
     };
-
     handleClose = () => {
         this.props.openModal(false)
     };
-    handleChange(value) {
-        this.setState({ text: value })
+    onDrop(files){
+        console.log(files)
+        this.setState({
+            image : files[0]
+        },()=>{
+            console.log("this.state.image",this.state.image)
+        })
     }
-    onDrop(files) {
-        console.log('Received files: ', files);
+    handleChange = (type, event) => {
+        switch(type){
+            case "HEADING":
+                this.setState({
+                    heading : event.target.value
+                })
+                if(event.target.value.trim()==''){
+                    this.setState({
+                        validateHeading : false
+                    })
+                }
+                else {
+                    this.setState({
+                        validateHeading : true
+                    })
+                }
+                break
+            case "CONTENT":
+                this.setState({
+                    content : event.target.value
+                })
+                if(event.target.value.trim()==''){
+                    this.setState({
+                        validateContent : false
+                    })
+                }
+                else {
+                    this.setState({
+                        validateContent : true
+                    })
+                }
+                break
+        }
     }
     render(){
+        console.log("this.state",this.state.image.preview)
         const actions = [
             <FlatButton
                 label="Cancel"
@@ -68,7 +106,7 @@ class AddPost extends React.Component {
             <FlatButton
                 label="Post"
                 primary={true}
-                disabled={true}
+                disabled={!(this.state.validateContent&&this.state.validateHeading)}
                 onTouchTap={this.handleClose}
             />,
         ];
@@ -84,13 +122,15 @@ class AddPost extends React.Component {
                         hintText="Post Heading"
                         floatingLabelText="Post Heading"
                         fullWidth={true}
+                        onChange={this.handleChange.bind(this,"HEADING")}
                     /><br /><br/>
                     <div>
                         <Dropzone
                             onDrop={this.onDrop}
                             multiple={false}
+                            className="dropzone"
                         >
-                            <div>Upload Image</div>
+                            <div><img src={this.state.image.preview} width={200} height={200} alt=""/></div>
                         </Dropzone>
                     </div>
                     <TextField
@@ -99,8 +139,8 @@ class AddPost extends React.Component {
                         multiLine={true}
                         rows={5}
                         fullWidth={true}
+                        onChange={this.handleChange.bind(this,"CONTENT")}
                     /><br /><br/>
-
                 </Dialog>
             </div>
         );

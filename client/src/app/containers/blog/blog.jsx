@@ -3,7 +3,7 @@ import React from 'react';
 import {browserHistory} from 'react-router';
 import {connect} from "react-redux";
 import {loginUser, checkLogin} from "./../../actions/loginActions";
-import {openModal} from "./../../actions/blogActions.jsx";
+import {openModal,getPosts} from "./../../actions/blogActions.jsx";
 import AddPost from "./addPost.jsx"
 import Auth from './../../Auth.js';
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
@@ -28,6 +28,7 @@ import {blue300, indigo900} from 'material-ui/styles/colors';
 let loginStyle = require('./../../css/login.css');
 class Blog extends React.Component {
     componentWillMount() {
+        this.props.getPosts()
     }
     componentDidMount() {
     }
@@ -44,6 +45,7 @@ class Blog extends React.Component {
         this.props.openModal(data)
     }
     render(){
+
         const styles = {
             chip: {
                 marginLeft: 342,
@@ -67,84 +69,40 @@ class Blog extends React.Component {
                     </FloatingActionButton>
                     <AddPost/>
                     <br/><br/>
-                    <Paper className="card" zDepth={2} >
-                        <div>
-                            <Chip
-                                onTouchTap={this.handleTouchTap}
-                                style={styles.chip}
-                            >
-                                <Avatar src="https://cdn-images-1.medium.com/fit/c/32/32/1*owmCbcxxEOLbfF_XGDjxnQ.jpeg" />
-                                Yash Sharma
-                            </Chip>
-                            <label className="font">Posted At</label><br/>
-                        </div>
-                        <h5 className="cardHeader">Cracking the coding interview</h5>
-                        <img src="https://cdn-images-1.medium.com/max/900/1*-8-mWUXKqq6Fk3AfxGpA7w.jpeg" alt="Image" height={200} width={700}/>
-                        <Link to="/post/1"><h6 className="readMore">Read More</h6></Link>
-                        <div className="footer">
-                            <Checkbox
-                                checkedIcon={<ActionFavorite />}
-                                uncheckedIcon={<ActionFavoriteBorder />}
-                                label="30"
-                                className="left"
-                                style={{...styles.checkbox,...styles.block}}
+                    {
+                        this.props.blogReducer.posts.map((data,index)=>{
 
-                            />
-                            <label className="labelRight">10 responses</label><i className="material-icons right">comment</i>
-                        </div>
-                    </Paper>
-                    <Paper className="card" zDepth={2} >
-                        <div>
-                            <Chip
-                                onTouchTap={this.handleTouchTap}
-                                style={styles.chip}
-                            >
-                                <Avatar src="https://cdn-images-1.medium.com/fit/c/32/32/1*owmCbcxxEOLbfF_XGDjxnQ.jpeg" />
-                                Yash Sharma
-                            </Chip>
-                            <label className="font">Posted At</label><br/>
-                        </div>
-                        <h5 className="cardHeader">Cracking the coding interview</h5>
-                        <img src="https://cdn-images-1.medium.com/max/900/1*-8-mWUXKqq6Fk3AfxGpA7w.jpeg" alt="Image" height={200} width={700}/>
-                        <h6><a className='readMore' href="">Read More</a></h6>
-                        <div className="footer">
-                            <Checkbox
-                                checkedIcon={<ActionFavorite />}
-                                uncheckedIcon={<ActionFavoriteBorder />}
-                                label="30"
-                                className="left"
-                                style={{...styles.checkbox,...styles.block}}
+                            return(
+                                <Paper className="card" zDepth={2} >
+                                    <div>
+                                        <Chip
+                                            onTouchTap={this.handleTouchTap}
+                                            style={styles.chip}
+                                        >
+                                            <Avatar src="https://cdn-images-1.medium.com/fit/c/32/32/1*owmCbcxxEOLbfF_XGDjxnQ.jpeg" />
+                                            Yash Sharma
+                                        </Chip>
+                                        <label className="font">Posted At</label><br/>
+                                    </div>
+                                    <h5 className="cardHeader">{data.heading}</h5>
+                                    <img src="https://cdn-images-1.medium.com/max/900/1*-8-mWUXKqq6Fk3AfxGpA7w.jpeg" alt="Image" height={200} width={700}/>
+                                    <Link to="/post/1"><h6 className="readMore">Read More</h6></Link>
+                                    <div className="footer">
+                                        <Checkbox
+                                            checkedIcon={<ActionFavorite />}
+                                            uncheckedIcon={<ActionFavoriteBorder />}
+                                            label="30"
+                                            className="left"
+                                            style={{...styles.checkbox,...styles.block}}
 
-                            />
-                            <label className="labelRight">10 responses</label><i className="material-icons right">comment</i>
-                        </div>
-                    </Paper>
-                    <Paper className="card" zDepth={2} >
-                        <div>
-                            <Chip
-                                onTouchTap={this.handleTouchTap}
-                                style={styles.chip}
-                            >
-                                <Avatar src="https://cdn-images-1.medium.com/fit/c/32/32/1*owmCbcxxEOLbfF_XGDjxnQ.jpeg" />
-                                Yash Sharma
-                            </Chip>
-                            <label className="font">Posted At</label><br/>
-                        </div>
-                        <h5 className="cardHeader">Cracking the coding interview</h5>
-                        <img src="https://cdn-images-1.medium.com/max/900/1*-8-mWUXKqq6Fk3AfxGpA7w.jpeg" alt="Image" height={200} width={700}/>
-                        <h6><a className='readMore' href="">Read More</a></h6>
-                        <div className="footer">
-                            <Checkbox
-                                checkedIcon={<ActionFavorite />}
-                                uncheckedIcon={<ActionFavoriteBorder />}
-                                label="30"
-                                className="left"
-                                style={{...styles.checkbox,...styles.block}}
+                                        />
+                                        <label className="labelRight">10 responses</label><i className="material-icons right">comment</i>
+                                    </div>
+                                </Paper>
+                            )
+                        })
+                    }
 
-                            />
-                            <label className="labelRight">10 responses</label><i className="material-icons right">comment</i>
-                        </div>
-                    </Paper>
                 </div>
                 <div className="rightContent">
                     <label>Statistics about your posts</label>
@@ -188,13 +146,16 @@ const mapStateToProps= (state) => {
 const mapDispatchToProps= (dispatch) => {
     return{
         loginUser: (credential) =>{
-            dispatch(loginUser(credential));
+            dispatch(loginUser(credential))
         },
         checkLogin: () =>{
-            dispatch(checkLogin());
+            dispatch(checkLogin())
         },
         openModal :(data) =>{
             dispatch(openModal(data))
+        },
+        getPosts:()=>{
+            dispatch(getPosts())
         }
     };
 };

@@ -50,6 +50,8 @@ let sql = function(){
                 },
                 getPosts:function(models,data,cb){
                     let post = models.post
+                    let userDetail = models.user_detail
+                    let Promises = []
                     post.findAll({
                         where :{
                             status :true 
@@ -60,6 +62,15 @@ let sql = function(){
                         for(let index in response){
                             posts.push(response[index].dataValues)
                         }
+                        for(let index in posts){
+                            Promises.push(userDetail.findAll({
+                                attributes:['name','profile_pic_url'],
+                                where:{
+                                    id:posts[index].by
+                                }
+                            }))
+                        }
+                        // to be continued
                         cb(null,posts)
                     })
                     .catch(function(error){

@@ -6,10 +6,9 @@ import {addBulkStudent} from '../../actions/studentAction.jsx'
 class AddBulkStudent extends React.Component{
     constructor(props){
         super(props)
-        this.state={
-            completed:0,
-            files:[],
-            preview:''
+        this.state= {
+            completed: 0,
+            files: []
         }
     }
     componentWillReceiveProps(nextProps){
@@ -29,10 +28,6 @@ class AddBulkStudent extends React.Component{
         if (completed > 100) {
             this.setState({
                 completed: 100
-            },()=>{
-                this.setState({
-                    preview:this.props.files.csvToJS.filename
-                })
             });
         } else {
             this.setState({completed});
@@ -67,7 +62,7 @@ class AddBulkStudent extends React.Component{
                             accept='text/csv'
                             className="fileUpload"
                         >
-                            <div>{this.state.preview}</div>
+                            <div>{this.props.file.csvToJS.filename}</div>
                         </DropZone>
                     </div>
                     <LinearProgress mode="determinate" value={this.state.completed} />

@@ -1,10 +1,15 @@
 import React from 'react';
 import TextField from 'material-ui/TextField'
-import DropDownMenu from 'material-ui/DropDownMenu';
-import MenuItem from 'material-ui/MenuItem';
+import DropDownMenu from 'material-ui/DropDownMenu'
+import MenuItem from 'material-ui/MenuItem'
 import DatePicker from 'material-ui/DatePicker'
 import RaisedButton from 'material-ui/RaisedButton'
 import Checkbox from 'material-ui/Checkbox'
+import {connect} from 'react-redux'
+import {addStudent} from '../../actions/studentAction.jsx'
+import {getInitialData} from '../../actions/studentAction.jsx'
+import ContentAddCircleOutline from 'material-ui/svg-icons/content/add-circle-outline'
+import Snackbar from 'material-ui/Snackbar'
 const styles = {
     customWidth: {
         width: 300
@@ -17,7 +22,7 @@ class AddStudent extends React.Component {
         this.state = {
             dob,
             name: '',
-            gender: 'Select Gender',
+            gender: 'S',
             permanent_address: '',
             disableAddress:false,
             current_address: '',
@@ -40,14 +45,11 @@ class AddStudent extends React.Component {
             errorFatherName: '',
             errorMotherName: '',
             errorParentNumber: '',
-            errorParentEmail: ''
+            errorParentEmail: '',
+            open:false,
+            message:''
         }
     }
-  /*  handleDateChange = (event,date)=>{
-        this.setState({
-            dob:date
-        })
-    }*/
     /********************************************************
     Prevent user from selecting future dates as  Date of Birth
     *********************************************************/
@@ -57,39 +59,78 @@ class AddStudent extends React.Component {
             return Date.parse(date) > start
         }
     }
-
+    /***********************************************************
+    This function is called first time the component is mounted,
+    it is called to populate the department drop down list.
+    **********************************************************/
+    /*componentWillMount(){
+        this.props.getDepartment({
+            courseId:1
+        })
+    }*/
+    componentWillReceiveProps(nextProps){
+        this.props=nextProps
+    }
+    /*******************************************************************************************************
+    Check whether no field is empty and then make a call to action and display the snack bar msg accordingly
+    ********************************************************************************************************/
     addStudent=(event)=>{
         event.preventDefault()
-        let name=this.refs.name.getValue()
-        let permanent_address=this.refs.permanent_address.getValue()
-        let current_address=this.refs.current_address.getValue()
-        /*let contact_number=this.refs.contact_number.getValue()*/
-        /*let alternate_number=this.refs.alternate_number.getValue()*/
-        let emailID=this.refs.emailID.getValue()
-        let father_name=this.refs.father_name.getValue()
-        let mother_name=this.refs.mother_name.getValue()
-        let parent_emailID=this.refs.parent_emailID.getValue()
-        /*let parent_contact_number=this.refs.parent_contact_number.getValue()*/
+        let studentInfo={
+            name:this.state.name,
+            gender:this.state.gender,
+            dob:this.state.dob,
+            current_address:this.state.current_address,
+            permanent_address:this.state.permanent_address,
+            department:this.state.department,
+            contact_number:this.state.contact_number,
+            alternate_number:this.state.alternate_number,
+            emailID:this.state.emailID,
+            father_name:this.state.father_name,
+            mother_name:this.state.mother_name,
+            parent_emailID:this.state.parent_emailID,
+            parent_contact_number:this.state.parent_contact_number
+        }
+        let flag = 1
+        Object.keys(studentInfo).forEach((key)=>{
+            console.log('---->',key, studentInfo[key])
+            if(studentInfo[key] === '' || studentInfo[key] === undefined || studentInfo[key] === [] || studentInfo[key] === 0){
+                console.log(studentInfo[key])
+                flag = 0
+            }
+        })
+        if(1 === flag){
+            this.props.addStudent(studentInfo)
+            this.setState({
+                message:'Student Added Successfully'
+            })
+            this.handleTouchTap()
+        }
+        else{
+            this.setState({
+                message:'All fields are mandatory'
+            })
+            this.handleTouchTap()
+        }
     }
     cancel=(event)=>{
         event.preventDefault()
     }
-   /* handleGender = (event,index,value)=>{
-        if((value!=='M' || value!=='F' || value!=='Others')){
-            this.setState({
-                gender:value
-            },()=>{
-                console.log(this.state.gender)
-            })
-        }
-        else{
-            this.setState({
-                errorGender:'Mandatory Field'
-            })
-        }
-    }*/
+    /*****************************************
+    Handles snack bar open and close animation
+    ******************************************/
+    handleTouchTap = ()=>{
+        this.setState({
+            open:true
+        })
+    }
+    handleRequestClose = ()=>{
+        this.setState({
+            open:false
+        })
+    }
     /*************************************************************
-     onChange fro all text fields, drop down menus and date picker
+     onChange for all text fields, drop down menus and date picker
      are handled in this single function
     **************************************************************/
     handleChange = (type,event,value)=>{
@@ -118,19 +159,19 @@ class AddStudent extends React.Component {
                 break
             case 'gender':
                 console.log(value)
-                if(value===0){
+                if(value === 1){
                     this.setState({
                         gender:'M'
                     },()=>{
                         console.log(this.state.gender)
                     })
                 }
-                else if(value ===1){
+                else if(value === 2){
                     this.setState({
                         gender:'F'
                     })
                 }
-                else if(value ===2){
+                else if(value === 3){
                     this.setState({
                         gender:'Others'
                     })
@@ -170,13 +211,14 @@ class AddStudent extends React.Component {
                 }
                 else{
                     this.setState({
-                        permanent_address:''
+                        permanent_address:'',
+                        disableAddress:false
                     })
                 }
                 break
             case 'permanent_address':
                 let permanent_address=event.target.value
-                if(permanent_address.length!==0){
+                if(permanent_address.length !== 0){
                     this.setState({
                         permanent_address:permanent_address
                     })
@@ -210,10 +252,10 @@ class AddStudent extends React.Component {
             case 'alternate_number':
                 let alternateNumber=event.target.value
                 let alternateNumberMatch=alternateNumber.match(/^[0-9]*$/gm)
-                /*let alternateNumberCharacterMatch = alternateNume.match(/^[0-9]*$/gm)*/
+                /*let alternateNumberCharacterMatch = alternateNumber.match(/^[0-9]*$/gm)*/
                 if(alternateNumberMatch === null){
                     this.setState({
-                        errorNumber:'Characters are not allowed.'
+                        errorAlternateNumber:'Characters are not allowed.'
                     })
                 }
                 else if(alternateNumber.length > 10){
@@ -223,14 +265,14 @@ class AddStudent extends React.Component {
                 }
                 else{
                     this.setState({
-                        contact_number:number,
+                        alternate_number:alternateNumber,
                         errorAlternateNumber:''
                     })
                 }
                 break
             case 'email_id':
                 let email=event.target.value
-                let content = email.test(/\S+@\S+\.\S+/g)
+                let content = email.match(/\S+@\S+\.\S+/g)
                 console.log(content)
                 if(content !== null){
                     this.setState({
@@ -268,6 +310,28 @@ class AddStudent extends React.Component {
                 }
                 break
             case 'mother_name':
+                let mother_name=event.target.value
+                if(mother_name.trim() === ''){
+                    this.setState({
+                        errorMotherName:'Mandatory Field'
+                    })
+                }
+                else {
+                    specialCharacter = mother_name.match(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g)
+                    numCharacter=mother_name.match(/\d+/g)
+                    if(specialCharacter !== null && numCharacter !== null){
+                        this.setState({
+                            errorMotherName:'Field cannot contain Number and(or) Special character'
+                        })
+                    }
+                    else{
+                        this.setState({
+                            errorMotherName:'',
+                            mother_name:mother_name
+                        })
+                    }
+                }
+
                 break
         }
     }
@@ -277,7 +341,7 @@ class AddStudent extends React.Component {
     *******************************************/
 
     render(){
-
+        let departmentList = this.props.studentInfo.initialData
         const HANDLE_CODE={
             "NAME":"name",
             "DOB":"dob",
@@ -299,7 +363,12 @@ class AddStudent extends React.Component {
         return(
             <div id="AddStudent" >
                 <div id="StudentHeader">
-                    Add Student
+                   <div id="logo">
+                       <ContentAddCircleOutline style={{color:'white'}} />
+                   </div>
+                    <div id="formName">
+                      Add Student
+                    </div>
                 </div>
                 <div id="addForm">
                     <div id="fieldNames">
@@ -308,6 +377,7 @@ class AddStudent extends React.Component {
                         <label className="extra_space">Date of Birth</label><br/>
                         <label className="extra_space">Current Address</label>
                         <br/>
+                        <br/><br/><br/>
                         <label className="extra_space">Permanent Address</label><br/>
                         <label className="extra_space">Contact Number</label><br/>
                         <label className="extra_space">Alternate Number</label><br/>
@@ -327,10 +397,11 @@ class AddStudent extends React.Component {
                         />
                         <DropDownMenu
                             value={this.state.gender}
-                            onChange={this.handleChange.bind(this,HANDLE_CODE.GENDER)}
+                             onChange={this.handleChange.bind(this,HANDLE_CODE.GENDER)}
                             autoWidth={false}
                             style={styles.customWidth}
                         >
+                            <MenuItem primaryText={'Select Gender'} value={'S'} />
                             <MenuItem primaryText={'Male'} value={'M'} />
                             <MenuItem primaryText={'Female'} value={'F'} />
                             <MenuItem primaryText={'Other'} value={"Others"} />
@@ -346,11 +417,11 @@ class AddStudent extends React.Component {
                             hintText={'Current Address'}
                             onChange={this.handleChange.bind(this,HANDLE_CODE.CURRENT_ADDRESS)}
                             ref="current_address"
-                        />{/*<br/>
+                        />
                         <Checkbox
                             label="Permanent Address same as Current Address"
                             onCheck={this.handleChange.bind(this,HANDLE_CODE.CHECK)}
-                        /><br/>*/}
+                        />
                         <TextField
                             hintText={'Permanent Address'}
                             disabled={this.state.disableAddress}
@@ -381,33 +452,36 @@ class AddStudent extends React.Component {
                             autoWidth={false}
                             style={styles.customWidth}
                         >{
-                            this.state.department.map((data, index)=>{
+                            /*departmentList.map((data, index)=>{
                                 return(
-                                    <MenuItem primaryText={data} value={index} />
+                                    <MenuItem primaryText={data.name} value={index} />
                                 )
-                            })
+                            })*/
                         }
                             <br/>
                         </DropDownMenu>
                         <TextField
                             hintText={'Father Name'}
                             errorText={this.state.errorFatherName}
-                            onChange={this.handleChange.bind(this)}
+                            onChange={this.handleChange.bind(this,HANDLE_CODE.FATHER_NAME)}
                             ref="father_name"
                         />
                         <TextField
                             hintText={'Mother Name'}
                             errorText={this.state.errorMotherName}
+                            onChange={this.handleChange.bind(this,HANDLE_CODE.MOTHER_NAME)}
                             ref="mother_name"
                         />
                         <TextField
                             hintText={'email@example.com'}
                             errorText={this.state.errorParentEmail}
+                            onChange={this.handleChange.bind(this,HANDLE_CODE.PARENT_EMAIL)}
                             ref="parent_emailID"
                         />
                         <TextField
                             hintText={'Father Contact Number'}
                             errorText={this.state.errorParentNumber}
+                            onChange={this.handleChange.bind(this,HANDLE_CODE.PARENT_NUMBER)}
                             ref="parent_contact_number"
                         />
                     </div>
@@ -420,9 +494,30 @@ class AddStudent extends React.Component {
                                   onClick={this.cancel}
                     />
                  </div>
+                <Snackbar
+                    open={this.state.open}
+                    message={this.state.message}
+                    autoHideDuration={4000}
+                    onRequestClose={this.handleRequestClose}
+                />
             </div>
         )
     }
 }
+const mapStateToProps = (state)=>{
+    return{
+        studentInfo:state.studentReducer
+    }
+}
+const mapDispatchToProps = (dispatch)=>{
+    return{
+        addStudent: (studentInfo)=>{
+            dispatch(addStudent(studentInfo))
+        }
+      /*  getDepartment: (courseId)=>{
+            dispatch(getInitialData(courseId))
+        }*/
+    }
+}
 
-export default AddStudent
+export default connect(mapStateToProps,mapDispatchToProps)(AddStudent)

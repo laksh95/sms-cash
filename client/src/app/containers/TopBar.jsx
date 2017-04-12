@@ -65,7 +65,7 @@ class TopBar extends React.Component {
     super(props);
 
     this.state = {
-      name: "Manipal University",
+      name: "Student Management System",
       open: false,
       currentSession : false,
       currentSessionValue : sessions[0]

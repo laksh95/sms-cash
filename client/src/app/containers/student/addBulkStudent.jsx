@@ -2,14 +2,14 @@ import React from 'react'
 import LinearProgress from 'material-ui/LinearProgress'
 import DropZone from 'react-dropzone'
 import {connect} from 'react-redux'
-import {addBulkStudent} from '../../actions/addBulkStudentAction'
-import axios from 'axios'
+import {addBulkStudent} from '../../actions/studentAction.jsx'
 class AddBulkStudent extends React.Component{
     constructor(props){
         super(props)
         this.state={
             completed:0,
-            files:[]
+            files:[],
+            preview:''
         }
     }
     componentWillReceiveProps(nextProps){
@@ -19,7 +19,7 @@ class AddBulkStudent extends React.Component{
         clearTimeout(this.timeout)
     }
     componentDidMount(){
-        console.log('component did mount')
+        console.log('component did mount',this.props.file)
     }
     onDrop = (acceptedFiles,rejectedFiles)=>{
         this.timer = setTimeout( () =>this.progress(5), 500)
@@ -27,16 +27,20 @@ class AddBulkStudent extends React.Component{
     }
     progress=(completed) =>{
         if (completed > 100) {
-            this.setState({completed: 100});
+            this.setState({
+                completed: 100
+            },()=>{
+                this.setState({
+                    preview:this.props.files.csvToJS.filename
+                })
+            });
         } else {
             this.setState({completed});
             const diff = Math.random() * 35;
             this.timer = setTimeout(() => this.progress(completed + diff), 1000);
         }
     }
-    displayLabel=()=>{
-        console.log('---------------label--------------',this.props.file)
-    }
+
     render(){
         let styles = {
             exampleImageInput: {
@@ -53,25 +57,31 @@ class AddBulkStudent extends React.Component{
         return(
             <div className="addBulk">
                 <form>
-                    <DropZone
-                        multiple={false}
-                        onDrop={this.onDrop}
-                        accept='text/csv'
-                    />
+                    <div id="uploadLabel">
+                        Upload/Drag file here:
+                    </div>
+                    <div className="dropZone">
+                        <DropZone
+                            multiple={false}
+                            onDrop={this.onDrop}
+                            accept='text/csv'
+                            className="fileUpload"
+                        >
+                            <div>{this.state.preview}</div>
+                        </DropZone>
+                    </div>
                     <LinearProgress mode="determinate" value={this.state.completed} />
-                </form>{
-                this.displayLabel()
-            }
+                </form>
             </div>
         )
     }
 }
 const mapStateToProps = (state)=>{
     return{
-        file:state.addBulkStudent
+        file:state.studentReducer
     }
 }
-const mapDispatchtoProps = (dispatch)=>{
+const mapDispatchToProps = (dispatch)=>{
     return{
         addStudent: (file)=>{
             dispatch(addBulkStudent(file))
@@ -80,4 +90,4 @@ const mapDispatchtoProps = (dispatch)=>{
 
 
 }
-export default connect(mapStateToProps,mapDispatchtoProps)(AddBulkStudent)
+export default connect(mapStateToProps,mapDispatchToProps)(AddBulkStudent)

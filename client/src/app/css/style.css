@@ -17,11 +17,16 @@
     margin-top:15px;
 }
 #StudentHeader{
-    background-color: gray;
-    color:white;
+    background-color:darkgray;
     font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 14px;
+    display: inline-flex;
+    clear:both;
+    overflow: hidden;
+    width:100%;
+    height:5%;
 }
+
 #addForm{
     width:50%;
     margin:auto;
@@ -50,12 +55,45 @@
     margin:auto;
     text-align:center;
     margin-top:10%;
-    margin-left:250px;
+    margin-left:90px;
+    width: 90%;
 }
 #studentContentHeader{
     margin:auto;
-    margin-left: 12%;
+    margin-left:12%;
     width:90%;
     overflow:hidden;
     padding-top:0.2%;
+}
+.dropZone{
+    margin:auto;
+    width:70%;
+    margin-top:2%;
+    margin-bottom:2%;
+    text-align: center;
+}
+#formName{
+    width:97%;
+    float:left;
+    overflow:hidden;
+    padding-top:10px;
+    color: white;
+}
+#logo{
+    width:3%;
+    float:left;
+    padding-left:10px;
+    padding-top:5px;
+    text-align:center;
+}
+.fileUpload{
+    width: 100%;
+    height: 50%;
+    border-width: 2px;
+    border-style: dashed;
+    border-radius:5px;
+}
+#uploadLabel{
+    font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
 }

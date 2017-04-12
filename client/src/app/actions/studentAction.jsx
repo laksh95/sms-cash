@@ -2,13 +2,33 @@
  * Created by mustang on 30/03/17.
  */
 import {readCsv} from '../utils/fileOps'
+import studentApi from '../utils/api/student'
+
 const ingestFileBegin = (filename) => ({
     type: 'INGEST_FILE_BEGIN_FULFILLED',
     payload: {
         filename
     }
 })
+export const getInitialData = (courseId)=>{
+    return{
+        type: 'GET_DATA',
+        payload:studentApi.getDepartmentList(courseId)
+            .then((data)=>{
+                return data
+            })
+    }
+}
 
+export const addStudent = (studentInfo)=>{
+    return{
+        type:'ADD_STUDENT',
+        payload: studentApi.addStudent(studentInfo)
+            .then((data)=>{
+                return data
+            })
+    }
+}
 const ingestFileSuccess = (filename, fileContent) => ({
     type: 'INGEST_FILE_SUCCESS_FULFILLED',
     payload:{

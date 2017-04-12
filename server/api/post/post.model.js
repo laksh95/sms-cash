@@ -44,6 +44,28 @@ let sql = function(){
                     }).then(function(response){
                         cb(null,response.dataValues)
                     })
+                    .catch(function(error){
+                        cb(error,null)
+                    })
+                },
+                getPosts:function(models,data,cb){
+                    let post = models.post
+                    post.findAll({
+                        where :{
+                            status :true 
+                        }
+                    }).then(function(response){
+                        console.log(response[1].dataValues)
+                        let posts = []
+                        for(let index in response){
+                            posts.push(response[index].dataValues)
+                        }
+                        cb(null,posts)
+                    })
+                    .catch(function(error){
+                        cb(error,null)
+                    })
+
                 }
             }
         }

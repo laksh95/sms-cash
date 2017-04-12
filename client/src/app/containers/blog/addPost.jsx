@@ -26,6 +26,7 @@ import IconButton from 'material-ui/IconButton';
 import FontIcon from 'material-ui/FontIcon';
 import SvgIconFace from 'material-ui/svg-icons/action/face';
 import {blue300, indigo900} from 'material-ui/styles/colors';
+import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table'
 let Dropzone = require('react-dropzone');
 let loginStyle = require('./../../css/login.css');
 class AddPost extends React.Component {

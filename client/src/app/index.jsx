@@ -21,8 +21,6 @@ render((
 	         <IndexRoute component = {Dashboard} />
 	         <Route path = "/dashboard" component = {Dashboard} />	         
 	         <Route path = "/department" component = {Department} />
-	         <Route path = "/teachers" component = {Teacher} />
-	         <Route path = "/student" component = {Student} />
 	      </Route>
 	      <Route path = "/login" component = {Login}/>
 	   </Router>

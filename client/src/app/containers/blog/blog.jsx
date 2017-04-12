@@ -3,23 +3,25 @@ import React from 'react';
 import {browserHistory} from 'react-router';
 import {connect} from "react-redux";
 import {loginUser, checkLogin} from "./../../actions/loginActions";
+import {openModal} from "./../../actions/blogActions.jsx";
+import AddPost from "./addPost.jsx"
 import Auth from './../../Auth.js';
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import RaisedButton from 'material-ui/RaisedButton';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
 import Paper from 'material-ui/Paper';
 import Avatar from 'material-ui/Avatar';
 import Chip from 'material-ui/Chip';
 import Checkbox from 'material-ui/Checkbox';
 import ActionFavorite from 'material-ui/svg-icons/action/favorite';
-
 import ActionFavoriteBorder from 'material-ui/svg-icons/action/favorite-border';
 import Visibility from 'material-ui/svg-icons/action/visibility';
 import VisibilityOff from 'material-ui/svg-icons/action/visibility-off';
 import IconButton from 'material-ui/IconButton';
-
 import FontIcon from 'material-ui/FontIcon';
 import SvgIconFace from 'material-ui/svg-icons/action/face';
 import {blue300, indigo900} from 'material-ui/styles/colors';
@@ -33,16 +35,13 @@ class Blog extends React.Component {
         return { muiTheme: getMuiTheme(baseTheme) };
     }
     componentDidUpdate(prevProps, prevState) {
-        if(this.props.login.isLogin){
-            browserHistory.push(this.props.login.prevPathName);
-            Auth.authenticateUser(this.props.login.token);
-        }
-    }
-    showComments(){
-
     }
     handleTouchTap() {
         alert('You clicked the Chip.');
+    }
+    openModal(event,data){
+        console.log("---------",data)
+        this.props.openModal(data)
     }
     render(){
         const styles = {
@@ -63,7 +62,10 @@ class Blog extends React.Component {
         return (
             <div className={loginStyle.mymain}>
                 <div className="leftContent">
-                    <RaisedButton className="" label="Add your Post" primary={true}/>
+                    <FloatingActionButton className="addPost" onClick={this.openModal.bind(this ,true)}>
+                        <ContentAdd />
+                    </FloatingActionButton>
+                    <AddPost/>
                     <br/><br/>
                     <Paper className="card" zDepth={2} >
                         <div>
@@ -179,7 +181,8 @@ Blog.contextTypes = {
 };
 const mapStateToProps= (state) => {
     return{
-        login: state.login
+        login: state.login,
+        blogReducer : state.blogReducer
     };
 };
 const mapDispatchToProps= (dispatch) => {
@@ -189,6 +192,9 @@ const mapDispatchToProps= (dispatch) => {
         },
         checkLogin: () =>{
             dispatch(checkLogin());
+        },
+        openModal :(data) =>{
+            dispatch(openModal(data))
         }
     };
 };

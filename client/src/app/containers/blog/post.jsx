@@ -103,7 +103,7 @@ class Post extends React.Component {
                             <label className="headerFont">Responses</label>
                             <br/>
                             <TextField
-                                hintText="Write your comment"
+                                hintText=""
                                 floatingLabelText="Write your comment"
                                 multiLine={true}
                                 rows={3}
@@ -112,19 +112,19 @@ class Post extends React.Component {
                         </div>
                         <div className="postComments">
                             <RaisedButton label="Show All responses" fullWidth={true} /><br/><br/>
-                            <Card>
+                            <Card className="marginBottom">
                                 <CardHeader
-                                    title="URL Avatar"
-                                    subtitle="Subtitle"
-                                    avatar="images/ok-128.jpg"
+                                    title="Yash Sharma"
+                                    subtitle=""
+                                    avatar="https://cdn-images-1.medium.com/fit/c/54/54/0*WgY9B-Lm4DnCEHlO.jpeg"
                                     actAsExpander={true}
                                     showExpandableButton={true}
                                 />
-                                <CardActions>
-                                    <FlatButton label="Action1" />
-                                    <FlatButton label="Action2" />
-                                </CardActions>
-                                <CardText>
+                                {/*<CardActions>*/}
+                                    {/*<FlatButton label="Action1" />*/}
+                                    {/*<FlatButton label="Action2" />*/}
+                                {/*</CardActions>*/}
+                                <CardText className = 'commentFont'>
                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                                     Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
                                     Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.

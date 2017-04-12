@@ -75,9 +75,11 @@ h6{
 }
 .postHeader{
     font-size : 33px ;
+    font-weight: bold;
 }
 .postContent{
     font-size:28px;
+    font-family: 'Raleway', sans-serif;
 }
 .postFooter{
     font-size:22px ;
@@ -85,4 +87,17 @@ h6{
 .addComment{
     font-size:25px;
     color:lightslategrey;
+}
+.marginBottom {
+    margin-bottom: 40px;
+}
+.commentFont {
+    font-size :10px ;
+}
+.addPost{
+    position :fixed;
+    right: 0 ;
+    bottom : 0 ;
+    margin-right : 15px ;
+    margin-bottom : 15px ;
 }

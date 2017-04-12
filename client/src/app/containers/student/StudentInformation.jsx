@@ -5,6 +5,7 @@ import {connect} from 'react-redux'
 import {getInitialData} from '../../actions/studentAction.jsx'
 import FlatButton from 'material-ui/FlatButton'
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table'
+import Dialog from 'material-ui/Dialog'
 
 class StudentInformation extends React.Component{
     constructor(props){
@@ -53,6 +54,19 @@ class StudentInformation extends React.Component{
             "SEMESTER":"semester",
             "BATCH":"batch"
         }
+        const actions = [
+            <FlatButton
+                label="Cancel"
+                primary={true}
+                onTouchTap={this.handleClose}
+            />,
+            <FlatButton
+                label="Submit"
+                primary={true}
+                keyboardFocused={true}
+                onTouchTap={this.handleClose}
+            />,
+        ]
         return(
             <div>
                 <div id="studentFilter">
@@ -148,7 +162,9 @@ class StudentInformation extends React.Component{
                                                 {data.batchName}
                                             </TableRowColumn>
                                             <TableRowColumn>
-                                                <FlatButton primary={true} label="EDIT" onHandleTouchTap={this.handleEditTap}/>
+                                                <FlatButton primary={true} label="EDIT" onHandleTouchTap={()=>{
+
+                                                }}/>
                                                 <FlatButton secondary={true} label="DELETE" onHandleTouchTap={this.handleDeleteTap} />
                                             </TableRowColumn>
                                         </TableRow>

@@ -3,4 +3,3 @@ npm-debug.log
 .idea/
 
 client/src/public/
-server/config/environment/development.js

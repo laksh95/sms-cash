@@ -51,32 +51,37 @@ let sql = function(){
                 getPosts:function(models,data,cb){
                     let post = models.post
                     let userDetail = models.user_detail
-                    let Promises = []
+                    let promises = []
                     post.findAll({
                         where :{
                             status :true 
                         }
                     }).then(function(response){
-                        console.log(response[1].dataValues)
+                        // console.log(response[1].dataValues)
                         let posts = []
                         for(let index in response){
                             posts.push(response[index].dataValues)
                         }
                         for(let index in posts){
-                            Promises.push(userDetail.findAll({
+                            promises.push(userDetail.findAll({
                                 attributes:['name','profile_pic_url'],
                                 where:{
                                     id:posts[index].by
                                 }
                             }))
                         }
-                        // to be continued
-                        cb(null,posts)
+                        Promise.all(promises).then(data=>{
+                            console.log(data[0])
+                            for(let index in data){
+                                posts[index].user_name = data[index][0].dataValues.name
+                                posts[index].profile_pic_url=data[index][0].dataValues.profile_pic_url
+                            }
+                            cb(null,posts)
+                        })
                     })
                     .catch(function(error){
                         cb(error,null)
                     })
-
                 }
             }
         }

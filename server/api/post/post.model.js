@@ -91,12 +91,10 @@ let sql = function(){
                                 }))
                             }
                             Promise.all(likePromises).then(data=>{
-                                // console.log("abcd")
                                 for(let index in data){
                                     posts[index].likes= data[index]
                                 }
                                 Promise.all(commentPromises).then(data=>{
-                                    // console.log("nnnn")
                                     for(let index in data){
                                         posts[index].comments= data[index]
                                     }
@@ -132,7 +130,6 @@ let sql = function(){
                                     }
                                 }).then((comments)=>{
                                     let updatedComments = []
-
                                     for(let index in comments){
                                         updatedComments.push(comments[index].dataValues)
                                         commentPromises.push(models.user_detail.findAll({
@@ -156,7 +153,6 @@ let sql = function(){
                                             }
                                         })
                                         .then((data)=>{
-                                            // console.log("==============",data[0].dataValues)
                                             response.dataValues.user_name = data[0].dataValues.name
                                             response.dataValues.profile_pic_url = data[0].dataValues.profile_pic_url
                                             cb(null,response.dataValues)
@@ -168,6 +164,23 @@ let sql = function(){
                         else {
                             cb("NOT_ROWS_FOUND",null)
                         }
+                    })
+                },
+                addComment:function(models,data,cb){
+                    let post = models.post
+                    let postComment = models.post_comment
+                    let content =data.content
+                    let post_id = data.post_id
+                    let comment_by = data.comment_by
+                    postComment.create({
+                        content ,
+                        post_id,
+                        comment_by
+                    }).then(function(response){
+                        cb(null,response.dataValues)
+                    })
+                    .catch(function(error){
+                        cb(error,null)
                     })
                 }
             }

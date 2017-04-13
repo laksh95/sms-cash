@@ -52,5 +52,18 @@ module.exports = {
                 }
             })
         }
+    },
+    addComment :(req,res) =>{
+        if(req.body){
+            post.addComment(models,req.body,(error,result) =>{
+                console.log(result)
+                if(result){
+                    res.status(200).json({data:result ,message: "SUCCESSFULLY_ADDED"})
+                }
+                else{
+                    res.status(500).json({data:[], message: 'NO_ROW_INSERTED'});
+                }
+            })
+        }
     }
 }

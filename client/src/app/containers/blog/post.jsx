@@ -2,7 +2,7 @@ import React from 'react';
 import {browserHistory} from 'react-router';
 import {connect} from "react-redux";
 import {loginUser, checkLogin} from "./../../actions/loginActions";
-import {getPost} from "./../../actions/blogActions.jsx";
+import {getPost,addComment} from "./../../actions/blogActions.jsx";
 import Auth from './../../Auth.js';
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
@@ -26,9 +26,20 @@ import IconButton from 'material-ui/IconButton';
 import FontIcon from 'material-ui/FontIcon';
 import SvgIconFace from 'material-ui/svg-icons/action/face';
 import {blue300, indigo900} from 'material-ui/styles/colors';
+import Snackbar from 'material-ui/Snackbar';
+
 
 let loginStyle = require('./../../css/login.css');
 class Post extends React.Component {
+    constructor(props){
+        super(props)
+        this.state = {
+            errorText :"",
+            value : "",
+            open : false
+        }
+        this.handleChange= this.handleChange.bind(this)
+    }
     componentWillMount() {
         this.props.getPost({
             id : 1
@@ -39,17 +50,45 @@ class Post extends React.Component {
     getChildContext() {
         return { muiTheme: getMuiTheme(baseTheme) };
     }
-    componentDidUpdate(prevProps, prevState) {
-         // if(this.props.login.isLogin){
-         //     browserHistory.push(this.props.login.prevPathName);
-         //     Auth.authenticateUser(this.props.login.token);
-         // }
-    }
     showComments(){
 
     }
+    handleTouchTap = () => {
+        this.setState({
+            open: true,
+        });
+    };
+
+    handleRequestClose = () => {
+        this.setState({
+            open: false,
+        });
+    };
     handleTouchTap() {
         alert('You clicked the Chip.');
+    }
+    handleChange(event) {
+        this.setState({value: event.target.value});
+    }
+    postComment(){
+        let comment = this.state.value
+        console.log(comment)
+        if(comment.trim()==''){
+            this.setState({
+                errorText : "Comment can't be empty"
+            })
+        }
+        else{
+            this.props.addComment({
+                content : this.state.value ,
+                post_id : this.props.blogReducer.post.id,
+                comment_by : 1
+            })
+            this.setState({
+                open: true,
+                value : ""
+            });
+        }
     }
     render(){
         const styles = {
@@ -78,7 +117,7 @@ class Post extends React.Component {
                                     <Avatar src="https://cdn-images-1.medium.com/fit/c/54/54/0*WgY9B-Lm4DnCEHlO.jpeg" />
                                 }
                             >
-                                {this.props.blogReducer.post.by}
+                                {this.props.blogReducer.post.user_name}
                             </ListItem>
                         </List>
                     </div>
@@ -111,8 +150,11 @@ class Post extends React.Component {
                                 floatingLabelText="Write your comment"
                                 multiLine={true}
                                 rows={3}
+                                value={this.state.value}
+                                onChange={this.handleChange}
+                                errorText={this.state.errorText}
                             /><br /><br/>
-                            <RaisedButton label="Post Comment" primary={true}/><br/><br/>
+                            <RaisedButton label="Post Comment" onClick={()=>this.postComment()} primary={true}/><br/><br/>
                         </div>
                         <div className="postComments">
                             <RaisedButton label="Show All responses" fullWidth={true} /><br/><br/>
@@ -120,21 +162,18 @@ class Post extends React.Component {
                                 return(
                                     <Card className="marginBottom">
                                     <CardHeader
-                                        title="Yash Sharma"
+                                        title={data.user_name}
                                         subtitle=""
                                         avatar="https://cdn-images-1.medium.com/fit/c/54/54/0*WgY9B-Lm4DnCEHlO.jpeg"
                                         actAsExpander={true}
                                         showExpandableButton={true}
                                     />
-                                    {/*<CardActions>*/}
-                                    {/*<FlatButton label="Action1" />*/}
-                                    {/*<FlatButton label="Action2" />*/}
-                                    {/*</CardActions>*/}
+                                    <CardActions>
+                                        <FlatButton label="Edit" />
+                                        <FlatButton label="Delete" />
+                                    </CardActions>
                                     <CardText className = 'commentFont'>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                        Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
-                                        Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
-                                        Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
+                                        {data.content}
                                     </CardText>
                                 </Card>
                                 )
@@ -144,6 +183,13 @@ class Post extends React.Component {
                         </div>
                     </div>
                 </div>
+
+                <Snackbar
+                    open={this.state.open}
+                    message="Comment Added"
+                    autoHideDuration={4000}
+                    onRequestClose={this.handleRequestClose}
+                />
             </div>
         );
     }
@@ -170,6 +216,9 @@ const mapDispatchToProps= (dispatch) => {
         },
         getPost :(data) =>{
             dispatch(getPost(data));
+        },
+        addComment:(data)=>{
+            dispatch(addComment(data));
         }
     };
 };

@@ -26,3 +26,12 @@ export function getPost(data){
             })
     }
 }
+export function addComment(data){
+    return {
+        type : types.ADD_COMMENT,
+        payload: blog.addComment(data)
+            .then((response)=>{
+                return response.data
+            })
+    }
+}

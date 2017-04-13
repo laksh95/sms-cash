@@ -21,5 +21,10 @@ const utils ={
         let config= configHeader();
         return axios.post(url,data,  config);
     },
+    addComment : (data) =>{
+        let url = serverAddress + 'api/post/addComment';
+        let config= configHeader();
+        return axios.post(url,data,  config);
+    }
 }
 export default utils ;

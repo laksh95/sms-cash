@@ -2,7 +2,8 @@ const blogReducer = ( state = {
     open : false,
     posts : [],
     post : {},
-    comments : []
+    comments : [],
+    username : "admin"
 } , action) => {
     switch (action.type){
         case "OPEN_MODAL":
@@ -24,9 +25,18 @@ const blogReducer = ( state = {
                 comments :action.payload.data.comments
             }
             return state
+        case "ADD_COMMENT_FULFILLED":
+            let comment = action.payload.data
+            comment.user_name = state.username
+            let comments = state.comments
+            comments.push(comment)
+            state = {
+                ...state ,
+                comments
+            }
+            return state
         default:
             return state
     }
 }
-
 export default blogReducer

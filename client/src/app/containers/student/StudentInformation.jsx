@@ -5,16 +5,20 @@ import {connect} from 'react-redux'
 import {getInitialData} from '../../actions/studentAction.jsx'
 import FlatButton from 'material-ui/FlatButton'
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table'
-import Dialog from 'material-ui/Dialog'
-
+import EditDialog from './EditDialog.jsx'
+import {openDialog} from '../../actions/studentAction.jsx'
 class StudentInformation extends React.Component{
     constructor(props){
         super(props)
         this.state={
             studentID:0,
-            department:'',
+            department:0,
             semester:0,
-            batch:0
+            batch:0,
+            action:0,
+            openEdit:false,
+            openProfile:false,
+            openDelete:false
         }
     }
     componentWillMount(){
@@ -25,12 +29,18 @@ class StudentInformation extends React.Component{
     componentWillReceiveProps(props){
         this.props=props
     }
-    handleDeleteTap = (event)=>{
+    handleTouchTap = (event)=>{
         event.preventDefault()
+        this.setState({
+            open:true
+        })
     }
-    handleEditTap = (event)=>{
-        event.preventDefault()
+    handleRequestChange = ()=>{
+        this.setState({
+            open:false
+        })
     }
+
     handleChange = (type,event,value)=>{
         console.log(value)
         switch(type){
@@ -40,8 +50,33 @@ class StudentInformation extends React.Component{
                         department:value
                     })
                 }
+                if(this.state.semester !== 0){
+                    this.props.getAllStudents(this.state.department,this.state.semester)
+                }
                 break
             case 'semester':
+                if(value !== 0){
+                    this.setState({
+                        semester:value
+                    })
+                }
+                if(this.state.department !== 0){
+                    this.props.getAllStudents(this.state.department,this.state.semester)
+                }
+                break
+            case 'action':
+                if(value!==0){
+                    this.setState({action:value})
+                }
+                if(value === 1){
+                    this.setState({openEdit:true})
+                }
+                else if(value === 2){
+                    this.setState({openProfile:true})
+                }
+                else if(value === 3){
+                    this.setState({openDelete:true})
+                }
                 break
             case 'batch':
                 break
@@ -52,21 +87,9 @@ class StudentInformation extends React.Component{
         const HANDLE_CODES={
             "DEPARTMENT":"department",
             "SEMESTER":"semester",
-            "BATCH":"batch"
+            "BATCH":"batch",
+            "ACTION":"action"
         }
-        const actions = [
-            <FlatButton
-                label="Cancel"
-                primary={true}
-                onTouchTap={this.handleClose}
-            />,
-            <FlatButton
-                label="Submit"
-                primary={true}
-                keyboardFocused={true}
-                onTouchTap={this.handleClose}
-            />,
-        ]
         return(
             <div>
                 <div id="studentFilter">
@@ -74,27 +97,30 @@ class StudentInformation extends React.Component{
                         value={this.state.department}
                         onChange={this.handleChange.bind(this,HANDLE_CODES.DEPARTMENT)}
                     >
-                        <MenuItem primaryText="Department" value = {'Department'}/>{
+                        <MenuItem primaryText="Department" value = {0} />{
                          this.props.filterData.initialData.data.departments.map((data,index)=>{
-                         return(
-                         <MenuItem
-                         id={index}
-                         primaryText={data.abbreviatedName}
-                         value={data.abbreviatedName}
-                         />
-                         )
+                             return(
+                                 <MenuItem
+                                     id={index}
+                                     primaryText={data.abbreviatedName}
+                                     value={index+1}
+                                 />
+                             )
                          })
                      }
                     </DropDownMenu>
-                    <DropDownMenu>
-                        <MenuItem primaryText="Semester"/>{
+                    <DropDownMenu
+                        value={this.state.semester}
+                        onChange={this.handleChange.bind(this,HANDLE_CODES.SEMESTER)}
+                    >
+                        <MenuItem primaryText="Semester" value={0}/>{
                          this.props.filterData.initialData.data.semesters.map((data,index)=>{
-                         return(
-                             <MenuItem
-                             id={index}
-                             primaryText={data.name}
-                             value={data.name}
-                             />
+                             return(
+                                 <MenuItem
+                                     id={index}
+                                     primaryText={data.name}
+                                     value={index+1}
+                                 />
                              )
                          })
                      }
@@ -102,14 +128,14 @@ class StudentInformation extends React.Component{
                     <DropDownMenu>
                         <MenuItem primaryText="Batch"/>
                         {/*  this.props.filterData.data.batch.map((data,index)=>{
-                         return(
-                         <MenuItem
-                         id={index}
-                         primaryText={data}
-                         value={data}
-                         />
-                         )
-                         })
+                             return(
+                                 <MenuItem
+                                     id={index}
+                                     primaryText={data}
+                                     value={data}
+                                 />
+                             )
+                             })
                          */}
                     </DropDownMenu>
                 </div>
@@ -162,80 +188,16 @@ class StudentInformation extends React.Component{
                                                 {data.batchName}
                                             </TableRowColumn>
                                             <TableRowColumn>
-                                                <FlatButton primary={true} label="EDIT" onHandleTouchTap={()=>{
-
+                                                <FlatButton primary={true} label="EDIT" onTouchTap={()=>{
+                                                   this.props.showDialog(true)
                                                 }}/>
-                                                <FlatButton secondary={true} label="DELETE" onHandleTouchTap={this.handleDeleteTap} />
+                                                {this.props.dialogValue?<EditDialog currentStudent={data}/>:null}
+                                                <FlatButton secondary={true} label="DELETE" onTouchTap={this.handleDeleteTap} />
                                             </TableRowColumn>
                                         </TableRow>
                                     )
                                 })
                             }
-
-
-                           {/* <TableRow>
-                                <TableRowColumn>
-                                    1
-                                </TableRowColumn>
-                                <TableRowColumn>
-                                    Laksh
-                                </TableRowColumn>
-                                <TableRowColumn>
-                                    CSE
-                                </TableRowColumn>
-                                <TableRowColumn>
-                                    8
-                                </TableRowColumn>
-                                <TableRowColumn>
-                                    2013-2017
-                                </TableRowColumn>
-                                <TableRowColumn>
-                                    <FlatButton primary={true} label="EDIT"/>
-                                    <FlatButton secondary={true} label="DELETE"/>
-                                </TableRowColumn>
-                            </TableRow>
-                            <TableRow>
-                                <TableRowColumn>
-                                    2
-                                </TableRowColumn>
-                                <TableRowColumn>
-                                    Yash
-                                </TableRowColumn>
-                                <TableRowColumn>
-                                    CSE
-                                </TableRowColumn>
-                                <TableRowColumn>
-                                    8
-                                </TableRowColumn>
-                                <TableRowColumn>
-                                    2013-2017
-                                </TableRowColumn>
-                                <TableRowColumn>
-                                    <FlatButton primary={true} label="EDIT"/>
-                                    <FlatButton secondary={true} label="DELETE"/>
-                                </TableRowColumn>
-                            </TableRow>
-                            <TableRow>
-                                <TableRowColumn>
-                                    3
-                                </TableRowColumn>
-                                <TableRowColumn>
-                                    Sarthak
-                                </TableRowColumn>
-                                <TableRowColumn>
-                                    CSE
-                                </TableRowColumn>
-                                <TableRowColumn>
-                                    7
-                                </TableRowColumn>
-                                <TableRowColumn>
-                                    2013-2017
-                                </TableRowColumn>
-                                <TableRowColumn>
-                                    <FlatButton primary={true} label="EDIT"/>
-                                    <FlatButton secondary={true} label="DELETE"/>
-                                </TableRowColumn>
-                            </TableRow>*/}
                         </TableBody>
                     </Table>
                 </div>
@@ -248,7 +210,8 @@ const mapStateToProps = (state)=>{
     return {
         allStudents: state.studentReducer,
         filterData: state.studentReducer,
-        studentInfo:state.studentReducer.studentData
+        studentInfo:state.studentReducer.allStudentData,
+        dialogValue:state.studentReducer.dialogOpen
     }
 }
 const mapDispatchToProps = (dispatch)=>{
@@ -256,8 +219,11 @@ const mapDispatchToProps = (dispatch)=>{
         getInitialData: (course)=>{
             dispatch(getInitialData(course))
         },
-        getAllStudents: ()=>{
+        getAllStudents: (department,semester)=>{
             dispatch()
+        },
+        showDialog: (show)=>{
+            dispatch(openDialog(show))
         }
     }
 }

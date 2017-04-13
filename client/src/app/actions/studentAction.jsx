@@ -36,7 +36,12 @@ const ingestFileSuccess = (filename, fileContent) => ({
         fileContent
     }
 })
-
+export const openDialog = (showValue) =>{
+    return{
+        type:'OPEN_DIALOG',
+        payload:showValue
+    }
+}
 const ingestFileFailure = (filename, error) => ({
     type: 'INGEST_FILE_FAILURE_REJECTED',
     payload:{

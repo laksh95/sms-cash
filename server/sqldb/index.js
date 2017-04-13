@@ -12,7 +12,6 @@ let models = ['academicCalendar','academicYear','admin','attendance',
 let db ={};
 let format = path.join(__dirname ,'../api/{0}/{0}.model.js');
 for(let i in models){
-	console.log(i)
    var model = require(format.replace(/\{0\}/g,models[i]))();
    console.log("model"+model)
    db[model.name]=model;

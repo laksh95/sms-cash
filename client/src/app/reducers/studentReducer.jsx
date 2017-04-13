@@ -6,6 +6,7 @@ const studentReducer = (state={
                                 filename:'no file selected',
                                 content:''
                             },
+                            dialogOpen:false,
                             error:'',
                             initialData:{"data": {
                                 "departments": [
@@ -67,7 +68,7 @@ const studentReducer = (state={
                             },
                                 "message": "successfull"
                             },
-                            studentData:{"data": {
+                            allStudentData:{"data": {
                                 "students": [
                                     {
                                         "admissionNo": 1111,
@@ -140,7 +141,44 @@ const studentReducer = (state={
                                     }
                                 ]
                             },
-                                "message": "successful"}
+                                "message": "successful"
+                            },
+                           studentData:{
+                               "data": {
+                                   "batchId": 1,
+                                   "batchName": 2017,
+                                   "departmentId": 1,
+                                   "departmentName": "Information Technology",
+                                   "departmentAbbreviatedName": "IT",
+                                   "parentId": 1,
+                                   "motherName": "aaaaaaaaaaa",
+                                   "fatherName": "dddddddddddd",
+                                   "parentEmailId": "wndkjhe@jwhfkj.com",
+                                   "parentContactNumber": "4444444444",
+                                   "parentCountryCode": 4444,
+                                   "id": 1,
+                                   "username": "admin",
+                                   "admissionNo": 1111,
+                                   "dateOfBirth": "1989-09-14T18:30:00.000Z",
+                                   "profilePicUrl": null,
+                                   "gender": "MALE",
+                                   "permanentAddress": null,
+                                   "currentAddress": null,
+                                   "emailId": "admin@cronj.com",
+                                   "contactNumber": null,
+                                   "countryCodeOne": null,
+                                   "alternateNumber": null,
+                                   "countryCodeTwo": null,
+                                   "sectionId": 1,
+                                   "sectionName": "A",
+                                   "curriculumId": 1,
+                                   "curriculumName": "All-1-2016-Chemistry",
+                                   "semesterId": 1,
+                                   "semesterType": "monsoon",
+                                   "semesterName": 1
+                               },
+                               "message": "successful"
+                           }
                         },action)=>{
     switch(action.type){
         case 'INGEST_FILE_BEGIN_FULFILLED':
@@ -176,6 +214,12 @@ const studentReducer = (state={
             state={
                 ...state,
                 error:'error while adding data'
+            }
+            break
+        case 'OPEN_DIALOG':
+            state={
+                ...state,
+                dialogOpen:action.payload
             }
             break
         default:

@@ -44,6 +44,11 @@ class Blog extends React.Component {
         console.log("---------",data)
         this.props.openModal(data)
     }
+    handleCheck=(event,checked, data)=> {
+        console.log(event)
+        console.log(checked)
+        console.log(data)
+    }
     render(){
 
         const styles = {
@@ -80,7 +85,7 @@ class Blog extends React.Component {
                                             style={styles.chip}
                                         >
                                             <Avatar src="https://cdn-images-1.medium.com/fit/c/32/32/1*owmCbcxxEOLbfF_XGDjxnQ.jpeg" />
-                                            Yash Sharma
+                                            {data.user_name}
                                         </Chip>
                                         <label className="font">Posted At</label><br/>
                                     </div>
@@ -91,12 +96,12 @@ class Blog extends React.Component {
                                         <Checkbox
                                             checkedIcon={<ActionFavorite />}
                                             uncheckedIcon={<ActionFavoriteBorder />}
-                                            label="30"
+                                            label={data.likes}
                                             className="left"
                                             style={{...styles.checkbox,...styles.block}}
-
+                                            onCheck={this.handleCheck.bind(this,data)}
                                         />
-                                        <label className="labelRight">10 responses</label><i className="material-icons right">comment</i>
+                                        <label className="labelRight">{data.comments} responses</label><i className="material-icons right">comment</i>
                                     </div>
                                 </Paper>
                             )

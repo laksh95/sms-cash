@@ -57,7 +57,6 @@ let sql = function(){
                             status :true 
                         }
                     }).then(function(response){
-                        // console.log(response[1].dataValues)
                         let posts = []
                         for(let index in response){
                             posts.push(response[index].dataValues)
@@ -70,13 +69,40 @@ let sql = function(){
                                 }
                             }))
                         }
+                        let likePromises = []
+                        let commentPromises = []
+                        let postLike = models.post_like
+                        let postComment = models.post_comment
+                        console.log(postLike)
                         Promise.all(promises).then(data=>{
-                            console.log(data[0])
                             for(let index in data){
                                 posts[index].user_name = data[index][0].dataValues.name
                                 posts[index].profile_pic_url=data[index][0].dataValues.profile_pic_url
+                                console.log(posts[index].id)
+                                likePromises.push(postLike.count({
+                                    where :{
+                                        post_id  :posts[index].id
+                                    }
+                                }))
+                                commentPromises.push(postComment.count({
+                                    where : {
+                                        post_id : posts[index].id
+                                    }
+                                }))
                             }
-                            cb(null,posts)
+                            Promise.all(likePromises).then(data=>{
+                                console.log("abcd")
+                                for(let index in data){
+                                    posts[index].likes= data[index]
+                                }
+                                Promise.all(commentPromises).then(data=>{
+                                    console.log("nnnn")
+                                    for(let index in data){
+                                        posts[index].comments= data[index]
+                                    }
+                                    cb(null,posts)
+                                })
+                            })
                         })
                     })
                     .catch(function(error){

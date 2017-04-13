@@ -41,5 +41,23 @@ module.exports = {
                 // }
             })
         }
+    },
+    getPost :(req,res) =>{
+        if(req.body){
+            post.getPost(models,req.body,(error,result)=>{
+                if(result){
+                    if(result.length>0)
+                        res.status(200).json({data:result,message:"SUCCESSFULLY_FETCHED"})
+                    else
+                        res.status(500).json({data:[], message: 'NO_ROWS_FOUND'})
+                }
+                // else {
+                //     if(error=='NO_ROWS_FOUND')
+                //         res.status(400).json({error:'No Posts to show', message: 'IS_ALREADY_EXISTS'});
+                //     else
+                //         res.status(500).json({error: error, message: 'IS_INTERNAL_SERVER_ERROR'})
+                // }
+            })
+        }
     }
 }

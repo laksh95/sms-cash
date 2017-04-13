@@ -108,6 +108,20 @@ let sql = function(){
                     .catch(function(error){
                         cb(error,null)
                     })
+                },
+                getPost : function(models , data ,cb){
+                    let post = models.post
+                    post.findOne({
+                        where :{
+                            id : data.id
+                        }
+                    }).then((response)=>{
+                        if(response)
+                            cb(null,response.dataValues)
+                        else {
+                            cb("NOT_ROWS_FOUND",null)
+                        }
+                    })
                 }
             }
         }

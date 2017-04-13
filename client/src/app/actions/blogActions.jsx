@@ -17,3 +17,12 @@ export function getPosts(){
             })
         }
 }
+export function getPost(data){
+    return {
+        type : types.GET_POST,
+        payload : blog.getPost(data)
+            .then((response) =>{
+                return response.data
+            })
+    }
+}

@@ -54,7 +54,7 @@ let sql = function(){
                     let promises = []
                     post.findAll({
                         where :{
-                            status :true 
+                            status :true
                         }
                     }).then(function(response){
                         let posts = []
@@ -73,12 +73,12 @@ let sql = function(){
                         let commentPromises = []
                         let postLike = models.post_like
                         let postComment = models.post_comment
-                        console.log(postLike)
+                        // console.log(postLike)
                         Promise.all(promises).then(data=>{
                             for(let index in data){
                                 posts[index].user_name = data[index][0].dataValues.name
                                 posts[index].profile_pic_url=data[index][0].dataValues.profile_pic_url
-                                console.log(posts[index].id)
+                                // console.log(posts[index].id)
                                 likePromises.push(postLike.count({
                                     where :{
                                         post_id  :posts[index].id
@@ -91,12 +91,12 @@ let sql = function(){
                                 }))
                             }
                             Promise.all(likePromises).then(data=>{
-                                console.log("abcd")
+                                // console.log("abcd")
                                 for(let index in data){
                                     posts[index].likes= data[index]
                                 }
                                 Promise.all(commentPromises).then(data=>{
-                                    console.log("nnnn")
+                                    // console.log("nnnn")
                                     for(let index in data){
                                         posts[index].comments= data[index]
                                     }
@@ -116,8 +116,55 @@ let sql = function(){
                             id : data.id
                         }
                     }).then((response)=>{
-                        if(response)
-                            cb(null,response.dataValues)
+                        if(response){
+                            let postLike = models.post_like
+                            postLike.count({
+                                where : {
+                                    post_id : response.dataValues.id
+                                }
+                            }).then((data)=>{
+                                response.dataValues.likes = data
+                                let postComment = models.post_comment
+                                let commentPromises = []
+                                postComment.findAll({
+                                    where : {
+                                        post_id : response.dataValues.id
+                                    }
+                                }).then((comments)=>{
+                                    let updatedComments = []
+
+                                    for(let index in comments){
+                                        updatedComments.push(comments[index].dataValues)
+                                        commentPromises.push(models.user_detail.findAll({
+                                            where : {
+                                                id : comments[index].dataValues.comment_by
+                                            }
+                                        }))
+                                    }
+                                    Promise.all(commentPromises).then((result)=>{
+                                        console.log("0000000000",result[0][0].dataValues)
+                                        for(let index in result){
+                                            updatedComments[index].user_name = result[index][0].dataValues.username
+                                            updatedComments[index].profile_pic_url = result[index][0].dataValues.profile_pic_url
+                                        }
+                                        response.dataValues.comments = updatedComments
+                                        let userDetail = models.user_detail
+                                        userDetail.findAll({
+                                            attributes:['name','profile_pic_url'],
+                                            where:{
+                                                id:response.dataValues.by
+                                            }
+                                        })
+                                        .then((data)=>{
+                                            // console.log("==============",data[0].dataValues)
+                                            response.dataValues.user_name = data[0].dataValues.name
+                                            response.dataValues.profile_pic_url = data[0].dataValues.profile_pic_url
+                                            cb(null,response.dataValues)
+                                        })
+                                    })
+                                })
+                            })
+                        }
                         else {
                             cb("NOT_ROWS_FOUND",null)
                         }
@@ -129,4 +176,3 @@ let sql = function(){
     return post;
 }
 module.exports = sql;
-

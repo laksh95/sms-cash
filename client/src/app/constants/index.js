@@ -7,3 +7,4 @@ export const SETPREVPATH= 'SETPREVPATH';
 export const RES_PENDING= 'RES_PENDING';
 export const OPEN_MODAL = 'OPEN_MODAL';
 export const GET_POSTS = 'GET_POSTS';
+export const GET_POST = 'GET_POST';

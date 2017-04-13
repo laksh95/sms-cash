@@ -2,6 +2,7 @@ import React from 'react';
 import {browserHistory} from 'react-router';
 import {connect} from "react-redux";
 import {loginUser, checkLogin} from "./../../actions/loginActions";
+import {getPost} from "./../../actions/blogActions.jsx";
 import Auth from './../../Auth.js';
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
@@ -29,6 +30,9 @@ import {blue300, indigo900} from 'material-ui/styles/colors';
 let loginStyle = require('./../../css/login.css');
 class Post extends React.Component {
     componentWillMount() {
+        this.props.getPost({
+            id : 1
+        })
     }
     componentDidMount() {
     }
@@ -74,12 +78,12 @@ class Post extends React.Component {
                                     <Avatar src="https://cdn-images-1.medium.com/fit/c/54/54/0*WgY9B-Lm4DnCEHlO.jpeg" />
                                 }
                             >
-                                Yash Sharma
+                                {this.props.blogReducer.post.by}
                             </ListItem>
                         </List>
                     </div>
                     <div className="postHeader">
-                        Cracking the Coding Interview
+                        {this.props.blogReducer.post.content}
                     </div>
                     <div className="postContent">
                         <p>
@@ -112,25 +116,31 @@ class Post extends React.Component {
                         </div>
                         <div className="postComments">
                             <RaisedButton label="Show All responses" fullWidth={true} /><br/><br/>
-                            <Card className="marginBottom">
-                                <CardHeader
-                                    title="Yash Sharma"
-                                    subtitle=""
-                                    avatar="https://cdn-images-1.medium.com/fit/c/54/54/0*WgY9B-Lm4DnCEHlO.jpeg"
-                                    actAsExpander={true}
-                                    showExpandableButton={true}
-                                />
-                                {/*<CardActions>*/}
+                            {this.props.blogReducer.comments.map((data,index)=>{
+                                return(
+                                    <Card className="marginBottom">
+                                    <CardHeader
+                                        title="Yash Sharma"
+                                        subtitle=""
+                                        avatar="https://cdn-images-1.medium.com/fit/c/54/54/0*WgY9B-Lm4DnCEHlO.jpeg"
+                                        actAsExpander={true}
+                                        showExpandableButton={true}
+                                    />
+                                    {/*<CardActions>*/}
                                     {/*<FlatButton label="Action1" />*/}
                                     {/*<FlatButton label="Action2" />*/}
-                                {/*</CardActions>*/}
-                                <CardText className = 'commentFont'>
-                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                    Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
-                                    Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
-                                    Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
-                                </CardText>
-                            </Card>
+                                    {/*</CardActions>*/}
+                                    <CardText className = 'commentFont'>
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                        Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
+                                        Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
+                                        Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
+                                    </CardText>
+                                </Card>
+                                )
+
+                            })}
+
                         </div>
                     </div>
                 </div>
@@ -146,7 +156,8 @@ Post.contextTypes = {
 };
 const mapStateToProps= (state) => {
     return{
-        login: state.login
+        login: state.login,
+        blogReducer : state.blogReducer
     };
 };
 const mapDispatchToProps= (dispatch) => {
@@ -156,6 +167,9 @@ const mapDispatchToProps= (dispatch) => {
         },
         checkLogin: () =>{
             dispatch(checkLogin());
+        },
+        getPost :(data) =>{
+            dispatch(getPost(data));
         }
     };
 };

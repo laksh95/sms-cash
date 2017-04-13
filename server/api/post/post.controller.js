@@ -26,7 +26,6 @@ module.exports = {
     getPosts :(req,res) =>{
         if(req.body){
             post.getPosts(models,req.body,(error,result)=>{
-                // console.log("Result",result)
                 if(result){
                     if(result.length>0)
                         res.status(200).json({data:result,message:"SUCCESSFULLY_FETCHED"})
@@ -45,9 +44,8 @@ module.exports = {
     getPost : (req,res) =>{
         if(req.body){
             post.getPost(models,req.body,(error,result)=>{
-                console.log("---------result",result)
                 if(result){
-                        res.status(200).json({data:result,message:"SUCCESSFULLY_FETCHED"})
+                    res.status(200).json({data:result,message:"SUCCESSFULLY_FETCHED"})
                 }
                 else {
                     res.status(500).json({data:[], message: 'NO_ROWS_FOUND'})

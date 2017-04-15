@@ -5,11 +5,12 @@ import {loginUser, checkLogin} from "./../../actions/loginActions";
 import {getPost,addComment} from "./../../actions/blogActions.jsx";
 import Auth from './../../Auth.js';
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
-import FlatButton from 'material-ui/FlatButton';
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import injectTapEventPlugin from 'react-tap-event-plugin';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
+import injectTapEventPlugin from 'react-tap-event-plugin';
 import Paper from 'material-ui/Paper';
 import List from 'material-ui/List/List';
 import ListItem from 'material-ui/List/ListItem';
@@ -36,7 +37,9 @@ class Post extends React.Component {
         this.state = {
             errorText :"",
             value : "",
-            open : false
+            open : false,
+            showEdit : false,
+            comment : {}
         }
         this.handleChange= this.handleChange.bind(this)
     }
@@ -64,9 +67,9 @@ class Post extends React.Component {
             open: false,
         });
     };
-    handleTouchTap() {
-        alert('You clicked the Chip.');
-    }
+    // handleTouchTap() {
+    //     alert('You clicked the Chip.');
+    // }
     handleChange(event) {
         this.setState({value: event.target.value});
     }
@@ -90,7 +93,32 @@ class Post extends React.Component {
             });
         }
     }
+
+    handleClose = () => {
+        this.setState({showEdit: false});
+
+    };
+    editComment(data){
+        this.setState({showEdit: true});
+        console.log("Edit Comment",data)
+        this.setState({
+            comment: data
+        })
+    }
     render(){
+        const actions = [
+            <FlatButton
+                label="Cancel"
+                primary={true}
+                onTouchTap={this.handleClose}
+            />,
+            <FlatButton
+                label="Submit"
+                primary={true}
+                disabled={true}
+                onTouchTap={this.handleClose}
+            />,
+        ];
         const styles = {
             chip: {
                 marginLeft: 342,
@@ -168,28 +196,39 @@ class Post extends React.Component {
                                         actAsExpander={true}
                                         showExpandableButton={true}
                                     />
-                                    <CardActions>
-                                        <FlatButton label="Edit" />
-                                        <FlatButton label="Delete" />
-                                    </CardActions>
+
                                     <CardText className = 'commentFont'>
                                         {data.content}
                                     </CardText>
+                                    {this.props.blogReducer.username==data.user_name?
+                                        <CardActions>
+                                            <FlatButton onClick = {()=>this.editComment(data)} label="Edit" />
+                                            <FlatButton label="Delete" />
+                                        </CardActions>
+                                    :null}
                                 </Card>
                                 )
-
                             })}
-
                         </div>
                     </div>
                 </div>
-
                 <Snackbar
                     open={this.state.open}
                     message="Comment Added"
                     autoHideDuration={4000}
                     onRequestClose={this.handleRequestClose}
                 />
+                <Dialog
+                    title="Dialog With Actions"
+                    actions={actions}
+                    modal={true}
+                    open={this.state.showEdit}
+                >
+                    <TextField
+                        id="text-field-default"
+                        defaultValue={this.state.comment.content}
+                    /><br />
+                </Dialog>
             </div>
         );
     }

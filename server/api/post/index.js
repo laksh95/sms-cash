@@ -6,4 +6,5 @@ router.get('/getPosts',controller.getPosts)
 router.post('/getPost',controller.getPost)
 router.post('/addComment',controller.addComment)
 router.post('/editComment',controller.editComment)
+router.post('/deleteComment',controller.deleteComment)
 module.exports = router

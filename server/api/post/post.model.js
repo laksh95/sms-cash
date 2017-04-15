@@ -73,7 +73,6 @@ let sql = function(){
                         let commentPromises = []
                         let postLike = models.post_like
                         let postComment = models.post_comment
-                        // console.log(postLike)
                         Promise.all(promises).then(data=>{
                             for(let index in data){
                                 posts[index].user_name = data[index][0].dataValues.name
@@ -125,7 +124,8 @@ let sql = function(){
                                 let commentPromises = []
                                 postComment.findAll({
                                     where : {
-                                        post_id : response.dataValues.id
+                                        post_id : response.dataValues.id,
+                                        status : true
                                     }
                                 }).then((comments)=>{
                                     let updatedComments = []
@@ -138,7 +138,6 @@ let sql = function(){
                                         }))
                                     }
                                     Promise.all(commentPromises).then((result)=>{
-                                        console.log("0000000000",result[0][0].dataValues)
                                         for(let index in result){
                                             updatedComments[index].user_name = result[index][0].dataValues.username
                                             updatedComments[index].profile_pic_url = result[index][0].dataValues.profile_pic_url
@@ -183,11 +182,21 @@ let sql = function(){
                     })
                 },
                 editComment:function(models,data,cb){
-                    console.log(data)
                     let postComment = models.post_comment
                     let content = data.content
                     postComment.update(
                         {content},
+                        { where: {id :data.id}}
+                    ).then((response)=>{
+                        cb(null,data)
+                    }).catch((error)=>{
+                        cb(error,null)
+                    })
+                },
+                deleteComment : function(models,data,cb){
+                    let postComment= models.post_comment
+                    postComment.update(
+                        {status : false} ,
                         { where: {id :data.id}}
                     ).then((response)=>{
                         cb(null,data)

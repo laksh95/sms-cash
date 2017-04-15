@@ -47,6 +47,19 @@ const blogReducer = ( state = {
                 comments
             }
             return state
+        case "DELETE_COMMENT_FULFILLED":
+            var comment = action.payload.data
+            var comments = state.comments
+            for(let index in comments){
+                if(comments[index].id == comment.id){
+                    comments.splice(index,1)
+                }
+            }
+            state = {
+                ...state ,
+                comments
+            }
+            return state
         default:
             return state
     }

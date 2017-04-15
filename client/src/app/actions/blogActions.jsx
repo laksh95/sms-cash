@@ -44,3 +44,12 @@ export function editComment(data){
             })
     }
 }
+export function deleteComment(data){
+    return {
+        type : types.DELETE_COMMENT,
+        payload : blog.deleteComment(data)
+                .then((response)=>{
+                    return response.data
+                })
+    }
+}

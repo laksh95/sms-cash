@@ -79,5 +79,18 @@ module.exports = {
                 }
             })
         }
+    },
+    deleteComment : (req,res)=>{
+        if(req.body){
+            console.log("req.body",req.body)
+            post.deleteComment(models,req.body,(error,result) =>{
+                if(result){
+                    res.status(200).json({data:result ,message: "SUCCESSFULLY_DELETED"})
+                }
+                else{
+                    res.status(500).json({data:[], message: 'NO_ROW_DELETED'});
+                }
+            })
+        }
     }
 }

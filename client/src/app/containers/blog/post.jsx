@@ -2,7 +2,7 @@ import React from 'react';
 import {browserHistory} from 'react-router';
 import {connect} from "react-redux";
 import {loginUser, checkLogin} from "./../../actions/loginActions";
-import {getPost,addComment,editComment} from "./../../actions/blogActions.jsx";
+import {getPost,addComment,editComment,deleteComment} from "./../../actions/blogActions.jsx";
 import Auth from './../../Auth.js';
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
@@ -39,6 +39,7 @@ class Post extends React.Component {
             value : "",
             open : false,
             showEdit : false,
+            showDelete : false ,
             comment : {},
             editComment: "",
             validateEditComment : true
@@ -110,12 +111,29 @@ class Post extends React.Component {
         }
     }
 
-    handleClose = () => {
-        this.setState({showEdit: false});
-        let comment = this.state.comment
-        // console.log("----------",this.state.editComment)
-        comment.content = this.state.editComment
-        this.props.editComment(comment)
+    handleClose = (type) => {
+        // to be changed
+        switch(type){
+            case "SUBMIT_EDIT":
+                this.setState({showEdit: false});
+                var comment = this.state.comment
+                comment.content = this.state.editComment
+                this.props.editComment(comment)
+                break
+            case "CANCEL_EDIT":
+                this.setState({showEdit:false});
+                break
+            case "SUBMIT_DELETE":
+                this.setState({showDelete : false });
+                var comment = this.state.comment
+                this.props.deleteComment(comment)
+                break
+            case "CANCEL_DELETE":
+                this.setState({showDelete:false});
+                break
+            default:break
+        }
+
     };
     editComment(data){
         this.setState({showEdit: true});
@@ -124,18 +142,34 @@ class Post extends React.Component {
             comment: data
         })
     }
+    deleteComment(data){
+        this.setState({showDelete:true})
+        this.setState({comment:data})
+    }
     render(){
         const actions = [
             <FlatButton
                 label="Cancel"
                 primary={true}
-                onTouchTap={this.handleClose}
+                onTouchTap={this.handleClose.bind(this,"CANCEL_EDIT")}
             />,
             <FlatButton
                 label="Submit"
                 primary={true}
                 disabled={!(this.state.validateEditComment)}
-                onTouchTap={this.handleClose}
+                onTouchTap={this.handleClose.bind(this,"SUBMIT_EDIT","SUBMIT")}
+            />,
+        ];
+        const deleteActions = [
+            <FlatButton
+                label="No"
+                primary={true}
+                onTouchTap={this.handleClose.bind(this,"CANCEL_DELETE")}
+            />,
+            <FlatButton
+                label="Yes"
+                primary={true}
+                onTouchTap={this.handleClose.bind(this,"SUBMIT_DELETE")}
             />,
         ];
         const styles = {
@@ -222,7 +256,7 @@ class Post extends React.Component {
                                     {this.props.blogReducer.username==data.user_name?
                                         <CardActions>
                                             <FlatButton onClick = {()=>this.editComment(data)} label="Edit" />
-                                            <FlatButton label="Delete" />
+                                            <FlatButton onClick = {()=>this.deleteComment(data)} label="Delete" />
                                         </CardActions>
                                     :null}
                                 </Card>
@@ -248,6 +282,13 @@ class Post extends React.Component {
                         defaultValue={this.state.comment.content}
                         onChange={this.handleChange.bind(this,"EDIT_COMMENT")}
                     /><br />
+                </Dialog>
+                <Dialog
+                    title="Delete your comment"
+                    actions={deleteActions}
+                    modal={true}
+                    open={this.state.showDelete}
+                >
                 </Dialog>
             </div>
         );
@@ -281,8 +322,10 @@ const mapDispatchToProps= (dispatch) => {
         },
         editComment:(data)=>{
             dispatch(editComment(data));
+        },
+        deleteComment:(data)=>{
+            dispatch(deleteComment(data));
         }
     };
 };
 export default connect(mapStateToProps,mapDispatchToProps)(Post);
-

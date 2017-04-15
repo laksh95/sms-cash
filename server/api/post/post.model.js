@@ -78,7 +78,6 @@ let sql = function(){
                             for(let index in data){
                                 posts[index].user_name = data[index][0].dataValues.name
                                 posts[index].profile_pic_url=data[index][0].dataValues.profile_pic_url
-                                // console.log(posts[index].id)
                                 likePromises.push(postLike.count({
                                     where :{
                                         post_id  :posts[index].id
@@ -180,6 +179,19 @@ let sql = function(){
                         cb(null,response.dataValues)
                     })
                     .catch(function(error){
+                        cb(error,null)
+                    })
+                },
+                editComment:function(models,data,cb){
+                    console.log(data)
+                    let postComment = models.post_comment
+                    let content = data.content
+                    postComment.update(
+                        {content},
+                        { where: {id :data.id}}
+                    ).then((response)=>{
+                        cb(null,data)
+                    }).catch((error)=>{
                         cb(error,null)
                     })
                 }

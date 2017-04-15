@@ -2,7 +2,7 @@ import React from 'react';
 import {browserHistory} from 'react-router';
 import {connect} from "react-redux";
 import {loginUser, checkLogin} from "./../../actions/loginActions";
-import {getPost,addComment} from "./../../actions/blogActions.jsx";
+import {getPost,addComment,editComment} from "./../../actions/blogActions.jsx";
 import Auth from './../../Auth.js';
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
@@ -39,7 +39,9 @@ class Post extends React.Component {
             value : "",
             open : false,
             showEdit : false,
-            comment : {}
+            comment : {},
+            editComment: "",
+            validateEditComment : true
         }
         this.handleChange= this.handleChange.bind(this)
     }
@@ -70,8 +72,22 @@ class Post extends React.Component {
     // handleTouchTap() {
     //     alert('You clicked the Chip.');
     // }
-    handleChange(event) {
-        this.setState({value: event.target.value});
+    handleChange(type,event) {
+        switch(type){
+            case "COMMENT":
+                this.setState({value: event.target.value});
+                break
+            case "EDIT_COMMENT":
+                this.setState({editComment:event.target.value})
+                if(event.target.value.trim()!=""){
+                    this.setState({validateEditComment: true })
+                }
+                else {
+                    this.setState({validateEditComment: false })
+                }
+                break
+            default : break
+        }
     }
     postComment(){
         let comment = this.state.value
@@ -96,7 +112,10 @@ class Post extends React.Component {
 
     handleClose = () => {
         this.setState({showEdit: false});
-
+        let comment = this.state.comment
+        // console.log("----------",this.state.editComment)
+        comment.content = this.state.editComment
+        this.props.editComment(comment)
     };
     editComment(data){
         this.setState({showEdit: true});
@@ -115,7 +134,7 @@ class Post extends React.Component {
             <FlatButton
                 label="Submit"
                 primary={true}
-                disabled={true}
+                disabled={!(this.state.validateEditComment)}
                 onTouchTap={this.handleClose}
             />,
         ];
@@ -179,7 +198,7 @@ class Post extends React.Component {
                                 multiLine={true}
                                 rows={3}
                                 value={this.state.value}
-                                onChange={this.handleChange}
+                                onChange={this.handleChange.bind(this,"COMMENT")}
                                 errorText={this.state.errorText}
                             /><br /><br/>
                             <RaisedButton label="Post Comment" onClick={()=>this.postComment()} primary={true}/><br/><br/>
@@ -227,6 +246,7 @@ class Post extends React.Component {
                     <TextField
                         id="text-field-default"
                         defaultValue={this.state.comment.content}
+                        onChange={this.handleChange.bind(this,"EDIT_COMMENT")}
                     /><br />
                 </Dialog>
             </div>
@@ -258,6 +278,9 @@ const mapDispatchToProps= (dispatch) => {
         },
         addComment:(data)=>{
             dispatch(addComment(data));
+        },
+        editComment:(data)=>{
+            dispatch(editComment(data));
         }
     };
 };

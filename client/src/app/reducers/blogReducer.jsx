@@ -35,6 +35,18 @@ const blogReducer = ( state = {
                 comments
             }
             return state
+        case "EDIT_COMMENT_FULFILLED":
+            var comment = action.payload.data
+            var comments = state.comments
+            for(let index in comments){
+                if(comments[index].id == comment.id)
+                    comments[index].content = comment.content
+            }
+            state = {
+                ...state ,
+                comments
+            }
+            return state
         default:
             return state
     }

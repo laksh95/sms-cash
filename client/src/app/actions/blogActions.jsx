@@ -35,3 +35,12 @@ export function addComment(data){
             })
     }
 }
+export function editComment(data){
+    return {
+        type : types.EDIT_COMMENT ,
+        payload : blog.editComment(data)
+            .then((response)=>{
+                return response.data
+            })
+    }
+}

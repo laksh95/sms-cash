@@ -1,35 +1,22 @@
 import React from 'react';
-import {browserHistory} from 'react-router';
 import {connect} from "react-redux";
 import {loginUser, checkLogin} from "./../../actions/loginActions";
 import {getPost,addComment,editComment,deleteComment} from "./../../actions/blogActions.jsx";
-import Auth from './../../Auth.js';
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
-import injectTapEventPlugin from 'react-tap-event-plugin';
-import Paper from 'material-ui/Paper';
 import List from 'material-ui/List/List';
 import ListItem from 'material-ui/List/ListItem';
 import Avatar from 'material-ui/Avatar';
-import Chip from 'material-ui/Chip';
 import Checkbox from 'material-ui/Checkbox';
 import ActionFavorite from 'material-ui/svg-icons/action/favorite';
 import TextField from 'material-ui/TextField';
 import ActionFavoriteBorder from 'material-ui/svg-icons/action/favorite-border';
-import Visibility from 'material-ui/svg-icons/action/visibility';
-import VisibilityOff from 'material-ui/svg-icons/action/visibility-off';
-import IconButton from 'material-ui/IconButton';
-
-import FontIcon from 'material-ui/FontIcon';
-import SvgIconFace from 'material-ui/svg-icons/action/face';
-import {blue300, indigo900} from 'material-ui/styles/colors';
 import Snackbar from 'material-ui/Snackbar';
-
-
+import LazyLoad from 'react-lazyload';
 let loginStyle = require('./../../css/login.css');
 class Post extends React.Component {
     constructor(props){
@@ -42,7 +29,8 @@ class Post extends React.Component {
             showDelete : false ,
             comment : {},
             editComment: "",
-            validateEditComment : true
+            validateEditComment : true,
+            showComments : false
         }
         this.handleChange= this.handleChange.bind(this)
     }
@@ -55,9 +43,6 @@ class Post extends React.Component {
     }
     getChildContext() {
         return { muiTheme: getMuiTheme(baseTheme) };
-    }
-    showComments(){
-
     }
     handleTouchTap = () => {
         this.setState({
@@ -106,7 +91,8 @@ class Post extends React.Component {
             })
             this.setState({
                 open: true,
-                value : ""
+                value : "",
+                errorText : ""
             });
         }
     }
@@ -238,30 +224,37 @@ class Post extends React.Component {
                             <RaisedButton label="Post Comment" onClick={()=>this.postComment()} primary={true}/><br/><br/>
                         </div>
                         <div className="postComments">
-                            <RaisedButton label="Show All responses" fullWidth={true} /><br/><br/>
-                            {this.props.blogReducer.comments.map((data,index)=>{
-                                return(
-                                    <Card className="marginBottom">
-                                    <CardHeader
-                                        title={data.user_name}
-                                        subtitle=""
-                                        avatar="https://cdn-images-1.medium.com/fit/c/54/54/0*WgY9B-Lm4DnCEHlO.jpeg"
-                                        actAsExpander={true}
-                                        showExpandableButton={true}
-                                    />
+                            <RaisedButton label="Show All responses" onClick={()=>{
+                                this.setState({showComments:true})
+                            }} fullWidth={true} /><br/><br/>
+                            {this.state.showComments?
+                                this.props.blogReducer.comments.map((data,index)=>{
+                                    return(
+                                    <LazyLoad height={200} offset={100}>
+                                        <Card className="marginBottom">
+                                            <CardHeader
+                                                title={data.user_name}
+                                                subtitle=""
+                                                avatar="https://cdn-images-1.medium.com/fit/c/54/54/0*WgY9B-Lm4DnCEHlO.jpeg"
+                                                actAsExpander={true}
+                                                showExpandableButton={true}
+                                            />
 
-                                    <CardText className = 'commentFont'>
-                                        {data.content}
-                                    </CardText>
-                                    {this.props.blogReducer.username==data.user_name?
-                                        <CardActions>
-                                            <FlatButton onClick = {()=>this.editComment(data)} label="Edit" />
-                                            <FlatButton onClick = {()=>this.deleteComment(data)} label="Delete" />
-                                        </CardActions>
-                                    :null}
-                                </Card>
-                                )
-                            })}
+                                            <CardText className = 'commentFont'>
+                                                {data.content}
+                                            </CardText>
+                                            {this.props.blogReducer.username==data.user_name?
+                                                <CardActions>
+                                                    <FlatButton onClick = {()=>this.editComment(data)} label="Edit" />
+                                                    <FlatButton onClick = {()=>this.deleteComment(data)} label="Delete" />
+                                                </CardActions>
+                                                :null}
+                                        </Card>
+                                    </LazyLoad>
+
+                                    )
+                                })
+                                : null}
                         </div>
                     </div>
                 </div>

@@ -24,13 +24,23 @@ const utils={
         let config=configHeader()
         return axios.post(url,data,config)
     },
-    getDepartmentList: (courseID)=>{
+    getInitialData: (courseID)=>{
+        console.log('------>util------->student.js',courseID)
         let url = baseAddress + '/api/student/getInitialData'
         let config = configHeader()
-        let data={
-            courseID
-        }
+        let data=courseID
+        console.log('-----cofig',config)
         return axios.post(url,data,config)
+    },
+    getFilteredStudent : (department, semester, batch)=>{
+        let url = baseAddress + 'api/student/getStudents'
+        let config = configHeader()
+        let data={
+            department,
+            semester,
+            batch
+        }
+        return axios.post(url, data, config)
     }
 }
 export default utils

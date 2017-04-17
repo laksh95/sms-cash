@@ -11,15 +11,25 @@ const ingestFileBegin = (filename) => ({
     }
 })
 export const getInitialData = (courseId)=>{
+    console.log(courseId)
     return{
         type: 'GET_DATA',
-        payload:studentApi.getDepartmentList(courseId)
+        payload:studentApi.getInitialData(courseId)
             .then((data)=>{
                 return data
             })
     }
 }
-
+export const getFilteredData = (department, semester, batch)=>{
+    console.log(department,semester,batch,'----->inside action GET FILTERED DATA')
+    return{
+        type:'GET_FILTER_DATA',
+        payload:studentApi.getFilteredStudent(department, semester, batch)
+            .then((data)=>{
+                return data
+            })
+    }
+}
 export const addStudent = (studentInfo)=>{
     return{
         type:'ADD_STUDENT',

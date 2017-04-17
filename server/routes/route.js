@@ -5,8 +5,8 @@ module.exports=function(app){
 	app.use('/auth', authRoutes);
      
 
-	//app.use('/api',require('./apiRoute')(app));
-	app.use('/api/department',checkRole(['admin']), require('../api/department'));
+    app.use('/api/student',checkRole(['admin','director']),require('../api/student'))
+    app.use('/api/department',checkRole(['admin']), require('../api/department'));
   app.use('/api/course',checkRole(['teacher']), require('../api/course'));
   app.get('/api/check', (req, res) => {
     console.log(req.headers);

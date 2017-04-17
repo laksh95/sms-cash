@@ -5,7 +5,7 @@ let models = ['academicCalendar','academicYear','admin','attendance',
 'educationalDetail','elective','event','eventComment','eventLike','exam','examType',
 'feedback','grade','hod','parent','personalCalendar','post','postComment','postFollowed','postLike','publicEvent',
 'publicNotice','rating','relativeGrading','resign','result','role',
-'section','skill','student','studentElective','subject',
+'section','semester','skill','student','studentElective','subject',
 'teacher', 'teacherSubjectAllocation','timetable',
 'uploadAttendance','uploadResult','userDetail'];
 

@@ -53,7 +53,7 @@ class Blog extends React.Component {
 
         const styles = {
             chip: {
-                marginLeft: 342,
+                marginLeft: 290,
             },
             wrapper: {
                 display: 'flex',
@@ -87,7 +87,7 @@ class Blog extends React.Component {
                                             <Avatar src="https://cdn-images-1.medium.com/fit/c/32/32/1*owmCbcxxEOLbfF_XGDjxnQ.jpeg" />
                                             {data.user_name}
                                         </Chip>
-                                        <label className="font">Posted At</label><br/>
+                                        {/*<label className="font">Posted At {data.created_at}</label><br/>*/}
                                     </div>
                                     <h5 className="cardHeader">{data.heading}</h5>
                                     <img src="https://cdn-images-1.medium.com/max/900/1*-8-mWUXKqq6Fk3AfxGpA7w.jpeg" alt="Image" height={200} width={700}/>
@@ -107,10 +107,9 @@ class Blog extends React.Component {
                             )
                         })
                     }
-
                 </div>
                 <div className="rightContent">
-                    <label>Statistics about your posts</label>
+                    <label>Statistics about your posts</label><br/><br/>
                     <div className="center">
                         <Chip >
                             <Avatar size={32}>10</Avatar>

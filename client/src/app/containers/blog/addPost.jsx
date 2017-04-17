@@ -1,58 +1,77 @@
 import React from 'react';
-import {browserHistory} from 'react-router';
 import Dialog from 'material-ui/Dialog';
 import {connect} from "react-redux";
 import {loginUser, checkLogin} from "./../../actions/loginActions";
-import {openModal} from "./../../actions/blogActions.jsx";
-import Auth from './../../Auth.js';
-import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
+import {openModal,addPost} from "./../../actions/blogActions.jsx";
 import FlatButton from 'material-ui/FlatButton';
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import injectTapEventPlugin from 'react-tap-event-plugin';
-import RaisedButton from 'material-ui/RaisedButton';
-import Paper from 'material-ui/Paper';
-import List from 'material-ui/List/List';
-import ListItem from 'material-ui/List/ListItem';
-import Avatar from 'material-ui/Avatar';
-import Chip from 'material-ui/Chip';
-import Checkbox from 'material-ui/Checkbox';
-import ActionFavorite from 'material-ui/svg-icons/action/favorite';
 import TextField from 'material-ui/TextField';
-import ActionFavoriteBorder from 'material-ui/svg-icons/action/favorite-border';
-import Visibility from 'material-ui/svg-icons/action/visibility';
-import VisibilityOff from 'material-ui/svg-icons/action/visibility-off';
-import IconButton from 'material-ui/IconButton';
-import FontIcon from 'material-ui/FontIcon';
-import SvgIconFace from 'material-ui/svg-icons/action/face';
-import {blue300, indigo900} from 'material-ui/styles/colors';
-import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table'
+import Snackbar from 'material-ui/Snackbar';
 let Dropzone = require('react-dropzone');
+import {Component, PropTypes} from 'react';
+
+import RichTextEditor from 'react-rte';
+
 let loginStyle = require('./../../css/login.css');
 class AddPost extends React.Component {
+
     constructor(props) {
         super(props)
+
         this.state = {
                 text: '',
                 validateHeading : false ,
+                open : false,
                 validateContent : false,
-                heading : false ,
-                content : false,
-                image : ""
-            }
-            this.onDrop= this.onDrop.bind(this)
+                heading : "" ,
+                content : "",
+                image : "",
+                value: RichTextEditor.createEmptyValue(),
+                message : ""
+
+        }
+        this.onDrop= this.onDrop.bind(this)
+        this.setContent= this.setContent.bind(this)
     }
+    static propTypes = {
+        onChange: PropTypes.func
+    };
     componentWillReceiveProps(props){
         this.props= props
     }
+    handleRequestClose = () => {
+        this.setState({
+            open: false,
+        });
+    };
     getChildContext() {
         return { muiTheme: getMuiTheme(baseTheme) };
     }
     handleOpen = () => {
         this.props.openModal(true)
     };
-    handleClose = () => {
-        this.props.openModal(false)
+    handleClose = (event,type) => {
+        console.log(event)
+        switch(event){
+            case "CANCEL":
+                this.props.openModal(false)
+                this.setState({image : {}})
+                break
+            case "POST":
+                var image =this.state.image
+                var data = {
+                    heading : this.state.heading,
+                    content : this.state.value
+                }
+                this.props.addPost(data)
+                this.props.openModal(true)
+                this.setState({open : true, message : "Post Added" })
+                break
+            default:
+                break
+        }
+
     };
     onDrop(files){
         console.log(files)
@@ -65,7 +84,7 @@ class AddPost extends React.Component {
     handleChange = (type, event) => {
         switch(type){
             case "HEADING":
-                this.setState({
+                    this.setState({
                     heading : event.target.value
                 })
                 if(event.target.value.trim()==''){
@@ -79,36 +98,56 @@ class AddPost extends React.Component {
                     })
                 }
                 break
-            case "CONTENT":
-                this.setState({
-                    content : event.target.value
-                })
-                if(event.target.value.trim()==''){
-                    this.setState({
-                        validateContent : false
-                    })
-                }
-                else {
-                    this.setState({
-                        validateContent : true
-                    })
-                }
-                break
+        }
+    }
+    setContent(value){
+        this.setState({
+            value  :value
+        })
+        // console.log(value.toString('html') == "<p><br></p>")
+        if(value.toString('html') == "<p><br></p>"){
+            this.setState({
+                validateContent : false
+            })
+        }
+        else {
+            this.setState({
+                validateContent : true
+            })
         }
     }
     render(){
-        console.log("this.state",this.state.image.preview)
+        const toolbarConfig = {
+            // Optionally specify the groups to display (displayed in the order listed).
+            display: ['INLINE_STYLE_BUTTONS', 'BLOCK_TYPE_BUTTONS', 'LINK_BUTTONS', 'BLOCK_TYPE_DROPDOWN', 'HISTORY_BUTTONS'],
+            INLINE_STYLE_BUTTONS: [
+                {label: 'Bold', style: 'BOLD', className: 'custom-css-class'},
+                {label: 'Italic', style: 'ITALIC'},
+                {label: 'Underline', style: 'UNDERLINE'}
+            ],
+            BLOCK_TYPE_DROPDOWN: [
+                {label: 'Normal', style: 'unstyled'},
+                {label: 'Heading Large', style: 'header-one'},
+                {label: 'Heading Medium', style: 'header-two'},
+                {label: 'Heading Small', style: 'header-three'}
+            ],
+            BLOCK_TYPE_BUTTONS: [
+                {label: 'UL', style: 'unordered-list-item'},
+                {label: 'OL', style: 'ordered-list-item'}
+            ]
+        };
+        console.log("this.state",this.state)
         const actions = [
             <FlatButton
                 label="Cancel"
                 primary={true}
-                onTouchTap={this.handleClose}
+                onTouchTap={this.handleClose.bind(this,"CANCEL")}
             />,
             <FlatButton
                 label="Post"
                 primary={true}
                 disabled={!(this.state.validateContent&&this.state.validateHeading)}
-                onTouchTap={this.handleClose}
+                onTouchTap={this.handleClose.bind(this,"POST")}
             />,
         ];
         return (
@@ -126,6 +165,7 @@ class AddPost extends React.Component {
                         onChange={this.handleChange.bind(this,"HEADING")}
                     /><br /><br/>
                     <div>
+                        <label>Upload an image</label>
                         <Dropzone
                             onDrop={this.onDrop}
                             multiple={false}
@@ -134,15 +174,23 @@ class AddPost extends React.Component {
                             <div><img src={this.state.image.preview} width={200} height={200} alt=""/></div>
                         </Dropzone>
                     </div>
-                    <TextField
-                        hintText="Post Content"
-                        floatingLabelText="Post Content"
-                        multiLine={true}
-                        rows={5}
-                        fullWidth={true}
-                        onChange={this.handleChange.bind(this,"CONTENT")}
-                    /><br /><br/>
+                    <br/><br/>
+                    <div>
+                        <label>Post Content</label><br/>
+                        <RichTextEditor
+                            value={this.state.value}
+                            onChange={this.setContent}
+                            toolbarConfig={toolbarConfig}
+                        />
+                    </div>
+                    <br/>
                 </Dialog>
+                <Snackbar
+                    open={this.state.open}
+                    message={this.state.message}
+                    autoHideDuration={4000}
+                    onRequestClose={this.handleRequestClose}
+                />
             </div>
         );
     }
@@ -169,6 +217,9 @@ const mapDispatchToProps= (dispatch) => {
         },
         openModal :(data) =>{
             dispatch(openModal(data))
+        },
+        addPost : (data)=>{
+            dispatch(addPost(data))
         }
     };
 };

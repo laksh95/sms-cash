@@ -11,3 +11,5 @@ export const GET_POST = 'GET_POST';
 export const ADD_COMMENT = 'ADD_COMMENT';
 export const EDIT_COMMENT = 'EDIT_COMMENT';
 export const DELETE_COMMENT = 'DELETE_COMMENT';
+export const SET_LIKES = 'SET_LIKES';
+export const ADD_POST = 'ADD_POST';

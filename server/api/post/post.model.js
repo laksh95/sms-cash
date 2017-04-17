@@ -35,13 +35,14 @@ let sql = function(){
                 },
                 addPost:function(models,data,cb){
                     let heading = data.heading
-                    let content = data.content
+                    let content = data.content.toString('html')
                     let post = models.post
                     post.create({
                         heading ,
                         content ,
                         by :  1
                     }).then(function(response){
+                        // console.log("inside then ",response.dataValues)
                         cb(null,response.dataValues)
                     })
                     .catch(function(error){
@@ -84,7 +85,8 @@ let sql = function(){
                                 }))
                                 commentPromises.push(postComment.count({
                                     where : {
-                                        post_id : posts[index].id
+                                        post_id : posts[index].id,
+                                        status : true
                                     }
                                 }))
                             }
@@ -203,6 +205,27 @@ let sql = function(){
                     }).catch((error)=>{
                         cb(error,null)
                     })
+                },
+                setLikes : function(models,data,cb){
+                    // to be continued 
+                    // let postObj = data.post
+                    // let likes = data.likes
+                    // let postLike = models.post_like
+                    // postLike.findOne({
+                    //     where : {
+                    //         post_id : postObj.id,
+                    //     }
+                    // }).then((response)=>{
+                    //     if(response!=null){
+                    //         console.log(response.dataValues)
+                    //         postLike.update({
+                    //
+                    //         })
+                    //     }
+                    //     else {
+                    //
+                    //     }
+                    // })
                 }
             }
         }

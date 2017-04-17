@@ -3,7 +3,7 @@ let express = require('express')
 let app = express()
 let db=require('./config/db')
 
-require('./config/express')(app)
+require('./config/express.js')(app)
 require('./routes/route.js')(app)
 
 function startServer() {

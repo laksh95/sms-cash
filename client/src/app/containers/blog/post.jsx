@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {loginUser, checkLogin} from "./../../actions/loginActions";
-import {getPost,addComment,editComment,deleteComment} from "./../../actions/blogActions.jsx";
+import {getPost,addComment,editComment,deleteComment,setLikes} from "./../../actions/blogActions.jsx";
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -30,7 +30,8 @@ class Post extends React.Component {
             comment : {},
             editComment: "",
             validateEditComment : true,
-            showComments : false
+            showComments : false,
+            likes: 0
         }
         this.handleChange= this.handleChange.bind(this)
     }
@@ -39,7 +40,8 @@ class Post extends React.Component {
             id : 1
         })
     }
-    componentDidMount() {
+    componentWillReceiveProps(props){
+        this.props= props
     }
     getChildContext() {
         return { muiTheme: getMuiTheme(baseTheme) };
@@ -96,7 +98,6 @@ class Post extends React.Component {
             });
         }
     }
-
     handleClose = (type) => {
         // to be changed
         switch(type){
@@ -132,6 +133,27 @@ class Post extends React.Component {
         this.setState({showDelete:true})
         this.setState({comment:data})
     }
+    handleCheck=(event,checked)=> {
+        console.log(event)
+        console.log(checked)
+        let likes = this.props.blogReducer.post.likes
+
+        if(checked==true) {
+            let data = {
+                post : this.props.blogReducer.post,
+                likes : likes +1
+            }
+            this.props.setLikes(data)
+        }
+        else {
+            let data = {
+                post : this.props.blogReducer.post,
+                likes : likes -1
+            }
+            this.props.setLikes(data)
+        }
+    }
+
     render(){
         const actions = [
             <FlatButton
@@ -198,14 +220,14 @@ class Post extends React.Component {
                             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium amet, assumenda consectetur cumque eaque eligendi enim fugiat id in incidunt iste laborum molestiae, natus obcaecati omnis quisquam vel velit voluptatum?
                             Lorem ipsum dolor sit amet, consectetur adipisicing elit. A animi assumenda at dolores dolorum eligendi explicabo id iste nisi obcaecati, odit, provident qui quis quos rem repellat tempora ullam velit.
                         </p>
-
                     </div>
                     <div className="postFooter">
                         <Checkbox
                             checkedIcon={<ActionFavorite />}
                             uncheckedIcon={<ActionFavoriteBorder />}
-                            label="30"
+                            label={this.props.blogReducer.post.likes}
                             className="left"
+                            onCheck={this.handleCheck.bind(this)}
                             style={{...styles.checkbox,...styles.block}}
                         />
                         <br/><br/>
@@ -239,7 +261,6 @@ class Post extends React.Component {
                                                 actAsExpander={true}
                                                 showExpandableButton={true}
                                             />
-
                                             <CardText className = 'commentFont'>
                                                 {data.content}
                                             </CardText>
@@ -251,7 +272,6 @@ class Post extends React.Component {
                                                 :null}
                                         </Card>
                                     </LazyLoad>
-
                                     )
                                 })
                                 : null}
@@ -318,6 +338,9 @@ const mapDispatchToProps= (dispatch) => {
         },
         deleteComment:(data)=>{
             dispatch(deleteComment(data));
+        },
+        setLikes:(data)=>{
+            dispatch(setLikes(data));
         }
     };
 };

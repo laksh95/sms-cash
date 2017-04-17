@@ -53,3 +53,21 @@ export function deleteComment(data){
                 })
     }
 }
+export function setLikes(data){
+    return {
+        type:types.SET_LIKES,
+        payload : blog.setLikes(data)
+            .then((response)=>{
+                return response.data
+            })
+    }
+}
+export function addPost(data){
+    return {
+        type : types.ADD_POST,
+        payload : blog.addPost(data)
+            .then((response)=>{
+                return response.data
+            })
+    }
+}

@@ -60,6 +60,17 @@ const blogReducer = ( state = {
                 comments
             }
             return state
+        case "ADD_POST_FULFILLED":
+            var post = action.payload.data
+            console.log("==============",post)
+            var posts = state.posts
+            posts.push(post)
+            state = {
+                ...state ,
+                open : false,
+                posts :posts
+            }
+            return state
         default:
             return state
     }

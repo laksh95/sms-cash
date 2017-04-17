@@ -6,6 +6,7 @@ module.exports = {
         if (req.body){
             post.addPost(models,req.body,(error,result) => {
                 if(result){
+                    //console.log(result)
                     if(Object.keys(result).length>0)
                         res.status(200).json({data:result,message:"SUCCESSFUL_INSERTION"})
                     else
@@ -91,6 +92,19 @@ module.exports = {
                     res.status(500).json({data:[], message: 'NO_ROW_DELETED'});
                 }
             })
+        }
+    },
+    setLikes : (req,res)=>{
+        if(req.body){
+            post.setLikes(models,req.body,(error,result)=>{
+                if(result){
+                    res.status(200).json({data:result ,message: "SUCCESSFULLY_LIKED"})
+                }
+                else{
+                    res.status(500).json({data:[], message: 'UNSUCCESSFUL'});
+                }
+            })
+
         }
     }
 }

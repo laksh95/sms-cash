@@ -35,6 +35,22 @@ const utils ={
         let url = serverAddress + 'api/post/deleteComment';
         let config= configHeader();
         return axios.post(url,data,  config);
+    },
+    setLikes : (data)=>{
+        let url = serverAddress + 'api/post/setLikes';
+        let config= configHeader();
+        return axios.post(url,data,  config);
+    },
+    addPost : (data)=>{
+        let url = serverAddress + 'api/post/addPost';
+        let config= configHeader();
+        // let formData = new FormData()
+        // formData.append('file',data.image)
+        // formData.append('name',data.image.name)
+        // formData.append('type',data.image.type)
+        // formData.append('heading',data.heading)
+        // formData.append('content',data.content)
+        return axios.post(url,data,config);
     }
 }
 export default utils ;

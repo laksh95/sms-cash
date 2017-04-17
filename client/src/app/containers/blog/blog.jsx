@@ -76,7 +76,6 @@ class Blog extends React.Component {
                     <br/><br/>
                     {
                         this.props.blogReducer.posts.map((data,index)=>{
-
                             return(
                                 <Paper className="card" zDepth={2} >
                                     <div>
@@ -93,15 +92,22 @@ class Blog extends React.Component {
                                     <img src="https://cdn-images-1.medium.com/max/900/1*-8-mWUXKqq6Fk3AfxGpA7w.jpeg" alt="Image" height={200} width={700}/>
                                     <Link to="/post/1"><h6 className="readMore">Read More</h6></Link>
                                     <div className="footer">
-                                        <Checkbox
-                                            checkedIcon={<ActionFavorite />}
-                                            uncheckedIcon={<ActionFavoriteBorder />}
-                                            label={data.likes}
-                                            className="left"
-                                            style={{...styles.checkbox,...styles.block}}
-                                            onCheck={this.handleCheck.bind(this,data)}
-                                        />
-                                        <label className="labelRight">{data.comments} responses</label><i className="material-icons right">comment</i>
+                                        <div className="checkbox">
+                                            <Checkbox
+                                                checkedIcon={<ActionFavorite />}
+                                                uncheckedIcon={<ActionFavoriteBorder />}
+                                                label={data.likes}
+                                                className="left"
+                                                style={{...styles.checkbox,...styles.block}}
+                                                onCheck={this.handleCheck.bind(this,data)}
+                                            />
+                                        </div>
+
+                                        <i className="material-icons left">comment</i><label className="left">{data.comments} responses</label>
+                                        <div className="editDelete">
+                                            <i className="material-icons right" >mode_edit</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <i className="material-icons right">delete</i>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        </div>
                                     </div>
                                 </Paper>
                             )
@@ -128,9 +134,7 @@ class Blog extends React.Component {
                             Total Rating
                         </Chip>
                     </div>
-
                 </div>
-
             </div>
         );
     }
@@ -164,4 +168,3 @@ const mapDispatchToProps= (dispatch) => {
     };
 };
 export default connect(mapStateToProps,mapDispatchToProps)(Blog);
-

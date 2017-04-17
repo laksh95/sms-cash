@@ -27,11 +27,13 @@ h6{
 .left {
     float: left;
     margin-left: 10px;
-    color : slategrey!important;
+    color : black!important;
+    font-size :20px ;
+    margin-top : 10px ;
 }
 .right {
     float : right;
-    margin-right: 10px;
+    margin-right: 20px;
 }
 .labelRight {
     float : right ;
@@ -109,4 +111,14 @@ h6{
     border-style: dashed;
     border-radius: 5px;
     text-align: center;
+}
+.onlyRight {
+    float : right ;
+}
+.checkbox {
+    margin-bottom:2px;
+}
+.editDelete{
+    margin-top:11px;
+    cursor: pointer;
 }

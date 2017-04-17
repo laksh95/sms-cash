@@ -104,7 +104,6 @@ class AddPost extends React.Component {
         this.setState({
             value  :value
         })
-        // console.log(value.toString('html') == "<p><br></p>")
         if(value.toString('html') == "<p><br></p>"){
             this.setState({
                 validateContent : false

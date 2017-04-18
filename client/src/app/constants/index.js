@@ -1,5 +1,4 @@
 //login section
-
 export const LOGIN= 'LOGIN';
 export const CHECK_IS_LOGIN= 'CHECK_IS_LOGIN';
 export const LOGOUT= 'LOGOUT';
@@ -16,3 +15,4 @@ export const ADD_POST = 'ADD_POST';
 export const GET_STATS = 'GET_STATS';
 export const SET_POST = 'SET_POST'
 export const DELETE_POST = 'DELETE_POST'
+export const SET_SHOW_EDIT = 'SET_SHOW_EDIT'

@@ -4,7 +4,8 @@ const blogReducer = ( state = {
     post : {},
     comments : [],
     username : "admin",
-    stats :{}
+    stats :{},
+    showEdit : false
 } , action) => {
     switch (action.type){
         case "OPEN_MODAL":
@@ -99,6 +100,11 @@ const blogReducer = ( state = {
                 posts: posts
             }
             return state
+        case "SET_SHOW_EDIT":
+            state = {
+                ...state ,
+                showEdit : action.payload
+            }
         default:
             return state
     }

@@ -95,3 +95,9 @@ export function deletePost(data){
             })
     }
 }
+export function setShowEdit(data){
+    return {
+        type : types.SET_SHOW_EDIT,
+        payload : data
+    }
+}

@@ -2,8 +2,9 @@ import {Link} from 'react-router';
 import React from 'react';
 import {connect} from "react-redux";
 import {loginUser, checkLogin} from "./../../actions/loginActions";
-import {openModal,getPosts,getStats,setPost,deletePost} from "./../../actions/blogActions.jsx";
+import {openModal,getPosts,getStats,setPost,deletePost,setShowEdit} from "./../../actions/blogActions.jsx";
 import AddPost from "./addPost.jsx"
+import EditPost from "./editPost.jsx"
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
@@ -57,6 +58,12 @@ class Blog extends React.Component {
         this.setState({open: true})
         this.props.setPost(data)
     }
+    editPost = (data)=>{
+        console.log(data)
+        this.props.setShowEdit(true)
+        this.props.setPost(data)
+
+    }
     handleClose = (type) => {
         console.log(type)
         switch(type){
@@ -101,6 +108,7 @@ class Blog extends React.Component {
                         <ContentAdd />
                     </FloatingActionButton>
                     <AddPost/>
+                    {this.props.blogReducer.showEdit?<EditPost/>:null}
                     <br/><br/>
                     {
                         this.props.blogReducer.posts.map((data,index)=>{
@@ -133,7 +141,7 @@ class Blog extends React.Component {
                                         </div>
                                         <i className="material-icons left">comment</i><label className="left">{data.comments} responses</label>
                                         <div className="editDelete">
-                                            <i className="material-icons right" >mode_edit</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <i onClick={()=>this.editPost(data)} className="material-icons right" >mode_edit</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                             <i  onClick={()=>this.deletePost(data)} className="material-icons right">delete</i>&nbsp;&nbsp;&nbsp;&nbsp;
                                         </div>
                                     </div>
@@ -209,6 +217,9 @@ const mapDispatchToProps= (dispatch) => {
         },
         deletePost : (data)=>{
             dispatch(deletePost(data))
+        },
+        setShowEdit:(data)=>{
+            dispatch(setShowEdit(data))
         }
     };
 };

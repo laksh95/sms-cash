@@ -2,7 +2,7 @@ import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import {connect} from "react-redux";
 import {loginUser, checkLogin} from "./../../actions/loginActions";
-import {openModal,addPost} from "./../../actions/blogActions.jsx";
+import {openModal,addPost,setShowEdit} from "./../../actions/blogActions.jsx";
 import FlatButton from 'material-ui/FlatButton';
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -10,25 +10,22 @@ import TextField from 'material-ui/TextField';
 import Snackbar from 'material-ui/Snackbar';
 let Dropzone = require('react-dropzone');
 import {Component, PropTypes} from 'react';
-
 import RichTextEditor from 'react-rte';
 
 let loginStyle = require('./../../css/login.css');
-class AddPost extends React.Component {
-
+class EditPost extends React.Component {
     constructor(props) {
         super(props)
-
         this.state = {
-                text: '',
-                validateHeading : false ,
-                open : false,
-                validateContent : false,
-                heading : "" ,
-                content : "",
-                image : "",
-                value: RichTextEditor.createEmptyValue(),
-                message : ""
+            text: '',
+            validateHeading : true ,
+            open : false,
+            validateContent : true,
+            heading : "" ,
+            content : "",
+            image : "",
+            value: RichTextEditor.createEmptyValue(),
+            message : ""
 
         }
         this.onDrop= this.onDrop.bind(this)
@@ -37,6 +34,12 @@ class AddPost extends React.Component {
     static propTypes = {
         onChange: PropTypes.func
     };
+    componentWillMount(){
+        this.setState({
+            value : RichTextEditor.createValueFromString(this.props.blogReducer.post.content, 'html'),
+            heading : this.props.blogReducer.post.heading
+        })
+    }
     componentWillReceiveProps(props){
         this.props= props
     }
@@ -55,7 +58,7 @@ class AddPost extends React.Component {
         console.log(event)
         switch(event){
             case "CANCEL":
-                this.props.openModal(false)
+                this.props.setShowEdit(false)
                 this.setState({image : {}})
                 break
             case "POST":
@@ -65,13 +68,12 @@ class AddPost extends React.Component {
                     content : this.state.value
                 }
                 this.props.addPost(data)
-                this.props.openModal(true)
-                this.setState({open : true, message : "Post Added" })
+                this.setState({open : true, message : "Post Edited" })
+                this.props.setShowEdit(false)
                 break
             default:
                 break
         }
-
     };
     onDrop(files){
         console.log(files)
@@ -84,7 +86,7 @@ class AddPost extends React.Component {
     handleChange = (type, event) => {
         switch(type){
             case "HEADING":
-                    this.setState({
+                this.setState({
                     heading : event.target.value
                 })
                 if(event.target.value.trim()==''){
@@ -135,7 +137,7 @@ class AddPost extends React.Component {
                 {label: 'OL', style: 'ordered-list-item'}
             ]
         };
-        console.log("this.state",this.state)
+        console.log("this.state",this.props.blogReducer.showEdit)
         const actions = [
             <FlatButton
                 label="Cancel"
@@ -152,15 +154,16 @@ class AddPost extends React.Component {
         return (
             <div>
                 <Dialog
-                    title="Add your own Post"
+                    title="Edit your Post"
                     actions={actions}
                     modal={true}
                     autoScrollBodyContent={true}
-                    open={this.props.blogReducer.open}
+                    open={this.props.blogReducer.showEdit}
                 >
                     <TextField
                         hintText="Post Heading"
                         floatingLabelText="Post Heading"
+                        defaultValue={this.props.blogReducer.post.heading}
                         fullWidth={true}
                         onChange={this.handleChange.bind(this,"HEADING")}
                     /><br /><br/>
@@ -171,7 +174,7 @@ class AddPost extends React.Component {
                             multiple={false}
                             className="dropzone"
                         >
-                            <div><img s rc={this.state.image.preview} width={200} height={200} alt=""/></div>
+                            <div><img src={this.state.image.preview} width={200} height={200} alt=""/></div>
                         </Dropzone>
                     </div>
                     <br/><br/>
@@ -195,10 +198,10 @@ class AddPost extends React.Component {
         );
     }
 }
-AddPost.childContextTypes = {
+EditPost.childContextTypes = {
     muiTheme: React.PropTypes.object.isRequired,
 };
-AddPost.contextTypes = {
+EditPost.contextTypes = {
     router: React.PropTypes.object.isRequired
 };
 const mapStateToProps= (state) => {
@@ -220,7 +223,10 @@ const mapDispatchToProps= (dispatch) => {
         },
         addPost : (data)=>{
             dispatch(addPost(data))
+        },
+        setShowEdit:(data)=>{
+            dispatch(setShowEdit(data))
         }
     };
 };
-export default connect(mapStateToProps,mapDispatchToProps)(AddPost);
+export default connect(mapStateToProps,mapDispatchToProps)(EditPost);

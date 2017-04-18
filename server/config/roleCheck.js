@@ -7,9 +7,9 @@ module.exports= (accessArray) => {
 			next();
 		}
 		for(let i=0; i<accessArray.length; i++){
-			console.log("In for loop");
 			if(req.user.role.indexOf(accessArray[i])>-1){
 				flag=1;
+				console.log("-----------------Role check done!-------------------------")
 				next();
 				break;
 			}

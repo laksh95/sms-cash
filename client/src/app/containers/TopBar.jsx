@@ -80,7 +80,7 @@ class TopBar extends React.Component {
 
 
      updateDimensions = () =>{
-    
+
     this.setState({   message: false  });
     var w = window,
         d = document,
@@ -99,7 +99,7 @@ class TopBar extends React.Component {
     }
 
   componentWillReceiveProps(nextProps) {
-    this.props = nextProps; 
+    this.props = nextProps;
      this.setState({
             user : this.props.loginReducer.loginUser.name
               });
@@ -186,7 +186,7 @@ class TopBar extends React.Component {
       let that = this;
       var allSessions = this.props.adminReducer.initialData.batch.map(function(item , id){
        return (
-          <MenuItem key={id} primaryText={item.name} 
+          <MenuItem key={id} primaryText={item.name}
            onTouchTap={ () => {
           that.props.setCurrentSession(item.name);
           that.handleTouchTap.bind(that, HANDLE_CODES.CLOSE_CURRENT_SESSION);
@@ -203,19 +203,19 @@ class TopBar extends React.Component {
            onTouchTap={ () => {
                that.props.setCurrentCourse(item.name);
                that.handleTouchTap.bind(that, HANDLE_CODES.COURSE_CLOSE)
-           } 
-         } 
+           }
+         }
        />
         );
      });
 
-   
+
 
 
   return(
 
         <div>
-        
+
         <AppBar
 
          iconElementLeft={
@@ -228,7 +228,7 @@ class TopBar extends React.Component {
                 this.handleTouchTap.bind(this, HANDLE_CODES.OPEN_CURRENT_SESSION)
               }
        >
-       
+
        <Popover
           open={this.state.currentSession}
           anchorEl={this.state.anchorEl}
@@ -275,13 +275,13 @@ class TopBar extends React.Component {
 
          iconElementLeft={
                   <span  style={style.myStyle} >
-                     
+
                   </span>
                 }
        ></AppBar>
     </MuiThemeProvider >
     </div>
-    
+
 );
 
 }

@@ -52,7 +52,7 @@ const adminReducer = ( state = {
 		    	selectedSession: action.payload
 		    }
 		    return state
-        
+
         case "SET_CURRENT_COURSE":
              state = {
              	...state,

@@ -5,7 +5,7 @@ import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import { getSelected } from '../../actions/adminActions.jsx';
 import { connect } from 'react-redux';
 
-class Teacher extends React.Component { 
+class Teacher extends React.Component {
    constructor(props) {
     super(props);
   }
@@ -13,7 +13,7 @@ class Teacher extends React.Component {
   getChildContext() {
       return { muiTheme: getMuiTheme(baseTheme) };
     }
- 
+
  componentWillMount() {
      this.props.getSelected(""+this.props.location.pathname);
  }
@@ -21,7 +21,7 @@ class Teacher extends React.Component {
  render() {
    return(
      <div>
-        <h3>Teacher</h3> 
+        <h3>Teacher</h3>
      </div>
     );
   }
@@ -29,7 +29,7 @@ class Teacher extends React.Component {
 Teacher.childContextTypes = {
             muiTheme: React.PropTypes.object.isRequired,
 };
-Teacher.contextTypes = { 
+Teacher.contextTypes = {
     router: React.PropTypes.object.isRequired
 };
 
@@ -44,9 +44,8 @@ const mapDispatchToProps = (dispatch) => {
       getSelected: (location) => {
         dispatch(getSelected(location))
       }
-     
+
     }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Teacher);
-

@@ -7,4 +7,3 @@ module.exports = (app) => {
     app.use('/auth', authRoutes);
     app.use('/api',require('./apiRoute'));
 };
-

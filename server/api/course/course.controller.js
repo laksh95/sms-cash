@@ -7,7 +7,6 @@ let courseFunctions = {
       let dataToClient = {}
       if(req.body !== null){
 
-        console.log(model +"----------------------------------");
         model.getCourse(db)
         .then((allCourse)=>{
           dataToClient.course = allCourse
@@ -15,11 +14,9 @@ let courseFunctions = {
         })
         .then((allBatch)=>{
           dataToClient.batch = allBatch
-          console.log(dataToClient)
           res.send(dataToClient)
         }).
         catch((data)=>{
-          console.log("Error--------------" + data);
           res.status(500).end()
         })
       }

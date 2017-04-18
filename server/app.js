@@ -16,4 +16,3 @@ db.connection.sync().then(function() {
 	});
 
 exports = module.exports = app;
-

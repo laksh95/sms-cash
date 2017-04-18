@@ -3,7 +3,8 @@ const blogReducer = ( state = {
     posts : [],
     post : {},
     comments : [],
-    username : "admin"
+    username : "admin",
+    stats :{}
 } , action) => {
     switch (action.type){
         case "OPEN_MODAL":
@@ -62,13 +63,20 @@ const blogReducer = ( state = {
             return state
         case "ADD_POST_FULFILLED":
             var post = action.payload.data
-            console.log("==============",post)
             var posts = state.posts
             posts.push(post)
             state = {
                 ...state ,
                 open : false,
                 posts :posts
+            }
+            return state
+        case "GET_STATS_FULFILLED":
+            var data= action.payload.data
+            console.log("========",data)
+            state = {
+                ...state ,
+                stats : data
             }
             return state
         default:

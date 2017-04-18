@@ -1,16 +1,11 @@
 import {Link} from 'react-router';
 import React from 'react';
-import {browserHistory} from 'react-router';
 import {connect} from "react-redux";
 import {loginUser, checkLogin} from "./../../actions/loginActions";
-import {openModal,getPosts} from "./../../actions/blogActions.jsx";
+import {openModal,getPosts,getStats} from "./../../actions/blogActions.jsx";
 import AddPost from "./addPost.jsx"
-import Auth from './../../Auth.js';
-import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import injectTapEventPlugin from 'react-tap-event-plugin';
-import RaisedButton from 'material-ui/RaisedButton';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import Paper from 'material-ui/Paper';
@@ -19,16 +14,14 @@ import Chip from 'material-ui/Chip';
 import Checkbox from 'material-ui/Checkbox';
 import ActionFavorite from 'material-ui/svg-icons/action/favorite';
 import ActionFavoriteBorder from 'material-ui/svg-icons/action/favorite-border';
-import Visibility from 'material-ui/svg-icons/action/visibility';
-import VisibilityOff from 'material-ui/svg-icons/action/visibility-off';
-import IconButton from 'material-ui/IconButton';
-import FontIcon from 'material-ui/FontIcon';
-import SvgIconFace from 'material-ui/svg-icons/action/face';
-import {blue300, indigo900} from 'material-ui/styles/colors';
 let loginStyle = require('./../../css/login.css');
+import {blue300, indigo900} from 'material-ui/styles/colors';
 class Blog extends React.Component {
     componentWillMount() {
         this.props.getPosts()
+        this.props.getStats({
+            id : 1
+        })
     }
     componentDidMount() {
     }
@@ -50,11 +43,7 @@ class Blog extends React.Component {
         console.log(data)
     }
     render(){
-
         const styles = {
-            chip: {
-                marginLeft: 290,
-            },
             wrapper: {
                 display: 'flex',
                 flexWrap: 'wrap',
@@ -81,7 +70,7 @@ class Blog extends React.Component {
                                     <div>
                                         <Chip
                                             onTouchTap={this.handleTouchTap}
-                                            style={styles.chip}
+                                            className="cardChip"
                                         >
                                             <Avatar src="https://cdn-images-1.medium.com/fit/c/32/32/1*owmCbcxxEOLbfF_XGDjxnQ.jpeg" />
                                             {data.user_name}
@@ -89,7 +78,7 @@ class Blog extends React.Component {
                                         {/*<label className="font">Posted At {data.created_at}</label><br/>*/}
                                     </div>
                                     <h5 className="cardHeader">{data.heading}</h5>
-                                    <img src="https://cdn-images-1.medium.com/max/900/1*-8-mWUXKqq6Fk3AfxGpA7w.jpeg" alt="Image" height={200} width={700}/>
+                                    <img className="image" src="https://cdn-images-1.medium.com/max/1260/1*3lZYFSUsa1S-l8X5HjTvfg.jpeg" alt="Image" height={250} width={600}/>
                                     <Link to="/post/1"><h6 className="readMore">Read More</h6></Link>
                                     <div className="footer">
                                         <div className="checkbox">
@@ -118,19 +107,19 @@ class Blog extends React.Component {
                     <label>Statistics about your posts</label><br/><br/>
                     <div className="center">
                         <Chip >
-                            <Avatar size={32}>10</Avatar>
+                            <Avatar color={blue300} backgroundColor={indigo900} size={32}>{this.props.blogReducer.stats.totalPosts}</Avatar>
                             Total Number of posts
                         </Chip><br/><br/>
                         <Chip >
-                            <Avatar size={32}>5</Avatar>
+                            <Avatar color={blue300} backgroundColor={indigo900} size={32}>{this.props.blogReducer.stats.totalLikes}</Avatar>
                             Total Posts Liked
                         </Chip><br/><br/>
                         <Chip >
-                            <Avatar size={32}>9</Avatar>
+                            <Avatar color={blue300} backgroundColor={indigo900} size={32}>{this.props.blogReducer.stats.totalComments}</Avatar>
                             Total Comments Posted
                         </Chip><br/><br/>
                         <Chip >
-                            <Avatar size={32}>23</Avatar>
+                            <Avatar color={blue300} backgroundColor={indigo900} size={32}>23</Avatar>
                             Total Rating
                         </Chip>
                     </div>
@@ -164,6 +153,9 @@ const mapDispatchToProps= (dispatch) => {
         },
         getPosts:()=>{
             dispatch(getPosts())
+        },
+        getStats:(data)=>{
+            dispatch(getStats(data))
         }
     };
 };

@@ -51,6 +51,12 @@ const utils ={
         // formData.append('heading',data.heading)
         // formData.append('content',data.content)
         return axios.post(url,data,config);
+    },
+    getStats :(data)=>{
+        let url = serverAddress + 'api/post/getStats';
+        let config= configHeader();
+        console.log("inside util",data)
+        return axios.post(url,data,config)
     }
 }
 export default utils ;

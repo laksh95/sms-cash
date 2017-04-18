@@ -106,5 +106,18 @@ module.exports = {
             })
 
         }
+    },
+    getStats:(req,res)=>{
+        if(req.body){
+            post.getStats(models,req.body,(error,result)=>{
+                if(result){
+                    res.status(200).json({data:result ,message: "SUCCESSFULLY_FETCHED"})
+                }
+                else{
+                    res.status(500).json({data:[], message: 'UNSUCCESSFUL'});
+                }
+            })
+
+        }
     }
 }

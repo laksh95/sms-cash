@@ -80,7 +80,7 @@ h6{
     font-weight: bold;
 }
 .postContent{
-    font-size:28px;
+    font-size:26px;
     font-family: 'Raleway', sans-serif;
 }
 .postFooter{
@@ -121,4 +121,13 @@ h6{
 .editDelete{
     margin-top:11px;
     cursor: pointer;
+}
+.cardChip {
+    margin-left : 20% ;
+}
+.image{
+    padding-left:2% ;
+    padding-right:2% ;
+}
+.postImage{
 }

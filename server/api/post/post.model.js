@@ -226,6 +226,43 @@ let sql = function(){
                     //
                     //     }
                     // })
+                },
+                getStats:function(models,data,cb){
+                    let post= models.post
+                    let postLike = models.post_like
+                    let postComment = models.post_comment
+                    let result = {}
+                    let promises = []
+                    console.log(data)
+                    promises.push(post.count({
+                        where : {
+                            status : true ,
+                            by : data.id
+                        }
+                    }))
+
+                    promises.push(postLike.count({
+                        where : {
+                            status : true ,
+                            liked_by : data.id
+                        }
+                    }))
+                    promises.push(postComment.count({
+                        where : {
+                            status : true ,
+                            comment_by : data.id
+                        }
+                    }))
+                    Promise.all(promises).then((response)=>{
+                        result.totalPosts = response[0]
+                        result.totalLikes = response[1]
+                        result.totalComments = response[2]
+                        console.log(result)
+                        cb(null,result)
+                    })
+                    .catch((error)=>{
+                        cb(error,null)
+                    })
                 }
             }
         }

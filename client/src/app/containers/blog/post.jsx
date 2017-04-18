@@ -211,7 +211,11 @@ class Post extends React.Component {
                         </List>
                     </div>
                     <div className="postHeader">
-                        {this.props.blogReducer.post.content}
+                        {/*{this.props.blogReducer.post.heading}*/}
+                        Cracking the Coding Interview
+                    </div>
+                    <div className="postImage">
+                        <img src="https://cdn-images-1.medium.com/max/1260/1*3lZYFSUsa1S-l8X5HjTvfg.jpeg" width={1000} alt=""/>
                     </div>
                     <div className="postContent">
                         <p>

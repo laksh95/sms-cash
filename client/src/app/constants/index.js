@@ -13,3 +13,4 @@ export const EDIT_COMMENT = 'EDIT_COMMENT';
 export const DELETE_COMMENT = 'DELETE_COMMENT';
 export const SET_LIKES = 'SET_LIKES';
 export const ADD_POST = 'ADD_POST';
+export const GET_STATS = 'GET_STATS';

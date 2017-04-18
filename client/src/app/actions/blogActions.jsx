@@ -71,3 +71,12 @@ export function addPost(data){
             })
     }
 }
+export function getStats(data){
+    return {
+        type:types.GET_STATS,
+        payload : blog.getStats(data)
+            .then((response)=>{
+                return response.data
+            })
+    }
+}

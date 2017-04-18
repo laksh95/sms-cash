@@ -9,5 +9,6 @@ router.post('/addComment',controller.addComment)
 router.post('/editComment',controller.editComment)
 router.post('/deleteComment',controller.deleteComment)
 router.post('/setLikes',controller.setLikes)
+router.post('/getStats',controller.getStats)
 
 module.exports = router

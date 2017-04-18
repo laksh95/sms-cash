@@ -57,6 +57,12 @@ const utils ={
         let config= configHeader();
         console.log("inside util",data)
         return axios.post(url,data,config)
+    },
+    deletePost :(data)=>{
+        let url = serverAddress + 'api/post/deletePost';
+        let config= configHeader();
+        return axios.post(url,data,config)
+
     }
 }
 export default utils ;

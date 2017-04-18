@@ -79,6 +79,26 @@ const blogReducer = ( state = {
                 stats : data
             }
             return state
+        case "SET_POST":
+            var data = action.payload
+            state= {
+                ...state ,
+                post : data
+            }
+            return state
+        case "DELETE_POST_FULFILLED":
+            var post= state.post
+            var posts = state.posts
+            for(let index in posts){
+                if(posts[index].id ==post.id) {
+                    posts.splice(index,1)
+                }
+            }
+            state = {
+                ...state ,
+                posts: posts
+            }
+            return state
         default:
             return state
     }

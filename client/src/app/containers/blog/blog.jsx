@@ -2,7 +2,7 @@ import {Link} from 'react-router';
 import React from 'react';
 import {connect} from "react-redux";
 import {loginUser, checkLogin} from "./../../actions/loginActions";
-import {openModal,getPosts,getStats} from "./../../actions/blogActions.jsx";
+import {openModal,getPosts,getStats,setPost,deletePost} from "./../../actions/blogActions.jsx";
 import AddPost from "./addPost.jsx"
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -14,9 +14,19 @@ import Chip from 'material-ui/Chip';
 import Checkbox from 'material-ui/Checkbox';
 import ActionFavorite from 'material-ui/svg-icons/action/favorite';
 import ActionFavoriteBorder from 'material-ui/svg-icons/action/favorite-border';
+import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 let loginStyle = require('./../../css/login.css');
+import Dialog from 'material-ui/Dialog';
+
 import {blue300, indigo900} from 'material-ui/styles/colors';
 class Blog extends React.Component {
+    constructor(props){
+        super(props)
+        this.state = {
+            open : false
+        }
+    }
     componentWillMount() {
         this.props.getPosts()
         this.props.getStats({
@@ -42,7 +52,36 @@ class Blog extends React.Component {
         console.log(checked)
         console.log(data)
     }
+    deletePost = (data) =>{
+        console.log(data)
+        this.setState({open: true})
+        this.props.setPost(data)
+    }
+    handleClose = (type) => {
+        console.log(type)
+        switch(type){
+            case "CANCEL":
+                this.setState({open: false});
+                break
+            case "DELETE":
+                this.props.deletePost(this.props.blogReducer.post)
+                this.setState({open:false});
+                break
+        }
+    };
     render(){
+        const actions = [
+            <FlatButton
+                label="Cancel"
+                primary={true}
+                onTouchTap={this.handleClose.bind(this,"CANCEL")}
+            />,
+            <FlatButton
+                label="Submit"
+                primary={true}
+                onTouchTap={this.handleClose.bind(this,"DELETE")}
+            />,
+        ];
         const styles = {
             wrapper: {
                 display: 'flex',
@@ -91,11 +130,10 @@ class Blog extends React.Component {
                                                 onCheck={this.handleCheck.bind(this,data)}
                                             />
                                         </div>
-
                                         <i className="material-icons left">comment</i><label className="left">{data.comments} responses</label>
                                         <div className="editDelete">
                                             <i className="material-icons right" >mode_edit</i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                            <i className="material-icons right">delete</i>&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <i  onClick={()=>this.deletePost(data)} className="material-icons right">delete</i>&nbsp;&nbsp;&nbsp;&nbsp;
                                         </div>
                                     </div>
                                 </Paper>
@@ -124,6 +162,14 @@ class Blog extends React.Component {
                         </Chip>
                     </div>
                 </div>
+                <Dialog
+                    title="Delete Post"
+                    actions={actions}
+                    modal={true}
+                    open={this.state.open}
+                >
+                    Are you sure you want to delete ?
+                </Dialog>
             </div>
         );
     }
@@ -156,6 +202,12 @@ const mapDispatchToProps= (dispatch) => {
         },
         getStats:(data)=>{
             dispatch(getStats(data))
+        },
+        setPost:(data)=>{
+            dispatch(setPost(data))
+        },
+        deletePost : (data)=>{
+            dispatch(deletePost(data))
         }
     };
 };

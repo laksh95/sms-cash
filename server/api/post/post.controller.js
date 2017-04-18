@@ -119,5 +119,17 @@ module.exports = {
             })
 
         }
+    },
+    deletePost :(req,res)=>{
+        if(req.body){
+            post.deletePost(models,req.body,(error,result)=>{
+                if(result){
+                    res.status(200).json({data:result ,message: "SUCCESSFULLY_DELETED"})
+                }
+                else{
+                    res.status(500).json({data:[], message: 'UNSUCCESSFUL'});
+                }
+            })
+        }
     }
 }

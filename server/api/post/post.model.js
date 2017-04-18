@@ -263,6 +263,20 @@ let sql = function(){
                     .catch((error)=>{
                         cb(error,null)
                     })
+                },
+                deletePost:function(models,data ,cb){
+                    console.log(data)
+                    let post = models.post
+                    post.update({
+                        status : false
+                    },{
+                        where : {
+                            status : true ,
+                            id : data.id
+                        }
+                    }).then((response)=>{
+                        cb(null,response)
+                    })
                 }
             }
         }

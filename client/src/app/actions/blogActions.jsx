@@ -80,3 +80,18 @@ export function getStats(data){
             })
     }
 }
+export function setPost(data){
+    return {
+        type:types.SET_POST ,
+        payload: data
+    }
+}
+export function deletePost(data){
+    return {
+        type:types.DELETE_POST ,
+        payload : blog.deletePost(data)
+            .then((response)=>{
+                return response.data
+            })
+    }
+}

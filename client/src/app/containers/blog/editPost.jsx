@@ -67,9 +67,13 @@ class EditPost extends React.Component {
                     heading : this.state.heading,
                     content : this.state.value
                 }
-                this.props.addPost(data)
-                this.setState({open : true, message : "Post Edited" })
-                this.props.setShowEdit(false)
+                // this.props.editPost(data)
+                this.setState({
+                    open : true,
+                    message : 'Post Edited'
+                },()=>{
+                    this.props.setShowEdit(false)
+                })
                 break
             default:
                 break

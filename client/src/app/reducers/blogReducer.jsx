@@ -105,6 +105,7 @@ const blogReducer = ( state = {
                 ...state ,
                 showEdit : action.payload
             }
+            return state
         default:
             return state
     }

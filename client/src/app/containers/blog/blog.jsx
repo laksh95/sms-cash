@@ -104,6 +104,7 @@ class Blog extends React.Component {
                     <br/><br/>
                     {
                         this.props.blogReducer.posts.map((data,index)=>{
+                            var url = '/post/'+data.id
                             return(
                                 <Paper className="card" zDepth={2} >
                                     <div>
@@ -118,7 +119,7 @@ class Blog extends React.Component {
                                     </div>
                                     <h5 className="cardHeader">{data.heading}</h5>
                                     <img className="image" src="https://cdn-images-1.medium.com/max/1260/1*3lZYFSUsa1S-l8X5HjTvfg.jpeg" alt="Image" height={250} width={600}/>
-                                    <Link to="/post/1"><h6 className="readMore">Read More</h6></Link>
+                                    <Link to={url}><h6 className="readMore">Read More</h6></Link>
                                     <div className="footer">
                                         <div className="checkbox">
                                             <Checkbox

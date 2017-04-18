@@ -5,14 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d9775d7d-f002-4fd5-9c06-e7e3df2ff056" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/app/actions/blogActions.jsx" afterPath="$PROJECT_DIR$/client/src/app/actions/blogActions.jsx" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/app/constants/index.js" afterPath="$PROJECT_DIR$/client/src/app/constants/index.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/app/containers/blog/blog.jsx" afterPath="$PROJECT_DIR$/client/src/app/containers/blog/blog.jsx" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/app/reducers/blogReducer.jsx" afterPath="$PROJECT_DIR$/client/src/app/reducers/blogReducer.jsx" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/app/utils/api/blog.js" afterPath="$PROJECT_DIR$/client/src/app/utils/api/blog.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/api/post/index.js" afterPath="$PROJECT_DIR$/server/api/post/index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/api/post/post.controller.js" afterPath="$PROJECT_DIR$/server/api/post/post.controller.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/api/post/post.model.js" afterPath="$PROJECT_DIR$/server/api/post/post.model.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/client/src/app/containers/blog/post.jsx" afterPath="$PROJECT_DIR$/client/src/app/containers/blog/post.jsx" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -31,17 +26,30 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="blog.jsx" pinned="false" current-in-tab="true">
+      <file leaf-file-name="blog.jsx" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/src/app/containers/blog/blog.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="146">
-              <caret line="120" column="53" lean-forward="false" selection-start-line="120" selection-start-column="52" selection-end-line="120" selection-end-column="53" />
+            <state relative-caret-position="570">
+              <caret line="124" column="48" lean-forward="false" selection-start-line="124" selection-start-column="48" selection-end-line="124" selection-end-column="48" />
               <folding>
                 <element signature="e#0#34#0" expanded="true" />
                 <element signature="e#1020#1060#0" expanded="true" />
                 <element signature="e#2779#2861#0" expanded="false" />
                 <element signature="e#2882#2927#0" expanded="false" />
                 <element signature="e#2951#3000#0" expanded="false" />
+                <element signature="e#7998#8558#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.jsx" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/client/src/app/index.jsx">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="128">
+              <caret line="22" column="36" lean-forward="true" selection-start-line="22" selection-start-column="36" selection-end-line="22" selection-end-column="36" />
+              <folding>
+                <element signature="e#0#58#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -50,19 +58,19 @@
       <file leaf-file-name="post.jsx" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/src/app/containers/blog/post.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="312">
-              <caret line="39" column="18" lean-forward="false" selection-start-line="39" selection-start-column="17" selection-end-line="39" selection-end-column="18" />
+            <state relative-caret-position="111">
+              <caret line="39" column="41" lean-forward="false" selection-start-line="39" selection-start-column="41" selection-end-line="39" selection-end-column="41" />
               <folding>
                 <element signature="n#!!block;n#handleChange#0;n#Post#0" expanded="false" />
                 <element signature="n#!!block;n#postComment#0;n#Post#0" expanded="false" />
-                <element signature="e#3241#4009#0" expanded="false" />
+                <element signature="e#3235#4003#0" expanded="false" />
                 <element signature="n#!!block;n#editComment#0;n#Post#0" expanded="false" />
                 <element signature="n#!!block;n#deleteComment#0;n#Post#0" expanded="false" />
-                <element signature="e#4872#5299#0" expanded="false" />
-                <element signature="e#5331#5685#0" expanded="false" />
-                <element signature="e#5710#6033#0" expanded="false" />
-                <element signature="e#12690#12742#0" expanded="false" />
-                <element signature="e#12764#12813#0" expanded="false" />
+                <element signature="e#4769#5196#0" expanded="false" />
+                <element signature="e#5228#5582#0" expanded="false" />
+                <element signature="e#5607#5930#0" expanded="false" />
+                <element signature="e#12587#12639#0" expanded="false" />
+                <element signature="e#12661#12710#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -132,7 +140,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>state</find>
       <find>this.state.likes</find>
       <find>posted</find>
       <find>sta</find>
@@ -145,7 +152,6 @@
       <find>value</find>
       <find>post</find>
       <find>handleclose</find>
-      <find>console</find>
       <find>open</find>
       <find>cancel</find>
       <find>handlereq</find>
@@ -162,6 +168,8 @@
       <find>submit</find>
       <find>SUBMIT</find>
       <find>handleClose</find>
+      <find>read more</find>
+      <find>console</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -188,16 +196,16 @@
         <option value="$PROJECT_DIR$/client/src/index.html" />
         <option value="$PROJECT_DIR$/client/src/app/containers/blog/addPost.jsx" />
         <option value="$PROJECT_DIR$/client/src/app/actions/adminActions.jsx" />
-        <option value="$PROJECT_DIR$/client/src/app/containers/blog/post.jsx" />
         <option value="$PROJECT_DIR$/client/src/app/css/index.css" />
         <option value="$PROJECT_DIR$/client/src/app/constants/index.js" />
         <option value="$PROJECT_DIR$/client/src/app/utils/api/blog.js" />
         <option value="$PROJECT_DIR$/client/src/app/actions/blogActions.jsx" />
-        <option value="$PROJECT_DIR$/client/src/app/containers/blog/blog.jsx" />
         <option value="$PROJECT_DIR$/server/api/post/index.js" />
         <option value="$PROJECT_DIR$/server/api/post/post.controller.js" />
         <option value="$PROJECT_DIR$/client/src/app/reducers/blogReducer.jsx" />
         <option value="$PROJECT_DIR$/server/api/post/post.model.js" />
+        <option value="$PROJECT_DIR$/client/src/app/containers/blog/post.jsx" />
+        <option value="$PROJECT_DIR$/client/src/app/containers/blog/blog.jsx" />
       </list>
     </option>
   </component>
@@ -741,12 +749,12 @@
       <workItem from="1492232921025" duration="24792000" />
       <workItem from="1492360956762" duration="6525000" />
       <workItem from="1492403187614" duration="27333000" />
-      <workItem from="1492452284791" duration="19127000" />
+      <workItem from="1492452284791" duration="21489000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="327660000" />
+    <option name="totallyTimeSpent" value="330022000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1366" height="768" extended-state="6" />
@@ -897,14 +905,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="55" lean-forward="true" selection-start-line="0" selection-start-column="55" selection-end-line="1" selection-end-column="40" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/src/app/index.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="26">
-          <caret line="10" column="24" lean-forward="true" selection-start-line="10" selection-start-column="24" selection-end-line="10" selection-end-column="24" />
           <folding />
         </state>
       </provider>
@@ -1137,33 +1137,44 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/client/src/app/containers/blog/post.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="312">
-          <caret line="39" column="18" lean-forward="false" selection-start-line="39" selection-start-column="17" selection-end-line="39" selection-end-column="18" />
+        <state relative-caret-position="111">
+          <caret line="39" column="41" lean-forward="false" selection-start-line="39" selection-start-column="41" selection-end-line="39" selection-end-column="41" />
           <folding>
             <element signature="n#!!block;n#handleChange#0;n#Post#0" expanded="false" />
             <element signature="n#!!block;n#postComment#0;n#Post#0" expanded="false" />
-            <element signature="e#3241#4009#0" expanded="false" />
+            <element signature="e#3235#4003#0" expanded="false" />
             <element signature="n#!!block;n#editComment#0;n#Post#0" expanded="false" />
             <element signature="n#!!block;n#deleteComment#0;n#Post#0" expanded="false" />
-            <element signature="e#4872#5299#0" expanded="false" />
-            <element signature="e#5331#5685#0" expanded="false" />
-            <element signature="e#5710#6033#0" expanded="false" />
-            <element signature="e#12690#12742#0" expanded="false" />
-            <element signature="e#12764#12813#0" expanded="false" />
+            <element signature="e#4769#5196#0" expanded="false" />
+            <element signature="e#5228#5582#0" expanded="false" />
+            <element signature="e#5607#5930#0" expanded="false" />
+            <element signature="e#12587#12639#0" expanded="false" />
+            <element signature="e#12661#12710#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/client/src/app/containers/blog/blog.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="146">
-          <caret line="120" column="53" lean-forward="false" selection-start-line="120" selection-start-column="52" selection-end-line="120" selection-end-column="53" />
+        <state relative-caret-position="570">
+          <caret line="124" column="48" lean-forward="false" selection-start-line="124" selection-start-column="48" selection-end-line="124" selection-end-column="48" />
           <folding>
             <element signature="e#0#34#0" expanded="true" />
             <element signature="e#1020#1060#0" expanded="true" />
             <element signature="e#2779#2861#0" expanded="false" />
             <element signature="e#2882#2927#0" expanded="false" />
             <element signature="e#2951#3000#0" expanded="false" />
+            <element signature="e#7998#8558#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/app/index.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="128">
+          <caret line="22" column="36" lean-forward="true" selection-start-line="22" selection-start-column="36" selection-end-line="22" selection-end-column="36" />
+          <folding>
+            <element signature="e#0#58#0" expanded="true" />
           </folding>
         </state>
       </provider>

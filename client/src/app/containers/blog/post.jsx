@@ -37,7 +37,7 @@ class Post extends React.Component {
     }
     componentWillMount() {
         this.props.getPost({
-            id : 1
+            id : this.props.params.postid
         })
     }
     componentWillReceiveProps(props){
@@ -79,7 +79,6 @@ class Post extends React.Component {
     }
     postComment(){
         let comment = this.state.value
-        console.log(comment)
         if(comment.trim()==''){
             this.setState({
                 errorText : "Comment can't be empty"
@@ -124,7 +123,6 @@ class Post extends React.Component {
     };
     editComment(data){
         this.setState({showEdit: true});
-        console.log("Edit Comment",data)
         this.setState({
             comment: data
         })
@@ -134,8 +132,6 @@ class Post extends React.Component {
         this.setState({comment:data})
     }
     handleCheck=(event,checked)=> {
-        console.log(event)
-        console.log(checked)
         let likes = this.props.blogReducer.post.likes
 
         if(checked==true) {

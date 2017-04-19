@@ -1,3 +1,6 @@
 /node_modules
 /server/npm-debug.log
-/.idea
+       /.idea/modules.xml
+        /.idea/student-management-system-web.iml
+        /.idea/vcs.xml
+        /.idea/workspace.xml

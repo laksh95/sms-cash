@@ -170,6 +170,14 @@ const loginReducer= (state=initialLoginState, action) => {
                   loginUser: {}
                  } 
         break;
+
+        case types.RESET_ERROR:
+          state={
+            ...state,
+            showErrorPage: false,
+            errorMessage: ""
+          }
+        break
     }
     return state;
 };

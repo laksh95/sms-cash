@@ -6,7 +6,7 @@ import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import {browserHistory} from 'react-router';
 let loginStyle = require('./../../css/login.css');
 import {connect} from "react-redux";
-import {loginUser, checkLogin} from "./../../actions/loginActions";
+import {loginUser, checkLogin, resetToNoError} from "./../../actions/loginActions";
 import {setErrorMessage} from "./../../actions/errorActions";
 import Auth from './../../Auth.js';
 
@@ -17,6 +17,7 @@ class App extends React.Component {
         browserHistory.push(this.props.login.prevPathName);
         Auth.authenticateUser(this.props.login.token);
     }
+    this.props.resetToNoError();
   }
 
   componentDidMount() {
@@ -81,7 +82,10 @@ const mapDispatchToProps= (dispatch) => {
 		},
     setErrorMessage: (message) =>{
       dispatch(setErrorMessage(message));
-    }	
+    },
+    resetToNoError: () =>{
+      dispatch(resetToNoError());
+    } 	
 	};
 };
 

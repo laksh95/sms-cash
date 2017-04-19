@@ -7,14 +7,14 @@ import {store} from "../../store.js";
 import {connect} from "react-redux";
 import DashBoard from './DashBoard.jsx'; 
 import DashBoardNumberOfRole from '../../components/Dashboard/DashBoardNumberOfRole.jsx'; 
-const contentStyle = { marginTop:10, marginLeft: 90 ,transition: 'margin-left 100ms cubic-bezier(0.23, 1, 0.32, 1)' };
 
 class App extends React.Component{
 	constructor(props) {
 		super(props);
 	}
 	componentWillReceiveProps(nextProps) {
-		this.props=nextProps
+		this.props=nextProps;
+
 	}
 	componentWillMount() {
 		this.props.getInitialData(1)
@@ -26,16 +26,15 @@ class App extends React.Component{
 	}
 	render(){
 		return(
-			<div style={contentStyle}>
-					<DashBoard events={this.props.dataDashboardAdmin.events}/>
-					<DashBoardNumberOfRole parentNo={this.props.dataDashboardAdmin.parentCount} studentNo={this.props.dataDashboardAdmin.studentCount} teacherNo={this.props.dataDashboardAdmin.teacherCount}/>
+			<div >
+				<DashBoard events={this.props.dataDashboardAdmin.events}/>
+				<DashBoardNumberOfRole parentNo={this.props.dataDashboardAdmin.parentCount} studentNo={this.props.dataDashboardAdmin.studentCount} teacherNo={this.props.dataDashboardAdmin.teacherCount}/>
 			</div>
 		)
 	}
 }
 
 const mapStateToProps=(state)=>{
-	console.log("hellooooooooooooooooooooooooooo",state)
     return{
         dataDashboardAdmin: state.getDataReducer
     };

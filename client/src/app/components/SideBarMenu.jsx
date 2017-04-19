@@ -76,57 +76,10 @@ export default class SideBarMenu extends React.Component {
                    onTouchTap = {(event)=>handleTouchTap( "Dashboard",event)}
                 />
               </Link> : null}
-              <Link to ="/department" style={{textDecoration: 'none'}}>
-                <ListItem
-                  primaryText="Department"
-                  leftAvatar={<Avatar src={userImage} />} 
-                   style={{backgroundColor: list["Department"]}}
-                      onTouchTap = {(event)=>handleTouchTap("Department",event)}
-                />
-              </Link>
-              <ListItem
-                primaryText="Student" 
-                leftAvatar={<Avatar src={userImage} />}
-                  style={{backgroundColor: list["Student"]}}
-                      onTouchTap = {(event)=>handleTouchTap("Student",event)}
-              />
-              <ListItem
-                primaryText="Teacher"
-                leftAvatar={<Avatar src={userImage} />}
-                 style={{backgroundColor: list["Teacher"]}}
-                 onTouchTap = {(event)=>handleTouchTap("Teacher",event)}
-              />
-              <ListItem
-                primaryText="Subjects"
-                leftAvatar={<Avatar src={userImage} />}
-                 style={{backgroundColor: list["Subjects"]}}
-                 onTouchTap = {(event)=>handleTouchTap("Subjects",event)}
-                
-              />
-              <ListItem
-                primaryText="Events"
-                leftAvatar={<Avatar src={userImage} />} 
-                 style={{backgroundColor: list["Events"]}}
-                 onTouchTap = {(event)=>handleTouchTap("Events",event)}
-              />
             </List>): null}
-            <Divider />
-            <List>
-              <ListItem
-                primaryText="Important"
-                leftAvatar={<Avatar src={userImage} />}
-                  style={{backgroundColor: list["Important"]}}
-                 onTouchTap = {(event)=>handleTouchTap("Important",event)}
-              />
-              <ListItem
-                primaryText="Teachers/Students"
-                leftAvatar={<Avatar src={userImage} />}
-                  style={{backgroundColor: list["T/S"]}}
-                 onTouchTap = {(event)=>handleTouchTap("T/S",event)}
-              />
-            </List>
+            
         </Drawer>
-  </div>
+      </div>
     );
   }
 }

@@ -20,7 +20,7 @@ import Snackbar from 'material-ui/Snackbar';
 import RaisedButton from 'material-ui/RaisedButton';
 import {store} from "../../store.js";
 import {connect} from "react-redux";
-import {addToCalendar,deleteFromCalendar,openSnack} from '../../actions/getAdminDashboardDataAction.jsx';
+import {addToCalendar,deleteFromCalendar,setSnack} from '../../actions/getAdminDashboardDataAction.jsx';
 const currentdate=moment().format("YYYY-MM-DD");
 class DashBoard extends React.Component { 
 	constructor(props) {
@@ -195,7 +195,7 @@ class DashBoard extends React.Component {
 				this.setState({
 	    			dateError:'',
 					endDate: event.target.value,
-	    	});
+	    		});
 				break;
 			case 'CHANGE_END_TIME':
 				this.setState({
@@ -207,7 +207,7 @@ class DashBoard extends React.Component {
 				this.setState({
 					contentError:'',
 	    			content: event.target.value,
-	    	});
+	    		});
 				break;
 			case 'CLOSE_EVENT_CARD':
 				this.setState({
@@ -228,10 +228,10 @@ class DashBoard extends React.Component {
 		})
 	}
 	handleChangeSelect = (event, index, value) =>{
-			this.setState({
-				typeError:'',
-				type:value
-			});
+		this.setState({
+			typeError:'',
+			type:value
+		});
 	}
 	componentWillMount(){
 		BigCalendar.momentLocalizer(moment);
@@ -253,19 +253,19 @@ class DashBoard extends React.Component {
 		const {date, format, mode, inputFormat} = this.state;
 		return(
 			<div className="smalldiv">
-				 <BigCalendar
-			          popup
-			          selectable
-			          events={this.props.getDataReducer.events}
-			          culture='en-GB'
-			          step={15}
-			          timeslots={2}
-			          defaultView='week'
-			          scrollToTime={new Date()}
-			          defaultDate={new Date()}
-			          onSelectEvent={(event) => this.handleTouch(event,'SHOW_EVENT_DETAILS')}
-			          onSelectSlot={(event) => this.handleTouch(event,'TAP_CALENDAR_SLOT')}
-			        />
+				<BigCalendar
+			        popup
+			        selectable
+			        events={this.props.getDataReducer.events}
+			        culture='en-GB'
+			        step={15}
+			        timeslots={2}
+			        defaultView='week'
+			        scrollToTime={new Date()}
+			        defaultDate={new Date()}
+			        onSelectEvent={(event) => this.handleTouch(event,'SHOW_EVENT_DETAILS')}
+			        onSelectSlot={(event) => this.handleTouch(event,'TAP_CALENDAR_SLOT')}
+			    />
 				<Popover
 					style={{marginLeft:'40%', marginTop:'20%', zIndex:'100'}}
 					open={this.state.open}
@@ -345,7 +345,7 @@ class DashBoard extends React.Component {
 					open={this.props.getDataReducer.openSnack}
 					message={this.props.getDataReducer.message}
 					autoHideDuration={4000}
-					onRequestClose={this.handleSnackRequestClose}
+					onRequestClose={()=>this.props.setSnack(false," ")}
 		        />
 			</div>
 		);	
@@ -358,14 +358,14 @@ const mapStateToProps=(state)=>{
 };
 const mapDispatchToProps=(dispatch)=>{
     return({
-        	deleteFromCalendar:(type,method,id)=>{
-          	  dispatch(deleteFromCalendar(type,method,id));
+        deleteFromCalendar:(type,method,id)=>{
+          	dispatch(deleteFromCalendar(type,method,id));
         },
 	    addToCalendar:(type,method,event)=>{
 	        dispatch(addToCalendar(type,method,event));
 	    },
-	    openSnack:(data,message)=>{
-	        dispatch(openSnack(data,message));
+	    setSnack:(data,message)=>{
+	        dispatch(setSnack(data,message));
 	    }
     });
 };

@@ -1,6 +1,8 @@
 import authenticate from './../utils/api/authenticate';
 import * as types from './../constants';
+
 export function loginUser(credential){
+
 	return {
 		type: types.LOGIN,
 		payload: 	
@@ -11,8 +13,9 @@ export function loginUser(credential){
 	};
 	
 }
-export function checkLogin(config){
 
+
+export function checkLogin(config){
 	return {
 		type: types.CHECK_IS_LOGIN,
 		payload: 	
@@ -23,8 +26,25 @@ export function checkLogin(config){
 	};
 	
 }
+
 export function logoutUser(){
 	return{
 		type: types.LOGOUT
+	}
+}
+
+
+export function setUrl(path){
+	return {
+		type: types.SETPREVPATH,
+		payload: path
+	}
+}
+
+export function setReceivedResponse(value){
+	return {
+		type: types.RES_PENDING,
+		payload: value
+
 	}
 }

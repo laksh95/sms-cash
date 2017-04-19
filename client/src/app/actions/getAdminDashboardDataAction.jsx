@@ -11,7 +11,7 @@ export function getInitialData(userId){
 export function addToCalendar(type,method,event){
 	return{
 		type: ADD_TO_CALENDER ,
-		payload:adminDashboard.getData(type,method,event).then((response) => {
+		payload:adminDashboard.addToCalendar(type,method,event).then((response) => {
 				return response.data;
 			})
   	};
@@ -19,7 +19,7 @@ export function addToCalendar(type,method,event){
 export function deleteFromCalendar(type,method,id){
 	return{
 		type: DELETE_FROM_CALENDER ,
-		payload:adminDashboard.getData(type,method,id).then((response) => {
+		payload:adminDashboard.deletefromCalendar(type,method,id).then((response) => {
 				return response.data;
 			})
   	};

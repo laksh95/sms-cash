@@ -71,8 +71,7 @@ const getDataReducer = ( state = initialState ,action) => {
 	        if(invalid==0){
 	        	state={ 
 	        		...state,
-	          		openSnack:true,
-	          		message:action.payload.message,
+	          		openSnack:false,
 	          		teacherCount:teacherCount,
 	          		parentCount:parentCount,
 	          		studentCount:studentCount
@@ -82,14 +81,16 @@ const getDataReducer = ( state = initialState ,action) => {
 	        	state={ ...state,
 	          		openSnack:true,
 	          		message:action.payload.message,
+	          		// message:"Not Added",
+
 	        	}
 	        }
-	   	 	break;
+	   	 	return state;
 	    case GET_INITIAL_DATA+"_REJECTED":
 	    	state={ ...state,
 	          		openSnack:false,
 	          		message:action.payload.message,	        	}
-	    	break;
+	    	return state;
 	    case ADD_TO_CALENDER + "_FULFILLED":
 	    	var events=state.events;
 	    	if(action.payload.status==200){
@@ -109,13 +110,13 @@ const getDataReducer = ( state = initialState ,action) => {
 	          		message:action.payload.message,
 					events:events
 			}
-	    	break;
+	    	return state;
 	    case ADD_TO_CALENDER+"_REJECTED":
 	    	state={ ...state,
 				openSnack:true,
 	          		message:action.payload.message,
 			}
-	    	break;
+	    	return state;
 	    case DELETE_FROM_CALENDER+"_FULFILLED":
 		    var events=state.events
 			if(action.payload.status==200){
@@ -126,19 +127,19 @@ const getDataReducer = ( state = initialState ,action) => {
 			   				message:action.payload.message
 						}
 			        props.getEvents(events)
-			break;
+			return state;
 	    case DELETE_FROM_CALENDER+"_REJECTED":
 		    state={ ...state,
 					openSnack:true,
 	          		message:action.payload.message,
 				}
-	    	break;
+	    	return state;
 	    case SET_SNACK:
 	    	state={ ...state,
-				openSnack:action.payload,
-	          		message:action.payload.message,
+				openSnack:action.payload.data,
+	          	message:action.payload.message,
 			}
-	    	break;
+	    	return state;
 	    default : 
 	    	return state
 	}

@@ -63,7 +63,7 @@ module.exports=function(){
                     let login=false;
                     let userId;
 
-                    userDetail.findOne({attributes:['id', 'username', 'name', 'password'], 
+                    userDetail.findOne({attributes:['id', 'username', 'name', 'password'],
                         where: {username: userName, status:true}
                          }).then((result)=> {
                             if(result){
@@ -80,21 +80,21 @@ module.exports=function(){
                             }
                             else{
                                 user.login=false;
-                                cb(null, null);  
+                                cb(null, null);
                             }
                          }).catch(function(error){
                                 console.log(error);
                                 cb(error);
                         });
 
-                   
+
                 },
-                
+
                 findUserById: function(models, id, cb){
                     let userDetail= models.user_detail;
                     let user={};
                     let userId;
-                    userDetail.findOne({attributes:['id', 'username', 'name'], 
+                    userDetail.findOne({attributes:['id', 'username', 'name'],
                     where: {id: id, status:true}
                     }).then((result)=> {
                         if(result){
@@ -131,7 +131,7 @@ module.exports=function(){
                             if(resultAdmin){
                                 role.push('admin');
                             }
-                            return director.findOne({attributes: ['id'], where: {user_detail_id: userId}})   
+                            return director.findOne({attributes: ['id'], where: {user_detail_id: userId}})
                         })
                         .then((resultDirector)=>{
                             if(resultDirector){
@@ -169,4 +169,3 @@ module.exports=function(){
     );
     return user;
 };
-

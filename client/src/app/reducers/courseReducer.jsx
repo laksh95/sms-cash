@@ -73,7 +73,7 @@ const courseReducer = (state = {
                     ...state ,
                     course : course ,
                     snackbarOpen : true,
-                    snackbarMessage : "course Added",
+                    snackbarMessage : "Course Added",
                     value : 'a',
                     totalPages : size ,
                     currentPage : 1,

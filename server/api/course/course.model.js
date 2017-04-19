@@ -50,6 +50,7 @@ let init=function(){
                             name:setData.course_name
                         }
                     }).then((data)=>{
+                        console.log(data)
                         if(data.length==0){
                             db.course.create({
                                 name:setData.course_name,
@@ -84,7 +85,7 @@ let init=function(){
                                     response = {
                                         status: 1,
                                         data,
-                                        msg:'Added Successfully'
+                                        msg:'Course Added Successfully'
                                     }
                                     sendData(response)
                                 })

@@ -119,7 +119,6 @@ class AddCourse extends React.Component {
         const contentStyle = {
             marginLeft: 70 ,transition: 'margin-left 100ms cubic-bezier(0.23, 1, 0.32, 1)'
         };
-
         if (this.state.open) {
             contentStyle.marginLeft = 230;
         }
@@ -130,11 +129,10 @@ class AddCourse extends React.Component {
                     hintText="Course Name"
                     onChange={this.addCourseName}
                     errorText={this.state.errorText3}
-                /><br />
+                /><br/>
                 <NumberInput
                     id="num"
                     hintText="Duration"
-
                     defaultValue=""
                     strategy="warn"
                     errorText={this.state.errorText4}
@@ -194,29 +192,7 @@ const mapDispatchToProps = (dispatch) => {
         },
         deleteCourse:(data) =>{
             dispatch(deleteCourse(data))
-        },
-        getCourses:()=>{
-            dispatch(getCourses())
-        },
-        addCourse:(data) =>{
-            dispatch(addCourse(data))
-        },
-        editCourse:(data) =>{
-            dispatch(editCourse(data))
-        },
-        deleteCourse:(data) =>{
-            dispatch(deleteCourse(data))
         }
     };
 };
 export default connect(mapStateToProps,mapDispatchToProps)(AddCourse);
-
-
-
-
-
-
-
-
-
-

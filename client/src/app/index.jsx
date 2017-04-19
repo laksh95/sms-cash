@@ -10,6 +10,8 @@ import Department from './containers/department/Department.jsx'
 import { Provider } from 'react-redux'
 import store from './store.js'
 import Student from './containers/student/Student.jsx'
+import ErrorApp from './containers/error/ErrorApp.jsx'
+
 const history = syncHistoryWithStore(browserHistory, store);
 injectTapEventPlugin();
 render((
@@ -22,6 +24,7 @@ render((
 			  <Route path="/student" component={Student} />
 	      </Route>
 	      <Route path = "/login" component = {Login}/>
+	      <Route path = "/error" component = {ErrorApp}/>
 	   </Router>
 	</Provider>
 ), document.getElementById('app'))

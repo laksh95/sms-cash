@@ -12,6 +12,9 @@ import Divider from 'material-ui/Divider';
 import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
 import DashBoard from './dashboard/DashBoard.jsx'; 
 let userImage =  require('./../images/user.png');
+let departmentImage =  require('./../images/department.png');
+let studentImage =  require('./../images/student.png');
+let dashboardImage =  require('./../images/dashboard.png');
 import {Link} from 'react-router';
 import { browserHistory} from 'react-router';
 import { getSelected } from '../actions/adminActions.jsx';
@@ -25,30 +28,47 @@ class SideBarMenu extends React.Component {
     super(props); 
 
     this.state = {
-      selected:this.props.adminReducer.selectedTab
+      selected:this.props.adminReducer.selectedTab,
+      refresh: true
     };
   }
 
   componentWillMount() {
-    //  if(!this.props.isLogin){
-    //     browserHistory.push('/');
-    // }
 
-    console.log("Hello");
   }
 
-  componentWillReceiveProps(nextProps) {
-    // if(!this.props.isLogin){
-    //     browserHistory.push('/');
-    // }
+  componentDidMount() {
+    
   }
+
+  componentDidUpdate(prevProps, prevState) {
+    if(this.state.refresh){
+      console.log("+++prevPathName+++: ", this.props.prevPathName);
+      let selected ="";
+      let path= this.props.prevPathName.trim();
+      if(path=="/dashboard" || path=="/")
+        selected= "Dashboard"
+      else if(path=='/department')
+        selected= "Department"
+      else if(path=='/student')
+        selected= "Students"
+
+      if(this.state.selected!=selected){
+        this.setState({selected: selected})
+      }
+    }
+  }
+
+
  
  getChildContext(){
     return { muiTheme: getMuiTheme(baseTheme) };
  }
   
  handleTouchTap = (item , event) => {
+  console.log("Selected: +++",item )
         this.setState({
+              refresh: false,
               selected: item
                 });
    };
@@ -105,7 +125,7 @@ class SideBarMenu extends React.Component {
               <Link to ="/dashboard" style={{textDecoration: 'none'}}>
                 <ListItem
                   primaryText="DashBoard"
-                  leftAvatar={<Avatar src={userImage}
+                  leftAvatar={<Avatar src={dashboardImage}
                    />} 
                    style={{backgroundColor: list["Dashboard"]}}
                    onTouchTap = {this.handleTouchTap.bind(this, "Dashboard")}
@@ -114,7 +134,7 @@ class SideBarMenu extends React.Component {
               <Link to ="/department" style={{textDecoration: 'none'}}>
                 <ListItem
                   primaryText="Department"
-                  leftAvatar={<Avatar src={userImage} />} 
+                  leftAvatar={<Avatar src={departmentImage} />} 
                    style={{backgroundColor: list["Department"]}}
                       onTouchTap = {this.handleTouchTap.bind(this,"Department")}
                 />

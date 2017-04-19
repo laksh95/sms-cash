@@ -44,6 +44,7 @@ class App extends React.Component {
     }
 
     componentWillMount() {
+      console.log("In APP compo ====================");
       var token = Auth.getToken();
       let path= this.props.location.pathname;
 
@@ -62,12 +63,13 @@ class App extends React.Component {
 
     }
 
-    // componentDidMount() {
-    //   var token = Auth.getToken();
-    //   if(!token || token.trim()==""){
-    //     browserHistory.push('/');
-    //   }
-    // }
+    componentDidMount() {
+       console.log("In APP did mount ====================");
+      // var token = Auth.getToken();
+      // if(!token || token.trim()==""){
+      //   browserHistory.push('/');
+      // }
+    }
 
     componentWillReceiveProps(nextProps) {
      
@@ -119,7 +121,7 @@ class App extends React.Component {
          </div>
        
         <SideBarMenu handleToggle = {(request) => this.handleToggle(request)} open = {this.state.open}
-          user= {this.props.login.loginUser} isLogin= {this.props.login.isLogin}
+          user= {this.props.login.loginUser} isLogin= {this.props.login.isLogin} prevPathName= {this.props.login.prevPathName}
         />   
         <div style={style.ContentTitle}>
           {this.props.children}  

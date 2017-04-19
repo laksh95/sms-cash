@@ -218,7 +218,7 @@ class StudentInformation extends React.Component{
                                                     {data.batchName}
                                                 </TableRowColumn>
                                                 <TableRowColumn>
-                                                    <FlatButton primary={true} label="EDIT" onTouchTap={() => {
+                                        getInitialData            <FlatButton primary={true} label="EDIT" onTouchTap={() => {
                                                         this.props.showDialog(true)
                                                     }}/>
                                                     {this.props.dialogValue ?

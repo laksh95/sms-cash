@@ -3,7 +3,7 @@ import * as codes from './../constants/responseMessageCodes.js'
 const teacherReducer = (
   state = {
     status: 200,
-    errorMessage: "no error",
+    errorMessage: "Loading",
     allTeacher: []
   },
   action

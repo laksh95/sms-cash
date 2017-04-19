@@ -6,7 +6,7 @@ const adminReducer = ( state = {
 	selectedTab:"",
 	selectedCourse:"Course",
 	selectedSession:"Session",
-	selectedCourseId: ""
+	selectedCourseId: JSON.parse(localStorage.getItem("courseId"))
 } , action) => {
 	switch (action.type){
 		case "GET_DEPARTMENTS":
@@ -58,6 +58,7 @@ const adminReducer = ( state = {
          	selectedCourse: action.payload.name,
 					selectedCourseId: action.payload.id
          }
+				 localStorage.setItem("courseId",state.selectedCourseId)
          return state
 
 		default:

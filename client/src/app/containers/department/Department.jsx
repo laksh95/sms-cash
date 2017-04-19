@@ -8,7 +8,7 @@ import DepartmentList  from './../../components/department/DepartmentList.jsx';
 import AddDepartment from './../../components/department/AddDepartment.jsx';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
-import {getDepartmentList, addDepartment, deleteDepartment, editDepartment, 
+import {getDepartmentList, addDepartment, deleteDepartment, editDepartment,
   hideSlackBar, updateSlackBarMsg, handleTabChange, pageChange} from "./../../actions/departmentActions";
 import {connect} from "react-redux";
 
@@ -24,7 +24,7 @@ class Department extends React.Component{
     }
 
     componentWillMount() {
-      let course= {course_id: 1}
+      let course= {courseId: 1}
       this.props.getDepartmentList(course);
     }
 
@@ -33,7 +33,7 @@ class Department extends React.Component{
           <div >
             <Tabs value={this.props.department.selectedTab} onChange={this.props.handleTabChange}>
               <Tab label="Department List" value="list">
-                  <DepartmentList 
+                  <DepartmentList
                     getDepartmentList= {(course) => this.props.getDepartmentList(course)}
                     departmentList= {this.props.department.pagedDepartment}
                     showSlackBar= {this.props.department.showSlackBar}
@@ -47,7 +47,7 @@ class Department extends React.Component{
                   />
               </Tab>
               <Tab className='contentCenter' label="Add Department"value="add" >
-                <AddDepartment 
+                <AddDepartment
                   addDepartment= {(department) => this.props.addDepartment(department)}
                   showSlackBar= {this.props.department.showSlackBar}
                 />
@@ -61,7 +61,7 @@ class Department extends React.Component{
 Department.childContextTypes = {
             muiTheme: React.PropTypes.object.isRequired,
 };
-Department.contextTypes = { 
+Department.contextTypes = {
     router: React.PropTypes.object.isRequired
 };
 
@@ -83,7 +83,7 @@ const mapDispatchToProps= (dispatch) => {
     },
     deleteDepartment: (department) =>{
       dispatch(deleteDepartment(department));
-    }, 
+    },
     editDepartment: (department) =>{
       dispatch(editDepartment(department));
     },
@@ -103,5 +103,3 @@ const mapDispatchToProps= (dispatch) => {
 };
 
 export default connect(mapStateToProps,mapDispatchToProps)(Department);
-
-

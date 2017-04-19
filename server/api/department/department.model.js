@@ -202,6 +202,7 @@ let init=function() {
                         cur_dept['total_no_of_students']= values[index].count
                         departments.push(cur_dept)
                     })
+                    console.log("inside model------------------------------",departments)
                     return({departments});
                 })
             })

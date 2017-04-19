@@ -19,6 +19,7 @@ export default createStore(
       studentReducer,
       teacherReducer,
       subjectReducer,
+      departmentReducer,
     	routing: routerReducer
     }),
     {},

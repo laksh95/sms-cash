@@ -21,7 +21,7 @@ class DepartmentList extends React.Component{
 
     handleTouchTap= (item, event) => {
     	switch(item.identity){
-    		case "editButton": 
+    		case "editButton":
     			this.setState({
     				selectedIndex:item.index,
     				showEdit: true
@@ -49,8 +49,8 @@ class DepartmentList extends React.Component{
 	render(){
 
       	const edit=
-	    	<EditDepartment  
-		        handleTouchTap={this.handleTouchTap} 
+	    	<EditDepartment
+		        handleTouchTap={this.handleTouchTap}
 		        department={this.props.departmentList[this.state.selectedIndex]}
 		        editDepartment= {this.props.editDepartment}
 		        showSlackBar= {this.props.showSlackBar}
@@ -83,7 +83,7 @@ class DepartmentList extends React.Component{
 	                    <TableRowColumn>{department.abbreviated_name}</TableRowColumn>
 	                    <TableRowColumn>{department.total_no_of_students}</TableRowColumn>
 	                    <TableRowColumn>
-	                      <FlatButton label="EDIT" primary={true} 
+	                      <FlatButton label="EDIT" primary={true}
 	                      	onTouchTap={()=> this.handleTouchTap({identity:"editButton", index})}/>
 	                    </TableRowColumn>
 	                    <TableRowColumn>
@@ -94,25 +94,25 @@ class DepartmentList extends React.Component{
 	                </TableBody>
 	            </Table>
 
-	            <Pagination className="ant-pagination" defaultCurrent={1} 
-	            	total={this.props.pagination.totalPages} 
-	            	current={this.props.pagination.currentPage} 
-	            	defaultPageSize={this.props.pagination.pageSize} 
+	            <Pagination className="ant-pagination" defaultCurrent={1}
+	            	total={this.props.pagination.totalPages}
+	            	current={this.props.pagination.currentPage}
+	            	defaultPageSize={this.props.pagination.pageSize}
 	            	onChange={this.props.pageChange}
 	            />
 
-	            {this.state.showEdit? edit: null} 
+	            {this.state.showEdit? edit: null}
 
-	            {this.state.showDelete ?  
-	            <DeleteDepartment 
-	           		handleTouchTap={this.handleTouchTap} 
+	            {this.state.showDelete ?
+	            <DeleteDepartment
+	           		handleTouchTap={this.handleTouchTap}
 	            	department={this.props.departmentList[this.state.selectedIndex]}
 	              	showSlackBar= {this.props.showSlackBar}
 	              	deleteDepartment= {this.props.deleteDepartment}
 	            />
 	        	: null}
 	            {this.props.showSlackBar ? snackBar: null
-	            } 
+	            }
 	        </div>
         );
     }

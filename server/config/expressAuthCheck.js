@@ -28,7 +28,7 @@ let models  = require('./../sqldb')();
 		 // check if a user exists
 		return userDetail.findUserById(models, userId, (userErr, user) => {
 		    if (userErr || !user) {
-		    	console.log("No user exists ");
+		    	console.log("No user exists");
 		    	return res.status(401).end();
 		    }
 		console.log("Succesfull auth check");

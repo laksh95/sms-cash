@@ -16,4 +16,15 @@ export const HIDE_SLACKBAR= 'HIDE_SLACKBAR';
 export const CHANGE_SLACKBAR_MSG= 'CHANGE_SLACKBAR_MSG';
 export const HANDLE_TAB_CHANGE= 'HANDLE_TAB_CHANGE';
 export const PAGE_CHANGE= 'PAGE_CHANGE';
-
+export const OPEN_MODAL = 'OPEN_MODAL';
+export const GET_POSTS = 'GET_POSTS';
+export const GET_POST = 'GET_POST';
+export const ADD_COMMENT = 'ADD_COMMENT';
+export const EDIT_COMMENT = 'EDIT_COMMENT';
+export const DELETE_COMMENT = 'DELETE_COMMENT';
+export const SET_LIKES = 'SET_LIKES';
+export const ADD_POST = 'ADD_POST';
+export const GET_STATS = 'GET_STATS';
+export const SET_POST = 'SET_POST'
+export const DELETE_POST = 'DELETE_POST'
+export const SET_SHOW_EDIT = 'SET_SHOW_EDIT'

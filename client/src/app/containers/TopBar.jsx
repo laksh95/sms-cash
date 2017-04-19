@@ -283,14 +283,12 @@ class TopBar extends React.Component {
     </div>
     
 );
-
 }
 }
 
 TopBar.childContextTypes = {
             muiTheme: React.PropTypes.object.isRequired,
         };
-
 
 const mapStateToProps = (state) => {
   return {
@@ -324,5 +322,4 @@ const mapDispatchToProps = (dispatch) => {
      }
     }
 }
-
 export default connect(mapStateToProps, mapDispatchToProps)(TopBar);

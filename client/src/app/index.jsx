@@ -9,11 +9,11 @@ import Dashboard from './components/dashboard/DashBoard.jsx';
 import Department from './containers/department/Department.jsx'
 import { Provider } from 'react-redux'
 import store from './store.js'
-
+import Blog from './containers/blog/blog.jsx'
+import Post from './containers/blog/post.jsx'
+import Student from './components/student/student.jsx'
 const history = syncHistoryWithStore(browserHistory, store);
 injectTapEventPlugin();
-
-
 render((
 	<Provider store={store}>
 	   <Router history = {history}>	      
@@ -21,6 +21,9 @@ render((
 	         <IndexRoute component = {Dashboard} />
 	         <Route path = "/dashboard" component = {Dashboard} />	         
 	         <Route path = "/department" component = {Department} />
+			  <Route path = "/blog" component = {Blog} />
+			  <Route path = "/student" component = {Student} />
+              <Route path = "/post/:postid" component = {Post} />
 	      </Route>
 	      <Route path = "/login" component = {Login}/>
 	   </Router>

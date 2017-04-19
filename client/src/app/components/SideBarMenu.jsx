@@ -1,29 +1,18 @@
 import React from 'react';
 import Drawer from 'material-ui/Drawer';
 import AppBar from 'material-ui/AppBar';
-import RaisedButton from 'material-ui/RaisedButton';
-import { Button } from 'react-bootstrap';
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import Avatar from 'material-ui/Avatar';
 import {List, ListItem} from 'material-ui/List';
-import Subheader from 'material-ui/Subheader';
-import Divider from 'material-ui/Divider';
-import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
-import DashBoard from './dashboard/DashBoard.jsx'; 
-let userImage =  require('./../images/user.png');
+import {browserHistory } from 'react-router';
 import {Link} from 'react-router';
-import { browserHistory} from 'react-router';
 import { getSelected } from '../actions/adminActions.jsx';
 import { connect } from 'react-redux';
-
-
-
+let userImage =  require('./../images/user.png');
 class SideBarMenu extends React.Component {
-  
   constructor(props) {
-    super(props); 
-
+    super(props);
     this.state = {
       selected:this.props.adminReducer.selectedTab
     };
@@ -33,14 +22,12 @@ class SideBarMenu extends React.Component {
     //  if(!this.props.isLogin){
     //     browserHistory.push('/');
     // }
-
-    console.log("Hello");
   }
 
   componentWillReceiveProps(nextProps) {
-    // if(!this.props.isLogin){
-    //     browserHistory.push('/');
-    // }
+     // if(!this.props.isLogin){
+     //     browserHistory.push('/');
+     // }
   }
  
  getChildContext(){
@@ -53,23 +40,24 @@ class SideBarMenu extends React.Component {
                 });
    };
   
-  render() { 
-   var list = {
-      "/department":'white',
-      "/dashboard":'white',
-      "/students":'white',
-      "/teachers":'white',
-      "/subjects":'white',
-      "/events":'white',
-      "/important":'white'
-      };
+  render() {
+    let list = {
+        "Department":'white',
+        "Dashboard":'white',
+        "Students":'white',
+        "Teacher":'white',
+        "Subjects":'white',
+        "Events":'white',
+        "Important":'white',
+        "Blog":'white',
+        "T/S":'white'
+    }
+    list[this.props.adminReducer.selectedTab] = '#e3e7ea';
+    // list[this.state.selected] = '#e3e7ea';
 
- list[this.props.adminReducer.selectedTab] = '#e3e7ea';
-
- if(this.props.adminReducer.selectedTab === '/'){
-
-   list['/dashboard'] = '#e3e7ea';
- }
+   if(this.props.adminReducer.selectedTab === '/'){
+        list['/dashboard'] = '#e3e7ea';
+    }
     let sizeWidth = 230;
     if( this.props.open === false){
      sizeWidth = 70;
@@ -80,47 +68,26 @@ class SideBarMenu extends React.Component {
         <Drawer width={sizeWidth} openSecondary={false} docked={true} zDepth={2} open={true} >
           <AppBar title="Menu"
            onLeftIconButtonTouchTap = { () => this.props.handleToggle('Sidebar')} />
-
             {
               (this.props.user.role) ?       
 
            ( <List>
-
-               {
-                /*this.props.user.role.isAdmin?
-              <Link to ="/testAdmin" style={{textDecoration: 'none'}}>
-                 <ListItem
-                   primaryText="TEST ADMIN"
-                   leftAvatar={<Avatar src={userImage} />} 
-                 />
-              </Link> : null*/
-            }
-
-               {/*(this.props.user.role.isTeacher || this.props.user.role.isDirector) ?
-              <Link to ="/testTeacher" style={{textDecoration: 'none'}}>
-                 <ListItem
-                   primaryText="TEST TEACHER"
-                   leftAvatar={<Avatar src={userImage} />} 
-                 />
-              </Link> 
-              : null*/}
-
               {this.props.user.role.isAdmin ?
               <Link to ="/dashboard" style={{textDecoration: 'none'}}>
                 <ListItem
                   primaryText="DashBoard"
                   leftAvatar={<Avatar src={userImage}
                    />} 
-                   style={{backgroundColor: list["/dashboard"]}}
-                   onTouchTap = {this.handleTouchTap.bind(this, "/dashboard")}
+                   style={{backgroundColor: list["dashboard"]}}
+                   onTouchTap = {this.handleTouchTap.bind(this, "dashboard")}
                 />
               </Link> : null}
               <Link to ="/department" style={{textDecoration: 'none'}}>
                 <ListItem
                   primaryText="Department"
                   leftAvatar={<Avatar src={userImage} />} 
-                   style={{backgroundColor: list["/department"]}}
-                      onTouchTap = {this.handleTouchTap.bind(this,"/department")}
+                   style={{backgroundColor: list["department"]}}
+                      onTouchTap = {this.handleTouchTap.bind(this,"department")}
                 />
               </Link>
 
@@ -128,8 +95,8 @@ class SideBarMenu extends React.Component {
                <ListItem
                  primaryText="Student" 
                  leftAvatar={<Avatar src={userImage} />}
-                   style={{backgroundColor: list["/student"]}}
-                       onTouchTap = {this.handleTouchTap.bind(this,"/student")}
+                   style={{backgroundColor: list["student"]}}
+                       onTouchTap = {this.handleTouchTap.bind(this,"student")}
                />
               </Link>
 
@@ -137,10 +104,20 @@ class SideBarMenu extends React.Component {
                 <ListItem
                   primaryText="Teacher"
                   leftAvatar={<Avatar src={userImage} />}
-                  style={{backgroundColor: list["/teachers"]}}
-                  onTouchTap = {this.handleTouchTap.bind(this,"/teachers")}
+                  style={{backgroundColor: list["teachers"]}}
+                  onTouchTap = {this.handleTouchTap.bind(this,"teachers")}
                 />
               </Link>
+               {this.props.user.role.isAdmin ?
+                   <Link to ="/blog" style={{textDecoration: 'none'}}>
+                       <ListItem
+                           primaryText="Blog"
+                           leftAvatar={<Avatar src={userImage}
+                           />}
+                           style={{backgroundColor: list["Blog"]}}
+                           onTouchTap = {this.handleTouchTap.bind(this, "Blog")}
+                       />
+                   </Link> : null}
               <ListItem
                 primaryText="Subjects"
                 leftAvatar={<Avatar src={userImage} />}
@@ -148,23 +125,7 @@ class SideBarMenu extends React.Component {
                  onTouchTap = {this.handleTouchTap.bind(this,"/subjects")}
                 
               />
-              <ListItem
-                primaryText="Events"
-                leftAvatar={<Avatar src={userImage} />} 
-                 style={{backgroundColor: list["/events"]}}
-                 onTouchTap = {this.handleTouchTap.bind(this,"/events")}
-              />
             </List>): null}
-            <Divider />
-            <List>
-              <ListItem
-                primaryText="Important"
-                leftAvatar={<Avatar src={userImage} />}
-                  style={{backgroundColor: list["/important"]}}
-                 onTouchTap = {this.handleTouchTap.bind(this,"/important")}
-              />
-              
-            </List>
         </Drawer>
 
   </div>

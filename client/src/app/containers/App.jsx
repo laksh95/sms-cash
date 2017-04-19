@@ -45,24 +45,24 @@ class App extends React.Component {
       this.setState( {request: request});
     }
 
-    componentWillMount() {
-      var token = Auth.getToken();
-      let path= this.props.location.pathname;
-
-      this.props.setUrl(path);
-      this.props.setReceivedResponse(false);
-      
-      if(token !=null){
-        this.props.checkLogin();
-      }
-      else if(!this.props.login.isLogin){
-        console.log("In will mount, goinf to login: ");
-        console.log("token: ", token);
-        console.log("login: ", this.props.login);
-        browserHistory.push('/login');
-      }
-
-    }
+    // componentWillMount() {
+    //   var token = Auth.getToken();
+    //   let path= this.props.location.pathname;
+    //
+    //   this.props.setUrl(path);
+    //   this.props.setReceivedResponse(false);
+    //
+    //   if(token !=null){
+    //     this.props.checkLogin();
+    //   }
+    //   else if(!this.props.login.isLogin){
+    //     console.log("In will mount, goinf to login: ");
+    //     console.log("token: ", token);
+    //     console.log("login: ", this.props.login);
+    //     browserHistory.push('/login');
+    //   }
+    //
+    // }
 
     // componentDidMount() {
     //   var token = Auth.getToken();

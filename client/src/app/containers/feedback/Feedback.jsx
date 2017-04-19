@@ -32,43 +32,6 @@ class Feedback extends React.Component {
   getChildContext() {
     return { muiTheme: getMuiTheme(baseTheme) };
   }
-  componentWillMount() {
-    if(this.props.headerReducer.selectedCourseId == ""){
-      errorSnackBar("Select Course")
-    }
-    else{
-      this.props.getTeacherAndFeedback({
-         "offset": 0,
-         "limit":2,
-         "course_id": this.props.headerReducer.selectedCourseId
-      })
-      this.props.getSubjectAndDepartment({"courseId":this.props.headerReducer.selectedCourseId})
-    }
-  }
-
-  componentWillReceiveProps(nextProps){
-    if(nextProps.headerReducer.selectedCourseId !== this.props.headerReducer.selectedCourseId){
-      this.props.getTeacherAndFeedback({
-         "offset": 0,
-         "limit":2,
-         "course_id": nextProps.headerReducer.selectedCourseId
-      })
-      this.props.getSubjectAndDepartment({"courseId": nextProps.headerReducer.selectedCourseId})
-    }
-    this.props = nextProps
-  }
-
-  handleChangeDuration = (event) => {
-    const value = event.target.value;
-    this.setState({
-      autoHideDuration: value.length > 0 ? parseInt(value) : 0,
-    })
-  }
-  handleRequestClose = () => {
-    this.setState({
-      open: false,
-    })
-  }
   errorSnackBar = (errorMessage) => {
       return (
         <Snackbar
@@ -101,7 +64,37 @@ class Feedback extends React.Component {
      </Card>
     )
   }
+  componentWillMount() {
+    if(this.props.headerReducer.selectedCourseId == ""){
+      errorSnackBar("Select Course")
+    }
+    else{
+      this.props.getTeacherAndFeedback({
+         "offset": 0,
+         "limit":2,
+         "course_id": this.props.headerReducer.selectedCourseId
+      })
+      this.props.getSubjectAndDepartment({"courseId":this.props.headerReducer.selectedCourseId})
+    }
+  }
 
+  componentWillReceiveProps(nextProps){
+    if(nextProps.headerReducer.selectedCourseId !== this.props.headerReducer.selectedCourseId){
+      this.props.getTeacherAndFeedback({
+         "offset": 0,
+         "limit":2,
+         "course_id": nextProps.headerReducer.selectedCourseId
+      })
+      this.props.getSubjectAndDepartment({"courseId": nextProps.headerReducer.selectedCourseId})
+    }
+    this.props = nextProps
+  }
+  
+  selectDepartment = (event, index, values) => {
+    this.setState({
+      selectedDepartment: values
+    })
+  }
   selectSubject = (event, index, values) => {
     this.setState({
       selectedSubject: values
@@ -123,12 +116,6 @@ class Feedback extends React.Component {
     })
   }
 
-  selectDepartment = (event, index, values) => {
-    this.setState({
-      selectedDepartment: values
-    })
-  }
-
  render() {
    return(
      <div id="mainDIv">
@@ -140,11 +127,12 @@ class Feedback extends React.Component {
           multiple={true}
         >
        {
-         this.props.subjectReducer.department.map((data, index)=>{
+         this.props.subjectReducer.errorMessage==="SUCCESS_OPERATION"?
+         (this.props.subjectReducer.department.map((data, index)=>{
            return(
-             <MenuItem key={index} value={data.name} primaryText={data.name} />
+             <MenuItem key={data.id} value={data.name} primaryText={data.name} />
            )
-        })
+        })) : null
        }
        </SelectField>
        &nbsp;&nbsp;
@@ -160,13 +148,13 @@ class Feedback extends React.Component {
            return(
              <MenuItem key={index} value={data.subject.name} primaryText={data.subject.name} />
            )
-         })) : null   
+         })) : null
       }
        </SelectField>
        <br/>
           {
             this.props.teacherReducer.status == 200 && this.props.teacherReducer.errorMessage === "SUCCESS_OPERATION"?
-            this.props.teacherReducer.allTeacher.map((data,index)=>{
+            this.props.teacherReducer.allTeacher.map((data,id)=>{
                 let noSubject = 0
                 let noDepartment = 0
                 if(this.state.selectedSubject.length==0){
@@ -176,12 +164,12 @@ class Feedback extends React.Component {
                   noDepartment = 1
                 }
                 if(noSubject == 1 && noDepartment == 1){
-                  return this.teacherList(data, index)
+                  return this.teacherList(data, id)
                 }
                 if(noSubject == 1 && noDepartment == 0){
                   for(let index=0; index <this.state.selectedDepartment.length; index++){
                     if(data.department.name==this.state.selectedDepartment[index]){
-                      return this.teacherList(data, index)
+                      return this.teacherList(data, id)
                     }
                   }
                 }
@@ -189,7 +177,7 @@ class Feedback extends React.Component {
                   for(let index=0; index < this.state.subjectId.length; index++){
                     for(let index2=0; index2 < data.teacher_subject_allocations.length; index2++){
                       if(data.teacher_subject_allocations[index2].subject_id==this.state.subjectId[index]){
-                        return this.teacherList(data, index)
+                        return this.teacherList(data, id)
                       }
                     }
                   }
@@ -199,7 +187,7 @@ class Feedback extends React.Component {
                     for(let index2 = 0; index2< this.state.selectedDepartment.length; index2 ++){
                       for(let index3=0; index3 < data.teacher_subject_allocations.length; index3++){
                         if(data.teacher_subject_allocations[index3].subject_id==this.state.subjectId[index] && data.department.name==this.state.selectedDepartment[index2]){
-                          return this.teacherList(data, index)
+                          return this.teacherList(data, id)
                         }
                       }
                     }

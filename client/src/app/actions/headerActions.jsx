@@ -28,7 +28,6 @@ export function setCurrentSession(session){
 
 
 export function setCurrentCourse(item){
-	console.log(item)
 	return {
 		type: types.SET_CURRENT_COURSE,
 		payload: item

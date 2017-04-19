@@ -110,17 +110,20 @@ class SideBarMenu extends React.Component {
                            onTouchTap = {this.handleTouchTap.bind(this, "Blog")}
                        />
                    </Link> : null}
-            </List>): null}
+
+                   <Link to ="/feedback" style={{textDecoration: 'none'}}>
+                     <ListItem
+                       primaryText="Feedback"
+                       leftAvatar={<Avatar src={userImage} />}
+                       style={{backgroundColor: list["Feedback"]}}
+                       onTouchTap = {this.handleTouchTap.bind(this,"Feedback")}
+                     />
+                   </Link>
+                   
+                </List>): null}
 
 
-              <Link to ="/feedback" style={{textDecoration: 'none'}}>
-                <ListItem
-                  primaryText="Feedback"
-                  leftAvatar={<Avatar src={userImage} />}
-                  style={{backgroundColor: list["Feedback"]}}
-                  onTouchTap = {this.handleTouchTap.bind(this,"Feedback")}
-                />
-              </Link>
+
 
         </Drawer>
 

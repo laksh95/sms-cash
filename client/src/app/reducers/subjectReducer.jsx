@@ -5,7 +5,7 @@ const subjectReducer = (
     department: [],
     subject: [],
     status: 200,
-    errorMessage: "no error"
+    errorMessage: "Loading"
   },
   action
 ) => {

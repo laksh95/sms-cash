@@ -46,6 +46,7 @@ let departmentFunctions={
         if(req !== null && req !== undefined && req.body !== undefined && Object.keys(req).length!==0 && Object.keys(req.body).length!==0 || req.user !== null){
           model.getDepartments(db,req.body)
           .then((result) => {
+            console.log("blahhhhhh-------------------------",result)
             res.send(result.departments);
           })
         }

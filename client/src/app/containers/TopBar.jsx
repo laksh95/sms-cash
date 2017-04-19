@@ -6,7 +6,8 @@ import FlatButton from 'material-ui/FlatButton';
 import Popover from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
-import Auth from './../Auth.js';
+
+import Auth from '../Auth.js';
 import {Router, browserHistory} from 'react-router'
 import { connect } from 'react-redux'
 import { getSession, getBatch, getCourse, getDepartment } from '../actions/adminActions.jsx'

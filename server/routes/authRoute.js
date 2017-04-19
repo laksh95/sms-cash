@@ -2,28 +2,26 @@ const express = require('express');
 const passport = require('passport');
 const validator = require('validator');
 const router = new express.Router();
-
 /**
  * Validate the login form
- *
  * @param {object} payload - the HTTP body message
  * @returns {object} The result of validation. Object contains a boolean validation result,
- *                   errors tips, and a global message for the whole form.
+ * errors tips, and a global message for the whole form.
  */
 function validateLoginForm(payload) {
-	const errors = {};
-	let isFormValid = true;
-	let message = '';
+  const errors = {};
+  let isFormValid = true;
+  let message = '';
 
-	if (!payload || typeof payload.username !== 'string' || payload.username.trim().length === 0) {
-	    isFormValid = false;
-	    errors.username = 'MissingUsernameError';
+  if (!payload || typeof payload.username !== 'string' || payload.username.trim().length === 0) {
+      isFormValid = false;
+      errors.username = 'MissingUsernameError';
       message.username= 'Please provide username';
-	  }
+    }
 
-	if (!payload || typeof payload.password !== 'string' || payload.password.trim().length === 0) {
-	    isFormValid = false;
-	    errors.password = 'MissingPasswordError';
+  if (!payload || typeof payload.password !== 'string' || payload.password.trim().length === 0) {
+      isFormValid = false;
+      errors.password = 'MissingPasswordError';
       message.password= 'Please provide password';
 	}
 
@@ -53,27 +51,27 @@ router.post('/login', (req, res, next) => {
   		if(err){
   			if(err.name==='IncorrectCredentialsError'){
                 console.log("Incorrect");
-  				return res.status(400).json({
-  					isLogin: false,
+          return res.status(400).json({
+            isLogin: false,
             errors: 'IncorrectCredentialsError',
-         		message: err.message
-  				});
-  			}
+            message: err.message
+          });
+        }
 
-  			return res.status(400).json({
-  				isLogin: false,
-        	message: 'Could not process the form.',
+        return res.status(400).json({
+          isLogin: false,
+          message: 'Could not process the form.',
           errors: 'InternalServerError'
-  			});
-  		}
+        });
+      }
 
-  		return res.json({
-  			isLogin: true,
-  			message: 'You have successfully logged in!',
-  			token,
-  			user: userData
-  		});
-  	})(req, res, next);
+      return res.json({
+        isLogin: true,
+        message: 'You have successfully logged in!',
+        token,
+        user: userData
+      });
+    })(req, res, next);
 })
 
 module.exports = router;

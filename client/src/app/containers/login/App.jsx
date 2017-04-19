@@ -8,7 +8,6 @@ let loginStyle = require('./../../css/login.css');
 import {connect} from "react-redux";
 import {loginUser, checkLogin} from "./../../actions/loginActions";
 import Auth from './../../Auth.js';
-
 class App extends React.Component {
 
   componentWillMount() {

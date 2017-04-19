@@ -1,15 +1,14 @@
 import React from 'react';
 import SideBarMenu from './../components/SideBarMenu.jsx';
-import TopBar from './TopBar.jsx'; 
-import Auth from './../Auth.js';
-import {checkLogin, logoutUser, setUrl, setReceivedResponse} from "./../actions/loginActions";
+import TopBar from './TopBar.jsx';
+import Auth from '../Auth.js';
+import {checkLogin, logoutUser, setUrl,setReceivedResponse} from "./../actions/loginActions";
 import {connect} from "react-redux";
 import {browserHistory} from 'react-router';
 import CircularProgress from 'material-ui/CircularProgress';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
-
-var style = {
+let style = {
 
    "MainContentStyle":{
          marginTop:-10,
@@ -25,14 +24,12 @@ var style = {
        transition: 'margin-left 100ms cubic-bezier(0.23, 1, 0.32, 1)' 
    }
 }
-
 class App extends React.Component {
 
     constructor(props){
         super(props);
-       
         this.state = {
-          open: true, 
+          open: true,
           request: 'default'       
         };
     }
@@ -44,33 +41,24 @@ class App extends React.Component {
     handleRequest = (request) => { 
       this.setState( {request: request});
     }
+    componentWillMount() {
+      var token = Auth.getToken();
+      let path= this.props.location.pathname;
 
-    // componentWillMount() {
-    //   var token = Auth.getToken();
-    //   let path= this.props.location.pathname;
-    //
-    //   this.props.setUrl(path);
-    //   this.props.setReceivedResponse(false);
-    //
-    //   if(token !=null){
-    //     this.props.checkLogin();
-    //   }
-    //   else if(!this.props.login.isLogin){
-    //     console.log("In will mount, goinf to login: ");
-    //     console.log("token: ", token);
-    //     console.log("login: ", this.props.login);
-    //     browserHistory.push('/login');
-    //   }
-    //
-    // }
+      this.props.setUrl(path);
+      this.props.setReceivedResponse(false);
+      
+      if(token !== null){
+        this.props.checkLogin();
+      }
+      else if(!this.props.login.isLogin){
+        console.log("In will mount, goinf to login: ");
+        console.log("token: ", token);
+        console.log("login: ", this.props.login);
+        browserHistory.push('/login');
+      }
 
-    // componentDidMount() {
-    //   var token = Auth.getToken();
-    //   if(!token || token.trim()==""){
-    //     browserHistory.push('/');
-    //   }
-    // }
-
+    }
     componentWillReceiveProps(nextProps) {
      
     }
@@ -85,8 +73,6 @@ class App extends React.Component {
         browserHistory.push('/login');
       }
     }
-
-
 
    render() {
 
@@ -108,7 +94,7 @@ class App extends React.Component {
           {this.props.children}  
            </span>;
              
-    if(this.props.login.loginUser.name == undefined ){
+    if(this.props.login.loginUser.name === undefined ){
 
           header =  <span></span>;
           content = <center><CircularProgress size={80} thickness={5} /> </center>; 
@@ -131,22 +117,18 @@ class App extends React.Component {
     );         
   }
 }
-
 App.childContextTypes = {
-            muiTheme: React.PropTypes.object.isRequired,
-       
-};
-App.contextTypes = { 
+    muiTheme: React.PropTypes.object.isRequired
+}
+App.contextTypes = {
     router: React.PropTypes.object.isRequired
 };
-
-
 const mapStateToProps= (state) => {
-  return{
-    login: state.login
-  };
+    return{
+        login: state.login,
+        courseReducer: state.courseReducer
+    };
 };
-
 
 const mapDispatchToProps= (dispatch) => {
   return{
@@ -165,5 +147,4 @@ const mapDispatchToProps= (dispatch) => {
   
   };
 };
-
 export default connect(mapStateToProps,mapDispatchToProps)(App);

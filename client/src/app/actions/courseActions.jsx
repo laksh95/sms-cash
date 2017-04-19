@@ -56,18 +56,22 @@ export function editCourse(data) {
         type : types.EDIT_COURSE,
         payload : course.editCourse(data)
             .then((response) => {
-                console.log("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr",response)
                 return response.data
             })
     }
 }
 export function deleteCourse(data) {
-    console.log("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",data)
     return {
         type :types.DELETE_COURSE ,
         payload : course.deleteCourse(data)
             .then((response) => {
                 return response.data
             })
+    }
+}
+export function setPagination(data){
+    return {
+        type : types.SET_PAGINATION ,
+        payload :data
     }
 }

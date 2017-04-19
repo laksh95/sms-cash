@@ -8,7 +8,6 @@ import {browserHistory} from 'react-router';
 import CircularProgress from 'material-ui/CircularProgress';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
-
 let style = {
 
    "MainContentStyle":{
@@ -42,7 +41,6 @@ class App extends React.Component {
     handleRequest = (request) => { 
       this.setState( {request: request});
     }
-
     componentWillMount() {
       var token = Auth.getToken();
       let path= this.props.location.pathname;
@@ -61,14 +59,6 @@ class App extends React.Component {
       }
 
     }
-
-    // componentDidMount() {
-    //   var token = Auth.getToken();
-    //   if(!token || token.trim()==""){
-    //     browserHistory.push('/');
-    //   }
-    // }
-
     componentWillReceiveProps(nextProps) {
      
     }
@@ -83,8 +73,6 @@ class App extends React.Component {
         browserHistory.push('/login');
       }
     }
-
-
 
    render() {
 

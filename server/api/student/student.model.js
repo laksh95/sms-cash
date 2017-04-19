@@ -96,6 +96,7 @@ let fetchStudentsOnSemDeptBatch=((db,limit,offset,where)=>{
 let fetchSemester=((courseId,db)=>{
     console.log("in fetchSemesterOfDepartment");
     return db.semester.findAll({
+        limit:8,
         where: {
           course_id: courseId,
           status: 't',

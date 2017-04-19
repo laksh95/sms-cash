@@ -39,8 +39,8 @@ const departmentReducer= (state=initialLoginState, action) => {
                     pagedDepartment,
                     pagination
             	}
-        	}            
-        break; 
+        	}
+        break;
 
 
         case types.PAGE_CHANGE:
@@ -83,7 +83,7 @@ const departmentReducer= (state=initialLoginState, action) => {
                         allDepartment[i].name= selectedDepartment.name;
                         allDepartment[i].abbreviated_name= selectedDepartment.abbreviated_name;
                         index=i;
-                        break; 
+                        break;
                     }
                 }
                 if(index>=startIndex && index<=endIndex){
@@ -91,7 +91,7 @@ const departmentReducer= (state=initialLoginState, action) => {
                         if(pagedDepartment[j].id== selectedDepartment.id){
                         pagedDepartment[j].name= selectedDepartment.name;
                         pagedDepartment[j].abbreviated_name= selectedDepartment.abbreviated_name;
-                        break; 
+                        break;
                         }
                     }
                 }
@@ -103,14 +103,14 @@ const departmentReducer= (state=initialLoginState, action) => {
                     queryStatusMessage: "Department changes succesfully updated!",
                     pagedDepartment
                 }
-            }            
-        break; 
+            }
+        break;
 
          case types.EDIT_DEPARTMENT + "_PENDING":
                state= {
                     ...state
                }
-        break; 
+        break;
 
         case types.HIDE_SLACKBAR:
             state={
@@ -150,7 +150,7 @@ const departmentReducer= (state=initialLoginState, action) => {
                     for(let j in pagedDepartment){
                         if(pagedDepartment[j].id== selectedDepartment.id){
                             pagedDepartment.splice(j,1);
-                        break; 
+                        break;
                         }
                     }
                 }
@@ -166,8 +166,8 @@ const departmentReducer= (state=initialLoginState, action) => {
                     pagination,
                     pagedDepartment
                 }
-            }            
-        break; 
+            }
+        break;
 
         case types.ADD_DEPARTMENT + "_FULFILLED":
             var response= action.payload;
@@ -199,8 +199,8 @@ const departmentReducer= (state=initialLoginState, action) => {
                     pagedDepartment,
                     pagination
                 }
-            }            
-        break; 
+            }
+        break;
 
         case types.HANDLE_TAB_CHANGE:
             state={

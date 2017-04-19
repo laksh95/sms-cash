@@ -24,11 +24,12 @@ class Department extends React.Component{
     }
 
     componentWillMount() {
-      let course= {course_id: 1}
+      let course= {courseId: 1}
       this.props.getDepartmentList(course);
     }
 
     render(){
+        console.log(this.props)
         return (
           <div >
             <Tabs value={this.props.department.selectedTab} onChange={this.props.handleTabChange}>

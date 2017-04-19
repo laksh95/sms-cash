@@ -1,0 +1,133 @@
+.card {
+    width:75%;
+    margin-left: 100px;
+    text-align: center;
+    display: inline-block;
+    overflow: hidden;
+    max-height: 900px;
+    margin-bottom: 10px;
+}
+.cardHeader{
+    margin-left: 8px;
+}
+.footer{
+    display: inline;
+    color : slategrey;
+    overflow: hidden;
+    float: left ;
+    width:100%;
+}
+h6{
+    line-height: 1;
+}
+.readMore{
+    color : slategrey;
+    text-decoration: none;
+}
+.left {
+    float: left;
+    margin-left: 10px;
+    color : black!important;
+    font-size :20px ;
+    margin-top : 10px ;
+}
+.right {
+    float : right;
+    margin-right: 20px;
+}
+.labelRight {
+    float : right ;
+    font-size :20px ;
+    margin-right:8px ;
+}
+.chip {
+    margin-left : 10px ;
+}
+.font {
+    font-size : 15px ;
+}
+
+.leftContent {
+    float: left;
+    width:60%;
+}
+.rightContent {
+    float:left;
+    /*width:30%;*/
+    margin-top:4% ;
+    text-align: center;
+    overflow: hidden;
+}
+.content{
+    width:100%;
+    float:left ;
+}
+.stats {
+    float : left;
+    margin-left: 100px ;
+    margin-top: 100px ;
+}
+.center {
+    text-align: center;
+    margin-top :15 px ;
+}
+.post {
+    width:70%;
+    margin:auto;
+}
+.postHeader{
+    font-size : 33px ;
+    font-weight: bold;
+}
+.postContent{
+    font-size:26px;
+    font-family: 'Raleway', sans-serif;
+}
+.postFooter{
+    font-size:22px ;
+}
+.addComment{
+    font-size:25px;
+    color:lightslategrey;
+}
+.marginBottom {
+    margin-bottom: 40px;
+}
+.commentFont {
+    font-size :10px ;
+}
+.addPost{
+    position :fixed;
+    right: 0 ;
+    bottom : 0 ;
+    margin-right : 15px ;
+    margin-bottom : 15px ;
+}
+.dropzone{
+    width: 200px;
+    height: 200px;
+    border-width: 2px;
+    border-color: rgb(102, 102, 102);
+    border-style: dashed;
+    border-radius: 5px;
+    text-align: center;
+}
+.onlyRight {
+    float : right ;
+}
+.checkbox {
+    margin-bottom:2px;
+}
+.editDelete{
+    margin-top:11px;
+    cursor: pointer;
+}
+.cardChip {
+    margin-left : 20% ;
+}
+.image{
+    padding-left:2% ;
+    padding-right:2% ;
+}
+.postImage{
+}

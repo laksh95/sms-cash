@@ -43,10 +43,15 @@ let departmentFunctions={
         })
     },
     getDepartments : function(req, res){
-        let courseId = req.body.course_id
-        model.getDepartments(db,courseId,function(data){
-            res.send(data)
-        })
+        if(req !== null && req !== undefined && req.body !== undefined && Object.keys(req).length!==0 && Object.keys(req.body).length!==0 || req.user !== null){
+          model.getDepartments(db,req.body)
+          .then((result) => {
+            res.send(result.departments);
+          })
+        }
+        else{
+          res.status(400).json({error: "Missing Paramters: courseId", message: 'IS_INVALID_INPUT_FORM'})
+        }
     }
 }
 module.exports=departmentFunctions

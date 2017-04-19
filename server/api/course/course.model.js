@@ -45,6 +45,7 @@ let init=function(){
                     })
                 },
                 addNewCourse:(db,setData,sendData)=>{
+
                     let course=db.course
                     let response={}
                     course.findAll({
@@ -53,7 +54,7 @@ let init=function(){
                             name:setData.course_name
                         }
                     }).then((data)=>{
-                    // console.log("data-----------",typeof(data[0]))
+                        // console.log("data-----------",typeof(data[0]))
                         if(data.length==0){
                             db.course.create({
                                 name:setData.course_name,
@@ -123,7 +124,7 @@ let init=function(){
                         sendData(data)
                     })
                 }
-        }
-    })
+            }
+        })
 }
 module.exports=init

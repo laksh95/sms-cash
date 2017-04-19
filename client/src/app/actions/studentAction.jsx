@@ -26,6 +26,7 @@ export const getFilteredData = (department, semester, batch)=>{
         type:'GET_FILTER_DATA',
         payload:studentApi.getFilteredStudent(department, semester, batch)
             .then((data)=>{
+                console.log('from studentAction----->', data)
                 return data
             })
     }

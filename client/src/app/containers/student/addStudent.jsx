@@ -29,7 +29,7 @@ class AddStudent extends React.Component {
             contact_number: 0,
             alternate_number: 0,
             emailID: '',
-            dept: 'Select Department',
+            dept: 0,
             father_name: '',
             mother_name: '',
             father_emailID: '',
@@ -49,6 +49,13 @@ class AddStudent extends React.Component {
             open:false,
             message:''
         }
+    }
+    componentWillMount(){
+        this.props.getDepartment({
+            courseId:1
+        })
+        console.log('from add student')
+
     }
     /********************************************************
     Prevent user from selecting future dates as  Date of Birth
@@ -341,7 +348,6 @@ class AddStudent extends React.Component {
     *******************************************/
 
     render(){
-        let departmentList = this.props.studentInfo.initialData
         const HANDLE_CODE={
             "NAME":"name",
             "DOB":"dob",
@@ -359,6 +365,7 @@ class AddStudent extends React.Component {
             "PARENT_EMAIL":"parent_email"
 
         }
+        console.log(this.props.departmentList)
         const startDate=new Date()
         return(
             <div id="AddStudent" >
@@ -451,13 +458,24 @@ class AddStudent extends React.Component {
                             onChange={this.handleChange.bind(this,HANDLE_CODE.DEPARTMENT)}
                             autoWidth={false}
                             style={styles.customWidth}
-                        >{
-                            /*departmentList.map((data, index)=>{
-                                return(
-                                    <MenuItem primaryText={data.name} value={index} />
-                                )
-                            })*/
-                        }
+
+                        >
+                            <MenuItem
+                                primaryText="Select Department"
+                                value={0}
+                            />
+                            {
+                                this.props.departmentList.data?
+                                    (this.props.departmentList.data.departments.map((data,index)=>{
+                                        return(
+                                            <MenuItem
+                                                id={index}
+                                                primaryText={data.abbreviatedName}
+                                                value={index+1}
+                                            />
+                                        )
+                                    })):null
+                            }
                             <br/>
                         </DropDownMenu>
                         <TextField
@@ -506,17 +524,18 @@ class AddStudent extends React.Component {
 }
 const mapStateToProps = (state)=>{
     return{
-        studentInfo:state.studentReducer
+        studentInfo:state.studentReducer,
+        departmentList: state.studentReducer.initialData
     }
 }
 const mapDispatchToProps = (dispatch)=>{
     return{
         addStudent: (studentInfo)=>{
             dispatch(addStudent(studentInfo))
-        }
-      /*  getDepartment: (courseId)=>{
+        },
+        getDepartment: (courseId)=>{
             dispatch(getInitialData(courseId))
-        }*/
+        }
     }
 }
 

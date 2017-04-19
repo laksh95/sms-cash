@@ -41,9 +41,10 @@ class StudentInformation extends React.Component{
             open:false
         })
     }*/
-
+    /**********************************************
+    Handles the drop down selects for all 3 filters
+    ***********************************************/
     handleChange = (type,event,value)=>{
-        console.log(value)
         switch(type){
             case 'department':
                 if(value !== 0){
@@ -69,9 +70,7 @@ class StudentInformation extends React.Component{
                 break
             case 'batch':
                 if(value !== 0){
-                    this.setState({batch:value},()=>{
-                        console.log(this.state.batch)
-                    })
+                    this.setState({batch:value})
                }
                 if(this.state.department !== 0 && this.state.semester !== 0){
                     console.log('--------api call from batch')
@@ -81,6 +80,53 @@ class StudentInformation extends React.Component{
         }
 
     }
+     /****************************************
+     Populates the Batch filter Drop down list
+     ****************************************/
+    getBatchList=()=>{
+        return this.props.filterData.data?
+            (
+                this.props.filterData.data.batches.map((data, index) => {
+                    return (
+                        <MenuItem
+                            id={index}
+                            primaryText={data.name}
+                            value={data.id}
+                        />
+                    )
+                })
+            ):null
+    }
+    /********************************************
+     Populates the semester filter Drop down list
+     *******************************************/
+    getSemesterList=()=>{
+        return this.props.filterData.data?
+            (this.props.filterData.data.semesters.map((data,index)=>{
+                return(
+                    <MenuItem
+                        id={index}
+                        primaryText={data.name}
+                        value={data.id}
+                    />
+                )
+            })):null
+    }
+    /**********************************************
+     Populates the department filter Drop down list
+     *********************************************/
+    getDepartmentList = ()=>{
+        return this.props.filterData.data?
+             (this.props.filterData.data.departments.map((data,index)=>{
+                return(
+                    <MenuItem
+                        id={index}
+                        primaryText={data.abbreviatedName}
+                        value={data.id}
+                    />
+                )
+            })):null
+    }
     render(){
         const HANDLE_CODES={
             "DEPARTMENT":"department",
@@ -88,7 +134,7 @@ class StudentInformation extends React.Component{
             "BATCH":"batch",
             "ACTION":"action"
         }
-        console.log(this.props.filterData)
+        console.log('-------student info------',this.props.studentInfo)
         return(
             <div>
                 <div id="studentFilter">
@@ -97,16 +143,7 @@ class StudentInformation extends React.Component{
                         onChange={this.handleChange.bind(this,HANDLE_CODES.DEPARTMENT)}
                     >
                         <MenuItem primaryText="Department" value = {0} />{
-                        this.props.filterData.data?
-                            (this.props.filterData.data.departments.map((data,index)=>{
-                             return(
-                                 <MenuItem
-                                     id={index}
-                                     primaryText={data.abbreviatedName}
-                                     value={index+1}
-                                 />
-                             )
-                         })):null
+                            this.getDepartmentList()
                      }
                     </DropDownMenu>
                     <DropDownMenu
@@ -117,16 +154,7 @@ class StudentInformation extends React.Component{
                             primaryText="Semester"
                             value={0}
                         />{
-                            this.props.filterData.data?
-                                (this.props.filterData.data.semesters.map((data,index)=>{
-                             return(
-                                 <MenuItem
-                                     id={index}
-                                     primaryText={data.name}
-                                     value={index+1}
-                                 />
-                             )
-                         })):null
+                            this.getSemesterList()
                      }
                     </DropDownMenu>
                     <DropDownMenu
@@ -137,18 +165,7 @@ class StudentInformation extends React.Component{
                             primaryText="Batch"
                             value={0}
                         />{
-                            this.props.filterData.data?
-                                (
-                                    this.props.filterData.data.batches.map((data, index) => {
-                                        return (
-                                            <MenuItem
-                                                id={index}
-                                                primaryText={data.name}
-                                                value={index+1}
-                                            />
-                                        )
-                                    })
-                                ):null
+                            this.getBatchList()
                         }
                     </DropDownMenu>
                 </div>
@@ -180,38 +197,40 @@ class StudentInformation extends React.Component{
                         <TableBody
                             displayRowCheckbox={false}
                             stripedRows={true}
-                        >
-                            {
-                                this.props.studentInfo.data?
-                                    (this.props.studentInfo.data.students.map((data)=>{
-                                    return (
-                                        <TableRow>
-                                            <TableRowColumn>
-                                                {data.admissionNo}
-                                            </TableRowColumn>
-                                            <TableRowColumn>
-                                                {data.name}
-                                            </TableRowColumn>
-                                            <TableRowColumn>
-                                                {data.deptName}
-                                            </TableRowColumn>
-                                            <TableRowColumn>
-                                                {data.semester}
-                                            </TableRowColumn>
-                                            <TableRowColumn>
-                                                {data.batchName}
-                                            </TableRowColumn>
-                                            <TableRowColumn>
-                                                <FlatButton primary={true} label="EDIT" onTouchTap={()=>{
-                                                   this.props.showDialog(true)
-                                                }}/>
-                                                {this.props.dialogValue?<EditDialog currentStudent={data}/>:null}
-                                                <FlatButton secondary={true} label="DELETE" onTouchTap={this.handleDeleteTap} />
-                                            </TableRowColumn>
-                                        </TableRow>
-                                    )
+                        >{
+                            this.props.studentInfo.students?
+                                (this.props.studentInfo.students.map((data,index)=>{
+                                        return (
+                                            <TableRow id={index}>
+                                                <TableRowColumn>
+                                                    {data.admissionNo}
+                                                </TableRowColumn>
+                                                <TableRowColumn>
+                                                    {data.name}
+                                                </TableRowColumn>
+                                                <TableRowColumn>
+                                                    {data.deptName}
+                                                </TableRowColumn>
+                                                <TableRowColumn>
+                                                    {data.semester}
+                                                </TableRowColumn>
+                                                <TableRowColumn>
+                                                    {data.batchName}
+                                                </TableRowColumn>
+                                                <TableRowColumn>
+                                                    <FlatButton primary={true} label="EDIT" onTouchTap={() => {
+                                                        this.props.showDialog(true)
+                                                    }}/>
+                                                    {this.props.dialogValue ?
+                                                        <EditDialog currentStudent={data}/> : null}
+                                                    <FlatButton secondary={true} label="DELETE"
+                                                                onTouchTap={this.handleDeleteTap}/>
+                                                </TableRowColumn>
+                                            </TableRow>
+                                        )
+
                                 })):null
-                            }
+                        }
                         </TableBody>
                     </Table>
                 </div>
@@ -223,7 +242,7 @@ class StudentInformation extends React.Component{
 const mapStateToProps = (state)=>{
     return {
         allStudents: state.studentReducer,
-        filterData: state.studentReducer.initialData.data,
+        filterData: state.studentReducer.initialData,
         studentInfo:state.studentReducer.allStudentData,
         dialogValue:state.studentReducer.dialogOpen
     }

@@ -10,17 +10,13 @@ const studentReducer = (state={
                             error:'',
                             addedStudent:{},
                             initialData:{
-                                data:{
                                     departments:[],
                                     semesters:[],
-                                    batches:[]
-                                },
+                                    batches:[],
                                 message:''
                             },
                             allStudentData:{
-                                data:{
-                                    students:[]
-                                }
+                                students:[]
                             },
                            studentData:{}
                         },action)=>{
@@ -29,7 +25,7 @@ const studentReducer = (state={
             console.log('-------action-------',action.payload)
             state={
                 ...state,
-                initialData:action.payload
+                initialData:action.payload.data
             }
             console.log('-------initial data-------',state.initialData)
             break
@@ -73,6 +69,7 @@ const studentReducer = (state={
                 ...state,
                 allStudentData:action.payload
             }
+            console.log('-------------->',action.payload.data)
             break
         case 'ADD_STUDENT_REJECTED':
             state={

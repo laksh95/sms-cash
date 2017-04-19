@@ -1,4 +1,4 @@
-let data = require('./../../config/db');
+    let data = require('./../../config/db');
 let sequelize = data.sequelize;
 let connection = data.connection;
 
@@ -47,10 +47,6 @@ module.exports=function(){
             country_code_one: sequelize.INTEGER,
             alternate_number: sequelize.STRING,
             country_code_two: sequelize.INTEGER,
-            status:  {
-                type: sequelize.BOOLEAN,
-                default : true
-            },
             status:{
                 type:sequelize.BOOLEAN,
                 allowNull:false,

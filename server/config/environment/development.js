@@ -4,9 +4,9 @@
 module.exports = {
   // Sequelize connection opions
   sequelize: {
-      uri: 'postgres://postgres:password@localhost:5432/localSMS',
+    uri: 'postgres://postgres:passworf@localhost:5432/localSMS',
     options: {
-      logging: false,
+      logging: true,
       dialect: 'postgres',
       //storage: 'dev.sqlite',
       define: {

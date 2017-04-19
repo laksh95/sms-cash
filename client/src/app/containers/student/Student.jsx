@@ -38,8 +38,6 @@ class Student extends React.Component {
                    <Tab label="Add Bulk Students"  value="c">
                        <AddBulkStudent />
                    </Tab >
-                   <Tab label="Student Registration" value="d">
-                   </Tab>
                </Tabs>
            </div>
 

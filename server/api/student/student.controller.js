@@ -3,12 +3,9 @@ let sql= require('../../sqldb')
 let db=sql()
 let studentFunctions={
     getInitialData: function(request, response){
-        //let courseId = checkRequestParameters(request, response).courseId;
-        console.log(request.body)
-        let courseId= request.body.courseId;
-        console.log("Course in controller: ", courseId);
+        let courseId = checkRequestParameters(request, response).courseId
         model.getInitialData(db, courseId, (data)=>{
-            // departments=data;
+            departments=data;
             response.status(data.status).json({
                 data:data.data,
                 message:data.msg,
@@ -21,16 +18,16 @@ let studentFunctions={
         let offset=request.body.recordsPerPage;
         if(request.body.semester !== undefined && request.body.semester !== null){
             include=[{
-                model:db.curriculum,
-                include:[{
-                    model:db.semester,
-                    where:{
-                        name:request.body.semester,
-                    }
-                }],
+              model:db.curriculum,
+              include:[{
+                model:db.semester,
                 where:{
-                    status:'t'
-                }
+                    name:request.body.semester,
+                } 
+              }],
+              where:{
+                status:'t'
+             }              
             }]
         }
         else {
@@ -52,6 +49,7 @@ let studentFunctions={
     },
     getStudentDetails:function(request,response){
         let sendData = checkRequestParameters(request, response)
+        console.log("data--------->",sendData)
         model.getStudentDetails(db, sendData, (data)=>{
             response.status(data.status).json({
                 data:data.data,
@@ -62,10 +60,10 @@ let studentFunctions={
 }
 
 function checkRequestParameters(request, response){
-    if(request.body=== null||request.body === undefined){
+    if(request.body==null||request.body==undefined){
         response.status(400).send({
             message:'Bad Request'
-        })
+        })    
     }
     else  return request.body
 }

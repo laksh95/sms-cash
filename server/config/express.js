@@ -12,21 +12,20 @@ var init=function(app){
      res.header("Access-Control-Allow-Credentials", true);
      res.header("Access-Control-Allow-Methods", "POST, GET, PUT, DELETE, OPTIONS")
      res.header("Access-Control-Allow-Headers", "x-requested-with, Content-Type, origin, authorization, accept, client-security-token");
-     if('OPTIONS' == req.method)
-    		res.send(200);
+     	if('OPTIONS' == req.method)
+           res.send(200);
      next();
     });
 
+    const localLoginStrategy = require('./../passport/loginStrategy');
+	passport.use('local-login', localLoginStrategy);
 
 	app.use(bodyParser.json());
 	app.use(bodyParser.urlencoded({ extended: false }));
-	//app.use(require('express-session')({ secret: 'keyboard cat', resave: false, saveUninitialized: false }));
 	app.use(passport.initialize());
-	app.use(passport.session());
 	
 	// pass the authenticaion checker middleware
 	const authCheckMiddleware = require('./expressAuthCheck');
 	app.use('/api', authCheckMiddleware);
 }
 module.exports=init;
-

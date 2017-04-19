@@ -25,21 +25,20 @@ const utils={
         return axios.post(url,data,config)
     },
     getInitialData: (courseID)=>{
-        console.log('------>util------->student.js',courseID)
         let url = baseAddress + '/api/student/getInitialData'
         let config = configHeader()
         let data=courseID
-        console.log('-----cofig',config)
         return axios.post(url,data,config)
     },
-    getFilteredStudent : (department, semester, batch)=>{
-        let url = baseAddress + 'api/student/getStudents'
+    getFilteredStudent : (departmentId, semester, batchId)=>{
+        let url = baseAddress + '/api/student/getStudents'
         let config = configHeader()
         let data={
-            department,
+            departmentId,
             semester,
-            batch
+            batchId
         }
+        console.log(data,'------util api file-----')
         return axios.post(url, data, config)
     }
 }

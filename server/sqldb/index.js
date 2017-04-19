@@ -1,4 +1,5 @@
 let path = require('path');
+let data = require('../config/db')
 let models = ['academicCalendar','academicYear','admin','attendance',
 'batch','club','clubMembers', 'course','curriculum','curriculumSubject',
 'department','departmentNotice','departmentSeat','director',
@@ -8,12 +9,10 @@ let models = ['academicCalendar','academicYear','admin','attendance',
 'section','semester','skill','student','studentElective','subject',
 'teacher', 'teacherSubjectAllocation','timetable',
 'uploadAttendance','uploadResult','userDetail'];
-
 let db ={};
 let format = path.join(__dirname ,'../api/{0}/{0}.model.js');
 for(let i in models){
    var model = require(format.replace(/\{0\}/g,models[i]))();
-   console.log("model"+model)
    db[model.name]=model;
 }
 Object.keys(db).forEach(function(modelName){
@@ -23,6 +22,6 @@ Object.keys(db).forEach(function(modelName){
 });
 
 let sql = function(){
-	return db;
+   return db;
 }
-module.exports =sql;
+module.exports  = sql ;

@@ -1,6 +1,5 @@
-
 let Sequelize =require('sequelize') ;
-let config =require('./environment/index');
+let config =require('./environment');
 let lodash=require('lodash');
 var connection = new Sequelize(config.sequelize.uri, config.sequelize.options);
 let options = {
@@ -14,5 +13,3 @@ let data={
    connection:connection
 }
 module.exports=data
-
-

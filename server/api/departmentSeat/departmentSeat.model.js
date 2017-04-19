@@ -22,16 +22,15 @@ let init=function(){
            defaultValue:true
        }
    },{
-       classMethods:{
-           associate:function(model){
-
-               let dept=model.department
-               let seats=model.department_seat
-               dept.hasMany(seats,{
-                   foreignKey:'department_seats_id'
-               })
-           }
+   classMethods:{
+       associate:function(model){
+           let dept=model.department
+           let seats=model.department_seat
+           dept.hasMany(seats,{
+               foreignKey:'department_id'
+           })
        }
+   }
    })
 }
 module.exports=init

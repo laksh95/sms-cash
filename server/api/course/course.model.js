@@ -40,9 +40,6 @@ let init=function(){
                             attributes:[]
                         }]
                     })
-                        .catch((err)=>{
-                            sendData(err.toString())
-                        })
                 },
                 addNewCourse:(db,setData,sendData)=>{
                     let course=db.course

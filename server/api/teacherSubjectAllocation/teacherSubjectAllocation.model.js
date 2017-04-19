@@ -25,8 +25,4 @@ let init = function(){
  })
 }
 
-<<<<<<< HEAD
 module.exports = init
-=======
-module.exports = init
->>>>>>> 331cc9a2008b00611a05fea627eb9fa8189bdbc7

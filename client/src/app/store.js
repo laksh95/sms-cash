@@ -10,7 +10,7 @@ import departmentReducer from './reducers/departmentReducer.js'
 import studentReducer from './reducers/studentReducer.jsx'
 import courseReducer from './reducers/courseReducer.jsx'
 import subjectReducer from './reducers/subjectReducer.jsx'
-import teacherReducer from './reducers/teacherReducer'
+import teacherReducer from './reducers/teacherReducer.jsx'
 export default createStore(
     combineReducers({
     	login,

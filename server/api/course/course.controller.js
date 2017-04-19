@@ -24,7 +24,8 @@ let courseFunctions = {
          }
     },
     getCourses: (req, res) => {
-        model.getCourse(db, function (data) {
+        model.getCourse(db)
+            .then((data) => {
             res.send(data)
         })
     },

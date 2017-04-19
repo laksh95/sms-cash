@@ -40,6 +40,7 @@ const courseReducer = (state = {
             break
         case "GET_COURSES_FULFILLED" :
             var course  = action.payload
+            console.log("----------------------------------------------------",course)
             var size = course.length
             var pagedCourses = []
             for(let index in course ){

@@ -58,6 +58,7 @@ const courseReducer = (state = {
 
         case "ADD_COURSE_FULFILLED":
             var data = action.payload
+            console.log("==================================",data)
             if(data.status==1){
                 let newCourse = data.data
                 let course = state.course

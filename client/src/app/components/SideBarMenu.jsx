@@ -53,23 +53,19 @@ class SideBarMenu extends React.Component {
                 });
    };
   
-  render() { 
-   var list = {
-      "/department":'white',
-      "/dashboard":'white',
-      "/students":'white',
-      "/teachers":'white',
-      "/subjects":'white',
-      "/events":'white',
-      "/important":'white'
-      };
+  render() {
+    let list = {
+        "Department": 'white',
+        "Dashboard": 'white',
+        "Students": 'white',
+        "Teacher": 'white',
+        "Subjects": 'white',
+        "Events": 'white',
+        "Important": 'white',
+        "T/S": 'white'
+        }
 
- list[this.props.adminReducer.selectedTab] = '#e3e7ea';
-
- if(this.props.adminReducer.selectedTab === '/'){
-
-   list['/dashboard'] = '#e3e7ea';
- }
+    list[this.state.selected] = '#e3e7ea'
     let sizeWidth = 230;
     if( this.props.open === false){
      sizeWidth = 70;
@@ -141,6 +137,20 @@ class SideBarMenu extends React.Component {
                   onTouchTap = {this.handleTouchTap.bind(this,"/teachers")}
                 />
               </Link>
+               <Link to="/student" style={{textDecoration: 'none'}}>
+                  <ListItem
+                    primaryText="Student"
+                    leftAvatar={<Avatar src={userImage} />}
+                      style={{backgroundColor: list["Student"]}}
+                          onTouchTap = {this.handleTouchTap.bind(this,"Student")}
+                  />
+               </Link>
+              <ListItem
+                primaryText="Teacher"
+                leftAvatar={<Avatar src={userImage} />}
+                 style={{backgroundColor: list["Teacher"]}}
+                 onTouchTap = {this.handleTouchTap.bind(this,"Teacher")}
+              />
               <ListItem
                 primaryText="Subjects"
                 leftAvatar={<Avatar src={userImage} />}

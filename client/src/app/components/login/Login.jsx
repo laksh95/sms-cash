@@ -8,7 +8,8 @@ import TextField from 'material-ui/TextField';
 import LinearProgress from 'material-ui/LinearProgress';
 import {Link} from 'react-router'
 import {Router, browserHistory} from 'react-router';
-import Auth from './../../Auth.js';
+
+import Auth from '../../Auth.js';
 import Snackbar from 'material-ui/Snackbar';
 
 var style = {
@@ -65,26 +66,27 @@ export default class Login extends React.Component  {
   
   handleTouchTap = (item,event) => {
     switch(item){
-
-
       case HANDLE_CODES.ON_LOGIN:
          event.preventDefault();
-           var bodyParameters = {
-              "username": this.state.username,
-              "password": this.state.password
+        if( this.state.username !== '' && this.state.password !=='') {
+            console.log("Login button clicked");
+            let bodyParameters = {
+                "username": this.state.username,
+                "password": this.state.password
             }
 
             this.props.loginUser(bodyParameters);
+        }
 
-      break;
+      break
      case HANDLE_CODES.PASSWORD_CHANGE:
                 this.setState({ password: event.target.value , errorTextPassword: '' });
-              break;
+              break
 
     case HANDLE_CODES.USERNAME_CHANGE:
                 this.setState({ username:event.target.value ,  errorText: '' });
 
-              break;
+              break
     }
   
 };
@@ -107,11 +109,12 @@ export default class Login extends React.Component  {
       }
     }
 
-  componentWillMount() {
+  componentWillMount(){
     this.updateDimensions();
     this.setState({   message: false  });
-    var token = Auth.getToken();
+    let token = Auth.getToken();
     
+{/*<<<<<<< HEAD
     if(token !=null){
       this.props.checkLogin();
     }
@@ -119,6 +122,37 @@ export default class Login extends React.Component  {
 
     componentDidMount() {
       window.addEventListener("resize", this.updateDimensions);
+=======*/}
+    if(token !== null){
+      console.log(token);
+      var bodyParameters = {
+        "username": "",
+        "password": ""
+      }
+
+      //axios.defaults.headers.commons['Authorization'] = authString;
+        let config = {
+           headers: {
+             'Authorization': authString
+           }
+        }
+
+      this.props.checkLogin(config);
+
+    }
+
+    if(this.props.isLogin){
+        browserHistory.push('/dashboard');
+        console.log(this.props.user);
+        Auth.authenticateUser(this.props.token);
+    }
+  }
+    componentWillReceiveProps(nextProps) {
+       if(this.props.isLogin){
+        browserHistory.push('/dashboard');
+        console.log(this.props.user);
+        Auth.authenticateUser(this.props.token);
+      }
     }
 
     componentWillUnmount(){
@@ -302,7 +336,7 @@ return(
 
 Login.childContextTypes = {
        muiTheme: React.PropTypes.object.isRequired,
-};
+}
 Login.contextTypes = {
    router: React.PropTypes.object.isRequired
-};
+}

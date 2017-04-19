@@ -1,4 +1,3 @@
-
 module.exports= (accessArray) => {
 	let flag = 0
 	return (req, res, next) => {

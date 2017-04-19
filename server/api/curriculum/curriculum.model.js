@@ -3,7 +3,7 @@ let sequelize=database.sequelize
 let connection=database.connection
 let init = function(){
     return curriculum = connection.define('curriculum',{
-        id:{
+       id:{
             type:sequelize.INTEGER,
             primaryKey:true,
             autoIncrement:true
@@ -11,23 +11,6 @@ let init = function(){
         name:{
             type:sequelize.STRING,
             allowNull:false,
-            unique:true
-        },
-        semester:{
-            type:sequelize.INTEGER,
-            allowNull:false
-        },
-        year:{
-            type:sequelize.INTEGER,
-            allowNull:false
-        },
-        sem_start_date:{
-            type:sequelize.DATE,
-            allowNull:false
-        },
-        sem_end_date:{
-            type:sequelize.DATE,
-            allowNull:false
         },
         status : {
             type : sequelize.BOOLEAN,
@@ -37,11 +20,20 @@ let init = function(){
     },{
         classMethods:{
             associate:function(model){
-                let curr=model.curriculum
-                let dept=model.department
-                dept.hasMany(curr,{
+                let curriculum=model.curriculum
+                let department=model.department
+                let academicYear = model.academic_year
+                let semester= model.semester
+                department.hasMany(curriculum,{
                     foreignKey:"department_id"
-                })
+                });
+                curriculum.belongsTo(academicYear,{
+                    foreignKey:"academic_year_id"
+                });
+                curriculum.belongsTo(semester,{
+                    foreignKey:"semester_id"
+                });
+
             }
         }
     })

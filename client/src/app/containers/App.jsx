@@ -39,6 +39,7 @@ class App extends React.Component {
       this.setState( {request: request});
     }
     componentWillMount() {
+      console.log("In APP compo ====================");
       var token = Auth.getToken();
       let path= this.props.location.pathname;
 
@@ -55,9 +56,6 @@ class App extends React.Component {
         browserHistory.push('/login');
       }
 
-    }
-    componentWillReceiveProps(nextProps) {
-     
     }
 
      getChildContext() {
@@ -101,7 +99,7 @@ class App extends React.Component {
          </div>
        
         <SideBarMenu handleToggle = {(request) => this.handleToggle(request)} open = {this.state.open}
-          user= {this.props.login.loginUser} isLogin= {this.props.login.isLogin}
+          user= {this.props.login.loginUser} isLogin= {this.props.login.isLogin} prevPathName= {this.props.login.prevPathName}
         />   
         <div style={style.ContentTitle}>
           {this.props.children}  

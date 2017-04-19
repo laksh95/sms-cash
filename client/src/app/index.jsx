@@ -15,6 +15,8 @@ import store from './store.js'
 import Blog from './containers/blog/blog.jsx'
 import Post from './containers/blog/post.jsx'
 import Student from './containers/student/Student.jsx'
+import ErrorApp from './containers/error/ErrorApp.jsx'
+
 const history = syncHistoryWithStore(browserHistory, store);
 injectTapEventPlugin();
 render((
@@ -32,6 +34,7 @@ render((
 			 <Route path = "/feedback" component = {Feedback} />
 	      </Route>
 	      <Route path = "/login" component = {Login}/>
+	      <Route path = "/error" component = {ErrorApp}/>
 	   </Router>
 	</Provider>
 ), document.getElementById('app'))

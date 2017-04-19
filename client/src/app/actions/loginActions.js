@@ -49,3 +49,10 @@ export function setReceivedResponse(value){
 	}
 }
 
+
+export function resetToNoError(){
+	return {
+		type: types.RESET_ERROR
+	}
+}
+

@@ -31,9 +31,6 @@ class Department extends React.Component{
     render(){
         return (
           <div >
-            <Divider />
-                <h1> Manage Department </h1>
-            <Divider />
             <Tabs value={this.props.department.selectedTab} onChange={this.props.handleTabChange}>
               <Tab label="Department List" value="list">
                   <DepartmentList 

@@ -264,7 +264,7 @@ class TopBar extends React.Component {
          onTouchTap={this.handleTouchTap.bind(this, HANDLE_CODES.LOGOUT_HANDLE)} />
 
       </AppBar>
-     <MuiThemeProvider muiTheme={muiTheme}>
+     {/*<MuiThemeProvider muiTheme={muiTheme}>
         <AppBar
          title={
                <span  style={style.titleStyle} >
@@ -280,7 +280,7 @@ class TopBar extends React.Component {
                   </span>
                 }
        ></AppBar>
-    </MuiThemeProvider >
+    </MuiThemeProvider >*/}
     </div>
     
 );

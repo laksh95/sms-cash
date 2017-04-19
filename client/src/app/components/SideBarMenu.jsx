@@ -79,35 +79,19 @@ class SideBarMenu extends React.Component {
               <Link to ="/department" style={{textDecoration: 'none'}}>
                 <ListItem
                   primaryText="Department"
-                  leftAvatar={<Avatar src={userImage} />} 
-                   style={{backgroundColor: list["Department"]}}
-                      onTouchTap = {this.handleTouchTap.bind(this,"Department")}
+                  leftAvatar={<Avatar src={userImage} />}
+                   style={{backgroundColor: list["/department"]}}
+                      onTouchTap = {this.handleTouchTap.bind(this,"/department")}
                 />
               </Link>
-               {this.props.user.role.isAdmin ?
-                   <Link to ="/blog" style={{textDecoration: 'none'}}>
-                       <ListItem
-                           primaryText="Blog"
-                           leftAvatar={<Avatar src={userImage}
-                           />}
-                           style={{backgroundColor: list["Blog"]}}
-                           onTouchTap = {this.handleTouchTap.bind(this, "Blog")}
-                       />
-                   </Link> : null}
-               <Link to="/student" style={{textDecoration: 'none'}}>
-                  <ListItem
-                    primaryText="Student"
-                    leftAvatar={<Avatar src={userImage} />}
-                      style={{backgroundColor: list["Student"]}}
-                          onTouchTap = {this.handleTouchTap.bind(this,"Student")}
-                  />
-               </Link>
-              <ListItem
-                primaryText="Teacher"
-                leftAvatar={<Avatar src={userImage} />}
-                 style={{backgroundColor: list["Teacher"]}}
-                 onTouchTap = {this.handleTouchTap.bind(this,"Teacher")}
-              />
+              <Link to ="/student" style={{textDecoration: 'none'}}>
+               <ListItem
+                 primaryText="Student" 
+                 leftAvatar={<Avatar src={userImage} />}
+                   style={{backgroundColor: list["/student"]}}
+                       onTouchTap = {this.handleTouchTap.bind(this,"/student")}
+               />
+              </Link>
             </List>): null}
         </Drawer>
 

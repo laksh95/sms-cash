@@ -35,7 +35,7 @@ Teacher.contextTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    adminReducer: state.adminReducer
+    headerReducer: state.headerReducer
     }
 }
 

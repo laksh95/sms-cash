@@ -4,12 +4,12 @@ let sql= require('../../sqldb')
 let db=sql()
 
 let teacherFunctions={
-  getTeacherAndFeedback: (request, response) => {
-    if(request !== null && request != undefined && request.body != undefined && Object.keys(request).length!==0 && Object.keys(request.body).length!==0 || request.user != null){
-      teacher.getTeacherAndFeedback(db, request.body)
+  getTeacherAndFeedback: (req, res) => {
+    if(req !== null && req != undefined && req.body != undefined && Object.keys(req).length!==0 && Object.keys(req.body).length!==0 || req.user != null){
+      teacher.getTeacherAndFeedback(db, req.body)
       .then((result)=>{
           if(result.length == 0){
-            response.send(200).json({message: 'NO_ROWS_FOUND'})
+            res.status(200).json({message: 'NO_ROWS_FOUND'})
           }
           else{
             let data= [];
@@ -32,15 +32,15 @@ let teacherFunctions={
               item.dataValues.averageFeedback = final
               data.push(item)
             })
-            response.status(200).json({data, message: 'SUCCESS_OPERATION'})
+            res.status(200).json({data, message: 'SUCCESS_OPERATION'})
           }
         })
       .catch((err)=>{
-        response.status(500).json({error: err.toString(), message: 'IS_INTERNAL_SERVER_ERROR'})
+        res.status(500).json({error: err.toString(), message: 'IS_INTERNAL_SERVER_ERROR'})
       })
 		}
 		else{
-			response.status(400).json({error: "Missing Paramters: courseId", message: 'IS_INVALID_INPUT_FORM'})
+			res.status(400).json({error: "Missing Paramters: courseId", message: 'IS_INVALID_INPUT_FORM'})
 		}
   }
 }

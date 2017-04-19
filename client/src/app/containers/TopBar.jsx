@@ -70,8 +70,8 @@ class TopBar extends React.Component {
       name: "STUDENT MANAGEMENT SYSTEM",
       open: false,
       currentSession : false,
-      currentSessionValue : this.props.adminReducer.selectedSession,
-      Selectedcourse: this.props.adminReducer.selectedCourse,
+      currentSessionValue : this.props.headerReducer.selectedSession,
+      Selectedcourse: this.props.headerReducer.selectedCourse,
       user: '',
       width: window.screen.availWidth,
       height: window.screen.availHeight,
@@ -184,7 +184,7 @@ class TopBar extends React.Component {
 
  render(){
       let that = this;
-      var allSessions = this.props.adminReducer.initialData.batch.map(function(item , id){
+      var allSessions = this.props.headerReducer.initialData.batch.map(function(item , id){
        return (
           <MenuItem key={id} primaryText={item.name}
            onTouchTap={ () => {
@@ -196,12 +196,12 @@ class TopBar extends React.Component {
         );
      });
 
-       var allcourses = this.props.adminReducer.initialData.course.map(function(item , id){
+       var allcourses = this.props.headerReducer.initialData.course.map(function(item , id){
 
        return (
           <MenuItem key={id} primaryText={item.name}
            onTouchTap={ () => {
-               that.props.setCurrentCourse(item.name);
+               that.props.setCurrentCourse(item);
                that.handleTouchTap.bind(that, HANDLE_CODES.COURSE_CLOSE)
            }
          }
@@ -242,7 +242,7 @@ class TopBar extends React.Component {
 
         </Popover>
 
-       <FlatButton label={this.props.adminReducer.selectedCourse} style={style.settingsButton}
+       <FlatButton label={this.props.headerReducer.selectedCourse} style={style.settingsButton}
           onTouchTap={this.handleTouchTap.bind(this, HANDLE_CODES.COURSE_OPEN)}
        />
       <Popover
@@ -294,7 +294,7 @@ TopBar.childContextTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    adminReducer: state.adminReducer,
+    headerReducer: state.headerReducer,
     loginReducer : state.login
     }
 }

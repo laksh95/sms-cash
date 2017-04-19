@@ -14,6 +14,13 @@ let subjectFunctions={
       })
       .then((result)=>{
         data.department = result.departments
+
+        if(data.department.length === 0){
+          response.status(200).json({data, message: 'NO_ROWS_FOUND'})
+        }
+        if(data.subject.length === 0){
+          response.status(200).json({data, message: 'NO_ROWS_FOUND'})
+        }
         response.status(200).json({data, message: 'SUCCESS_OPERATION'})
       })
       .catch((err)=>{

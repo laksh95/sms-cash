@@ -15,7 +15,8 @@ const subjectReducer = (
         ...state,
         status: 200,
         department: action.payload.data.department,
-        subject: action.payload.data.subject
+        subject: action.payload.data.subject,
+        errorMessage: action.payload.message
       }
       return state
     case "GET_SUBJECT_AND_DEPARTMENT_REJECTED":

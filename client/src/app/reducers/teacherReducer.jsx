@@ -13,7 +13,8 @@ const teacherReducer = (
       state = {
         ...state,
         status: 200,
-        allTeacher: action.payload.data
+        allTeacher: action.payload.data,
+        errorMessage: action.payload.message
       }
       return state
     case "GET_TEACHER_AND_FEEDBACK_REJECTED":

@@ -25,7 +25,7 @@ class SideBarMenu extends React.Component {
     super(props);
 
     this.state = {
-      selected:this.props.adminReducer.selectedTab
+      selected:this.props.headerReducer.selectedTab
     };
   }
 
@@ -65,9 +65,9 @@ class SideBarMenu extends React.Component {
       "/feedback":'white'
       };
 
- list[this.props.adminReducer.selectedTab] = '#e3e7ea';
+ list[this.props.headerReducer.selectedTab] = '#e3e7ea';
 
- if(this.props.adminReducer.selectedTab === '/'){
+ if(this.props.headerReducer.selectedTab === '/'){
 
    list['/dashboard'] = '#e3e7ea';
  }
@@ -175,7 +175,7 @@ SideBarMenu.contextTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    adminReducer: state.adminReducer
+    headerReducer: state.headerReducer
     }
 }
 

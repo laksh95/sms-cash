@@ -1,6 +1,6 @@
 export const success= {
   NO_ROWS_FOUND:'NO_ROWS_FOUND', //Select query succesfully returned 0 rows
-  SUCCESS_OPERATION:'SUCCESS_OPERATION' //Succesfully processed the request: insertion, updation, deletion
+  SUCCESS_OPERATION:'SUCCESS_OPERATION', //Succesfully processed the request: insertion, updation, deletion
 }
 
 export const failure={

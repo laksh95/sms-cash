@@ -24,21 +24,40 @@ class Feedback extends React.Component {
       department: "Department",
       selectedDepartment: [],
       selectedSubject: [],
-      subjectId: []
+      subjectId: [],
+      open: false,
+      errorMessage: ""
     }
   }
   getChildContext() {
     return { muiTheme: getMuiTheme(baseTheme) };
   }
   componentWillMount() {
-    this.props.getTeacherAndFeedback({
-	     "offset": 0,
-	     "limit":2,
-	     "course_id": 1,
-       "snackBarState": false
-    })
-    this.props.getSubjectAndDepartment({"courseId":1})
+    if(this.props.headerReducer.selectedCourseId == ""){
+      errorSnackBar("Select Course")
+    }
+    else{
+      this.props.getTeacherAndFeedback({
+         "offset": 0,
+         "limit":2,
+         "course_id": this.props.headerReducer.selectedCourseId
+      })
+      this.props.getSubjectAndDepartment({"courseId":this.props.headerReducer.selectedCourseId})
+    }
   }
+
+  componentWillReceiveProps(nextProps){
+    if(nextProps.headerReducer.selectedCourseId !== this.props.headerReducer.selectedCourseId){
+      this.props.getTeacherAndFeedback({
+         "offset": 0,
+         "limit":2,
+         "course_id": nextProps.headerReducer.selectedCourseId
+      })
+      this.props.getSubjectAndDepartment({"courseId": nextProps.headerReducer.selectedCourseId})
+    }
+    this.props = nextProps
+  }
+
   handleChangeDuration = (event) => {
     const value = event.target.value;
     this.setState({
@@ -51,14 +70,14 @@ class Feedback extends React.Component {
     })
   }
   errorSnackBar = (errorMessage) => {
-    return(
-      <Snackbar
+      return (
+        <Snackbar
         open={true}
         message={errorMessage}
         autoHideDuration={4000}
         onRequestClose={this.handleRequestClose}
-      />
-    )
+        />
+      )
   }
   teacherList = (dataTeacher, index) => {
     return(
@@ -82,6 +101,7 @@ class Feedback extends React.Component {
      </Card>
     )
   }
+
   selectSubject = (event, index, values) => {
     this.setState({
       selectedSubject: values
@@ -135,16 +155,17 @@ class Feedback extends React.Component {
          multiple={true}
        >
        {
-         this.props.subjectReducer.subject.map((data, index)=>{
+         this.props.subjectReducer.errorMessage==="SUCCESS_OPERATION"?
+         (this.props.subjectReducer.subject.map((data, index)=>{
            return(
              <MenuItem key={index} value={data.subject.name} primaryText={data.subject.name} />
            )
-        })
+         })) : null   
       }
        </SelectField>
        <br/>
           {
-            this.props.teacherReducer.status == 200?
+            this.props.teacherReducer.status == 200 && this.props.teacherReducer.errorMessage === "SUCCESS_OPERATION"?
             this.props.teacherReducer.allTeacher.map((data,index)=>{
                 let noSubject = 0
                 let noDepartment = 0
@@ -188,7 +209,7 @@ class Feedback extends React.Component {
             : this.errorSnackBar(this.props.teacherReducer.errorMessage)
     			}
      </div>
-    );
+    )
   }
 }
 
@@ -203,7 +224,8 @@ Feedback.contextTypes = {
 const mapStateToProps = (state) => {
   return {
     teacherReducer: state.teacherReducer,
-    subjectReducer: state.subjectReducer
+    subjectReducer: state.subjectReducer,
+    headerReducer: state.headerReducer
     }
 }
 

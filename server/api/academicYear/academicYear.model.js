@@ -38,4 +38,3 @@ let academicYear= connection.define('academic_year',{
 );
  return academicYear;
 };
-

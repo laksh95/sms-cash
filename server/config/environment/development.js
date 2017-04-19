@@ -2,11 +2,10 @@
 // Development specific configuration
 // ==================================
 module.exports = {
-    // Sequelize connection opions
+    // Sequelize connection options
     sequelize: {
-        uri: 'postgres://postgres:cronj123@192.168.1.223:5432/sms',
+        uri: 'postgres://postgres:postgres@localhost:5432/smsInternal',
         options: {
-
             logging: false,
             dialect: 'postgres',
             //storage: 'dev.sqlite',

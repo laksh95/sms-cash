@@ -39,7 +39,7 @@ let init=function(){
                     foreignKey:'curriculum_id'
                 })
                 subject.hasMany(relative,{
-                    foreignKey:'subejct_id'
+                    foreignKey:'subject_id'
                 })
             }
         }

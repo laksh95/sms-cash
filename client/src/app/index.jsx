@@ -7,6 +7,7 @@ import Login from './containers/login/App.jsx';
 import App from './containers/App.jsx';
 import Dashboard from './components/dashboard/DashBoard.jsx'
 import Department from './containers/department/Department.jsx'
+import Course from './containers/course/Course.jsx'
 import Teacher from './components/teacher/teacher.jsx'
 import Feedback from './containers/feedback/Feedback.jsx'
 import { Provider } from 'react-redux'
@@ -23,12 +24,12 @@ render((
 	         <IndexRoute component = {Dashboard} />
 	         <Route path = "/dashboard" component = {Dashboard} />
 	         <Route path = "/department" component = {Department} />
-					  <Route path = "/blog" component = {Blog} />
-					  <Route path = "/student" component = {Student} />
-	          <Route path = "/post/:postid" component = {Post} />
+			 <Route path = "/blog" component = {Blog} />
+			 <Route path = "/course" component={Course} />
+			 <Route path = "/student" component = {Student} />
+	         <Route path = "/post/:postid" component = {Post} />
 	         <Route path = "/teachers" component = {Teacher} />
-	         <Route path = "/student" component = {Student} />
-					 <Route path = "/feedback" component = {Feedback} />
+			 <Route path = "/feedback" component = {Feedback} />
 	      </Route>
 	      <Route path = "/login" component = {Login}/>
 	   </Router>

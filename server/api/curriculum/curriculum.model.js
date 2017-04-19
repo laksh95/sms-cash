@@ -3,19 +3,19 @@ let sequelize=database.sequelize
 let connection=database.connection
 let init = function(){
     return curriculum = connection.define('curriculum',{
-       id:{
+        id:{
             type:sequelize.INTEGER,
-            primaryKey:true,
-            autoIncrement:true
+                primaryKey:true,
+                autoIncrement:true
         },
         name:{
             type:sequelize.STRING,
-            allowNull:false,
+                allowNull:false,
         },
         status : {
             type : sequelize.BOOLEAN,
-            allowNull: false,
-            defaultValue : true
+                allowNull: false,
+                defaultValue : true
         }
     },{
         classMethods:{
@@ -25,14 +25,14 @@ let init = function(){
                 let academicYear = model.academic_year
                 let semester= model.semester
                 department.hasMany(curriculum,{
-                    foreignKey:"department_id"
-                });
+                    foreignKey:'department_id'
+            });
                 curriculum.belongsTo(academicYear,{
-                    foreignKey:"academic_year_id"
-                });
+                    foreignKey:'academic_year_id'
+            });
                 curriculum.belongsTo(semester,{
-                    foreignKey:"semester_id"
-                });
+                    foreignKey:'semester_id'
+            });
 
             }
         }

@@ -1,8 +1,5 @@
 import authenticate from './../utils/api/authenticate';
 import * as types from './../constants';
-
-
-
 export function getInitialData(config){
 
 	return {

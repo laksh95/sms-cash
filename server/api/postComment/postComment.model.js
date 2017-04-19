@@ -17,7 +17,6 @@ let sql = function(){
                 type:sequelize.BOOLEAN,
                 allowNull:false,
                 defaultValue:true
-
             }
         },
         {

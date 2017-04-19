@@ -9,14 +9,12 @@ import CircularProgress from 'material-ui/CircularProgress';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 let style = {
-
    "MainContentStyle":{
          marginTop:-10,
          marginLeft: 70,
          marginRight:0,
          transition: 'margin-left 100ms cubic-bezier(0.23, 1, 0.32, 1)' 
    },
-
    "ContentTitle":{
        marginTop:10,
        marginLeft: 70,
@@ -33,7 +31,6 @@ class App extends React.Component {
           request: 'default'       
         };
     }
-   
     handleToggle = (request) => { 
       this.setState({open: !this.state.open , request: request});
     }
@@ -73,16 +70,13 @@ class App extends React.Component {
         browserHistory.push('/login');
       }
     }
-
    render() {
-
     if (this.state.open) {
       style.MainContentStyle.marginLeft = 220;
       style.ContentTitle.marginLeft =  224;
     }else{
       style.MainContentStyle.marginLeft = 60;
       style.ContentTitle.marginLeft =  70;
-
     }
     var header = 
               <TopBar handleToggle = { (request) =>{ 

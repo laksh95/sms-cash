@@ -124,7 +124,7 @@ class AddCourse extends React.Component {
             contentStyle.marginLeft = 230;
         }
         return (
-            <div>
+            <div className="addCourse">
                 <h2 className="headline">Add a course</h2>
                 <TextField
                     hintText="Course Name"

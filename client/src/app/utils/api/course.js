@@ -37,7 +37,7 @@ const utils = {
         return axios.put(url,data,config)
     },
     deleteCourse : (data) => {
-        console.log("inside util")
+        console.log("inside util",data)
         let url = serverAddress + '/api/course/deleteCourse'
         let token = Auth.getToken();
         let authString = 'bearer ' + token;

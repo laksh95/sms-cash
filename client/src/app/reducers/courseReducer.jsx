@@ -131,13 +131,15 @@ const courseReducer = (state = {
         case "DELETE_COURSE_FULFILLED":
             var course = state.course
             var data = action.payload.data
-
+            console.log(course)
+            console.log(data)
             for(let index in course){
-                if(course[index].id==data.id){
+                if(course[index].id==data){
+                    console.log("true")
                     course.splice(index,1)
                 }
             }
-            var size=course.length
+            var size = course.length
             var pagedCourses = []
             for(let index in course ){
                 if(index<10){
@@ -150,7 +152,7 @@ const courseReducer = (state = {
                 totalPages : size ,
                 currentPage: 1,
                 snackbarOpen :true ,
-                snackbarMessage : "course Deleted",
+                snackbarMessage : "Course Deleted",
                 pagedCourses:pagedCourses
             }
             break

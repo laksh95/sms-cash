@@ -130,7 +130,7 @@ let init=function(){
                         status:'f'
                     },{
                         where:{
-                            id:deleteId.id,
+                            id:deleteId,
                             status:'t'
                         }
                     }).then((data)=>{

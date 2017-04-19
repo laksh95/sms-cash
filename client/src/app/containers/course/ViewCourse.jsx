@@ -257,7 +257,7 @@ class ViewCourse extends React.Component {
                 </Dialog>
                 <div>
                     <Table>
-                        <TableHeader adjustForCheckbox={false}>
+                        <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
                             <TableRow >
                                 <TableHeaderColumn>Course_Name</TableHeaderColumn>
                                 <TableHeaderColumn>Course_Duration</TableHeaderColumn>

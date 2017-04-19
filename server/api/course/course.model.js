@@ -29,7 +29,7 @@ let init=function(){
                 getCourse:(db)=>{
                     let course=db.course
                     let department=db.department
-                    course.findAll({
+                    return course.findAll({
                         attributes:['id','name','duration',[sequelize.fn('count',sequelize.col('department.id')),'noOfDept']],
                         where:{
                             status:'t'

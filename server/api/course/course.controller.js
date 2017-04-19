@@ -41,7 +41,7 @@ let courseFunctions = {
            course_name,
            duration
        }
-       model.addNewCourse(db,setCourseData,function(data){
+       model.addNewCourse(db,setCourseData,(data)=>{
            res.send(data)
        })
    },

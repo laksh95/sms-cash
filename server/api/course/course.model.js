@@ -26,7 +26,7 @@ let init=function(){
            classMethods:{
                associate:(model)=>{
                 },
-                getCourse:(db,sendData)=>{
+                getCourse:(db)=>{
                     let course=db.course
                     let department=db.department
                     course.findAll({
@@ -39,8 +39,6 @@ let init=function(){
                             model:department,
                             attributes:[]
                         }]
-                    }).then((data)=>{
-                        sendData(data)
                     })
                 },
                 addNewCourse:(db,setData,sendData)=>{
@@ -68,7 +66,7 @@ let init=function(){
                             let course = data
                             let flag = 1
                             for (let index in course) {
-                                if (course[index].dataValues.status == true) {
+                                if (course[index].dataValues.status === true) {
                                     flag = 0
                                 }
                             }

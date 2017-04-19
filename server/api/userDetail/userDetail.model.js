@@ -55,7 +55,6 @@ module.exports=function(){
         },
         {
             classMethods: {
-
                 getUserByCredential: function(models, userName, cb){
 
                     let userDetail= models.user_detail;

@@ -28,4 +28,3 @@ let init=function(app){
 
 }
 module.exports=init;
-

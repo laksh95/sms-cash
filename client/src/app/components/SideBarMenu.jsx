@@ -38,17 +38,16 @@ class SideBarMenu extends React.Component {
  getChildContext(){
     return { muiTheme: getMuiTheme(baseTheme) };
  }
-
  handleTouchTap = (item , event) => {
         this.setState({
               selected: item
                 });
    };
-
   render() {
     let list = {
         "Department": 'white',
         "Dashboard": 'white',
+        "Course": "white",
         "Students": 'white',
         "Teacher": 'white',
         "Subjects": 'white',
@@ -70,7 +69,6 @@ class SideBarMenu extends React.Component {
            onLeftIconButtonTouchTap = { () => this.props.handleToggle('Sidebar')} />
             {
               (this.props.user.role) ?
-
            ( <List>
 
               {this.props.user.role.isAdmin ?
@@ -110,6 +108,16 @@ class SideBarMenu extends React.Component {
                            onTouchTap = {this.handleTouchTap.bind(this, "Blog")}
                        />
                    </Link> : null}
+               {this.props.user.role.isAdmin ?
+                   <Link to ="/course" style={{textDecoration: 'none'}}>
+                       <ListItem
+                           primaryText="Course"
+                           leftAvatar={<Avatar src={userImage}
+                           />}
+                           style={{backgroundColor: list["Course"]}}
+                           onTouchTap = {this.handleTouchTap.bind(this, "Course")}
+                       />
+                   </Link> : null}
 
                    <Link to ="/feedback" style={{textDecoration: 'none'}}>
                      <ListItem
@@ -119,28 +127,19 @@ class SideBarMenu extends React.Component {
                        onTouchTap = {this.handleTouchTap.bind(this,"Feedback")}
                      />
                    </Link>
-                   
                 </List>): null}
-
-
-
-
         </Drawer>
 
   </div>
     );
   }
 }
-
-
 SideBarMenu.childContextTypes = {
             muiTheme: React.PropTypes.object.isRequired,
 };
 SideBarMenu.contextTypes = {
     router: React.PropTypes.object.isRequired
 };
-
-
 const mapStateToProps = (state) => {
   return {
     headerReducer: state.headerReducer

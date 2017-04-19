@@ -31,11 +31,10 @@ let init = function(){
 				let exam = models.exam
 				let exam_type = models.exam_type
 				exam_type.hasMany(exam, {foreignKey: 'type_id'});
-				var curriculum = models.curriculum
+				let curriculum = models.curriculum
 				curriculum.hasMany(exam, {foreignKey: 'curriculum_id'});
 			}
 		}
 	})
 }
 module.exports = init
-

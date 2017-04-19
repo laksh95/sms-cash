@@ -28,7 +28,6 @@ let init = function(){
             allowNull:false,
             defaultValue:true
         }
-
     },{
         classMethods:{
             associate:function(model){
@@ -42,4 +41,3 @@ let init = function(){
     })
 }
 module.exports=init
-

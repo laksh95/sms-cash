@@ -46,7 +46,7 @@ class Department extends React.Component{
                     pageChange= {(currentPage , size) => this.props.pageChange(currentPage , size)}
                   />
               </Tab>
-              <Tab className='contentCenter' label="Add Department"value="add" >
+              <Tab className='contentCenter' label="Add Department" value="add" >
                 <AddDepartment 
                   addDepartment= {(department) => this.props.addDepartment(department)}
                   showSlackBar= {this.props.department.showSlackBar}

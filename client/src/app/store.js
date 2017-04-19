@@ -13,7 +13,6 @@ export default createStore(
     	adminReducer,
     	departmentReducer,
     	routing: routerReducer,
-    	routing: routerReducer,
         studentReducer
     }),
     {},

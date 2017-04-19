@@ -3,21 +3,24 @@ import logger from 'redux-logger'
 import thunk from 'redux-thunk'
 import promise from 'redux-promise-middleware'
 import {routerReducer} from 'react-router-redux'
-import adminReducer from './reducers/adminReducer.jsx'
 import blogReducer from './reducers/blogReducer.jsx'
+import studentReducer from './reducers/studentReducer.jsx'
+import headerReducer from './reducers/headerReducer.jsx'
 import login from './reducers/loginReducer'
 import departmentReducer from './reducers/departmentReducer.js'
-import studentReducer from './reducers/studentReducer.jsx'
+import teacherReducer from './reducers/teacherReducer.jsx'
+import subjectReducer from './reducers/subjectReducer.jsx'
+
 export default createStore(
     combineReducers({
     	login,
-    	adminReducer,
-    	departmentReducer,
-        blogReducer,
-    	routing: routerReducer,
-        studentReducer
+    	headerReducer,
+      blogReducer,
+      studentReducer,
+      teacherReducer,
+      subjectReducer,
+    	routing: routerReducer
     }),
     {},
     applyMiddleware(logger(),thunk , promise())
 )
-

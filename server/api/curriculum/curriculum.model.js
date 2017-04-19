@@ -11,6 +11,23 @@ let init = function(){
         name:{
             type:sequelize.STRING,
             allowNull:false,
+            unique:true
+        },
+        semester:{
+            type:sequelize.INTEGER,
+            allowNull:false
+        },
+        year:{
+            type:sequelize.INTEGER,
+            allowNull:false
+        },
+        sem_start_date:{
+            type:sequelize.DATE,
+            allowNull:false
+        },
+        sem_end_date:{
+            type:sequelize.DATE,
+            allowNull:false
         },
         status : {
             type : sequelize.BOOLEAN,

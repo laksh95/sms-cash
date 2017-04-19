@@ -56,4 +56,3 @@ let sql = function(){
    return timetable;
 }
 module.exports = sql;
-

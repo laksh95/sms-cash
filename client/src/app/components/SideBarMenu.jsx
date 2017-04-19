@@ -33,17 +33,16 @@ class SideBarMenu extends React.Component {
  getChildContext(){
     return { muiTheme: getMuiTheme(baseTheme) };
  }
-  
  handleTouchTap = (item , event) => {
         this.setState({
               selected: item
                 });
    };
-  
   render() {
     let list = {
         "Department": 'white',
         "Dashboard": 'white',
+        "Course": "white",
         "Students": 'white',
         "Teacher": 'white',
         "Subjects": 'white',
@@ -63,8 +62,7 @@ class SideBarMenu extends React.Component {
           <AppBar title="Menu"
            onLeftIconButtonTouchTap = { () => this.props.handleToggle('Sidebar')} />
             {
-              (this.props.user.role) ?       
-
+              (this.props.user.role) ?
            ( <List>
               {this.props.user.role.isAdmin ?
               <Link to ="/dashboard" style={{textDecoration: 'none'}}>
@@ -109,16 +107,12 @@ class SideBarMenu extends React.Component {
     );
   }
 }
-
-
 SideBarMenu.childContextTypes = {
             muiTheme: React.PropTypes.object.isRequired,
 };
 SideBarMenu.contextTypes = { 
     router: React.PropTypes.object.isRequired
 };
-
-
 const mapStateToProps = (state) => {
   return {
     adminReducer: state.adminReducer

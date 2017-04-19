@@ -17,7 +17,6 @@ class Auth {
   static isUserAuthenticated() {
     return localStorage.getItem('token') !== null;
   }
-
   /**
    * Deauthenticate a user. Remove a token from Local Storage.
    *
@@ -25,17 +24,13 @@ class Auth {
   static deauthenticateUser() {
     localStorage.removeItem('token');
   }
-
   /**
    * Get a token value.
    *
    * @returns {string}
    */
-
   static getToken() {
     return localStorage.getItem('token');
   }
-
 }
-
 export default Auth;

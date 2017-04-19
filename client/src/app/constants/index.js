@@ -1,4 +1,3 @@
-//login section
 export const LOGIN= 'LOGIN';
 export const CHECK_IS_LOGIN= 'CHECK_IS_LOGIN';
 export const LOGOUT= 'LOGOUT';
@@ -28,3 +27,12 @@ export const GET_STATS = 'GET_STATS';
 export const SET_POST = 'SET_POST'
 export const DELETE_POST = 'DELETE_POST'
 export const SET_SHOW_EDIT = 'SET_SHOW_EDIT'
+export const SET_COURSE = 'SET_COURSE'
+export const SET_PAGED_COURSES = 'SET_PAGED_COURSES'
+export const SET_SNACKBAR_OPEN = 'SET_SNACKBAR_OPEN'
+export const SET_SNACKBAR_MESSAGE = 'SET_SNACKBAR_MESSAGE'
+export const SET_VALUE = 'SET_VALUE'
+export const ADD_COURSE = 'ADD_COURSE'
+export const EDIT_COURSE = 'EDIT_COURSE'
+export const DELETE_COURSE = 'DELETE_COURSE'
+export const GET_COURSES = 'GET_COURSES'

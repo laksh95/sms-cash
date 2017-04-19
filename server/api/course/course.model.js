@@ -40,6 +40,9 @@ let init=function(){
                             attributes:[]
                         }]
                     })
+                        .catch((err)=>{
+                            sendData(err.toString())
+                        })
                 },
                 addNewCourse:(db,setData,sendData)=>{
                     let course=db.course
@@ -55,12 +58,17 @@ let init=function(){
                                 name:setData.course_name,
                                 duration:setData.duration
                             }).then((data)=>{
+                                data[noOfDept]=0
                                 response={
                                     status:1,
-                                    content:data
+                                    data,
+                                    msg:'Course Added Successfully'
                                 }
                                 sendData(response)
                             })
+                                .catch((err)=>{
+                                    sendData(err.toString())
+                                })
                         }
                         else {
                             let course = data
@@ -75,17 +83,23 @@ let init=function(){
                                     name: setData.course_name,
                                     duration: setData.duration
                                 }).then((data) => {
+                                    data['noOfDept'] =0
                                     response = {
                                         status: 1,
-                                        content: data
+                                        data,
+                                        msg:'Added Successfully'
                                     }
                                     sendData(response)
                                 })
+                                    .catcH((err)=>{
+                                        sendData(err.toString())
+                                    })
                             }
                             else {
                                 response = {
                                     status: 0,
-                                    content: 'Course Already exists.'
+                                    data:{},
+                                    msg: 'course Already exists.'
                                 }
                                 sendData(response)
                             }
@@ -102,9 +116,16 @@ let init=function(){
                             id:updateData.id
                         }
                     }).then((data)=>{
-                        sendData(data)
+                        let response = {
+                            status : 1 ,
+                            msg : "Edited Successfully",
+                            data : updateData
+                        }
+                        sendData(response)
                     })
-
+                        .catch((err)=>{
+                            sendData(err.toString())
+                        })
                 },
                 deleteCourse:(db,deleteId,sendData)=>{
                     let course = db.course
@@ -112,12 +133,20 @@ let init=function(){
                         status:'f'
                     },{
                         where:{
-                            id:deleteId,
+                            id:deleteId.id,
                             status:'t'
                         }
                     }).then((data)=>{
-                        sendData(data)
+                        let response = {
+                            msg : "Deleted Successfully",
+                            data : deleteId ,
+                            status : data[0]
+                        }
+                        sendData(response)
                     })
+                        .catch((err)=>{
+                            sendData(err.toString())
+                        })
                 }
             }
         })

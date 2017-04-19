@@ -6,7 +6,6 @@ import FlatButton from 'material-ui/FlatButton';
 import Popover from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
-
 import Auth from '../Auth.js';
 import {Router, browserHistory} from 'react-router'
 import { connect } from 'react-redux'
@@ -14,7 +13,7 @@ import { getSession, getBatch, getCourse, getDepartment } from '../actions/admin
 import { getInitialData , setCurrentSession , setCurrentCourse } from '../actions/headerActions.jsx'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
-  var style = {
+  let style = {
 
      "titleStyle" : {
        color: "white"
@@ -198,7 +197,6 @@ class TopBar extends React.Component {
      });
 
        var allcourses = this.props.adminReducer.initialData.course.map(function(item , id){
-
        return (
           <MenuItem key={id} primaryText={item.name}
            onTouchTap={ () => {
@@ -290,11 +288,11 @@ class TopBar extends React.Component {
 TopBar.childContextTypes = {
             muiTheme: React.PropTypes.object.isRequired,
         };
-
 const mapStateToProps = (state) => {
   return {
     adminReducer: state.adminReducer,
-    loginReducer : state.login
+    loginReducer : state.login,
+    courseReducer : state.courseReducer
     }
 }
 

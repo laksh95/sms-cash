@@ -12,7 +12,6 @@ let init = function(){
                 type : sequelize.BOOLEAN,
                 allowNull: false,
                 defaultValue : true
-
             }
         },
         {
@@ -28,4 +27,3 @@ let init = function(){
         })
 }
 module.exports = init
-

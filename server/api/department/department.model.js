@@ -181,7 +181,6 @@ let init=function() {
                     cb(response)
                 })
             },
-
         getDepartments: function(models,courseId, cb){
             let department = models.department;
             department.findAll({

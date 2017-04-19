@@ -8,6 +8,7 @@ import blogReducer from './reducers/blogReducer.jsx'
 import login from './reducers/loginReducer'
 import departmentReducer from './reducers/departmentReducer.js'
 import studentReducer from './reducers/studentReducer.jsx'
+import courseReducer from './reducers/courseReducer.jsx'
 export default createStore(
     combineReducers({
     	login,
@@ -15,7 +16,8 @@ export default createStore(
     	departmentReducer,
         blogReducer,
     	routing: routerReducer,
-        studentReducer
+        studentReducer,
+		courseReducer
     }),
     {},
     applyMiddleware(logger(),thunk , promise())

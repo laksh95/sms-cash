@@ -1,5 +1,6 @@
 import React from 'react';
 import SideBarMenu from './../components/SideBarMenu.jsx';
+<<<<<<< HEAD
 import TopBar from './TopBar.jsx';
 import Auth from '../Auth.js';
 import {checkLogin, logoutUser, setUrl,setReceivedResponse} from "./../actions/loginActions";
@@ -10,13 +11,21 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 let style = {
 
+=======
+import TopBar from './TopBar.jsx'; 
+import Auth from '../Auth.js';
+import {checkLogin, logoutUser} from "./../actions/loginActions";
+import {connect} from "react-redux";
+import {browserHistory} from 'react-router';
+
+let style = {
+>>>>>>> course
    "MainContentStyle":{
          marginTop:-10,
          marginLeft: 70,
          marginRight:0,
          transition: 'margin-left 100ms cubic-bezier(0.23, 1, 0.32, 1)' 
    },
-
    "ContentTitle":{
        marginTop:10,
        marginLeft: 70,
@@ -33,9 +42,14 @@ class App extends React.Component {
           request: 'default'       
         };
     }
+<<<<<<< HEAD
    
     handleToggle = (request) => { 
       this.setState({open: !this.state.open , request: request});
+=======
+    handleToggle = () => { 
+      this.setState({open: !this.state.open});
+>>>>>>> course
     }
 
     handleRequest = (request) => { 
@@ -43,6 +57,7 @@ class App extends React.Component {
     }
     componentWillMount() {
       var token = Auth.getToken();
+<<<<<<< HEAD
       let path= this.props.location.pathname;
 
       this.props.setUrl(path);
@@ -56,6 +71,23 @@ class App extends React.Component {
         console.log("token: ", token);
         console.log("login: ", this.props.login);
         browserHistory.push('/login');
+=======
+      var authString = `bearer ${Auth.getToken()}`
+      
+      if(token !=null){
+        //axios.defaults.headers.commons['Authorization'] = authString;
+          let config = {
+             headers: {
+               'Authorization': authString
+             }
+          }
+        this.props.checkLogin(config);
+      }
+    }
+    componentDidMount() {
+      if(!this.props.login.isLogin){
+        browserHistory.push('/');
+>>>>>>> course
       }
 
     }
@@ -73,16 +105,21 @@ class App extends React.Component {
         browserHistory.push('/login');
       }
     }
-
    render() {
-
     if (this.state.open) {
+<<<<<<< HEAD
       style.MainContentStyle.marginLeft = 220;
       style.ContentTitle.marginLeft =  224;
     }else{
       style.MainContentStyle.marginLeft = 60;
+=======
+      style.MainContentStyle.marginLeft = 230;
+      style.ContentTitle.marginLeft =  250;
+    }
+    else{
+      style.MainContentStyle.marginLeft = 70;
+>>>>>>> course
       style.ContentTitle.marginLeft =  70;
-
     }
     var header = 
               <TopBar handleToggle = { (request) =>{ 
@@ -118,6 +155,7 @@ class App extends React.Component {
   }
 }
 App.childContextTypes = {
+<<<<<<< HEAD
     muiTheme: React.PropTypes.object.isRequired
 }
 App.contextTypes = {
@@ -125,6 +163,15 @@ App.contextTypes = {
 };
 const mapStateToProps= (state) => {
     return{
+=======
+    muiTheme: React.PropTypes.object.isRequired,
+};
+App.contextTypes = { 
+    router: React.PropTypes.object.isRequired
+};
+const mapStateToProps= (state) => {
+  return{
+>>>>>>> course
         login: state.login,
         courseReducer: state.courseReducer
     };
@@ -135,6 +182,7 @@ const mapDispatchToProps= (dispatch) => {
     logoutUser: () =>{
       dispatch(logoutUser());
     },
+<<<<<<< HEAD
     checkLogin: () =>{
       dispatch(checkLogin());
     },
@@ -148,3 +196,41 @@ const mapDispatchToProps= (dispatch) => {
   };
 };
 export default connect(mapStateToProps,mapDispatchToProps)(App);
+=======
+    checkLogin: (config) =>{
+      dispatch(checkLogin(config));
+    },
+    setCourse : (course)=>{
+     dispatch(setCourse(course))
+    },
+    setPagedCourse : (course)=>{
+       dispatch(setPagedCourse(course))
+    },
+    setSnackbarOpen :(data)=>{
+        dispatch(setSnackbarOpen(data))
+    },
+    setSnackbarMessage:(data)=>{
+        dispatch(setSnackbarMessage(data))
+    },
+    setValue:(value)=>{
+        dispatch(setValue(value))
+    },
+      setCourse : (course)=>{
+          dispatch(setCourse(course))
+      },
+      setPagedCourse : (course)=>{
+          dispatch(setPagedCourse(course))
+      },
+      setSnackbarOpen :(data)=>{
+          dispatch(setSnackbarOpen(data))
+      },
+      setSnackbarMessage:(data)=>{
+          dispatch(setSnackbarMessage(data))
+      },
+      setValue:(value)=>{
+          dispatch(setValue(value))
+      }
+  };
+};
+export default connect(mapStateToProps,mapDispatchToProps)(App);
+>>>>>>> course

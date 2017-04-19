@@ -8,7 +8,6 @@ import TextField from 'material-ui/TextField';
 import LinearProgress from 'material-ui/LinearProgress';
 import {Link} from 'react-router'
 import {Router, browserHistory} from 'react-router';
-
 import Auth from '../../Auth.js';
 import Snackbar from 'material-ui/Snackbar';
 
@@ -36,7 +35,7 @@ var style = {
 }
 
 
- var HANDLE_CODES = {   
+ var HANDLE_CODES = {
      "ON_LOGIN": "login",
      "PASSWORD_CHANGE":"passwordChange",
      "USERNAME_CHANGE":"textChange"
@@ -52,7 +51,7 @@ export default class Login extends React.Component  {
       height: window.screen.availHeight,
       mobileView:false,
       errorText: '',
-      errorTextPassword:'', 
+      errorTextPassword:'',
       username:'',
       password:'',
       message:false,
@@ -63,7 +62,7 @@ export default class Login extends React.Component  {
   getChildContext() {
     return { muiTheme: getMuiTheme(baseTheme) };
    }
-  
+
   handleTouchTap = (item,event) => {
     switch(item){
       case HANDLE_CODES.ON_LOGIN:
@@ -74,7 +73,6 @@ export default class Login extends React.Component  {
                 "username": this.state.username,
                 "password": this.state.password
             }
-
             this.props.loginUser(bodyParameters);
         }
 
@@ -88,7 +86,7 @@ export default class Login extends React.Component  {
 
               break
     }
-  
+
 };
 
 
@@ -113,8 +111,8 @@ export default class Login extends React.Component  {
     this.updateDimensions();
     this.setState({   message: false  });
     let token = Auth.getToken();
-    
-{/*<<<<<<< HEAD
+
+{/*
     if(token !=null){
       this.props.checkLogin();
     }
@@ -180,10 +178,10 @@ render() {
      let textWidth = width/2;
      let centerPosition = 'left';
 
-     
+
   if( this.state.mobileView === true)
-   { 
-    
+   {
+
       positionCard =width/4;
       visible = 'none';
       textHeight = height/4;
@@ -193,7 +191,7 @@ render() {
       heightCard = fixedHeight/2 - fixedHeight/10;
       centerPosition = 'center';
        cardWidth = width;
-     
+
     }
     if(width < 600){
 
@@ -214,14 +212,14 @@ render() {
 
 return(
     <div >
-     
+
      <LinearProgress
-       mode="determinate" 
+       mode="determinate"
        value={this.state.completed}
        style={{color:'grey', marginTop:'0.1%',height:'10px'}}
       />
-   
-     <div 
+
+     <div
        style={
         { color:'grey',
           fontFamily: 'Roboto, sans-serif',
@@ -246,7 +244,7 @@ return(
          <b>Welcome to the Student Management System</b>
 
       </span>
-     
+
       < hr/>
 
        <span
@@ -259,7 +257,7 @@ return(
 
        <div
         style={
-           style.descriptionText 
+           style.descriptionText
          }
        >
       
@@ -297,8 +295,8 @@ return(
         style={{marginTop:'10%'}}
         onChange={this.handleTouchTap.bind(this , HANDLE_CODES.USERNAME_CHANGE)}
        />
-   
-     
+
+
        <TextField
         hintText="Password"
         type="password"
@@ -308,7 +306,7 @@ return(
         style={{marginTop:'5%'}}
         />
 
-        
+
         <span style={style.loginButton}>
 
           <RaisedButton

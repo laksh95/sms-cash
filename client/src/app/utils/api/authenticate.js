@@ -39,7 +39,6 @@ const utils = {
 		let url = serverAddress + '/api/course/getInitialData';
 		return axios.get(url, config);
 	}
-
 }
 
 export default utils;

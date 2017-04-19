@@ -6,24 +6,24 @@ import { getSelected } from '../../actions/adminActions.jsx';
 import { connect } from 'react-redux';
 
 
-class DashBoard extends React.Component { 
+class DashBoard extends React.Component {
    constructor(props) {
     super(props);
     }
-  
+
    getChildContext() {
       return { muiTheme: getMuiTheme(baseTheme) };
     }
 
    componentWillReceiveProps(nextProps) {
-      this.props = nextProps;     
+      this.props = nextProps;
     }
 
     componentWillMount() {
      this.props.getSelected(""+this.props.location.pathname);
     }
 
-  
+
    render(){
      return(
          <div>
@@ -36,13 +36,13 @@ class DashBoard extends React.Component {
 DashBoard.childContextTypes = {
             muiTheme: React.PropTypes.object.isRequired,
 };
-DashBoard.contextTypes = { 
+DashBoard.contextTypes = {
     router: React.PropTypes.object.isRequired
 };
 
 const mapStateToProps = (state) => {
   return {
-    adminReducer: state.adminReducer
+    headerReducer: state.headerReducer
     }
 }
 
@@ -51,12 +51,8 @@ const mapDispatchToProps = (dispatch) => {
       getSelected: (location) => {
         dispatch(getSelected(location))
       }
-     
+
     }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(DashBoard);
-
-
-
-

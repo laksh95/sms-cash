@@ -18,9 +18,9 @@ let models  = require('./../sqldb')();
 // decode the token using a secret key-phrase
 	return jwt.verify(token, config.jwtSecret, (err, decoded) => {
     // the 401 code is for unauthorized status
-    	if (err) { 
+    	if (err) {
     		console.log("Error auth check ", err);
-    		return res.status(401).end(); 
+    		return res.status(401).end();
     	}
 
 		const userId = decoded.sub;
@@ -28,7 +28,7 @@ let models  = require('./../sqldb')();
 		 // check if a user exists
 		return userDetail.findUserById(models, userId, (userErr, user) => {
 		    if (userErr || !user) {
-		    	console.log("No user exists ");
+		    	console.log("No user exists");
 		    	return res.status(401).end();
 		    }
 		console.log("Succesfull auth check");

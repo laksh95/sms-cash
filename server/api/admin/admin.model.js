@@ -29,7 +29,6 @@ let admin= connection.define('admin',{
         foreignKey : 'user_detail_id'
       });
     }
-
   }
 },
 {

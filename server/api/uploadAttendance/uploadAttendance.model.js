@@ -17,7 +17,6 @@ let init=function(){
             type:sequelize.ENUM('ACTIVE','INACTIVE'),
             allowNull: false,
             defaultValue: 'ACTIVE'
-
         }
     },{
         classMethods:{

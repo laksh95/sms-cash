@@ -6,7 +6,7 @@ module.exports = {
   sequelize: {
     uri: 'postgres://postgres:cronj123@192.168.1.223:5432/sms',
     options: {
-      logging: true,
+      logging: false,
       dialect: 'postgres',
       //storage: 'dev.sqlite',
       define: {
@@ -15,6 +15,5 @@ module.exports = {
          freezeTableName: true,
       }
     }
-  },
-
+  }
 };

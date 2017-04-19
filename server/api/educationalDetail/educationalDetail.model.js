@@ -38,10 +38,10 @@ let educationDetail= connection.define('educational_detail',{
                      });
               }
   }
-},
-{
-  instanceMethods:{}
-}
-);
-  return educationDetail;
+    },
+    {
+      instanceMethods:{}
+    }
+    );
+      return educationDetail;
 };

@@ -6,15 +6,20 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import Avatar from 'material-ui/Avatar';
 import {List, ListItem} from 'material-ui/List';
 import {browserHistory } from 'react-router';
+import Subheader from 'material-ui/Subheader';
+import Divider from 'material-ui/Divider';
+import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
+import DashBoard from './dashboard/DashBoard.jsx';
 import {Link} from 'react-router';
 import { getSelected } from '../actions/adminActions.jsx';
 import { connect } from 'react-redux';
 let userImage =  require('./../images/user.png');
 class SideBarMenu extends React.Component {
+
   constructor(props) {
     super(props);
     this.state = {
-      selected:this.props.adminReducer.selectedTab
+      selected:this.props.headerReducer.selectedTab
     };
   }
 
@@ -29,7 +34,7 @@ class SideBarMenu extends React.Component {
      //     browserHistory.push('/');
      // }
   }
- 
+
  getChildContext(){
     return { muiTheme: getMuiTheme(baseTheme) };
  }
@@ -49,7 +54,8 @@ class SideBarMenu extends React.Component {
         "Events": 'white',
         "Important": 'white',
         "Blog":'white',
-        "T/S": 'white'
+        "T/S": 'white',
+        "Feedback": 'white'
         }
     list[this.state.selected] = '#e3e7ea'
     let sizeWidth = 230;
@@ -64,12 +70,13 @@ class SideBarMenu extends React.Component {
             {
               (this.props.user.role) ?
            ( <List>
+
               {this.props.user.role.isAdmin ?
               <Link to ="/dashboard" style={{textDecoration: 'none'}}>
                 <ListItem
                   primaryText="DashBoard"
                   leftAvatar={<Avatar src={userImage}
-                   />} 
+                   />}
                    style={{backgroundColor: list["Dashboard"]}}
                    onTouchTap = {this.handleTouchTap.bind(this, "Dashboard")}
                 />
@@ -77,19 +84,20 @@ class SideBarMenu extends React.Component {
               <Link to ="/department" style={{textDecoration: 'none'}}>
                 <ListItem
                   primaryText="Department"
-                  leftAvatar={<Avatar src={userImage} />} 
+                  leftAvatar={<Avatar src={userImage} />}
                    style={{backgroundColor: list["Department"]}}
                       onTouchTap = {this.handleTouchTap.bind(this,"Department")}
                 />
               </Link>
               <Link to ="/student" style={{textDecoration: 'none'}}>
                <ListItem
-                 primaryText="Student" 
+                 primaryText="Student"
                  leftAvatar={<Avatar src={userImage} />}
                    style={{backgroundColor: list["Students"]}}
                        onTouchTap = {this.handleTouchTap.bind(this,"Students")}
                />
               </Link>
+
                {this.props.user.role.isAdmin ?
                    <Link to ="/blog" style={{textDecoration: 'none'}}>
                        <ListItem
@@ -100,7 +108,16 @@ class SideBarMenu extends React.Component {
                            onTouchTap = {this.handleTouchTap.bind(this, "Blog")}
                        />
                    </Link> : null}
-            </List>): null}
+
+                   <Link to ="/feedback" style={{textDecoration: 'none'}}>
+                     <ListItem
+                       primaryText="Feedback"
+                       leftAvatar={<Avatar src={userImage} />}
+                       style={{backgroundColor: list["Feedback"]}}
+                       onTouchTap = {this.handleTouchTap.bind(this,"Feedback")}
+                     />
+                   </Link>
+                </List>): null}
         </Drawer>
 
   </div>
@@ -110,12 +127,12 @@ class SideBarMenu extends React.Component {
 SideBarMenu.childContextTypes = {
             muiTheme: React.PropTypes.object.isRequired,
 };
-SideBarMenu.contextTypes = { 
+SideBarMenu.contextTypes = {
     router: React.PropTypes.object.isRequired
 };
 const mapStateToProps = (state) => {
   return {
-    adminReducer: state.adminReducer
+    headerReducer: state.headerReducer
     }
 }
 

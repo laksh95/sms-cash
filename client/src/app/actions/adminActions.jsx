@@ -44,6 +44,6 @@ export function getSelected(location){
   return {
     type: "GET_SELECTED",
     payload: location
-   
+
   }
 }

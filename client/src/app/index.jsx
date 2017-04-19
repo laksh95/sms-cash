@@ -5,9 +5,11 @@ import {syncHistoryWithStore} from 'react-router-redux'
 import {Router, Route ,IndexRoute, browserHistory} from 'react-router'
 import Login from './containers/login/App.jsx';
 import App from './containers/App.jsx';
-import Dashboard from './components/dashboard/DashBoard.jsx';
+import Dashboard from './components/dashboard/DashBoard.jsx'
 import Department from './containers/department/Department.jsx'
 import Course from './containers/course/Course.jsx'
+import Teacher from './components/teacher/teacher.jsx'
+import Feedback from './containers/feedback/Feedback.jsx'
 import { Provider } from 'react-redux'
 import store from './store.js'
 import Blog from './containers/blog/blog.jsx'
@@ -17,18 +19,19 @@ const history = syncHistoryWithStore(browserHistory, store);
 injectTapEventPlugin();
 render((
 	<Provider store={store}>
-	   <Router history = {history}>	      
+	   <Router history = {history}>
 	      <Route path = "/" component = {App}>
 	         <IndexRoute component = {Dashboard} />
-	         <Route path = "/dashboard" component = {Dashboard} />	         
+	         <Route path = "/dashboard" component = {Dashboard} />
 	         <Route path = "/department" component = {Department} />
-			  <Route path = "/blog" component = {Blog} />
-			  <Route path = "/student" component = {Student} />
-              <Route path = "/post/:postid" component = {Post} />
-			  <Route path = "/course" component={Course} />
+			 <Route path = "/blog" component = {Blog} />
+			 <Route path = "/course" component={Course} />
+			 <Route path = "/student" component = {Student} />
+	         <Route path = "/post/:postid" component = {Post} />
+	         <Route path = "/teachers" component = {Teacher} />
+			 <Route path = "/feedback" component = {Feedback} />
 	      </Route>
 	      <Route path = "/login" component = {Login}/>
 	   </Router>
 	</Provider>
 ), document.getElementById('app'))
-

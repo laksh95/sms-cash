@@ -4,49 +4,48 @@ import * as types from './../constants';
 export function getDepartmentList(course){
 	return {
 		type: types.GET_ALL_DEPARTMENT_FOR_COURSE,
-		payload: 	
+		payload:
 			departmentApi.getDepartmentByCourse(course)
 			.then((response) => {
 				return response.data;
 			})
 	};
-	
 }
 
 export function addDepartment(department){
 	return {
 		type: types.ADD_DEPARTMENT,
-		payload: 	
+		payload:
 			departmentApi.addDepartment(department)
 			.then((response) => {
 				return response.data;
 			})
 	};
-	
+
 }
 
 export function deleteDepartment(department){
 	return {
 		type: types.DELETE_DEPARTMENT,
-		payload: 	
+		payload:
 			departmentApi.deleteDepartment(department)
 			.then((response) => {
 				return response.data;
 			})
 	};
-	
+
 }
 
 export function editDepartment(department){
 	return {
 		type: types.EDIT_DEPARTMENT,
-		payload: 	
+		payload:
 			departmentApi.editDepartment(department)
 			.then((response) => {
 			return response.data;
 			})
 	};
-	
+
 }
 
 
@@ -61,7 +60,7 @@ export function updateSlackBarMsg(message){
 		type: types.CHANGE_SLACKBAR_MSG,
 		payload: message
 	};
-	
+
 }
 
 export function handleTabChange(value) {
@@ -78,10 +77,3 @@ export function pageChange(currentPage , size) {
 		payload: currentPage
 	};
 }
-
-
-
-
-
-
-

@@ -70,8 +70,8 @@ class TopBar extends React.Component {
       name: "STUDENT MANAGEMENT SYSTEM",
       open: false,
       currentSession : false,
-      currentSessionValue : this.props.adminReducer.selectedSession,
-      Selectedcourse: this.props.adminReducer.selectedCourse,
+      currentSessionValue : this.props.headerReducer.selectedSession,
+      Selectedcourse: this.props.headerReducer.selectedCourse,
       user: '',
       width: window.screen.availWidth,
       height: window.screen.availHeight,
@@ -80,7 +80,7 @@ class TopBar extends React.Component {
 
 
      updateDimensions = () =>{
-    
+
     this.setState({   message: false  });
     var w = window,
         d = document,
@@ -99,7 +99,7 @@ class TopBar extends React.Component {
     }
 
   componentWillReceiveProps(nextProps) {
-    this.props = nextProps; 
+    this.props = nextProps;
      this.setState({
             user : this.props.loginReducer.loginUser.name
               });
@@ -184,9 +184,9 @@ class TopBar extends React.Component {
 
  render(){
       let that = this;
-      var allSessions = this.props.adminReducer.initialData.batch.map(function(item , id){
+      var allSessions = this.props.headerReducer.initialData.batch.map(function(item , id){
        return (
-          <MenuItem key={id} primaryText={item.name} 
+          <MenuItem key={id} primaryText={item.name}
            onTouchTap={ () => {
           that.props.setCurrentSession(item.name);
           that.handleTouchTap.bind(that, HANDLE_CODES.CLOSE_CURRENT_SESSION);
@@ -196,25 +196,25 @@ class TopBar extends React.Component {
         );
      });
 
-       var allcourses = this.props.adminReducer.initialData.course.map(function(item , id){
+       var allcourses = this.props.headerReducer.initialData.course.map(function(item , id){
        return (
           <MenuItem key={id} primaryText={item.name}
            onTouchTap={ () => {
-               that.props.setCurrentCourse(item.name);
+               that.props.setCurrentCourse(item);
                that.handleTouchTap.bind(that, HANDLE_CODES.COURSE_CLOSE)
-           } 
-         } 
+           }
+         }
        />
         );
      });
 
-   
+
 
 
   return(
 
         <div>
-        
+
         <AppBar
 
          iconElementLeft={
@@ -227,7 +227,7 @@ class TopBar extends React.Component {
                 this.handleTouchTap.bind(this, HANDLE_CODES.OPEN_CURRENT_SESSION)
               }
        >
-       
+
        <Popover
           open={this.state.currentSession}
           anchorEl={this.state.anchorEl}
@@ -241,7 +241,7 @@ class TopBar extends React.Component {
 
         </Popover>
 
-       <FlatButton label={this.props.adminReducer.selectedCourse} style={style.settingsButton}
+       <FlatButton label={this.props.headerReducer.selectedCourse} style={style.settingsButton}
           onTouchTap={this.handleTouchTap.bind(this, HANDLE_CODES.COURSE_OPEN)}
        />
       <Popover
@@ -274,13 +274,13 @@ class TopBar extends React.Component {
 
          iconElementLeft={
                   <span  style={style.myStyle} >
-                     
+
                   </span>
                 }
        ></AppBar>
     </MuiThemeProvider >*/}
     </div>
-    
+
 );
 }
 }
@@ -290,9 +290,9 @@ TopBar.childContextTypes = {
         };
 const mapStateToProps = (state) => {
   return {
-    adminReducer: state.adminReducer,
     loginReducer : state.login,
-    courseReducer : state.courseReducer
+    courseReducer : state.courseReducer,
+    headerReducer: state.headerReducer,
     }
 }
 

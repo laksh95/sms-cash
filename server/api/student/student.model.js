@@ -52,10 +52,10 @@ let fetchStudentsDetails=((db,data)=>{
                 name:data.semester,
                 status:'t'
               }
-            }]              
+            }]
           }]
         }
-     ]    
+     ]
   })
 })
 
@@ -90,7 +90,7 @@ let fetchStudentsOnSemDeptBatch=((db,limit,offset,where)=>{
           attributes:['id','name'],
          include:where.include
         }
-     ]    
+     ]
   })
 })
 let fetchSemester=((courseId,db)=>{
@@ -144,7 +144,7 @@ module.exports=function(){
           student.belongsToMany(section,{
            through : "student_section_allocation"
           });
-        },   
+        },
         getInitialData:(db,courseId,cb)=>{
           let initialData=[];
           let departments=[];
@@ -211,9 +211,9 @@ module.exports=function(){
                   console.log("in catch outer",error.toString());
                   initialData={
                     status:500,
-                    msg:'Internal Server Error'            
+                    msg:'Internal Server Error'
                   }
-                  cb(initialData) 
+                  cb(initialData)
                 })
         },
         getStudents:(db, limit,offset,whereAttribute,cb)=>{
@@ -264,7 +264,7 @@ module.exports=function(){
             console.log("data in student Details---------------------->",data.dataValues.sections[0].dataValues.curriculum.dataValues);
             details={
               batchId: data.dataValues.batch.dataValues.id,
-              batchName: data.dataValues.batch.dataValues.name, 
+              batchName: data.dataValues.batch.dataValues.name,
               departmentId: data.dataValues.department.dataValues.id,
               departmentName:data.dataValues.department.dataValues.name,
               departmentAbbreviatedName: data.dataValues.department.dataValues.abbreviated_name,
@@ -295,12 +295,12 @@ module.exports=function(){
               curriculumName:data.dataValues.sections[0].dataValues.curriculum.dataValues.name,
               semesterId:data.dataValues.sections[0].dataValues.curriculum.dataValues.semester.dataValues.id,
               semesterType:data.dataValues.sections[0].dataValues.curriculum.dataValues.semester.dataValues.type,
-              semesterName:data.dataValues.sections[0].dataValues.curriculum.dataValues.semester.dataValues.name,           
+              semesterName:data.dataValues.sections[0].dataValues.curriculum.dataValues.semester.dataValues.name,
             }
             sendData={
               data:details,
               status:200,
-              msg:"successful"        
+              msg:"successful"
             }
             cb(sendData)
           })
@@ -308,12 +308,12 @@ module.exports=function(){
             console.log("in catch outer of get students details",error.toString());
             sendData={
               status:500,
-              msg:'Internal Server Error'            
+              msg:'Internal Server Error'
             }
           })
         }
       },
    }
   );
-    return student;    
+    return student;
 }

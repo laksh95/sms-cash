@@ -52,16 +52,13 @@ let init=function() {
                         cb(response)
                     }
                     else{
-                        console.log("found course ")
                         department.findAll({
                             where :{
                                 name : newDepartment.name,
                                 course_id : courseData.dataValues.id
                             }
                         }).then((data)=>{
-                            console.log("Finding department",data)
                             if(0==data.length){
-                                console.log("No department found")
                                 department.create({
                                     name:newDepartment.name,
                                     abbreviated_name:newDepartment.abbreviated_name,
@@ -83,7 +80,6 @@ let init=function() {
                                 })
                             }
                             else {
-                                console.log("department found ")
                                 let flag = 1
                                 for(let index in data){
                                     if(data[index].dataValues.status ==true){
@@ -91,7 +87,6 @@ let init=function() {
                                     }
                                 }
                                 if(1==flag){
-                                    console.log("status : false ")
                                     department.create({
                                         name:newDepartment.name,
                                         abbreviated_name:newDepartment.abbreviated_name,
@@ -134,7 +129,6 @@ let init=function() {
                 })
             },
             editDepartment : function(models ,curDepartment ,cb){
-                console.log(curDepartment)
                 let department = models.department
                 department.update({
                     name:curDepartment.name ,
@@ -163,7 +157,6 @@ let init=function() {
                 })
             },
             deleteDepartment:function(models,cur_id,cb){
-                console.log("inside deleteDepartment")
                 let department = models.department
                 department.update({
                     status : 'f'
@@ -181,11 +174,13 @@ let init=function() {
                     cb(response)
                 })
             },
-        getDepartments: function(models,courseId, cb){
+
+        getDepartments: function(models,body){
             let department = models.department;
-            department.findAll({
+            return department.findAll({
+                attributes: ['id','name','abbreviated_name'],
                 where: {
-                    course_id: courseId,
+                    course_id: body.courseId,
                     status: true
                 }
             }).then((data) => {
@@ -200,20 +195,15 @@ let init=function() {
                             status : true
                         }
                     }))
-
-                    //     .then((result)=>{
-                    //     let count = result.count
-                    //     cur_dep['total_no_of_students']=count
-                    //     departments.push(cur_dep)
-                    // })
                 })
-                Promise.all(promises).then(values=>{
+                return Promise.all(promises).then(values=>{
                     data.map((dept,index)=>{
                         let cur_dept = dept.dataValues
                         cur_dept['total_no_of_students']= values[index].count
                         departments.push(cur_dept)
                     })
-                    cb(departments)
+                    console.log("inside model------------------------------",departments)
+                    return({departments});
                 })
             })
         }

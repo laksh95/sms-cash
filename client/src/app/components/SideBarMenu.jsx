@@ -107,16 +107,16 @@ class SideBarMenu extends React.Component {
                   primaryText="DashBoard"
                   leftAvatar={<Avatar src={userImage}
                    />} 
-                   style={{backgroundColor: list["/dashboard"]}}
-                   onTouchTap = {this.handleTouchTap.bind(this, "/dashboard")}
+                   style={{backgroundColor: list["Dashboard"]}}
+                   onTouchTap = {this.handleTouchTap.bind(this, "Dashboard")}
                 />
               </Link> : null}
               <Link to ="/department" style={{textDecoration: 'none'}}>
                 <ListItem
                   primaryText="Department"
                   leftAvatar={<Avatar src={userImage} />} 
-                   style={{backgroundColor: list["/department"]}}
-                      onTouchTap = {this.handleTouchTap.bind(this,"/department")}
+                   style={{backgroundColor: list["Department"]}}
+                      onTouchTap = {this.handleTouchTap.bind(this,"Department")}
                 />
               </Link>
 
@@ -124,8 +124,8 @@ class SideBarMenu extends React.Component {
                <ListItem
                  primaryText="Student" 
                  leftAvatar={<Avatar src={userImage} />}
-                   style={{backgroundColor: list["/student"]}}
-                       onTouchTap = {this.handleTouchTap.bind(this,"/student")}
+                   style={{backgroundColor: list["Students"]}}
+                       onTouchTap = {this.handleTouchTap.bind(this,"Students")}
                />
               </Link>
             </List>): null}

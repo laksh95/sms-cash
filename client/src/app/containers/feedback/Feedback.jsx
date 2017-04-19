@@ -27,7 +27,6 @@ class Feedback extends React.Component {
       subjectId: []
     }
   }
-
   getChildContext() {
     return { muiTheme: getMuiTheme(baseTheme) };
   }

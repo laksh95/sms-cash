@@ -4,7 +4,7 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
-import {RadioButton, RadioButtonGroup} fro12m 'material-ui/RadioButton';
+import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import 'moment/locale/nb';
@@ -21,7 +21,7 @@ import {store} from "../store.js";
 import {connect} from "react-redux";
 import {getEvents} from '../actions/getDataAction.jsx';
 const currentdate=moment().format("YYYY-MM-DD");
-class DashBoard extends React.Component { 
+class DashBoard extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -33,7 +33,7 @@ class DashBoard extends React.Component {
 		content:'',
 		openbutton: false,
 		startDate:'',
-		endDate:'',			
+		endDate:'',
 		startTime:'',
 		endTime:'',
 		start:'',
@@ -44,11 +44,11 @@ class DashBoard extends React.Component {
 		valid:0,
 		message:'',
 		calendarType:''
-	}	
+	}
 	}
 	handleRadioButton=(event,value)=>{
 		this.setState({
-			calendarType:value	
+			calendarType:value
 		})
 	}
 	handleCloseButton=(event)=>{
@@ -80,7 +80,7 @@ class DashBoard extends React.Component {
 			url='http://localhost:1234/api/academicCalendar/dashboard/deleteEvent'
 		}
 		axios.put(url, {
-				id: this.state.event.id,				 
+				id: this.state.event.id,
 	   		}).then((response)=> {
 	   			if(response.data.status==1){
 	   			events.splice(index,1)
@@ -88,7 +88,7 @@ class DashBoard extends React.Component {
 			this.setState({
    				openSnack:true,
    				message:response.data.message
-			})  
+			})
         this.props.getEvents(events)
       	}).catch(function (response) {
         this.setState({
@@ -97,7 +97,7 @@ class DashBoard extends React.Component {
 		})
   });
 	}
-	
+
 	handleChangeSelect = (event, index, value) =>{
 			this.setState({
 				typeError:'',
@@ -108,8 +108,8 @@ class DashBoard extends React.Component {
 		BigCalendar.momentLocalizer(moment);
 	}
 	getChildContext() {
-		return { 
-			muiTheme: getMuiTheme(baseTheme) 
+		return {
+			muiTheme: getMuiTheme(baseTheme)
 		};
 	}
 	handleTap = () => {
@@ -122,7 +122,7 @@ class DashBoard extends React.Component {
 		this.setState({
 			start:start,
 			end:end,
-		});	
+		});
 		console.log("state",this.state.end)
 		if(this.state.type==''){
 			this.setState({
@@ -190,15 +190,15 @@ class DashBoard extends React.Component {
 		}
 		else{
 			valid= 0;
-		}	
+		}
 	};
-	
+
 	handleTouchTapSlot = (event) => {
 		let newEvent={};
 		console.log("event",typeof(event.start))
 		let endDate=moment(event.end).format("YYYY-MM-DD");
 		let startDate=moment(event.start).format("YYYY-MM-DD");
-		let endTime=moment(event.end).format('hh:mm')	
+		let endTime=moment(event.end).format('hh:mm')
 		let startTime=moment(event.start).format('hh:mm')
 		let start=moment(startDate+" "+startTime, 'HH:mm')._i;
 		let end=moment(endDate+" "+endTime, 'HH:mm')._i;
@@ -207,7 +207,7 @@ class DashBoard extends React.Component {
 			start:start,
 			end:end,
 			startDate:startDate,
-			endDate:endDate,			
+			endDate:endDate,
 			startTime:startTime,
 			endTime:endTime,
 			typeError:'',
@@ -298,7 +298,7 @@ class DashBoard extends React.Component {
 					<Card className='cardName'>
 						<CardHeader
 							title={this.state.event.title}
-							subtitle={this.state.event.content}					              
+							subtitle={this.state.event.content}
 						/>
 						<RaisedButton
 							onTouchTap={this.handleDeleteTap}
@@ -322,13 +322,13 @@ class DashBoard extends React.Component {
 								<MenuItem value="others" primaryText="Others" />
 							</SelectField>
 							<br/>
-							<label className="lerr" >{this.state.typeError}</label>	<br/>			
+							<label className="lerr" >{this.state.typeError}</label>	<br/>
 							<TextField
 								value={this.state.content}
 								hintText="Content/Occasion"
 								onChange={this.handleChangeContent}/>
 								<br/>
-								<label className="lerr" >{this.state.contentError}</label>						
+								<label className="lerr" >{this.state.contentError}</label>
 							<br/>
 							Start Date:&nbsp;
 								<input type="date" className="style-4" value={this.state.startDate} onChange={this.handleChangeStartDate} min={currentdate} />
@@ -336,7 +336,7 @@ class DashBoard extends React.Component {
 							Start Time:&nbsp;
 								<input type="time" className="style-4" value={this.state.startTime} onChange={this.handleChangeStartTime} />
 							<br/><br/>
-							End Date:&nbsp;								    
+							End Date:&nbsp;
 								<input type="date" className="style-4" value={this.state.endDate} onChange={this.handleChangeEndDate} min={currentdate}/>
 							<br/><br/>
 							End Time:&nbsp;
@@ -344,7 +344,7 @@ class DashBoard extends React.Component {
 								<label className="lerr" >{this.state.dateError}</label>
 							<br/>
 							<RadioButtonGroup name="calendar" defaultSelected="academic" onChange="handleRadioButton">
-								<RadioButton 
+								<RadioButton
 									labelStyle={{font:'110% arial, sans-serif'}}
 							        value="academic"
 							        label="Academic Calendar"

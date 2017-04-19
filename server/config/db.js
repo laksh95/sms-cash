@@ -5,7 +5,7 @@ let options = {
        freezeTableName:true
    }
 }
-let connection= new sequelize('postgres://postgres:cronj123@192.168.1.223:5432/sms', options)
+let connection= new sequelize('postgres://postgres:shilpa@localhost:5432/sms', options)
 let data={
    sequelize:sequelize,
    connection:connection

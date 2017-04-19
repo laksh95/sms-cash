@@ -19,7 +19,7 @@ import renderIf from 'render-if';
 let SelectableList = makeSelectable(List);
 class DrawerOpenRightExample extends React.Component {
   constructor(props) {
-    super(props);   
+    super(props);
     this.state= {
         dashboard : true,
         openSnack: false,
@@ -48,7 +48,7 @@ class DrawerOpenRightExample extends React.Component {
         let invalid=0;
         let messg='';
         let events=this.props.data.events;
-          if(response.data.totalEvent.status==1){        
+          if(response.data.totalEvent.status==1){
             for(let i in response.data.totalEvent)
             {
               let event1={
@@ -66,7 +66,7 @@ class DrawerOpenRightExample extends React.Component {
           }
           else {
             invalid++;
-            messg=
+            messg= "random"
           }
           if(response.data.personalCalendar.status==1){
             for(let i in response.data.personalCalendar.data){
@@ -83,7 +83,7 @@ class DrawerOpenRightExample extends React.Component {
           }
           this.props.getEvents(events)
         }
-        else invalid++; 
+        else invalid++;
         if(response.data.totalStudents.status==1){
           this.props.getTeacherCount(response.data.totalStudents.data)
         }
@@ -98,7 +98,7 @@ class DrawerOpenRightExample extends React.Component {
         else invalid++;
         this.setState({
           openSnack:true,
-          message:
+          message: "balh"
         })
       })
       .catch(function (response) {
@@ -108,7 +108,7 @@ class DrawerOpenRightExample extends React.Component {
   getChildContext() {
     return { muiTheme: getMuiTheme(baseTheme) };
    }
-  render() { 
+  render() {
     const contentStyle = { marginTop:10, marginLeft: 90 ,transition: 'margin-left 100ms cubic-bezier(0.23, 1, 0.32, 1)' };
     if (this.props.open) {
       contentStyle.marginLeft = 250;
@@ -117,13 +117,13 @@ class DrawerOpenRightExample extends React.Component {
     if( this.props.open === false){
      sizeWidth = 70;
     }
-   
+
     return (
         <div>
          <Drawer width={sizeWidth} openSecondary={false} docked={true} zDepth={2} open={true} >
           <AppBar title="Menu"
            onLeftIconButtonTouchTap = {this.props.handleToggle} />
-           <SelectableList defaultValue={1}>                
+           <SelectableList defaultValue={1}>
             <ListItem
               value={1}
               primaryText="DashBoard"
@@ -179,12 +179,7 @@ class DrawerOpenRightExample extends React.Component {
                     <DashBoardNumberOfRole parentNo={this.props.data.parentCount} studentNo={this.props.data.studentCount} teacherNo={this.props.data.teacherCount}/>
                   </div>
               )
-          <Snackbar
-            open={this.state.openSnack}
-            message={this.state.message}
-            autoHideDuration={4000}
-            onRequestClose={this.handleSnackRequestClose}
-        />
+
         }
         </div>
     </div>

@@ -62,7 +62,6 @@ let courseFunctions = {
     deleteCourse: (req, res) => {
         if (Object.keys(req).length !== 0) {
             if (Object.keys(req.body).length !== 0) {
-                console.log("IN CONTROLLER",req.body.id)
                 model.deleteCourse(db, req.body.id, (data) => {
                     res.send(data)
                 })

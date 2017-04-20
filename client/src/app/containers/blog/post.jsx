@@ -202,18 +202,15 @@ class Post extends React.Component {
                         </List>
                     </div>
                     <div className="postHeader">
-                        {/*{this.props.blogReducer.post.heading}*/}
-                        Cracking the Coding Interview
+                        {this.props.blogReducer.post.heading}
+                        {/*Cracking the Coding Interview*/}
                     </div>
                     <div className="postImage">
                         <img src="https://cdn-images-1.medium.com/max/1260/1*3lZYFSUsa1S-l8X5HjTvfg.jpeg" width={1000} alt=""/>
                     </div>
                     <div className="postContent">
                         <p>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Delectus, magni molestiae obcaecati quibusdam quisquam quod ut voluptates. Aliquam numquam, ratione. Deserunt eaque ex inventore itaque minima optio sapiente, sed tempora.
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda error id molestiae nihil quasi voluptatum? Aliquam atque autem dolore eos esse fugit incidunt inventore maiores mollitia nobis omnis, quos, ut.
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium amet, assumenda consectetur cumque eaque eligendi enim fugiat id in incidunt iste laborum molestiae, natus obcaecati omnis quisquam vel velit voluptatum?
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. A animi assumenda at dolores dolorum eligendi explicabo id iste nisi obcaecati, odit, provident qui quis quos rem repellat tempora ullam velit.
+                            {this.props.blogReducer.post.content}
                         </p>
                     </div>
                     <div className="postFooter">

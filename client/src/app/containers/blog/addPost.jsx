@@ -66,7 +66,6 @@ class AddPost extends React.Component {
             default:
                 break
         }
-
     };
     onDrop(files){
         console.log(files)

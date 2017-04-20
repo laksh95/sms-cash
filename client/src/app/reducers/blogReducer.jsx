@@ -26,6 +26,7 @@ const blogReducer = ( state = {
                 post :action.payload.data,
                 comments :action.payload.data.comments
             }
+            console.log("-----------------------",state.post)
             return state
         case "ADD_COMMENT_FULFILLED":
             let comment = action.payload.data

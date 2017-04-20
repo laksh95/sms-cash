@@ -10,7 +10,9 @@ const initialLoginState={
                 totalPages: 1,
                 currentPage: 1
             },
-    pagedDepartment: []
+    pagedDepartment: [],
+    showErrorPage: false,
+    errorMessage: ""
 }
 
 const departmentReducer= (state=initialLoginState, action) => {
@@ -171,8 +173,10 @@ const departmentReducer= (state=initialLoginState, action) => {
 
         case types.ADD_DEPARTMENT + "_FULFILLED":
             var response= action.payload;
-            if(response.status==1){
+            console.log("response:: ",response);
+            if(response.status==200){
                 let addedDepartment= response.data;
+                console.log("AddedDepartment:" , addedDepartment);
                 let allDepartment= state.departmentList;
                 addedDepartment.total_no_of_students = 0;
                 allDepartment.push(addedDepartment);
@@ -192,12 +196,56 @@ const departmentReducer= (state=initialLoginState, action) => {
                 }
                 state= {
                     ...state,
-                     departmentList: allDepartment,
+                    departmentList: allDepartment,
                     showSlackBar: true,
                     queryStatusMessage: "Department Added succesfully!",
                     selectedTab: "list",
                     pagedDepartment,
                     pagination
+                }
+            }
+        break;
+
+        case types.ADD_DEPARTMENT + "_REJECTED":
+            var response= action.payload.response;
+            console.log("response:: ",response);
+            if(response){
+                if(response.status==500){
+                    state= {
+                        ...state,
+                        showErrorPage: true,
+                        errorMessage: "500: Internal Server Error!"
+                    }
+                }
+                else if(response.status==403){
+                    state= {
+                        ...state,
+                        showErrorPage: true,
+                        errorMessage: "403: Fobidden!"
+                    }
+                }
+                else if(response.status==400){
+                    if(response.data.message== 'IS_ALREADY_EXISTS'){
+                        state= {
+                            ...state,
+                            showSlackBar: true,
+                            queryStatusMessage: "Error: Cannot Add, As the Department already exists!"
+                        }
+                    }
+                    else{
+                        state= {
+                            ...state,
+                            showSlackBar: true,
+                            queryStatusMessage: "Error: Bad Request!"
+                        }
+                    }
+                }
+            }
+            else{
+                state= {
+                        ...state,
+                        showErrorPage: true,
+                        errorMessage: "500: Internal Server Error!"
                 }
             }
         break;
@@ -209,7 +257,13 @@ const departmentReducer= (state=initialLoginState, action) => {
             }
         break;
 
-
+        case types.RESET_ERROR:
+          state={
+            ...state,
+            showErrorPage: false,
+            errorMessage: ""
+          }
+        break;
 
     }
     return state;

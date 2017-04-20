@@ -177,7 +177,7 @@ const loginReducer= (state=initialLoginState, action) => {
             showErrorPage: false,
             errorMessage: ""
           }
-        break
+        break;
     }
     return state;
 };

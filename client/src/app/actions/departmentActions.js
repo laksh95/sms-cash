@@ -7,6 +7,7 @@ export function getDepartmentList(course){
 		payload:
 			departmentApi.getDepartmentByCourse(course)
 			.then((response) => {
+				response.data.status= response.status;
 				return response.data;
 			})
 	};
@@ -18,6 +19,8 @@ export function addDepartment(department){
 		payload:
 			departmentApi.addDepartment(department)
 			.then((response) => {
+				console.log("Response: " , response);
+				response.data.status= response.status;
 				return response.data;
 			})
 	};
@@ -76,4 +79,10 @@ export function pageChange(currentPage , size) {
 		type: types.PAGE_CHANGE,
 		payload: currentPage
 	};
+}
+
+export function resetToNoError(){
+	return {
+		type: types.RESET_ERROR
+	}
 }

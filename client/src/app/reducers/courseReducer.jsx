@@ -5,7 +5,9 @@ const courseReducer = (state = {
     snackbarMessage:"",
     value : "a",
     totalPages : "",
-    currentPage : ""
+    currentPage : 1,
+    showErrorPage: false,
+    errorMessage: ""
 },action) => {
     switch(action.type){
         case "SET_COURSE":
@@ -48,6 +50,13 @@ const courseReducer = (state = {
                     pagedCourses.push(course[index])
                 }
             }
+            if(0==pagedCourses){
+                state = {
+                    ...state ,
+                    snackbarMessage : "Nothing to Show",
+                    snackbarOpen : true
+                }
+            }
             state  = {
                 ...state ,
                 course : course ,
@@ -58,8 +67,8 @@ const courseReducer = (state = {
 
         case "ADD_COURSE_FULFILLED":
             var data = action.payload
-            console.log("==================================",data)
-            if(data.status==1){
+            console.log("$$$$$",data)
+            if(data.status==200){
                 let newCourse = data.data
                 let course = state.course
                 course.push(newCourse)
@@ -84,12 +93,35 @@ const courseReducer = (state = {
             else {
                 state = {
                     ...state ,
-                    snackbarMessage : data.msg,
-                    snackbarOpen : true
+                    showErrorPage : true,
+                    errorMessage : "500 : Internal Server Error"
                 }
             }
             break
-
+        case "ADD_COURSE_REJECTED":
+            var data = action.payload.data
+            if (data.status==500){
+                state={
+                    ...state ,
+                    showErrorPage:true ,
+                    errorMessage :"500:Internal Server Error"
+                }
+            }
+            else if(data.status==400){
+                state ={
+                    ...state ,
+                    snackbarMessage : "BAD REQUEST",
+                    snackbarOpen : true
+                }
+            }
+            else if (data.status==403){
+                state = {
+                    ...state ,
+                    showErrorPage : true ,
+                    errorMEssage : "403: Forbidden"
+                }
+            }
+            break
         case "EDIT_COURSE_FULFILLED":
             var content = action.payload
             var data = content.data
@@ -155,6 +187,23 @@ const courseReducer = (state = {
                 snackbarOpen :true ,
                 snackbarMessage : "Course Deleted",
                 pagedCourses:pagedCourses
+            }
+            break
+        case "SET_PAGINATION":
+            var data = action.payload
+            var pagedCourses = data.pagedCourses
+            var currentPage = data.currentPage
+            state = {
+                ...state ,
+                pagedCourses ,
+                currentPage
+            }
+            break
+        case "RESET_ERROR":
+            state={
+                ...state,
+                showErrorPage: false,
+                errorMessage: ""
             }
             break
     }

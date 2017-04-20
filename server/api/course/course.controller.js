@@ -33,7 +33,13 @@ let courseFunctions = {
         if (Object.keys(req).length !== 0) {
             if (Object.keys(req.body).length !== 0) {
                 model.addNewCourse(db, req.body, function (data) {
-                    res.send(data)
+                    console.log(data)
+                    if(1==data.status){
+                        res.status(200).json({data:data.data,msg:data.msg})
+                    }
+                    else {
+                        res.status(500).json({data:[],msg:data.msg})
+                    }
                 })
             }
             else {

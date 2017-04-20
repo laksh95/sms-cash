@@ -25,10 +25,6 @@ let init = function(){
            experience_description: {
                type: sequelize.TEXT
            },
-           skill:{
-            type: sequelize.ARRAY(sequelize.INTEGER),
-            defaultValue:null
-          },
            status:{
                type:sequelize.BOOLEAN,
                allowNull:false,
@@ -52,20 +48,6 @@ let init = function(){
                 totalTeacher: function(db, cb){ //counting number of teachers
                     let teacher = db.teacher
                     return teacher.findAndCountAll()
-                    .then((data)=>{
-                      dataToSend = {
-                        count: data.count,
-                        status: 1,
-                        message: "Loaded"
-                      }
-                      return dataToSend
-                    })
-                    .catch((data)=>{
-                        return({
-                            status: 0,
-                            message: "Failed to load data"
-                        })
-                    })
                 },
                getTeacherAndFeedback: (db, request) => {
                  let teacher = db.teacher

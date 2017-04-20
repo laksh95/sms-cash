@@ -68,22 +68,8 @@ let personalCalendar= connection.define('personal_calendar',{
           status: true
         }
       })
-      .then((data) => {
-        dataToSend = {
-          data,
-          status: 200,
-          message: "Success"
-        }
-        return dataToSend
-      })
-      .catch((err)=>{
-        return {
-          status: 500,
-          message: err.toString()
-        }
-      })
     },
-    addPersonalEvent: (db, request, cb) => { //adding event from personal calendar for a prticular user
+    addPersonalEvent: (db, request) => { //adding event from personal calendar for a prticular user
       personalCalendar = db.personal_calendar
 
     return personalCalendar.create({
@@ -93,50 +79,17 @@ let personalCalendar= connection.define('personal_calendar',{
         content: request.body.content,
         user_id: request.user.id
       })
-      .then((data)=>{
-        cb({
-          status: 200,
-          message: "Success",
-          data: {
-            heading: data.heading,
-            end_date: data.end_date,
-            start_date: data.start_date,
-            content: data.content,
-            id: data.id
-          }
-        })
-      })
-      .catch((data)=>{
-        cb({
-          status: 500,
-          message: err.toString()
-        })
-      })
     },
-    deletePersonalEvent: (db, request, cb) => { ////deleting event from personal calendar for a particular user
+    deletePersonalEvent: (db, request) => { ////deleting event from personal calendar for a particular user
       personalCalendar = db.personal_calendar
 
-      personalCalendar.update({
+      return personalCalendar.update({
             status: false
-          },{
-           where:{
-            id:request.id
-          }
+            },{
+             where:{
+              id:request.id
+            }
          })
-         .then((data)=>{
-           cb({
-           status: 200,
-           message: "Success",
-           data: request.id
-         })
-        })
-        .catch((data)=>{
-          cb({
-            status: 200,
-            message: err.toString(),
-            data: request.id
-          })
-        })
     }
   }
 },

@@ -56,7 +56,7 @@ let academicCalendar= connection.define('academic_calendar',{
         let academicCalendar  = models.academic_calendar
         let academicYear = models.academic_year
         academicYear.hasMany(academicCalendar,{
-          foreignKey : "academic_year"
+          foreignKey : "academic_year_id"
         })
       },
       getAllHolidys : (db, cb)=>{ //loading all holidays from API into the database
@@ -67,7 +67,7 @@ let academicCalendar= connection.define('academic_calendar',{
               start_date: new Date(theData.date),
               end_date: new Date(theData.date),
               content: theData.name,
-              academic_year: 1
+              academic_year_id: 1
             })
             .then((data)=>{
               cb("Done Create")
@@ -78,80 +78,36 @@ let academicCalendar= connection.define('academic_calendar',{
           cb("ERROR IN LOADING DATA TO DATABASE")
         })
       },
-      fetchEventList : (db, cb)=>{ //fetching all events from academic calendar
+      fetchEventList : (db)=>{ //fetching all events from academic calendar
         academicCalendar = db.academic_calendar
-        console.log("fetching AC")
         return academicCalendar.findAll({
-          attributes: ['id' , 'type' , 'end_date', 'start_date', 'content', 'academic_year']
-        ,
-        where: {
-          status: true
-        },
-    })
-      .then((data) => {
-        dataToSend = {
-          data,
-          status: 200,
-          message: "Success"
-        }
-        return dataToSend
-      })
-      .catch((err)=>{
-        return {
-          status: 500,
-          message: err.toString()
-        }
-      })
+          attributes: ['id' , 'type' , 'end_date', 'start_date', 'content', 'academic_year_id']
+          ,
+          where: {
+            status: true
+          },
+        })
       },
-      addEvent: (db, request, cb)=>{  //adding event to academic calendar
+      addEvent: (db, request)=>{  //adding event to academic calendar
         academicCalendar = db.academic_calendar
-        console.log("drequest object", request.type)
-        academicCalendar.create({
+        return academicCalendar.create({
           type: request.type,
           start_date: new Date(request.startDate),
           end_date: new Date(request.endDate),
           content: request.eventName,
-          academic_year: request.academicYear
-        })
-        .then((data)=>{
-          cb({
-          status: 200,
-          message: "Success",
-          data: request
-          })
-        })
-        .catch((err)=>{
-          console.log(data)
-          cb({
-            status: 500,
-            message: err.toString()
-          })
+          academic_year_id: request.academicYear
         })
       },
-      deleteEvent: (db, request, cb)=>{ //deleting event from academic calendar
+      deleteEvent: (db, request)=>{ //deleting event from academic calendar
         academicCalendar = db.academic_calendar
 
-        academicCalendar.update({
+        return academicCalendar.update({
             status: false
           },{
            where:{
             id: request.id
           }
          })
-         .then((data)=>{
-           cb({
-           status: 200,
-           message: "Success",
-           data: request.id
-         })
-        })
-        .catch((err)=>{
-          cb({
-            status: 500,
-            message: err.toString(),
-            data: request.id
-          })
-        })
       },
     }
   }

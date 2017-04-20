@@ -165,10 +165,6 @@ class Blog extends React.Component {
                             <Avatar color={blue300} backgroundColor={indigo900} size={32}>{this.props.blogReducer.stats.totalComments}</Avatar>
                             Total Comments Posted
                         </Chip><br/><br/>
-                        <Chip >
-                            <Avatar color={blue300} backgroundColor={indigo900} size={32}>23</Avatar>
-                            Total Rating
-                        </Chip>
                     </div>
                 </div>
                 <Dialog

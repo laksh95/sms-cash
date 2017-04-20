@@ -43,6 +43,7 @@ let init=function(){
                 },
                 addNewCourse:(db,setData,sendData)=>{
                     let course=db.course
+                    setData.course_name = setData.course_name.toUpperCase()
                     let response={}
                     course.findAll({
                         attributes:['name','status'],

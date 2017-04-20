@@ -6,8 +6,6 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import DepartmentList  from './../../components/department/DepartmentList.jsx';
 import AddDepartment from './../../components/department/AddDepartment.jsx';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import {getDepartmentList, addDepartment, deleteDepartment, editDepartment,
   hideSlackBar, updateSlackBarMsg, handleTabChange, pageChange, resetToNoError} from "./../../actions/departmentActions";
 import {setErrorMessage} from "./../../actions/errorActions";
@@ -18,10 +16,6 @@ class Department extends React.Component{
 
     constructor(props){
       super(props);
-    }
-
-    getChildContext() {
-      return { muiTheme: getMuiTheme(baseTheme) }
     }
 
     componentWillMount() {
@@ -41,7 +35,7 @@ class Department extends React.Component{
         console.log(this.props)
         return (
           <div >
-            <Tabs value={this.props.department.selectedTab} onChange={this.props.handleTabChange}>
+            <Tabs value={this.props.department.selectedTab} style={{color:'grey'}} onChange={this.props.handleTabChange}>
               <Tab label="Department List" value="list">
                   <DepartmentList
                     getDepartmentList= {(course) => this.props.getDepartmentList(course)}
@@ -68,9 +62,6 @@ class Department extends React.Component{
     }
 }
 
-Department.childContextTypes = {
-            muiTheme: React.PropTypes.object.isRequired,
-};
 Department.contextTypes = {
     router: React.PropTypes.object.isRequired
 };

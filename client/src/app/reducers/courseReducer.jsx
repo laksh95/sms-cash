@@ -174,8 +174,6 @@ const courseReducer = (state = {
                 }
             }
             else {
-                this.props.setSnackbarMessage("Internal Server Error")
-                this.props.setSnackbarOpen(true)
                 state = {
                     ...state ,
                     snackbarMessage : "Internal Server Error",

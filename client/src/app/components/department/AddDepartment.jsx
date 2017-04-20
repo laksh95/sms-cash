@@ -90,24 +90,27 @@ class AddDepartment extends React.Component{
         return (
           <div>
            <div className="contentCenter">
-              <h2>Add Department</h2><br/>
-              <label className="errorMsg">{this.state.errorMessage}</label><br/>
-              <TextField
-                hintText="Department Full Name"
-                errorText={this.state.invalidName}
-                floatingLabelText="Full Name"
-                onChange={(e)=> this.handleTextChange(e, "name")}
-                value={this.state.name}
-              /><br />
-              <TextField
-                hintText="Department Short Name"
-                errorText={this.state.invalidShortName}
-                floatingLabelText="Short Name"
-                onChange={(e)=> this.handleTextChange(e, "shortName")}
-                value={this.state.shortName}
-              />
-              <br /><br/><br/>
-              <RaisedButton label="ADD" primary={true} onTouchTap= {this.addDepartment}/>
+               <h2>Add Department</h2><br/>
+               <label className="errorMsg">{this.state.errorMessage}</label><br/>
+               <TextField
+                   hintText="Department Full Name"
+                   errorText={this.state.invalidName}
+                   floatingLabelText="Full Name"
+                   onChange={(e)=> this.handleTextChange(e, "name")}
+                   value={this.state.name}
+               /><br />
+               <TextField
+                   hintText="Department Short Name"
+                   errorText={this.state.invalidShortName}
+                   floatingLabelText="Short Name"
+                   onChange={(e)=> this.handleTextChange(e, "shortName")}
+                   value={this.state.shortName}
+               />
+               <br /><br/><br/>
+               <RaisedButton
+                   label="ADD"
+                   primary={true}
+                   onTouchTap= {this.addDepartment}/>
                {//<RefreshIndicator
               //   size={40}
               //   left={10}

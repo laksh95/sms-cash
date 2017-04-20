@@ -7,9 +7,6 @@ class Student extends React.Component {
    constructor(props) {
     super(props);
   }
-  getChildContext() {
-      return { muiTheme: getMuiTheme(baseTheme) };
-  }
  render(){
    return(
      <div>

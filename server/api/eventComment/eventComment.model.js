@@ -15,21 +15,21 @@ module.exports=function(){
           defaultValue:true
       }
   },
-  {
-    classMethods : {
-       associate : function(models){
-          let userDetail  = models.user_detail
-          let eventComment = models.event_comment
-          let event= models.event
-          event.hasMany(eventComment,{
-            foreignKey : "event_id"
-          })
-          userDetail.hasMany(eventComment,{
-            foreignKey : "commented_by"
-          })
-       }
-   }
-}
+   {
+      classMethods : {
+         associate : function(models){
+            let userDetail  = models.user_detail
+            let eventComment = models.event_comment
+            let event= models.event
+            event.hasMany(eventComment,{
+              foreignKey : "event_id"
+            })
+            userDetail.hasMany(eventComment,{
+              foreignKey : "commented_by"
+            })
+         }
+     }
+  }
 );
  return eventComment;
 };

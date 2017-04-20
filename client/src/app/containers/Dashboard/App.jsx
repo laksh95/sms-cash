@@ -25,8 +25,9 @@ class App extends React.Component{
 		};
 	}
 	render(){
+		var height = window.innerHeight;
 		return(
-			<div >
+			<div style={{height:height}}>
 				<DashBoard events={this.props.dataDashboardAdmin.events}/>
 				<DashBoardNumberOfRole parentNo={this.props.dataDashboardAdmin.parentCount} studentNo={this.props.dataDashboardAdmin.studentCount} teacherNo={this.props.dataDashboardAdmin.teacherCount}/>
 			</div>

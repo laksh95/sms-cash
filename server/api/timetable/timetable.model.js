@@ -27,31 +27,32 @@ let sql = function(){
      venue : {
          type: sequelize.STRING,
      },
-     status : {
-      type:sequelize.BOOLEAN,
-      allowNull:false,
-      default: true
+     status:{
+         type:sequelize.BOOLEAN,
+         allowNull:false,
+         defaultValue:true
      }
  },
- {
-   classMethods : {
-     associate : function(models){
-       let section  = models.section
-       let subject = models.subject
-       let teacher = models.teacher
-       let timetable = models.timetable
-       section.hasMany(timetable,{
-           foreignKey : "section_id"
-       })
-       subject.hasMany(timetable,{
-           foreignKey : "subject_id"
-       })
-       teacher.hasMany(timetable,{
-           foreignKey : "teacher_id"
-       })
-     }
-   }
- });
+       {
+           classMethods : {
+               associate : function(models){
+                   let section  = models.section
+                   let subject = models.subject
+                   let teacher = models.teacher
+                   let timetable = models.timetable
+                   section.hasMany(timetable,{
+                       foreignKey : "section_id"
+                   })
+                   subject.hasMany(timetable,{
+                       foreignKey : "subject_id"
+                   })
+                   teacher.hasMany(timetable,{
+                       foreignKey : "teacher_id"
+                   })
+               }
+           }
+       }
+   );
    return timetable;
 }
 module.exports = sql;

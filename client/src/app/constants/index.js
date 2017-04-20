@@ -1,9 +1,7 @@
-//login section
 export const serverAddress= 'http://localhost:3000';
 export const ADD_TO_CALENDER='GET_FROM_CALENDER';
 export const DELETE_FROM_CALENDER='DELETE_FROM_CALENDER';
 export const SET_SNACK='SET_SNACK';
-
 export const LOGIN= 'LOGIN';
 export const CHECK_IS_LOGIN= 'CHECK_IS_LOGIN';
 export const LOGOUT= 'LOGOUT';

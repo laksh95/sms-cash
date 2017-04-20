@@ -41,8 +41,7 @@ class App extends React.Component {
     componentWillMount() {
       var token = Auth.getToken();
       let path= this.props.location.pathname;
-
-      // this.props.setUrl(path);
+      this.props.setUrl(path);
       this.props.setReceivedResponse(false);
       
       if(token !== null){

@@ -11,6 +11,7 @@ let sql = function(){
             content : {
                 type : sequelize.TEXT ,
                 allowNull : false
+
             },
             status:{
                 type:sequelize.BOOLEAN,
@@ -36,3 +37,4 @@ let sql = function(){
     return postComment;
 }
 module.exports = sql;
+

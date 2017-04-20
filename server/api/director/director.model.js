@@ -10,25 +10,25 @@ let director= connection.define('director',{
         autoIncrement: true
       },
     start_date: {
-      type: sequelize.DATE,
-      allowNull: false
-    },
+                  type: sequelize.DATE,
+                  allowNull: false
+                },
     end_date: {
-      type: sequelize.DATE,
-      allowNull: false
-    },
+                  type: sequelize.DATE,
+                  allowNull: false
+                },
     status:  {
-      type: sequelize.BOOLEAN,
-      default: true
-    }
+          type: sequelize.BOOLEAN,
+           default: true
+        }
   },
   {
   classMethods: {
-    associate: function(models){
-      models.user_detail.hasMany(models.director,{
-        foreignKey : 'user_detail_id'
-       });
-    }
+                  associate: function(models){
+                     models.user_detail.hasMany(models.director,{
+                      foreignKey : 'user_detail_id'
+                     });
+                  }
   }
 },
 {

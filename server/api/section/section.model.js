@@ -22,12 +22,11 @@ let init = function(){
            associate:function(model){
                let curriculum=model.curriculum
                let section=model.section
-               curriculum.hasOne(section,{
+               section.belongsTo(curriculum,{
                    foreignKey:"curriculum_id"
                })
            }
        }
-   }
-  )
+   })
 }
 module.exports=init

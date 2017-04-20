@@ -3,11 +3,42 @@ import TopBar from './../../components/login/TopBar.jsx';
 import Login from './../../components/login/Login.jsx'; 
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
-
+import {browserHistory} from 'react-router';
 let loginStyle = require('./../../css/login.css');
 import {connect} from "react-redux";
 import {loginUser, checkLogin} from "./../../actions/loginActions.jsx";
+import Auth from './../../Auth.js';
 class App extends React.Component {
+
+  componentWillMount() {
+    if(this.props.login.isLogin){
+        browserHistory.push(this.props.login.prevPathName);
+        Auth.authenticateUser(this.props.login.token);
+    }
+  }
+
+  componentDidMount() {
+      if(this.props.login.isLogin){
+        browserHistory.push(this.props.login.prevPathName);
+        Auth.authenticateUser(this.props.login.token);
+      }
+  }
+
+    componentWillReceiveProps(nextProps) {
+      this.props = nextProps;
+       if(this.props.login.isLogin){
+      browserHistory.push(this.props.login.prevPathName);
+      Auth.authenticateUser(this.props.login.token);
+    }
+    }
+
+  // componentDidUpdate(prevProps, prevState) {
+  //   if(this.props.login.isLogin){
+  //     console.log("Heyyyyyyyyyy");
+  //     browserHistory.push(this.props.login.prevPathName);
+  //     Auth.authenticateUser(this.props.login.token);
+  //   }
+  // }
   render() {
     return (
        <div className={loginStyle.mymain} >
@@ -16,8 +47,9 @@ class App extends React.Component {
          	isLogin={this.props.login.isLogin}
          	token={this.props.login.token}
          	user={this.props.login.loginUser}
+          errorText = {this.props.login.errorText}
          	loginUser= {(credential) => this.props.loginUser(credential)}
-         	checkLogin= {(config) => this.props.checkLogin(config)}
+         	checkLogin= {() => this.props.checkLogin()}
          />         
       </div>
     );
@@ -34,18 +66,17 @@ App.contextTypes = {
 
 const mapStateToProps= (state) => {
 	return{
-		login: state.login
+		login: state.login,
+        courseReducer: state.courseReducer
 	};
 };
-
-
 const mapDispatchToProps= (dispatch) => {
 	return{
 		loginUser: (credential) =>{
 			dispatch(loginUser(credential));
 		},
-		checkLogin: (config) =>{
-			dispatch(checkLogin(config));
+		checkLogin: () =>{
+			dispatch(checkLogin());
 		}	
 	};
 };

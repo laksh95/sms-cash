@@ -4,9 +4,9 @@ let sequelize = data.sequelize
 let sql = function(){
     let publicEvent = connection.define('public_event',{
       status:{
-        type:sequelize.BOOLEAN,
-        allowNull:false,
-        defaultValue:true
+          type:sequelize.BOOLEAN,
+          allowNull:false,
+          defaultValue:true
       }
     },
     {

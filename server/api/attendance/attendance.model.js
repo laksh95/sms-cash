@@ -25,21 +25,21 @@ let sql = function(){
    {
      classMethods:{
        associate:function(model){
-        let attendance=model.attendance
-        let student=model.student
-        let section=model.section
-        let subject=model.subject
-        student.hasMany(attendance,{
-          foreignKey:"student_id",
-          unique: 'uniqueAttendance'
-        })
-        section.hasMany(attendance,{
-          foreignKey:"section_id",
-          unique: 'uniqueAttendance'
-        })
-        subject.hasMany(attendance,{
-          foreignKey:"subject_id",
-          unique: 'uniqueAttendance'
+         let attendance=model.attendance
+         let student=model.student
+         let section=model.section
+         let subject=model.subject
+         student.hasMany(attendance,{
+           foreignKey:"student_id",
+           unique: 'uniqueAttendance'
+         })
+         section.hasMany(attendance,{
+           foreignKey:"section_id",
+           unique: 'uniqueAttendance'
+         })
+         subject.hasMany(attendance,{
+           foreignKey:"subject_id",
+           unique: 'uniqueAttendance'
         })
       }
     }

@@ -219,7 +219,6 @@ class DashBoard extends React.Component {
       			var message=''
       			this.props.setSnackData(openSnack,message)
     			break;
-			
 		}
 	}
 	handleRadioButton=(event,value)=>{

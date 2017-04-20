@@ -35,7 +35,7 @@ var style = {
 }
 
 
- var HANDLE_CODES = {   
+ var HANDLE_CODES = {
      "ON_LOGIN": "login",
      "PASSWORD_CHANGE":"passwordChange",
      "USERNAME_CHANGE":"textChange"
@@ -51,7 +51,7 @@ export default class Login extends React.Component  {
       height: window.screen.availHeight,
       mobileView:false,
       errorText: '',
-      errorTextPassword:'', 
+      errorTextPassword:'',
       username:'',
       password:'',
       message:false,
@@ -62,43 +62,36 @@ export default class Login extends React.Component  {
   getChildContext() {
     return { muiTheme: getMuiTheme(baseTheme) };
    }
-  
+
   handleTouchTap = (item,event) => {
     switch(item){
-
-
       case HANDLE_CODES.ON_LOGIN:
-
-        if( this.state.username != '' && this.state.password != '')
-         {
-          console.log("Login button clicked");
-           var bodyParameters = {
-              "username": this.state.username,
-               "password": this.state.password
+         event.preventDefault();
+        if( this.state.username !== '' && this.state.password !=='') {
+            console.log("Login button clicked");
+            let bodyParameters = {
+                "username": this.state.username,
+                "password": this.state.password
             }
-
             this.props.loginUser(bodyParameters);
-            
-              }
-               else{
-                 this.setState({   message: true  });
-               }
+        }
 
-      break;
+      break
      case HANDLE_CODES.PASSWORD_CHANGE:
                 this.setState({ password: event.target.value , errorTextPassword: '' });
-              break;
+              break
 
     case HANDLE_CODES.USERNAME_CHANGE:
                 this.setState({ username:event.target.value ,  errorText: '' });
 
-              break;
+              break
     }
-  
+
 };
 
 
-    updateDimensions=()=> {
+
+    updateDimensions = () =>{
 
     this.setState({   message: false  });
     var w = window,
@@ -109,21 +102,27 @@ export default class Login extends React.Component  {
         height = w.innerHeight|| documentElement.clientHeight|| body.clientHeight;
 
        if(width > 760){
-          
-        console.log("width is : " + width + " Height : "+height);
         this.setState({width: width, height: height, mobileView:false});
      }else{
         this.setState({width: width, height: height, mobileView:true});
       }
     }
 
-  componentWillMount() {
+  componentWillMount(){
     this.updateDimensions();
     this.setState({   message: false  });
-    var token = Auth.getToken();
-    var authString = `bearer ${Auth.getToken()}`
-    
+    let token = Auth.getToken();
+
+{/*
     if(token !=null){
+      this.props.checkLogin();
+    }
+  }
+
+    componentDidMount() {
+      window.addEventListener("resize", this.updateDimensions);
+=======*/}
+    if(token !== null){
       console.log(token);
       var bodyParameters = {
         "username": "",
@@ -147,11 +146,6 @@ export default class Login extends React.Component  {
         Auth.authenticateUser(this.props.token);
     }
   }
-
-    componentDidMount() {
-        window.addEventListener("resize", this.updateDimensions);
-    }
-
     componentWillReceiveProps(nextProps) {
        if(this.props.isLogin){
         browserHistory.push('/dashboard');
@@ -185,10 +179,10 @@ render() {
      let textWidth = width/2;
      let centerPosition = 'left';
 
-     
+
   if( this.state.mobileView === true)
-   { 
-    
+   {
+
       positionCard =width/4;
       visible = 'none';
       textHeight = height/4;
@@ -198,7 +192,7 @@ render() {
       heightCard = fixedHeight/2 - fixedHeight/10;
       centerPosition = 'center';
        cardWidth = width;
-     
+
     }
     if(width < 600){
 
@@ -219,14 +213,14 @@ render() {
 
 return(
     <div >
-     
+
      <LinearProgress
-       mode="determinate" 
+       mode="determinate"
        value={this.state.completed}
        style={{color:'grey', marginTop:'0.1%',height:'10px'}}
       />
-   
-     <div 
+
+     <div
        style={
         { color:'grey',
           fontFamily: 'Roboto, sans-serif',
@@ -251,7 +245,7 @@ return(
          <b>Welcome to the Student Management System</b>
 
       </span>
-     
+
       < hr/>
 
        <span
@@ -264,7 +258,7 @@ return(
 
        <div
         style={
-           style.descriptionText 
+           style.descriptionText
          }
        >
       
@@ -296,32 +290,34 @@ return(
         <span style={style.cardTextStyle}>
           Login
         </span>
-      
+      <form onSubmit={this.handleTouchTap.bind(this, HANDLE_CODES.ON_LOGIN)}>
        <TextField
         hintText="Username"
         style={{marginTop:'10%'}}
         onChange={this.handleTouchTap.bind(this , HANDLE_CODES.USERNAME_CHANGE)}
        />
-   
-     
+
+
        <TextField
         hintText="Password"
         type="password"
-
+        errorText={this.props.errorText}
         onChange={this.handleTouchTap.bind(this , HANDLE_CODES.PASSWORD_CHANGE)}
 
         style={{marginTop:'5%'}}
         />
 
-        
+
         <span style={style.loginButton}>
 
           <RaisedButton
-              label="Login"
+              label="Submit"
+              type="submit"
               onTouchTap={this.handleTouchTap.bind(this, HANDLE_CODES.ON_LOGIN)}
               style={{marginTop:'5%'}}
            />
        </span>
+       </form>
 
       </CardText>
      </Card>
@@ -339,7 +335,7 @@ return(
 
 Login.childContextTypes = {
        muiTheme: React.PropTypes.object.isRequired,
-};
+}
 Login.contextTypes = {
    router: React.PropTypes.object.isRequired
-};
+}

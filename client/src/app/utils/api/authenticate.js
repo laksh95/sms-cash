@@ -26,8 +26,19 @@ const utils = {
 		console.log("token: ", token);
 		let url = serverAddress + '/api/check';
 		return axios.get(url, config);
-	}
+	},
 
+	getInitialData: () => {
+		let token = Auth.getToken();
+		let authString = 'bearer ' + token;
+		let config = {
+    		headers: {
+        		'Authorization': authString
+   	 		}
+		}
+		let url = serverAddress + '/api/course/getInitialData';
+		return axios.get(url, config);
+	}
 }
 
 export default utils;

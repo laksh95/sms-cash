@@ -38,3 +38,4 @@ let notice= connection.define('public_notice',{
 );
  return notice;
 };
+

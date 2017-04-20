@@ -1,6 +1,7 @@
 let database=require('../../config/db')
 let sequelize=database.sequelize
 let connection=database.connection
+
 let init = function(){
  return teacherSubjectAllocation = connection.define('teacher_subject_allocation',{
    status:{
@@ -23,4 +24,5 @@ let init = function(){
    }
  })
 }
+
 module.exports = init

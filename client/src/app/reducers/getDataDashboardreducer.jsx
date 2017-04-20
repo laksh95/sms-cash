@@ -1,4 +1,4 @@
-import {GET_INITIAL_DATA,ADD_TO_CALENDER,DELETE_FROM_CALENDER,SET_SNACK} from './../constants';
+import {GET_INITIAL_DATA_DASHBOARD,ADD_TO_CALENDER,DELETE_FROM_CALENDER,SET_SNACK} from './../constants';
 
 var initialState = {
     parentCount:0,
@@ -11,7 +11,7 @@ var initialState = {
 
 const getDataReducer = ( state = initialState ,action) => {
 	switch(action.type){
-	    case GET_INITIAL_DATA+"_FULFILLED":
+	    case GET_INITIAL_DATA_DASHBOARD+"_FULFILLED":
 	    	console.log("success",action.payload);
 	        let invalid=0;
 	        let messg='';
@@ -86,7 +86,7 @@ const getDataReducer = ( state = initialState ,action) => {
 	        	}
 	        }
 	   	 	return state;
-	    case GET_INITIAL_DATA+"_REJECTED":
+	    case GET_INITIAL_DATA_DASHBOARD+"_REJECTED":
 	    	state={ ...state,
 	          		openSnack:false,
 	          		message:action.payload.message,	        	}

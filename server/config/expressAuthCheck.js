@@ -6,10 +6,9 @@ let models  = require('./../sqldb')();
 /**
  *  The Auth Checker middleware function.
  */
- module.exports = (req, res, next)=> {
- 	console.log("In auth check");
+ module.exports = (req, res, next)=> {;
  	if (!req.headers.authorization) {
- 		console.log("No Header");
+ 		console.log("Error auth check: Empty header")
     	return res.status(401).end();
  }
 
@@ -19,10 +18,9 @@ let models  = require('./../sqldb')();
 // decode the token using a secret key-phrase
 	return jwt.verify(token, config.jwtSecret, (err, decoded) => {
     // the 401 code is for unauthorized status
-
     	if (err) {
+    		console.log("Error auth check ", err);
     		return res.status(401).end();
-    		console.log("Not Authorized!: ", err);
     	}
 
 		const userId = decoded.sub;
@@ -30,10 +28,11 @@ let models  = require('./../sqldb')();
 		 // check if a user exists
 		return userDetail.findUserById(models, userId, (userErr, user) => {
 		    if (userErr || !user) {
+		    	console.log("No user exists");
 		    	return res.status(401).end();
 		    }
+		console.log("Succesfull auth check");
 		req.user= user;
-		console.log("Yes user:", user);
 		return next();
 		});
 	})

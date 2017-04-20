@@ -47,10 +47,6 @@ module.exports=function(){
             country_code_one: sequelize.INTEGER,
             alternate_number: sequelize.STRING,
             country_code_two: sequelize.INTEGER,
-            status:  {
-                type: sequelize.BOOLEAN,
-                default : true
-            },
             status:{
                 type:sequelize.BOOLEAN,
                 allowNull:false,
@@ -65,7 +61,8 @@ module.exports=function(){
                     let user={};
                     let login=false;
                     let userId;
-                    userDetail.findOne({attributes:['id', 'username', 'name', 'password'], 
+
+                    userDetail.findOne({attributes:['id', 'username', 'name', 'password'],
                         where: {username: userName, status:true}
                          }).then((result)=> {
                             if(result){
@@ -82,19 +79,21 @@ module.exports=function(){
                             }
                             else{
                                 user.login=false;
-                                cb(null, null);  
-
+                                cb(null, null);
                             }
                          }).catch(function(error){
                                 console.log(error);
                                 cb(error);
                         });
+
+
                 },
+
                 findUserById: function(models, id, cb){
                     let userDetail= models.user_detail;
                     let user={};
                     let userId;
-                    userDetail.findOne({attributes:['id', 'username', 'name'], 
+                    userDetail.findOne({attributes:['id', 'username', 'name'],
                     where: {id: id, status:true}
                     }).then((result)=> {
                         if(result){
@@ -156,9 +155,10 @@ module.exports=function(){
                                 role.push('student');
                             }
                             cb(role);
-                        })
+                        }).catch((err) => {console.log('---------------------',err.toString())});
 
                 }
+
             }
         },
         {

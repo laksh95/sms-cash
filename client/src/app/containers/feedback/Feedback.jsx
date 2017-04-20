@@ -89,7 +89,7 @@ class Feedback extends React.Component {
     }
     this.props = nextProps
   }
-  
+
   selectDepartment = (event, index, values) => {
     this.setState({
       selectedDepartment: values

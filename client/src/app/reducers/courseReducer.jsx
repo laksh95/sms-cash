@@ -41,8 +41,7 @@ const courseReducer = (state = {
             }
             break
         case "GET_COURSES_FULFILLED" :
-            var course  = action.payload
-            console.log("----------------------------------------------------",course)
+            var course  = action.payload.data
             var size = course.length
             var pagedCourses = []
             for(let index in course ){
@@ -64,11 +63,26 @@ const courseReducer = (state = {
                 pagedCourses : pagedCourses
             }
             break
-
+        case "GET_COURSES_REJECTED":
+            var data= action.payload.response
+            if(data.status===400){
+                state ={
+                    ...state ,
+                    snackbarMessage : "BAD REQUEST",
+                    snackbarOpen : true
+                }
+            }
+            else if (data.status===500){
+                state = {
+                    ...state ,
+                    showErrorPage : true,
+                    errorMessage : "500 : Internal Server Error"
+                }
+            }
+            break
         case "ADD_COURSE_FULFILLED":
             var data = action.payload
-            console.log("$$$$$",data)
-            if(data.status==200){
+            if(data.status===200){
                 let newCourse = data.data
                 let course = state.course
                 course.push(newCourse)
@@ -99,33 +113,42 @@ const courseReducer = (state = {
             }
             break
         case "ADD_COURSE_REJECTED":
-            var data = action.payload.data
-            if (data.status==500){
+            var data = action.payload.response
+            if (data.status===500){
                 state={
                     ...state ,
                     showErrorPage:true ,
                     errorMessage :"500:Internal Server Error"
                 }
             }
-            else if(data.status==400){
-                state ={
-                    ...state ,
-                    snackbarMessage : "BAD REQUEST",
-                    snackbarOpen : true
+            else if(data.status===400){
+                console.log(data.data.msg)
+                if(data.data.msg=='COURSE_ALREADY_EXISTS')
+                    state ={
+                        ...state ,
+                        snackbarMessage :"Course Already Exists",
+                        snackbarOpen : true
+                    }
+                else{
+                    state= {
+                        ...state ,
+                        snackbarMessage :"BAD REQUEST",
+                        snackbarOpen : true
+                    }
                 }
             }
-            else if (data.status==403){
+            else if (data.status===403){
                 state = {
                     ...state ,
                     showErrorPage : true ,
-                    errorMEssage : "403: Forbidden"
+                    errorMessage : "403: Forbidden"
                 }
             }
             break
         case "EDIT_COURSE_FULFILLED":
             var content = action.payload
             var data = content.data
-            if(content.status==1){
+            if(content.status==200){
                 let course = state.course
                 for(let index in course){
                     if(course[index].id===data.id){
@@ -158,7 +181,32 @@ const courseReducer = (state = {
                     snackbarOpen : true
                 }
             }
+            break
 
+        case "EDIT_COURSE_REJECTED":
+            var data = action.payload.response
+            if (data.status===500){
+                state={
+                    ...state ,
+                    showErrorPage:true ,
+                    errorMessage :"500:Internal Server Error"
+                }
+            }
+            else if(data.status===400){
+                console.log(data.data.msg)
+                state= {
+                    ...state ,
+                    snackbarMessage :"BAD REQUEST",
+                    snackbarOpen : true
+                }
+            }
+            else if (data.status===403){
+                state = {
+                    ...state ,
+                    showErrorPage : true ,
+                    errorMessage : "403: Forbidden"
+                }
+            }
             break
 
         case "DELETE_COURSE_FULFILLED":
@@ -187,6 +235,31 @@ const courseReducer = (state = {
                 snackbarOpen :true ,
                 snackbarMessage : "Course Deleted",
                 pagedCourses:pagedCourses
+            }
+            break
+        case "DELETE_COURSE_REJECTED":
+            var data = action.payload.response
+            if (data.status===500){
+                state={
+                    ...state ,
+                    showErrorPage:true ,
+                    errorMessage :"500:Internal Server Error"
+                }
+            }
+            else if(data.status===400){
+                console.log(data.data.msg)
+                state= {
+                    ...state ,
+                    snackbarMessage :"BAD REQUEST",
+                    snackbarOpen : true
+                }
+            }
+            else if (data.status===403){
+                state = {
+                    ...state ,
+                    showErrorPage : true ,
+                    errorMessage : "403: Forbidden"
+                }
             }
             break
         case "SET_PAGINATION":

@@ -107,7 +107,7 @@ let init=function(){
                                 response = {
                                     status: 0,
                                     data:{},
-                                    msg: 'course Already exists.'
+                                    msg: 'COURSE_ALREADY_EXISTS'
                                 }
                                 sendData(response)
                             }

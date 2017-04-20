@@ -128,7 +128,10 @@ class AddCourse extends React.Component {
         })
         this.setState({
             newCourse : "",
-            newDuration : ""
+            newDuration : "",
+            validateNewCourseName : false,
+            validateNewCourseDuration:false,
+
         })
     }
     render(){

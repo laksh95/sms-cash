@@ -1,39 +1,46 @@
-let database=require('../../config/db')
-let sequelize=database.sequelize
-let connection=database.connection
-let init = function(){
-     return elective=database.connection.define('elective',{
-            id: {
-                allowNull: false,
-                autoIncrement: true,
-                primaryKey: true,
-                type: sequelize.INTEGER,
-            },
-            name: {
-                allowNull: false,
-                type: sequelize.STRING,
-            },
-            credits: {
-                type: sequelize.INTEGER,
-                allowNull: false
-            }
-        },
-            name: {
-                type: sequelize.INTEGER,
-                allowNull:false,
-                unique:true
-            }
-        },
-        {
-            classMethods: {
-                 associate: function(models){
-                    let curriculum = models.curriculum
+let data = require('./../../config/db');
+let sequelize = data.sequelize;
+let connection = data.connection;
 
-                    skill.hasMany(teacher, {foreignKey: 'skill_set'});
-                    user_detail.hasOne(teacher, {foreignKey: 'user_id'});
-                    department.hasOne(teacher, {foreignKey: 'department_id'});
-                }
-            }
-        })
+module.exports=function(){
+let elective= connection.define('elective',{
+    id: { 
+        type: sequelize.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+      },
+    name: {
+            type: sequelize.STRING,
+            allowNull: false,
+            unique: 'uniqueElective'
+          },
+    credit: {
+        type: sequelize.FLOAT,
+        allowNull: false
+    },
+    status:  {
+          type: sequelize.BOOLEAN,
+           default: true
+        }
+  },
+  {
+  classMethods: {
+                  associate: function(models){
+                    let elective= models.elective;
+                    let curriculum= models.curriculum;
+                    curriculum.hasMany(elective,{
+                      foreignKey : 'curriculum_id',
+                      unique: 'uniqueElective'
+                     });
+                    elective.belongsToMany(subject, {
+                       through : "elective_subject"
+                      });
+                  }
+  }
+},
+{
+  instanceMethods:{}
 }
-module.exports = init
+);
+  return elective;
+};

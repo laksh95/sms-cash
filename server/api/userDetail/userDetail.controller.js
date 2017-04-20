@@ -1,4 +1,3 @@
-
 let userDetailDb= require('./userDetail.model')();
 let models  = require('./../../sqldb')();
 

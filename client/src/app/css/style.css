@@ -1,31 +1,22 @@
-.chatApp{
-  position:fixed;
-  bottom:0;
-  width:100%;
-}
-.chatwithme{
-   margin-left:200px;
-}
-.chatBox{
-  position:fixed;
-  width:26%;
-  bottom:0px;
-  right:0px; 
-}
 .content{
- height:100%; 
- width:100%;
+    height:100%; width:100%;
+}
+
+
+.content{
+ height:100% !important; 
+ width:100% !important;
 }
 .smalldiv{
- height:80%; 
- width:70%; 
+ height:80% !important; 
+ width:70% !important; 
  float:left;
 }
-.smallerdiv{
- height:80%; 
- width:25%;
+.smallerDiv{
+ height:80% !important; 
+ width:25% !important; 
  margin-left: 2%; 
- float:left;
+ float:right;
 }
 .centerMenu{
 	z-index:100;
@@ -87,4 +78,111 @@ input[type="date"]::-webkit-clear-button {
 }
 .imgt span{
     color:white !important;
+}
+.content{
+ height:100%; width:100%;
+}
+/*#app{
+    height: 100%;
+}
+.mymain{
+    height: 100%;
+}*/
+#studentMenu{
+    margin-left:40%
+}
+#AddStudent{
+    border:1px solid gray;
+    width: 80%;
+    margin:auto;
+    margin-top:15px;
+}
+#StudentHeader{
+    background-color:darkgray;
+    font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    display: inline-flex;
+    clear:both;
+    overflow: hidden;
+    width:100%;
+    height:5%;
+}
+
+#addForm{
+    width:50%;
+    margin:auto;
+    overflow:hidden;
+    font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+#buttons{
+    margin-left:40%;
+    margin-bottom: 10px;
+}
+
+#fieldNames{
+    float:left;
+    width:50%;
+    padding-top: 16px;
+}
+#fieldValues{
+    float:left;
+    width:50%;
+}
+.extra_space {
+    display:block;
+    margin-bottom: 10px;
+}
+.addBulk{
+    margin:auto;
+    text-align:center;
+    margin-top:10%;
+    margin-left:90px;
+    width: 90%;
+}
+#studentContentHeader{
+    margin:auto;
+    margin-left:4%;
+    width:90%;
+    overflow:hidden;
+    padding-top:0.2%;
+}
+.dropZone{
+    margin:auto;
+    width:70%;
+    margin-top:2%;
+    margin-bottom:2%;
+    text-align: center;
+}
+#formName{
+    width:97%;
+    float:left;
+    overflow:hidden;
+    padding-top:10px;
+    color: white;
+}
+#logo{
+    width:3%;
+    float:left;
+    padding-left:10px;
+    padding-top:5px;
+    text-align:center;
+}
+.fileUpload{
+    width: 100%;
+    height: 50%;
+    border-width: 2px;
+    border-style: dashed;
+    border-radius:5px;
+}
+#uploadLabel{
+    font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+}
+.errorMsg {
+    color: red;
+}
+#studentFilter{
+    margin:auto;
+    text-align:center;
+    margin-top:4%;
 }

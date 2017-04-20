@@ -3,11 +3,16 @@ let sequelize = data.sequelize;
 let connection = data.connection;
 
 module.exports=function(){
-  let eventLike= connection.define('event_like',{
+  return eventLike= connection.define('event_like',{
       id: {
          type: sequelize.INTEGER,
          primaryKey: true,
          autoIncrement: true
+      },
+      status:{
+          type:sequelize.BOOLEAN,
+          allowNull:false,
+          defaultValue:true
       }
   },
    {
@@ -26,5 +31,4 @@ module.exports=function(){
      }
   }
 );
- return eventLike;
 };

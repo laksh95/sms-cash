@@ -14,6 +14,11 @@ let init = function(){
         end_date:{
             type:sequelize.DATE,
             allowNull:false
+        },
+        status:{
+            type:sequelize.BOOLEAN,
+            allowNull:false,
+            defaultValue:true
         }
     },{
         classMethods:{
@@ -28,4 +33,3 @@ let init = function(){
     })
 }
 module.exports = init
-

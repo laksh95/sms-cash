@@ -1,13 +1,15 @@
-let sequelize=require('sequelize')
+let Sequelize =require('sequelize') ;
+let config =require('./environment');
+let lodash=require('lodash');
+let connection = new Sequelize(config.sequelize.uri, config.sequelize.options);
 let options = {
    define:{
        underscored:true,
        freezeTableName:true
    }
 }
-let connection= new sequelize('postgres://postgres:shilpa@localhost:5432/sms', options)
 let data={
-   sequelize:sequelize,
+   sequelize:Sequelize,
    connection:connection
 }
 module.exports=data

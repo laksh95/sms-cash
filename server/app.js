@@ -1,23 +1,20 @@
-let express=require('express');
-let app=express();
-let socket= require('./config');
-let models  = require('./sqldb');
 
+let portNumber =  require('./config')
+let express = require('express')
+let app = express()
+let db=require('./config/db')
+let config = require('./config/environment');
 let passport = require('passport');
-
-require("./config/express")(app); // for static call and middleware
-
-
-
-var route= require("./routes/route")(app);
-//route.init(app);
-
-
-// load passport strategies
+require('./config/express')(app)
+require('./routes/route.js')(app)
 const localLoginStrategy = require('./passport/loginStrategy');
-//passport.use('local-signup', localSignupStrategy);
-passport.use('local-login', localLoginStrategy);
-
-app.listen(socket.port, function () {
-  console.log('Server listening on port ' +  socket.port + '!')
-});
+passport.use('local-login', localLoginStrategy)
+function startServer() {
+	app.listen(config.port, config.ip, function() {
+		console.log('Express server listening on %d, in %s mode', config.port, app.get('env'));
+	});
+}
+db.connection.sync().then(function() {
+		startServer()
+	})
+exports = module.exports = app

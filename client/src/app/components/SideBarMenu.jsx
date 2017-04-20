@@ -1,213 +1,167 @@
 import React from 'react';
 import Drawer from 'material-ui/Drawer';
 import AppBar from 'material-ui/AppBar';
-import RaisedButton from 'material-ui/RaisedButton';
-import { Button } from 'react-bootstrap';
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import Avatar from 'material-ui/Avatar';
-import {List, ListItem, makeSelectable} from 'material-ui/List';
+import {List, ListItem} from 'material-ui/List';
+import {browserHistory } from 'react-router';
 import Subheader from 'material-ui/Subheader';
 import Divider from 'material-ui/Divider';
 import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
-import DashBoard from './../components/DashBoard.jsx';
-import DashBoardNumberOfRole from './../components/DashBoardNumberOfRole.jsx';
-import {store} from "../store.js";
-import {connect} from "react-redux";
-import {getParentCount,getStudentCount,getTeacherCount,getEvents} from '../actions/getDataAction.jsx';
-import renderIf from 'render-if';
-let SelectableList = makeSelectable(List);
-class DrawerOpenRightExample extends React.Component {
+import DashBoard from './dashboard/DashBoard.jsx';
+let userImage =  require('./../images/user.png');
+let departmentImage =  require('./../images/department.png');
+let studentImage =  require('./../images/student.png');
+let dashboardImage =  require('./../images/dashboard.png');
+import {Link} from 'react-router';
+import { getSelected } from '../actions/adminActions.jsx';
+import { connect } from 'react-redux';
+
+class SideBarMenu extends React.Component {
+
   constructor(props) {
     super(props);
-    this.state= {
-        dashboard : true,
-        openSnack: false,
-        message:'',
+    this.state = {
+      selected:this.props.headerReducer.selectedTab,
+      refresh: true
+    };
+  }
 
+  componentDidUpdate(prevProps, prevState) {
+    if(this.state.refresh){
+      console.log("+++prevPathName+++: ", this.props.prevPathName);
+      let selected ="";
+      let path= this.props.prevPathName.trim();
+       if(path ==="/dashboard" || path === "/")
+           selected= "Dashboard"
+       else if(path === '/department')
+           selected= "Department"
+       else if(path === '/student')
+           selected= "Students"
+       else if(path === '/course')
+           selected = 'Course'
+        else if(path === '/blog')
+            selected = 'Blog'
+        else if(path === '/feedback')
+            selected = 'Feedback'
+      if(this.state.selected !== selected){
+        this.setState({selected: selected})
+      }
     }
   }
-  dashboard=()=>{
-    console.log("inside dashboard")
-    this.setState({
-        dashboard : true
-    })
-  }
-  handleSnackRequestClose=(event)=>{
-    this.setState({
-          openSnack: false,
-          message:''
-    });
-  }
-  componentWillMount(){
-      axios.post('http://localhost:1234/api/academicCalendar/dashboard/getInitialData',{
-        userId:'1'
-      })
-      .then((response)=> {
-        console.log("success",response);
-        let invalid=0;
-        let messg='';
-        let events=this.props.data.events;
-          if(response.data.totalEvent.status==1){
-            for(let i in response.data.totalEvent)
-            {
-              let event1={
-                id:response.data.totalEvent[i].content,
-                start:new Date(response.data.totalEvent[i].start_date),
-                end:new Date(response.data.totalEvent[i].start_date),
-                content:response.data.totalEvent[i].content,
-                type:response.data.totalEvent[i].type,
-                title:response.data.totalEvent[i].content,
-                calendarType:'academic'
-              }
-              events.push(event1)
-            }
-            this.props.getEvents(events)
-          }
-          else {
-            invalid++;
-            messg= "random"
-          }
-          if(response.data.personalCalendar.status==1){
-            for(let i in response.data.personalCalendar.data){
-              let event1={
-                id:response.data.personalCalendar[i].content,
-                start:new Date(response.data.personalCalendar[i].start_date),
-                end:new Date(response.data.personalCalendar[i].start_date),
-                content:response.personalCalendar[i].content,
-                type:response.data.personalCalendar[i].heading,
-                title:response.data.personalCalendar[i].heading,
-                calendarType:'personal'
-              }
-              events.push(event1)
-          }
-          this.props.getEvents(events)
-        }
-        else invalid++;
-        if(response.data.totalStudents.status==1){
-          this.props.getTeacherCount(response.data.totalStudents.data)
-        }
-        else invalid++;
-        if(response.data.totalStudents.status==1){
-          this.props.getParentCount(response.data.totalParent.data)
-        }
-        else invalid++;
-        if(response.data.totalStudents.status==1){
-          this.props.getStudentCount(response.data.totalTeachers.data)
-        }
-        else invalid++;
-        this.setState({
-          openSnack:true,
-          message: "balh"
-        })
-      })
-      .catch(function (response) {
-        console.log("failure",response);
-      });
-  }
-  getChildContext() {
+
+ getChildContext(){
     return { muiTheme: getMuiTheme(baseTheme) };
-   }
+ }
+ handleTouchTap = (item , event) => {
+  console.log("Selected: +++",item )
+        this.setState({
+              refresh: false,
+              selected: item
+                });
+   };
   render() {
-    const contentStyle = { marginTop:10, marginLeft: 90 ,transition: 'margin-left 100ms cubic-bezier(0.23, 1, 0.32, 1)' };
-    if (this.props.open) {
-      contentStyle.marginLeft = 250;
-    }
+    let list = {
+        "Department": 'white',
+        "Dashboard": 'white',
+        "Course": "white",
+        "Students": 'white',
+        "Teacher": 'white',
+        "Subjects": 'white',
+        "Events": 'white',
+        "Important": 'white',
+        "Blog":'white',
+        "T/S": 'white',
+        "Feedback": 'white'
+        }
+    list[this.state.selected] = '#e3e7ea'
     let sizeWidth = 230;
     if( this.props.open === false){
      sizeWidth = 70;
     }
-
     return (
-        <div>
-         <Drawer width={sizeWidth} openSecondary={false} docked={true} zDepth={2} open={true} >
+      <div>
+        <Drawer width={sizeWidth} openSecondary={false} docked={true} zDepth={2} open={true} >
           <AppBar title="Menu"
-           onLeftIconButtonTouchTap = {this.props.handleToggle} />
-           <SelectableList defaultValue={1}>
-            <ListItem
-              value={1}
-              primaryText="DashBoard"
-              leftAvatar={<Avatar src={require('./../images/user.png')} />}
-              onClick={()=>this.dashboard()}
-            />
-            <ListItem
-              value={2}
-              primaryText="Course"
-              leftAvatar={<Avatar src={require('./../images/user.png')} />}
-            />
-            <ListItem
-              value={3}
-              primaryText="Student"
-              leftAvatar={<Avatar src={require('./../images/user.png')} />}
-            />
-            <ListItem
-              value={4}
-              primaryText="Teacher"
-              leftAvatar={<Avatar src={require('./../images/user.png')} />}
-            />
-            <ListItem
-              value={5}
-              primaryText="Subjects"
-              leftAvatar={<Avatar src={require('./../images/user.png')} />}
-            />
-            <ListItem
-              value={6}
-              primaryText="Events"
-              leftAvatar={<Avatar src={require('./../images/user.png')} />}
-            />
-          </SelectableList>
-          <Divider />
-          <SelectableList defaultValue={7}>
-            <ListItem
-              value={7}
-              primaryText="Important"
-              leftAvatar={<Avatar src={require('./../images/user.png')} />}
-            />
-            <ListItem
-              value={8}
-              primaryText="Teachers/Students"
-              leftAvatar={<Avatar src={require('./../images/user.png')} />}
-            />
-          </SelectableList>
-        </Drawer>
-      <div style={contentStyle}>
-      {
-          renderIf(this.state.dashboard)
-              (
-                  <div>
-                    <DashBoard />
-                    <DashBoardNumberOfRole parentNo={this.props.data.parentCount} studentNo={this.props.data.studentCount} teacherNo={this.props.data.teacherCount}/>
-                  </div>
-              )
+           onLeftIconButtonTouchTap = { () => this.props.handleToggle('Sidebar')} />
+            {
+              (this.props.user.role) ?
+           ( <List>
 
-        }
-        </div>
-    </div>
+              {this.props.user.role.isAdmin ?
+              <Link to ="/dashboard" style={{textDecoration: 'none'}}>
+                <ListItem
+                  primaryText="DashBoard"
+                  leftAvatar={<Avatar src={dashboardImage}
+                   />}
+                   style={{backgroundColor: list["Dashboard"]}}
+                   onTouchTap = {this.handleTouchTap.bind(this, "Dashboard")}
+                />
+              </Link> : null}
+              <Link to ="/department" style={{textDecoration: 'none'}}>
+                <ListItem
+                  primaryText="Department"
+                  leftAvatar={<Avatar src={departmentImage} />}
+                   style={{backgroundColor: list["Department"]}}
+                      onTouchTap = {this.handleTouchTap.bind(this,"Department")}
+                />
+              </Link>
+              {/*<Link to ="/student" style={{textDecoration: 'none'}}>
+               <ListItem
+                 primaryText="Student"
+                 leftAvatar={<Avatar src={userImage} />}
+                   style={{backgroundColor: list["Students"]}}
+                       onTouchTap = {this.handleTouchTap.bind(this,"Students")}
+               />
+              </Link>*/}
+
+               {this.props.user.role.isAdmin ?
+                   <Link to ="/blog" style={{textDecoration: 'none'}}>
+                       <ListItem
+                           primaryText="Blog"
+                           leftAvatar={<Avatar src={userImage}
+                           />}
+                           style={{backgroundColor: list["Blog"]}}
+                           onTouchTap = {this.handleTouchTap.bind(this, "Blog")}
+                       />
+                   </Link> : null}
+               {this.props.user.role.isAdmin ?
+                   <Link to ="/course" style={{textDecoration: 'none'}}>
+                       <ListItem
+                           primaryText="Course"
+                           leftAvatar={<Avatar src={userImage}
+                           />}
+                           style={{backgroundColor: list["Course"]}}
+                           onTouchTap = {this.handleTouchTap.bind(this, "Course")}
+                       />
+                   </Link> : null}
+
+                   <Link to ="/feedback" style={{textDecoration: 'none'}}>
+                     <ListItem
+                       primaryText="Feedback"
+                       leftAvatar={<Avatar src={userImage} />}
+                       style={{backgroundColor: list["Feedback"]}}
+                       onTouchTap = {this.handleTouchTap.bind(this,"Feedback")}
+                     />
+                   </Link>
+                </List>): null}
+        </Drawer>
+
+  </div>
     );
   }
 }
-const mapStateToProps=(state)=>{
-    return{
-        data:state.data
-    };
+SideBarMenu.childContextTypes = {
+            muiTheme: React.PropTypes.object.isRequired,
 };
-const mapDispatchToProps=(dispatch)=>{
-    return{
-        getEvents:(events)=>{
-            dispatch(getEvents(events));
-        },
-        getParentCount:(count)=>{
-            dispatch(getParentCount(count));
-        },
-        getTeacherCount:(count)=>{
-            dispatch(getTeacherCount(count));
-        },
-        getStudentCount:(count)=>{
-            dispatch(getStudentCount(count));
-        }
-    };
+SideBarMenu.contextTypes = {
+    router: React.PropTypes.object.isRequired
 };
-export default connect(mapStateToProps,mapDispatchToProps)(DrawerOpenRightExample)
-DrawerOpenRightExample.childContextTypes = {
-            muiTheme : React.PropTypes.object.isRequired
-        };
+const mapStateToProps = (state) => {
+  return {
+    headerReducer: state.headerReducer
+    }
+}
+
+export default connect(mapStateToProps)(SideBarMenu);

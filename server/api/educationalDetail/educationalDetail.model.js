@@ -4,7 +4,7 @@ let connection = data.connection;
 
 module.exports=function(){
 let educationDetail= connection.define('educational_detail',{
-    id: { 
+    id: {
         type: sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true
@@ -38,10 +38,10 @@ let educationDetail= connection.define('educational_detail',{
                      });
               }
   }
-},
-{
-  instanceMethods:{}
-}
-);
-  return educationDetail;
+    },
+    {
+      instanceMethods:{}
+    }
+    );
+      return educationDetail;
 };

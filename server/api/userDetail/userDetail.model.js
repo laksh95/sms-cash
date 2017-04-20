@@ -31,9 +31,8 @@ module.exports=function(){
                 unique: true
             },
             gender: {
-                type: sequelize.STRING,
+                type: sequelize.ENUM('MALE','FEMALE','OTHERS'),
                 allowNull: false,
-                unique: true
             },
             permanent_address: sequelize.STRING,
             current_address: sequelize.STRING,
@@ -45,12 +44,13 @@ module.exports=function(){
             contact_number: {
                 type: sequelize.STRING
             },
-            country_code1: sequelize.INTEGER,
+            country_code_one: sequelize.INTEGER,
             alternate_number: sequelize.STRING,
-            country_code2: sequelize.INTEGER,
-            status:  {
-                type: sequelize.BOOLEAN,
-                default : true
+            country_code_two: sequelize.INTEGER,
+            status:{
+                type:sequelize.BOOLEAN,
+                allowNull:false,
+                defaultValue:true
             }
         },
         {
@@ -155,10 +155,9 @@ module.exports=function(){
                                 role.push('student');
                             }
                             cb(role);
-                        })
+                        }).catch((err) => {console.log('---------------------',err.toString())});
 
                 }
-
 
             }
         },

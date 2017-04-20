@@ -1,9 +1,12 @@
+/**
+ * Created by mustang on 17/03/17.
+ */
 let database=require('../../config/db')
 let sequelize=database.sequelize
 let connection=database.connection
 
 let init = function(){
-    return examType = connection.define('exam_type',{
+    return exam_type = connection.define('exam_type',{
             id: {
                 type: sequelize.INTEGER,
                 primaryKey: true,
@@ -13,6 +16,11 @@ let init = function(){
                 type: sequelize.STRING,
                 allowNull:false,
                 unique:true
+            },
+            status:{
+                type:sequelize.BOOLEAN,
+                allowNull:false,
+                defaultValue:true
             }
         },
         {
@@ -20,5 +28,4 @@ let init = function(){
             }
         })
 }
-
 module.exports = init

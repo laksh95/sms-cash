@@ -52,6 +52,8 @@ let sql = function(){
                     event.belongsToMany(club,{
                         through : "club_event"
                     })
+
+
                 }
             }
         }

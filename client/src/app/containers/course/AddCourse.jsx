@@ -154,7 +154,6 @@ class AddCourse extends React.Component {
                     id="num"
                     value ={this.state.newDuration}
                     hintText="Duration"
-                    defaultValue=""
                     strategy="warn"
                     errorText={this.state.errorText4}
                     onValid={onValid}

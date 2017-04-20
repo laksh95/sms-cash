@@ -26,7 +26,8 @@ class ViewCourse extends React.Component {
             errorText1 :"",
             errorText :"",
             validateCourseName :true,
-            validateCourseDuration : true
+            validateCourseDuration : true,
+            open:false
         };
         this.setCourseName = this.setCourseName.bind(this)
         this.setCourseDuration = this.setCourseDuration.bind(this)
@@ -270,7 +271,7 @@ class ViewCourse extends React.Component {
                             {
                                 this.props.courseReducer.pagedCourses.map((data,index)=>{
                                     return (
-                                        <TableRow>
+                                        <TableRow key={index}>
                                             <TableRowColumn><FlatButton label={data.name}/></TableRowColumn>
                                             <TableRowColumn>{data.duration}</TableRowColumn>
                                             <TableRowColumn>{data.noOfDept}</TableRowColumn>

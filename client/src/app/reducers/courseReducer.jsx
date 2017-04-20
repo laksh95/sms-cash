@@ -1,10 +1,10 @@
 const courseReducer = (state = {
     course : [],
     pagedCourses: [],
-    snackbarOpen:"",
+    snackbarOpen:false,
     snackbarMessage:"",
     value : "a",
-    totalPages : "",
+    totalPages : 0,
     currentPage : 1
 },action) => {
     switch(action.type){

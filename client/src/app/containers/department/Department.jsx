@@ -9,7 +9,8 @@ import AddDepartment from './../../components/department/AddDepartment.jsx';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import {getDepartmentList, addDepartment, deleteDepartment, editDepartment,
-  hideSlackBar, updateSlackBarMsg, handleTabChange, pageChange} from "./../../actions/departmentActions";
+  hideSlackBar, updateSlackBarMsg, handleTabChange, pageChange, resetToNoError} from "./../../actions/departmentActions";
+import {setErrorMessage} from "./../../actions/errorActions";
 import {connect} from "react-redux";
 
 
@@ -24,8 +25,16 @@ class Department extends React.Component{
     }
 
     componentWillMount() {
+      this.props.resetToNoError();
       let course= {courseId: 1}
       this.props.getDepartmentList(course);
+    }
+
+    componentWillReceiveProps(nextProps) {
+      if(this.props.department.showErrorPage){
+        this.props.setErrorMessage(this.props.department.errorMessage);
+        browserHistory.push('/error');
+      }
     }
 
     render(){
@@ -69,7 +78,8 @@ Department.contextTypes = {
 const mapStateToProps= (state) => {
   return{
     login: state.login,
-    department: state.departmentReducer
+    department: state.departmentReducer,
+    error: state.errorReducer
   };
 };
 
@@ -99,7 +109,10 @@ const mapDispatchToProps= (dispatch) => {
     },
     pageChange: (currentPage , size) =>{
       dispatch(pageChange(currentPage , size));
-    }
+    },
+    resetToNoError: () =>{
+      dispatch(resetToNoError());
+    }   
   };
 };
 

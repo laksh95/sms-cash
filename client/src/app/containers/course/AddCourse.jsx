@@ -174,7 +174,6 @@ class AddCourse extends React.Component {
                                   disabled = {!(this.state.validateNewCourseName && this.state.validateNewCourseDuration)}
                     />
                 </form>
-
                 <Snackbar
                     open={this.props.courseReducer.snackbarOpen}
                     message={this.props.courseReducer.snackbarMessage}

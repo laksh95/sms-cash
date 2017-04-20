@@ -4,7 +4,8 @@ const courseReducer = (state = {
     snackbarOpen:false,
     snackbarMessage:"",
     value : "a",
-    totalPages : "",
+
+    totalPages : 0,
     currentPage : 1,
     showErrorPage: false,
     errorMessage: ""

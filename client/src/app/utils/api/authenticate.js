@@ -1,0 +1,44 @@
+import axios from 'axios';
+import Auth from './../../Auth.js';
+let serverAddress= 'http://localhost:3000';
+
+ /**
+  * @param
+  *
+  * @calls action on success or failure
+  */
+
+const utils = {
+
+	login: (credential) => {
+		let url = serverAddress + '/auth/login';
+		return axios.post(url, credential);
+	},
+
+	check: () => {
+		let token = Auth.getToken();
+		let authString = 'bearer ' + token;
+		let config = {
+    		headers: {
+        		'Authorization': authString
+   	 		}
+		}
+		console.log("token: ", token);
+		let url = serverAddress + '/api/check';
+		return axios.get(url, config);
+	},
+
+	getInitialData: () => {
+		let token = Auth.getToken();
+		let authString = 'bearer ' + token;
+		let config = {
+    		headers: {
+        		'Authorization': authString
+   	 		}
+		}
+		let url = serverAddress + '/api/course/getInitialData';
+		return axios.get(url, config);
+	}
+}
+
+export default utils;

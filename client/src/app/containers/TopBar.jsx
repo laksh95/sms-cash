@@ -6,159 +6,293 @@ import FlatButton from 'material-ui/FlatButton';
 import Popover from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
+import Auth from '../Auth.js';
+import {Router, browserHistory} from 'react-router'
 import { connect } from 'react-redux'
 import { getSession, getBatch, getCourse, getDepartment } from '../actions/adminActions.jsx'
+import { getInitialData , setCurrentSession , setCurrentCourse } from '../actions/headerActions.jsx'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
-const myStyle = {
-    color: "white"
-};
+  let style = {
 
- var buttonStyle = {
-    backgroundColor: 'transparent',
-    color: 'white',
-    marginTop:12
-  };
+     "titleStyle" : {
+       color: "white"
+     },
 
-  var buttonStyle1 = {
-    backgroundColor: 'transparent',
-    color: 'white',
-    marginLeft:0,
-       marginTop:12
-  };
+     "CurrentSessionElement":{
+       backgroundColor: 'transparent',
+       color: 'white',
+       marginTop:5
+     },
 
- var buttonStyle3 = {
-    backgroundColor: 'transparent',
-    color: 'white',
+     "adminButton":{
+        backgroundColor: 'transparent',
+        color: 'white',
+        marginLeft:0,
+        marginTop:12
+     },
 
-  };
+     "settingsButton":{
+        backgroundColor: 'transparent',
+        color: 'white',
+        marginTop:12
+     },
+
+     "logoutButton":{
+        backgroundColor: 'transparent',
+        color: 'white',
+        marginLeft:0,
+        marginTop:12
+     }
+  }
+
+  var HANDLE_CODES = {
+     "COURSE_OPEN" : "courseOpen",
+     "OPEN_CURRENT_SESSION": "openCurrentSession",
+     "CLOSE_CURRENT_SESSION" : "closeCurrentSession",
+     "LOGOUT_HANDLE":"handleLogout",
+     "COURSE_CLOSE":"courseClose"
+  }
+
+  const muiTheme = getMuiTheme({
+  appBar: {
+    height: 30,
+    fontFamily: 'Roboto, sans-serif'
+  },
+});
+
 
 class TopBar extends React.Component {
    constructor(props) {
     super(props);
-    this.handleTouchTap = this.handleTouchTap.bind(this);
-    this.handleRequestClose = this.handleRequestClose.bind(this);
-    this.handle = this.handle.bind(this);
-    this.handleRequestCurrentSessionClose = this.handleRequestCurrentSessionClose.bind(this);
+
     this.state = {
-                  name: "Manipal University",
-                  open: false,
-                  currentSession : false,
-                  openCoursePop: false,
-                  currentlySelectedCourse: null
-                 };
+      name: "STUDENT MANAGEMENT SYSTEM",
+      open: false,
+      currentSession : false,
+      currentSessionValue : this.props.headerReducer.selectedSession,
+      Selectedcourse: this.props.headerReducer.selectedCourse,
+      user: '',
+      width: window.screen.availWidth,
+      height: window.screen.availHeight,
+    };
   }
 
-  componentDidMount(){
-    this.props.getCourse()
+
+     updateDimensions = () =>{
+
+    this.setState({   message: false  });
+    var w = window,
+        d = document,
+        documentElement = d.documentElement,
+        body = d.getElementsByTagName('body')[0],
+        width = w.innerWidth || documentElement.clientWidth || body.clientWidth,
+        height = w.innerHeight|| documentElement.clientHeight|| body.clientHeight;
+
+       if(width > 760){
+        this.setState({width: width, height: height });
+     }else{
+        this.setState({width: width, height: height });
+      }
+
+      this.props.handleRequest('Topbar');
+    }
+
+  componentWillReceiveProps(nextProps) {
+    this.props = nextProps;
+     this.setState({
+            user : this.props.loginReducer.loginUser.name
+              });
+
+      let width = this.state.width;
+      let height = this.state.height;
+
+      if(this.props.request === 'Topbar'){
+       if(width <=800){
+        if(this.props.open === true){
+           this.props.handleToggle('Topbar');
+         }
+        }else{
+          if(this.props.open === false){
+            this.props.handleToggle('Topbar');
+          }
+        }
+      }
   }
+
+
+    componentDidMount() {
+      window.addEventListener("resize", this.updateDimensions);
+    }
+
+    componentWillUnmount(){
+        window.removeEventListener("resize", this.updateDimensions);
+    }
+
+
 
   getChildContext() {
       return { muiTheme: getMuiTheme(baseTheme) };
     }
 
-  handleTouchTap(event) {
-    // This prevents ghost click.
-    event.preventDefault();
-    this.setState({
-      open: true,
-      anchorEl: event.currentTarget,
-    });
+
+     componentWillMount() {
+      this.updateDimensions();
+     this.props.getInitialData();
+
+  }
+
+  handleTouchTap = (item,event) => {
+
+    switch(item){
+
+      case HANDLE_CODES.COURSE_OPEN:
+              event.preventDefault();
+              this.setState({
+               open: true,
+               anchorEl: event.currentTarget,
+              });
+            break;
+
+      case HANDLE_CODES.OPEN_CURRENT_SESSION:
+               event.preventDefault();
+               this.setState({
+                  currentSession : true,
+                  anchorEl: event.currentTarget,
+               });
+              break;
+
+      case HANDLE_CODES.LOGOUT_HANDLE:
+               Auth.deauthenticateUser();
+               this.props.logoutUser();
+              break;
+
+      case HANDLE_CODES.COURSE_CLOSE:
+               this.setState({
+                 open: false,
+               });
+              break;
+
+      case HANDLE_CODES.CLOSE_CURRENT_SESSION:
+               this.setState({
+                 currentSession: false,
+                });
+              break;
+    }
+
   };
 
-  handleRequestClose() {
-    this.setState({
-      open: false,
-    });
-  };
-   handleRequestCurrentSessionClose(){
-    this.setState({
-      currentSession: false,
-    });
-  };
-  handleRequestCurrentCourseClose = () => {
-    this.setState({
-      openCoursePop: false
-    });
-  }
-  handle(event){
-      event.preventDefault();
+ render(){
+      let that = this;
+      var allSessions = this.props.headerReducer.initialData.batch.map(function(item , id){
+       return (
+          <MenuItem key={id} primaryText={item.name}
+           onTouchTap={ () => {
+          that.props.setCurrentSession(item.name);
+          that.handleTouchTap.bind(that, HANDLE_CODES.CLOSE_CURRENT_SESSION);
+         }
+       }
+           />
+        );
+     });
 
-    this.setState({
-     currentSession : true,
-      anchorEl: event.currentTarget,
-    });
-  }
- render() {
+       var allcourses = this.props.headerReducer.initialData.course.map(function(item , id){
+       return (
+          <MenuItem key={id} primaryText={item.name}
+           onTouchTap={ () => {
+               that.props.setCurrentCourse(item);
+               that.handleTouchTap.bind(that, HANDLE_CODES.COURSE_CLOSE)
+           }
+         }
+       />
+        );
+     });
+
+
+
+
   return(
-    <AppBar
-    title={<span  style={myStyle}><center>{ this.state.name }</center></span>}
-    iconElementLeft={<span  style={myStyle}><FlatButton label="Current Session: 2013 - 2017" style={buttonStyle3} /></span>   }
-    onLeftIconButtonTouchTap = {this.handle}
-    >
+
+        <div>
+
+        <AppBar
+
+         iconElementLeft={
+                  <span  style={style.myStyle} >
+                      <FlatButton label={this.state.currentSessionValue} style={style.CurrentSessionElement} />
+                  </span>
+                }
+
+         onLeftIconButtonTouchTap ={
+                this.handleTouchTap.bind(this, HANDLE_CODES.OPEN_CURRENT_SESSION)
+              }
+       >
+
+       <Popover
+          open={this.state.currentSession}
+          anchorEl={this.state.anchorEl}
+          anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+          targetOrigin={{horizontal: 'left', vertical: 'top'}}
+          onRequestClose={this.handleTouchTap.bind(this, HANDLE_CODES.CLOSE_CURRENT_SESSION)}
+        >
+           <Menu>
+             {allSessions}
+           </Menu>
+
+        </Popover>
+
+       <FlatButton label={this.props.headerReducer.selectedCourse} style={style.settingsButton}
+          onTouchTap={this.handleTouchTap.bind(this, HANDLE_CODES.COURSE_OPEN)}
+       />
       <Popover
-      open={this.state.currentSession}
-      anchorEl={this.state.anchorEl}
-      anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-      targetOrigin={{horizontal: 'left', vertical: 'top'}}
-      onRequestClose={this.handleRequestCurrentSessionClose}
-      >
-        <Menu>
-          <MenuItem primaryText="2012-2016" />
-          <MenuItem primaryText="2011-2015" />
-          <MenuItem primaryText="2010-2014" />
-        </Menu>
-      </Popover>
+          open={this.state.open}
+          anchorEl={this.state.anchorEl}
+          anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
+          targetOrigin={{horizontal: 'left', vertical: 'top'}}
+          onRequestClose={this.handleTouchTap.bind(this, HANDLE_CODES.COURSE_CLOSE)}
+        >
+          <Menu>
+            {allcourses}
+          </Menu>
+        </Popover>
 
-      <Popover
-      open={this.state.openCoursePop}
-      anchorEl={this.state.anchorEl}
-      anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-      targetOrigin={{horizontal: 'left', vertical: 'top'}}
-      onRequestClose={this.handleRequestCurrentCourseClose}
-      >
-      <Menu>
-      {
-        this.props.adminReducer.allCourses.map((data, index) => {
-          return(
-              <MenuItem primaryText={data.name} />
-          )
-        })
-      }
-        </Menu>
-      </Popover>
+      <FlatButton label={this.state.user} style={style.adminButton} />
 
+      <FlatButton label="Logout" style={style.logoutButton}
+         onTouchTap={this.handleTouchTap.bind(this, HANDLE_CODES.LOGOUT_HANDLE)} />
 
-      <FlatButton label="Admin" style={buttonStyle} />
-      <FlatButton label="Settings" style={buttonStyle}
-      onTouchTap={this.handleTouchTap}
-      />
+      </AppBar>
+     {/*<MuiThemeProvider muiTheme={muiTheme}>
+        <AppBar
+         title={
+               <span  style={style.titleStyle} >
+                    <center>
+                        { this.state.name }
+                     </center>
+                </span>
+               }
 
-      <Popover
-      open={this.state.open}
-      anchorEl={this.state.anchorEl}
-      anchorOrigin={{horizontal: 'left', vertical: 'bottom'}}
-      targetOrigin={{horizontal: 'left', vertical: 'top'}}
-      onRequestClose={this.handleRequestClose}
-      >
-      <Menu>
-        <MenuItem primaryText="Edit Profile" />
-        <MenuItem primaryText="Change Password" />
-      </Menu>
-      </Popover>
+         iconElementLeft={
+                  <span  style={style.myStyle} >
 
-      <FlatButton label="Logout" style={buttonStyle} />
-  </AppBar>
-  )}
+                  </span>
+                }
+       ></AppBar>
+    </MuiThemeProvider >*/}
+    </div>
+
+);
+}
 }
 
 TopBar.childContextTypes = {
-  muiTheme: React.PropTypes.object.isRequired,
-};
-
-
+            muiTheme: React.PropTypes.object.isRequired,
+        };
 const mapStateToProps = (state) => {
   return {
-    adminReducer: state.adminReducer
+    loginReducer : state.login,
+    courseReducer : state.courseReducer,
+    headerReducer: state.headerReducer,
     }
 }
 
@@ -175,8 +309,16 @@ const mapDispatchToProps = (dispatch) => {
       },
       getDepartment: (item) => {
         dispatch(getDepartment(item))
-      }
+      },
+      getInitialData : (config) => {
+       dispatch(getInitialData(config));
+     },
+       setCurrentCourse : (item) => {
+       dispatch(setCurrentCourse(item));
+     },
+      setCurrentSession : (item) => {
+       dispatch(setCurrentSession(item));
+     }
     }
 }
-
 export default connect(mapStateToProps, mapDispatchToProps)(TopBar);

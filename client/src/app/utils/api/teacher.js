@@ -3,8 +3,8 @@ import Auth from './../../Auth.js';
 let serverAddress= 'http://localhost:3000';
 
 const utils = {
-	addUser: (details) => {
-		let url = serverAddress + '/api/teacher'
+	getTeacherAndFeedback: (data) => {
+		let url = serverAddress + '/api/teacher/getTeacherAndFeedback'
 		let token = Auth.getToken();
 		let authString = 'bearer ' + token
 		let config = {
@@ -12,7 +12,7 @@ const utils = {
         		'Authorization': authString
    	 		}
 		}
-		return axios.post(url, details, config);
+		return axios.post(url, data, config);
 	},
 	getTeacher: () => {
 		let url = serverAddress + '/api/getTeacher'
@@ -60,4 +60,4 @@ const utils = {
 	}
 }
 
-export default utils;
+export default utils

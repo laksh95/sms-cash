@@ -1,1 +1,5 @@
 /node_modules
+/server/npm-debug.log
+/.idea/
+/server/config/environment/development.js
+npm-debug.log

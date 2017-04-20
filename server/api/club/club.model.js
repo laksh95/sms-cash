@@ -21,6 +21,7 @@ let sql = function(){
             },
             status : {
                 type : sequelize.BOOLEAN,
+                allowNull: false,
                 defaultValue : true
             }
         },

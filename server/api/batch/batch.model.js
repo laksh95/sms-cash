@@ -9,13 +9,33 @@ let init = function(){
                 autoIncrement: true
             },
             name: {
-                type: sequelize.STRING,
+                type: sequelize.INTEGER,
                 allowNull:false,
                 unique:true
+            },
+            status: {
+              type: sequelize.BOOLEAN,
+              allowNull: false,
+              defaultValue: true
             }
         },
         {
             classMethods: {
+              getBatch:(db)=>{
+                  let batch=db.batch
+                  return batch.findAll({
+                      attributes:['id','name'],
+                      where: {
+                          status: true,
+                      },
+                  })
+                  .then((data)=>{
+                    return data
+                  })
+                  .catch((data)=>{
+                    return data
+                  })
+              }
             }
         })
 }

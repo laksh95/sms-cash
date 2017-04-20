@@ -19,6 +19,11 @@ let init=function(){
         },
         end_marks:{
             type:sequelize.INTEGER
+        },
+        status:{
+            type:sequelize.BOOLEAN,
+            allowNull:false,
+            defaultValue:true
         }
     },{
         classMethods:{
@@ -34,7 +39,7 @@ let init=function(){
                     foreignKey:'curriculum_id'
                 })
                 subject.hasMany(relative,{
-                    foreignKey:'subejct_id'
+                    foreignKey:'subject_id'
                 })
             }
         }

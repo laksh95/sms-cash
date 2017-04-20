@@ -3,7 +3,7 @@ import * as types from '../constants/index.js';
 
 export function addUser(details){
 	return {
-		type: types.ADD_USER,
+		type: types.ADD_USER_TEACHER,
 		payload:
 			teacher.addUser(details)
 			.then((response) => {

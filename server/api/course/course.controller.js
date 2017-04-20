@@ -1,49 +1,78 @@
-let model = require('./course.model')
+let model = require('./course.model')()
 let sql= require('../../sqldb')
-
+let batch = require('../batch/batch.model')()
 let db=sql()
 let courseFunctions = {
-    getCourses:(req,res)=>{
-        model().getCourse(db,function (data){
-            console.log('controller',data)
-            res.send(data)
+    getInitialData: (req,res) => {
+        let dataToClient = {}
+        if(req.body !== null){
+         model.getCourse(db)
+            .then((allCourse)=>{
+                 dataToClient.course = allCourse
+                    return batch.getBatch(db)
+                })
+        .then((allBatch)=>{
+            dataToClient.batch = allBatch
+            res.send(dataToClient)
+        }).
+          catch((data)=>{
+              res.status(500).end()
         })
-    },
-    addCourse:(req,res)=>{
-        let course_name=req.body.courseName
-        let duration=req.body.duration
-
-        let setCourseData={
-            course_name,
-            duration
         }
-        model().addNewCourse(db,setCourseData,function(data){
-            console.log('controller')
+         else{
+            res.status(400).end()
+         }
+    },
+    getCourses: (req, res) => {
+        model.getCourse(db)
+            .then((data) => {
             res.send(data)
         })
     },
-    editCourse:(req,res)=>{
-        let name=req.body.name
-        let duration=req.body.duration
-        let id=req.body.id
-        let updateDetails={
-            name,
-            duration,
-            id
+    addCourse: (req, res) => {
+        if (Object.keys(req).length !== 0) {
+            if (Object.keys(req.body).length !== 0) {
+                model.addNewCourse(db, req.body, function (data) {
+                    res.send(data)
+                })
+            }
+            else {
+                res.status(400).end()
+            }
         }
-        model().editCourse(db,updateDetails,(data)=>{
-            res.send(data)
-        })
-
-
+        else {
+            res.status(400).end()
+        }
     },
-    deleteCourse:(req,res)=>{
-        let id=req.body.id
-        model().deleteCourse(db,id,(data)=>{
-            res.send(data)
-        })
-
+    editCourse: (req, res) => {
+        if (Object.keys(req).length !== 0) {
+            if (Object.keys(req.body).length !== 0) {
+                model.editCourse(db, req.body, (data) => {
+                    res.send(data)
+                })
+            }
+            else {
+                res.status(400).end()
+            }
+        }
+        else {
+            res.status(400).end()
+        }
+    },
+    deleteCourse: (req, res) => {
+        if (Object.keys(req).length !== 0) {
+            if (Object.keys(req.body).length !== 0) {
+                model.deleteCourse(db, req.body.id, (data) => {
+                    res.send(data)
+                })
+            }
+            else {
+                res.status(400).end()
+            }
+        }
+        else {
+            res.status(400).end()
+        }
     }
-
 }
 module.exports=courseFunctions

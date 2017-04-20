@@ -9,66 +9,101 @@ var db=require('./../../sqldb')();
 
 var dashboardHandler = {
 	//loading all holidays from API into the database
-	getAllHolidays: (request, response)=>{
+	getAllHolidays: (req, res)=>{
 		academicCalendar().getAllHolidys(db, (status)=>{
-			response.send(status)
+			res.send(status)
 		})
 	},
 	 //fetching parent count, student count, teacher count, personal events and all academic events
-	getInitialData : (request, response)=>{
+	getInitialData : (req, res)=>{
 		console.log("inside controller")
 		let dataToClient = {}
-		if(request !== null && request != undefined && request.body != undefined && Object.keys(request).length!==0 && Object.keys(request.body).length!==0 || request.user != null)
+		if(req !== null && req != undefined && req.body != undefined && Object.keys(req).length!==0 && Object.keys(req.body).length!==0 || req.user != null)
 		{
 			parent().totalParent(db)
 			.then((data)=>{
-				dataToClient.totalParent = data
+				dataToClient.totalParent = data.count
+				if(data.length === 0){
+					res.status(200).json({ message: 'NO_RECORDS_FOUND'})
+				}
 				return student().totalStudent(db)
 			})
 			.then((totalStudents)=>{
-				dataToClient.totalStudents = totalStudents
+				dataToClient.totalStudents = totalStudents.count
+				if(totalStudents.length === 0){
+					res.status(200).json({ message: 'NO_RECORDS_FOUND'})
+				}
 				return teacher().totalTeacher(db)
 			})
 			.then((totalTeachers)=>{
-				dataToClient.totalTeachers = totalTeachers
-				return personalCalendar().fetchPersonalCalendarList(db, request.user)
+				dataToClient.totalTeachers = totalTeachers.count
+				if(totalTeachers.length === 0){
+					res.status(200).json({ message: 'NO_RECORDS_FOUND'})
+				}
+				return personalCalendar().fetchPersonalCalendarList(db, req.user)
 			}).
 			then((userPersonalCalendar)=>{
 				dataToClient.personalCalendar = userPersonalCalendar
+				if(userPersonalCalendar.length === 0){
+					res.status(200).json({ message: 'NO_RECORDS_FOUND'})
+				}
 				return academicCalendar().fetchEventList(db)
 			})
 			.then((events)=>{
 				dataToClient.totalEvent= events
-				response.send(dataToClient)
+				if(events.length === 0){
+					res.status(200).json({events, message: 'NO_RECORDS_FOUND'})
+				}
+				res.status(200).json({data: dataToClient, message: 'SUCCESS_OPERATION'})
 			})
+			.catch((err)=>{
+        res.status(500).json({error: err.toString(), message: 'IS_INTERNAL_SERVER_ERROR'})
+      })
 		}
 		else{
-			response.status(400).end()
+			res.status(400).json({error: "Missing Paramters", message: 'BAD_REQUEST'})
 		}
 
 	},
 	//adding event to academic calendar
-	addEvent: (request, response)=>{
-		if(request !== null && request != undefined && request.body != undefined && Object.keys(request).length!==0 && Object.keys(request.body).length!==0){
-			academicCalendar().addEvent(db, request.body, (status)=>{
-				response.send(status)
+	addEvent: (req, res)=>{
+		if(req !== null && req != undefined && req.body != undefined && Object.keys(req).length!==0 && Object.keys(req.body).length!==0){
+			academicCalendar().addEvent(db, req.body)
+			.then((data)=>{
+				if(data.length === 0){
+					res.status(200).json({ message: 'NO_RECORDS_FOUND'})
+				}
+				else{
+					res.status(200).json({data , message: 'SUCCESS_OPERATION'})
+				}
 			})
+			.catch((err)=>{
+		        res.status(500).json({error: err.toString(), message: 'IS_INTERNAL_SERVER_ERROR'})
+		      })
 		}
 		else{
-			response.status(400).end()
+			res.status(400).json({error: "Missing Paramters", message: 'BAD_REQUEST'})
 		}
 
 	},
 	//deleting event from academic calendar
-	deleteEvent: (request, response)=>{
-		console.log("inside controller")
-		if(request !== null && request != undefined && request.body != undefined && Object.keys(request).length!==0 && Object.keys(request.body).length!==0){
-			academicCalendar().deleteEvent(db, request.body, (status)=>{
-				response.send(status)
+	deleteEvent: (req, res)=>{
+		if(req !== null && req != undefined && req.body != undefined && Object.keys(req).length!==0 && Object.keys(req.body).length!==0){
+			academicCalendar().deleteEvent(db, req.body)
+			.then((data)=>{
+				if(data.length === 0){
+					res.status(200).json({ message: 'NO_RECORDS_FOUND'})
+				}
+				else{
+					res.status(200).json({data: req.body.id , message: 'SUCCESS_OPERATION'})
+				}
 			})
+			.catch((err)=>{
+        res.status(500).json({error: err.toString(), message: 'IS_INTERNAL_SERVER_ERROR'})
+      })
 		}
 		else{
-			response.status(400).end()
+			res.status(400).json({error: "Missing Paramters", message: 'BAD_REQUEST'})
 		}
 	}
 }

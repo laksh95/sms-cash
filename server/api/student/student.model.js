@@ -149,20 +149,7 @@ module.exports=function(){
         totalStudent: function(db, cb){ //counting number of students
           let student = db.student
 
-          return student.findAndCountAll().then((data)=>{
-            dataToSend = {
-              count: data.count,
-              status: 1,
-              message: "Loaded"
-            }
-            return dataToSend
-          })
-          .catch((data)=>{
-              return({
-                  status: 0,
-                  message: "Failed to load data"
-              })
-          })
+          return student.findAndCountAll()
         },
         getInitialData:(db,courseId,cb)=>{
           let initialData=[];

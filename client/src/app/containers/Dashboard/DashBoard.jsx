@@ -42,12 +42,13 @@ class DashBoard extends React.Component {
 			contentError:'',
 			valid:0,
 			message:'',
-			calendarType:''
+			calendarType:'academic'
 		}	
 	}
 	handleTouch=(event,choice)=>{
 		switch(choice){
 			case 'DELETE_EVENT':
+				console.log("inside delete")
 				var id=this.state.event.id;
 				var events=this.props.getDataReducer.events;
 				for(var i in events){
@@ -55,7 +56,22 @@ class DashBoard extends React.Component {
 						index=i;
 						break;
 					}
-				}		
+				}
+				var type='';
+				var method='';
+				var id=this.state.event.id;
+				if(this.state.event.calendarType='personal'){
+					type='personalCalendar';
+					method='deletePersonalEvent'
+				}
+				else{
+					type='academicCalendar';
+					method='deleteEvent'
+				}
+				this.setState({
+					open:false,
+				})
+				this.props.deleteFromCalendar(type,method,id)
 				break;
 			case 'CLOSE_NEW_EVENT_CARD':
 				this.setState({
@@ -69,11 +85,11 @@ class DashBoard extends React.Component {
 				break;
 			case 'TAP_CALENDAR_SLOT':
 				var newEvent={};
-				console.log("event",typeof(event.start))
+				console.log("event",moment(event.start).format('HH:mm '))
 				var endDate=moment(event.end).format("YYYY-MM-DD");
 				var startDate=moment(event.start).format("YYYY-MM-DD");
-				var endTime=moment(event.end).format('hh:mm')	
-				var startTime=moment(event.start).format('hh:mm')
+				var endTime=moment(event.end).format('HH:mm')	
+				var startTime=moment(event.start).format('HH:mm')
 				var start=moment(startDate+" "+startTime, 'HH:mm')._i;
 				var end=moment(endDate+" "+endTime, 'HH:mm')._i;
 				this.setState({
@@ -123,9 +139,13 @@ class DashBoard extends React.Component {
 				}
 				if(moment(start).isAfter(end)){
 						dateError="*Start Date ahead of end date"
+
 				}
 				else{
-					valid++;
+					if(moment().isAfter(moment(start)))
+						dateError="*Start Date before current date"
+					else
+						valid++;
 				}
 				if(valid==3){
 					var url='';
@@ -138,47 +158,30 @@ class DashBoard extends React.Component {
 					}
 					var type='';
 					var method=''
-					if(this.state.calendarType='personal'){
+					if(this.state.calendarType=='personal'){
 						type='personalCalendar'
 						method='addPersonalEvent'
 					}
-					else if(this.state.calendarType='academic'){
+					else if(this.state.calendarType=='academic'){
 						type='academicCalendar'
 						method='addEvent'
 					}
-					addToCalendar(type,method,newEvent);
+					this.setState({
+						openCard: false,
+					});
+					this.props.addToCalendar(type,method,newEvent);
 				}
 				else{
-					valid= 0;
 					this.setState({
 						typeError:typeError,
 						contentError:contentError,
-						dateError:dateError
+						dateError:dateError,
+						openCard:false
+
 					});
 				}	
 				break;
-			case 'DELETE_EVENT':
-				var id=this.state.event.id;
-				var events=this.props.getDataReducer.events;
-				for(var i in events){
-					if(events[i]==id){
-						index=i;
-						break;
-					}
-				}
-				var type='';
-				var method='';
-				var id=this.state.event.id;
-				if(this.state.event.calendarType='personal'){
-					type='personalCalendar';
-					method='deletePersonalEvent'
-				}
-				else{
-					type='academicCalendar';
-					method='deleteEvent'
-				}
-				deletefromCalendar(type,method,id)
-				break;
+
 			case 'CHANGE_START_DATE':
 				this.setState({
 					dateError:'',
@@ -186,6 +189,7 @@ class DashBoard extends React.Component {
 		   		 });
 				break;
 			case 'CHANGE_START_TIME':
+
 				this.setState({
 					dateError:'',
 	     			startTime: event.target.value,
@@ -259,7 +263,7 @@ class DashBoard extends React.Component {
 			        culture='en-GB'
 			        step={15}
 			        timeslots={2}
-			        defaultView='week'
+			        defaultView='month'
 			        scrollToTime={new Date()}
 			        defaultDate={new Date()}
 			        onSelectEvent={(event) => this.handleTouch(event,'SHOW_EVENT_DETAILS')}

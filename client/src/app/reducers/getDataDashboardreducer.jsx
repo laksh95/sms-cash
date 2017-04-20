@@ -1,4 +1,4 @@
-import {GET_INITIAL_DATA_DASHBOARD,ADD_TO_CALENDER,DELETE_FROM_CALENDER,SET_SNACK} from './../constants';
+import {GET_INITIAL_DATA_DASHBOARD,ADD_TO_CALENDER,DELETE_fROM_CALENDER,SET_SNACK} from './../constants';
 
 var initialState = {
     parentCount:0,
@@ -12,14 +12,13 @@ var initialState = {
 const getDataReducer = ( state = initialState ,action) => {
 	switch(action.type){
 	    case GET_INITIAL_DATA_DASHBOARD+"_FULFILLED":
-	    	console.log("success",action.payload);
 	        let invalid=0;
 	        let messg='';
 	        let teacherCount=0;
 	        let parentCount=0;
 	        let studentCount=0;
 	        var events=state.events;
-	          if(action.payload.totalEvent.status==200){        
+	          if(action.payload.status==200){        
 	            for(let i in action.payload.totalEvent){
 	              let event1={
 	                id:action.payload.totalEvent[i].content,
@@ -32,12 +31,6 @@ const getDataReducer = ( state = initialState ,action) => {
 	              }
 	              events.push(event1)
 	            }
-	          }
-	          else {
-	            invalid++;
-	            messg=''
-	          }
-	          if(action.payload.personalCalendar.status==200){
 	            for(let i in action.payload.personalCalendar){
 	              let event1={
 	                id:action.payload.personalCalendar[i].content,
@@ -49,42 +42,26 @@ const getDataReducer = ( state = initialState ,action) => {
 	                calendarType:'personal'
 	              }
 	              events.push(event1)
-	          }
-	          state = {
-	          	...state,
-	          	events: events
-	          }
-	        }
-	        else invalid++; 
-	        if(action.payload.totalStudents.status==200){
-	          teacherCount=action.payload.totalStudents;
-	        }
-	        else invalid++;
-	        if(action.payload.totalStudents.status==200){
-	          parentCount=action.payload.totalParent
-	        }
-	        else invalid++;
-	        if(action.payload.totalStudents.status==200){
-	          studentCount=action.payload.totalTeachers;
-	        }
-	        else invalid++;
-	        if(invalid==0){
-	        	state={ 
-	        		...state,
-	          		openSnack:false,
-	          		teacherCount:teacherCount,
-	          		parentCount:parentCount,
-	          		studentCount:studentCount
-	        	}
-	        }
-	        else{
-	        	state={ ...state,
-	          		openSnack:true,
-	          		message:action.payload.message,
-	          		// message:"Not Added",
+	          	}
+				teacherCount=action.payload.totalStudents;
+				parentCount=action.payload.totalParent
+				studentCount=action.payload.totalTeachers;
+				state={ 
+					...state,
+					openSnack:false,
+					events: events,
+					teacherCount:teacherCount,
+					parentCount:parentCount,
+					studentCount:studentCount
+				}
 
-	        	}
-	        }
+	          }
+	          else {
+	          	state={ 
+					...state,
+					message:action.payload.message
+				}
+	          }
 	   	 	return state;
 	    case GET_INITIAL_DATA_DASHBOARD+"_REJECTED":
 	    	state={ ...state,
@@ -92,22 +69,23 @@ const getDataReducer = ( state = initialState ,action) => {
 	          		message:action.payload.message,	        	}
 	    	return state;
 	    case ADD_TO_CALENDER + "_FULFILLED":
+	    	console.log("success add------------------>",action.payload);
 	    	var events=state.events;
 	    	if(action.payload.status==200){
 		   		let event1={
-		            id:action.payload.personalCalendar[i].content,
-		            start:new Date(action.payload.personalCalendar[i].start_date),
-		            end:new Date(action.payload.personalCalendar[i].start_date),
-		            content:action.payload.personalCalendar[i].content,
-		            type:action.payload.personalCalendar[i].heading,
-		            title:action.payload.personalCalendar[i].heading,
+		            id:action.payload.id,
+		            start:new Date(action.payload.start_date),
+		            end:new Date(action.payload.start_date),
+		            content:action.payload.content,
+		            type:action.payload.heading,
+		            title:action.payload.heading,
 	    			calendarType:'personal'
 		        }
 		    	events.push(event1)
 			 }
 			state={ ...state,
+					message:"Successfully Added!!",
 					openSnack:true,
-	          		message:action.payload.message,
 					events:events
 			}
 	    	return state;
@@ -117,7 +95,7 @@ const getDataReducer = ( state = initialState ,action) => {
 	          		message:action.payload.message,
 			}
 	    	return state;
-	    case DELETE_FROM_CALENDER+"_FULFILLED":
+	    case DELETE_fROM_CALENDER+"_FULFILLED":
 		    var events=state.events
 			if(action.payload.status==200){
 				   			events.splice(index,1)
@@ -128,7 +106,8 @@ const getDataReducer = ( state = initialState ,action) => {
 						}
 			        props.getEvents(events)
 			return state;
-	    case DELETE_FROM_CALENDER+"_REJECTED":
+	    case DELETE_fROM_CALENDER+"_REJECTED":
+
 		    state={ ...state,
 					openSnack:true,
 	          		message:action.payload.message,

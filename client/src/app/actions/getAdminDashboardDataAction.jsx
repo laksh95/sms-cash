@@ -4,23 +4,31 @@ export function getInitialData(userId){
 	return{
 		type: GET_INITIAL_DATA_DASHBOARD ,
 		payload:adminDashboard.getData(userId).then((response) => {
-				return response.data;
+				response.data.data.status=response.status;
+				return response.data.data;
 			})
   	};
 }
 export function addToCalendar(type,method,event){
+	console.log("inside addtocalendar")
 	return{
 		type: ADD_TO_CALENDER ,
 		payload:adminDashboard.addToCalendar(type,method,event).then((response) => {
-				return response.data;
+				response.data.data.status=response.status;
+				response.data.data.type=type;
+				response.data.data.method=method;
+				return response.data.data;
 			})
   	};
 }
 export function deleteFromCalendar(type,method,id){
 	return{
-		type: DELETE_FROM_CALENDER ,
+		type: DELETE_fROM_CALENDER ,
 		payload:adminDashboard.deletefromCalendar(type,method,id).then((response) => {
-				return response.data;
+				response.data.data.status=response.status;
+				response.data.data.type=type;
+				response.data.data.method=method;				
+				return response.data.data;
 			})
   	};
 }

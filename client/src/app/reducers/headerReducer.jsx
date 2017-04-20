@@ -6,7 +6,7 @@ const adminReducer = ( state = {
 	selectedTab:"",
 	selectedCourse:"Course",
 	selectedSession:"Session",
-	selectedCourseId: JSON.parse(localStorage.getItem("courseId"))
+	selectedCourseId: localStorage.getItem("courseId")
 } , action) => {
 	switch (action.type){
 		case "GET_DEPARTMENTS":
@@ -36,12 +36,28 @@ const adminReducer = ( state = {
 			return state
 
 		case "GET_INITIAL_DATA_FULFILLED":
+		let courseIdOld = JSON.parse(localStorage.getItem("courseId"))
+		let courseId = ""
+		let courseName = ""
+		if(courseIdOld === undefined || courseIdOld === null){
+			courseId = action.payload.course[0].id
+			courseName = action.payload.course[0].name
+		}
+		else{
+			for(let index =0 ; index<action.payload.course.length ; index ++){
+				if(action.payload.course[index].id == courseIdOld)
+				{
+					courseName = action.payload.course[index].name
+					courseId = courseIdOld
+				}
+			}
+		}
 
-            state = {
+        state = {
 				...state,
 				initialData: action.payload,
-				selectedCourse: action.payload.course[0].name,
-				selectedCourseId: action.payload.course[0].id
+				selectedCourse: courseName,
+				selectedCourseId: courseId
 			}
 			return state
 
@@ -58,7 +74,7 @@ const adminReducer = ( state = {
          	selectedCourse: action.payload.name,
 					selectedCourseId: action.payload.id
          }
-				 localStorage.setItem("courseId",state.selectedCourseId)
+				 localStorage.setItem("courseId",action.payload.id)
          return state
 
 		default:

@@ -50,7 +50,7 @@ class Feedback extends React.Component {
          subtitle={dataTeacher.designation}
          actAsExpander={true}
          showExpandableButton={true}
-         avatar="images/jsa-128.jpg"
+         avatar="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcR7LBEv8FJQGibN96zw-vWvm1M-9I3tTgomzbV8NzTQCxu1aCk8Rw4cmBo"
        />
        <CardText expandable={true}>
         <div>

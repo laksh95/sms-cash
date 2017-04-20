@@ -50,7 +50,7 @@ let init=function(){
                             name:setData.course_name
                         }
                     }).then((data)=>{
-                        if(data.length==0){
+                        if(data.length === 0){
                             db.course.create({
                                 name:setData.course_name,
                                 duration:setData.duration

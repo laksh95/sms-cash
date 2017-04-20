@@ -8,7 +8,6 @@ module.exports = {
     options: {
       logging: false,
       dialect: 'postgres',
-      //storage: 'dev.sqlite',
       define: {
         timestamps: true,
         underscored: true,
@@ -16,4 +15,4 @@ module.exports = {
       }
     }
   }
-};
+}

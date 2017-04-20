@@ -7,8 +7,8 @@ import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme'
 import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card'
 import { getSelected } from '../../actions/adminActions.jsx'
 import { connect } from 'react-redux'
-import { getTeacherAndFeedback } from './../../actions/teacherActions.jsx'
-import { getSubjectAndDepartment } from './../../actions/subjectActions.jsx'
+import { getTeacherAndFeedback,resetToNoErrorTeacher } from './../../actions/teacherActions.jsx'
+import { getSubjectAndDepartment,resetToNoErrorSubject } from './../../actions/subjectActions.jsx'
 import {List, ListItem} from 'material-ui/List'
 import ActionGrade from 'material-ui/svg-icons/action/grade'
 import ActionFace from 'material-ui/svg-icons/action/face'
@@ -65,6 +65,8 @@ class Feedback extends React.Component {
     )
   }
   componentWillMount() {
+    this.props.resetToNoErrorTeacher()
+    this.props.resetToNoErrorSubject()
     if(this.props.headerReducer.selectedCourseId == ""){
       errorSnackBar("Select Course")
     }
@@ -88,6 +90,14 @@ class Feedback extends React.Component {
       this.props.getSubjectAndDepartment({"courseId": nextProps.headerReducer.selectedCourseId})
     }
     this.props = nextProps
+    if(this.props.teacherReducer.showErrorPage){
+        this.props.setErrorMessage(this.props.courseReducer.errorMessage);
+        browserHistory.push('/error');
+    }
+    if(this.props.subjectReducer.showErrorPage){
+        this.props.setErrorMessage(this.props.courseReducer.errorMessage);
+        browserHistory.push('/error');
+    }
   }
 
   selectDepartment = (event, index, values) => {
@@ -227,6 +237,12 @@ const mapDispatchToProps = (dispatch) => {
       },
       getSubjectAndDepartment: (data) => {
         dispatch(getSubjectAndDepartment(data))
+      },
+      resetToNoErrorSubject: () => {
+        dispatch(resetToNoErrorSubject())
+      },
+      resetToNoErrorTeacher: () => {
+        dispatch(resetToNoErrorTeacher())
       }
     }
 }

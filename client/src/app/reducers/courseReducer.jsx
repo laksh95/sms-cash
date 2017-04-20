@@ -64,7 +64,7 @@ const courseReducer = (state = {
             }
             break
         case "GET_COURSES_REJECTED":
-            var data= action.payload
+            var data= action.payload.response
             if(data.status===400){
                 state ={
                     ...state ,
@@ -141,14 +141,14 @@ const courseReducer = (state = {
                 state = {
                     ...state ,
                     showErrorPage : true ,
-                    errorMEssage : "403: Forbidden"
+                    errorMessage : "403: Forbidden"
                 }
             }
             break
         case "EDIT_COURSE_FULFILLED":
             var content = action.payload
             var data = content.data
-            if(content.status==1){
+            if(content.status==200){
                 let course = state.course
                 for(let index in course){
                     if(course[index].id===data.id){
@@ -181,7 +181,32 @@ const courseReducer = (state = {
                     snackbarOpen : true
                 }
             }
+            break
 
+        case "EDIT_COURSE_REJECTED":
+            var data = action.payload.response
+            if (data.status===500){
+                state={
+                    ...state ,
+                    showErrorPage:true ,
+                    errorMessage :"500:Internal Server Error"
+                }
+            }
+            else if(data.status===400){
+                console.log(data.data.msg)
+                state= {
+                    ...state ,
+                    snackbarMessage :"BAD REQUEST",
+                    snackbarOpen : true
+                }
+            }
+            else if (data.status===403){
+                state = {
+                    ...state ,
+                    showErrorPage : true ,
+                    errorMessage : "403: Forbidden"
+                }
+            }
             break
 
         case "DELETE_COURSE_FULFILLED":
@@ -210,6 +235,31 @@ const courseReducer = (state = {
                 snackbarOpen :true ,
                 snackbarMessage : "Course Deleted",
                 pagedCourses:pagedCourses
+            }
+            break
+        case "DELETE_COURSE_REJECTED":
+            var data = action.payload.response
+            if (data.status===500){
+                state={
+                    ...state ,
+                    showErrorPage:true ,
+                    errorMessage :"500:Internal Server Error"
+                }
+            }
+            else if(data.status===400){
+                console.log(data.data.msg)
+                state= {
+                    ...state ,
+                    snackbarMessage :"BAD REQUEST",
+                    snackbarOpen : true
+                }
+            }
+            else if (data.status===403){
+                state = {
+                    ...state ,
+                    showErrorPage : true ,
+                    errorMessage : "403: Forbidden"
+                }
             }
             break
         case "SET_PAGINATION":

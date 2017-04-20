@@ -56,26 +56,29 @@ let courseFunctions = {
                 })
             }
             else {
-                res.status(400).end()
+                res.status(400).json({data:[],msg:data.msg})
             }
         }
         else {
-            res.status(400).end()
+            res.status(400).json({data:[],msg:data.msg})
         }
     },
     editCourse: (req, res) => {
         if (Object.keys(req).length !== 0) {
             if (Object.keys(req.body).length !== 0) {
                 model.editCourse(db, req.body, (data) => {
-                    res.send(data)
+                    if(1==data.status)
+                        res.status(200).json({data:data.data,msg:data.msg})
+                    else
+                        res.status(500).json({data:[],msg:"INTERNAL_SERVER_ERROR"})
                 })
             }
             else {
-                res.status(400).end()
+                res.status(400).json({data:[],msg:"BAD_REQUEST"})
             }
         }
         else {
-            res.status(400).end()
+            res.status(400).json({data:[],msg:"BAD_REQUEST"})
         }
     },
     deleteCourse: (req, res) => {
@@ -83,15 +86,18 @@ let courseFunctions = {
             if (Object.keys(req.body).length !== 0) {
                 console.log("IN CONTROLLER",req.body.id)
                 model.deleteCourse(db, req.body.id, (data) => {
-                    res.send(data)
+                    if(1==data.status)
+                        res.status(200).json({data:data.data,msg:data.msg})
+                    else
+                        res.status(500).json({data:[],msg:"INTERNAL_SERVER_ERROR"})
                 })
             }
             else {
-                res.status(400).end()
+                res.status(400).json({data:[],msg:"BAD_REQUEST"})
             }
         }
         else {
-            res.status(400).end()
+            res.status(400).json({data:[],msg:"BAD_REQUEST"})
         }
     }
 }

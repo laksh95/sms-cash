@@ -10,10 +10,6 @@ class Department extends React.Component {
     super(props);
   }
 
-  getChildContext() {
-      return { muiTheme: getMuiTheme(baseTheme) };
-    }
-
  componentWillMount() {
      this.props.getSelected(""+this.props.location.pathname);
  }
@@ -26,9 +22,7 @@ class Department extends React.Component {
     );
   }
 }
-Department.childContextTypes = {
-            muiTheme: React.PropTypes.object.isRequired,
-};
+
 Department.contextTypes = {
     router: React.PropTypes.object.isRequired
 };

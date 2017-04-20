@@ -11,10 +11,6 @@ class DashBoard extends React.Component {
     super(props);
     }
 
-   getChildContext() {
-      return { muiTheme: getMuiTheme(baseTheme) };
-    }
-
    componentWillReceiveProps(nextProps) {
       this.props = nextProps;
     }
@@ -33,9 +29,6 @@ class DashBoard extends React.Component {
     }
 }
 
-DashBoard.childContextTypes = {
-            muiTheme: React.PropTypes.object.isRequired,
-};
 DashBoard.contextTypes = {
     router: React.PropTypes.object.isRequired
 };

@@ -6,8 +6,7 @@ import {checkLogin, logoutUser, setUrl,setReceivedResponse} from "./../actions/l
 import {connect} from "react-redux";
 import {browserHistory} from 'react-router';
 import CircularProgress from 'material-ui/CircularProgress';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 let style = {
    "MainContentStyle":{
          marginTop:-10,
@@ -58,9 +57,6 @@ class App extends React.Component {
 
     }
 
-     getChildContext() {
-      return { muiTheme: getMuiTheme(baseTheme) };
-    }
     componentDidUpdate(prevProps, prevState) {
       console.log("In Component will receive props,  going to login: ");
       console.log("Login state: ", this.props.login);
@@ -91,7 +87,8 @@ class App extends React.Component {
           header =  <span></span>;
           content = <center><CircularProgress size={80} thickness={5} /> </center>; 
     }
-    return(       
+    return( 
+    <MuiThemeProvider>      
       <div className="mymain">   
           
         <div style={style.MainContentStyle}>
@@ -106,12 +103,11 @@ class App extends React.Component {
         </div>
      
      </div>
+    </MuiThemeProvider> 
     );         
   }
 }
-App.childContextTypes = {
-    muiTheme: React.PropTypes.object.isRequired
-}
+
 App.contextTypes = {
     router: React.PropTypes.object.isRequired
 };

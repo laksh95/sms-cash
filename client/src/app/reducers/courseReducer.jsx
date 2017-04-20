@@ -48,6 +48,13 @@ const courseReducer = (state = {
                     pagedCourses.push(course[index])
                 }
             }
+            if(0==pagedCourses){
+                state = {
+                    ...state ,
+                    snackbarMessage : "Nothing to Show",
+                    snackbarOpen : true
+                }
+            }
             state  = {
                 ...state ,
                 course : course ,

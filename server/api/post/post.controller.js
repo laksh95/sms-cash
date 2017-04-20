@@ -1,6 +1,5 @@
 let post = require('./post.model')()
 let models = require('./../../sqldb')()
-
 module.exports = {
     addPost : (req,res) => {
         if (req.body){

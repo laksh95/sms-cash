@@ -63,10 +63,25 @@ class AddCourse extends React.Component {
     };
     addCourseName = (event) =>{
         let name = event.target.value
+        let specialCharacter = name.match(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g)
+        let numCharacter=name.match(/\d+/g)
         if(name.trim()==''){
             this.setState({
                 errorText3:"",
+                newCourse : "",
                 validateNewCourseName : false
+            })
+        }
+        else if(specialCharacter !== null){
+            this.setState({
+                errorText3:'Input cannot contain Special Character',
+                validateNewCourseName:false
+            })
+        }
+        else if(numCharacter !== null){
+            this.setState({
+                errorText3:'Input cannot contain Numerical Value',
+                validateNewCourseName:false
             })
         }
         else if(name.length>20){
@@ -111,6 +126,13 @@ class AddCourse extends React.Component {
             course_name : newCourse,
             duration : newDuration
         })
+        this.setState({
+            newCourse : "",
+            newDuration : "",
+            validateNewCourseName : false,
+            validateNewCourseDuration:false,
+
+        })
     }
     render(){
         console.log('addCourse.jsx')
@@ -129,9 +151,11 @@ class AddCourse extends React.Component {
                     hintText="Course Name"
                     onChange={this.addCourseName}
                     errorText={this.state.errorText3}
+                    value = {this.state.newCourse}
                 /><br/>
                 <NumberInput
                     id="num"
+                    value ={this.state.newDuration}
                     hintText="Duration"
                     defaultValue=""
                     strategy="warn"

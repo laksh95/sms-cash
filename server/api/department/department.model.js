@@ -46,7 +46,7 @@ let init=function() {
                     if(courseData==null){
                         let response = {
                             status : "0",
-                            msg :"course not available",
+                            msg :"NO_ROWS_FOUND",
                             data : courseData
                         }
                         cb(response)
@@ -67,13 +67,13 @@ let init=function() {
                                     let response = {
                                         status : "1",
                                         msg :" Department Added Successfully",
-                                        data : data
+                                        data : data.dataValues
                                     }
                                     cb(response)
                                 }).catch((err)=>{
                                     let response = {
                                         status : "0",
-                                        msg :"Internal Server Error",
+                                        msg :"IS_INTERNAL_SERVER_ERROR",
                                         data : err
                                     }
                                     cb(response)
@@ -95,13 +95,13 @@ let init=function() {
                                         let response = {
                                             status : "1",
                                             msg :" Department Added Successfully",
-                                            data : data
+                                            data : data.dataValues
                                         }
                                         cb(response)
                                     }).catch((err)=>{
                                         let response = {
                                             status : "0",
-                                            msg :"Internal Server Error",
+                                            msg :"IS_INTERNAL_SERVER_ERROR",
                                             data : err
                                         }
                                         cb(response)
@@ -110,7 +110,7 @@ let init=function() {
                                 else {
                                     let response = {
                                         status : "0",
-                                        msg :"Department Already exists ",
+                                        msg :"IS_ALREADY_EXISTS",
                                         data : {}
                                     }
                                     cb(response)
@@ -120,7 +120,7 @@ let init=function() {
                             .catch((err)=>{
                                 let response = {
                                     status : "0",
-                                    msg :"Internal Server Error",
+                                    msg :"IS_INTERNAL_SERVER_ERROR",
                                     data : err
                                 }
                                 cb(response)
@@ -202,7 +202,6 @@ let init=function() {
                         cur_dept['total_no_of_students']= values[index].count
                         departments.push(cur_dept)
                     })
-                    console.log("inside model------------------------------",departments)
                     return({departments});
                 })
             })

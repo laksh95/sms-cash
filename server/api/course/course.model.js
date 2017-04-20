@@ -65,7 +65,12 @@ let init=function(){
                                 sendData(response)
                             })
                             .catch((err)=>{
-                                sendData(err.toString())
+                                let response = {
+                                    status : 0,
+                                    data :[],
+                                    msg : "Internal Server Error"
+                                }
+                                sendData(response)
                             })
                         }
                         else {
@@ -90,14 +95,19 @@ let init=function(){
                                     sendData(response)
                                 })
                                     .catch((err)=>{
-                                        sendData(err.toString())
+                                        let response = {
+                                            status : 0,
+                                            data :[],
+                                            msg : "Internal Server Error"
+                                        }
+                                        sendData(response)
                                     })
                             }
                             else {
                                 response = {
                                     status: 0,
                                     data:{},
-                                    msg: 'course Already exists.'
+                                    msg: 'COURSE_ALREADY_EXISTS'
                                 }
                                 sendData(response)
                             }
@@ -122,7 +132,12 @@ let init=function(){
                         sendData(response)
                     })
                         .catch((err)=>{
-                            sendData(err.toString())
+                            let response = {
+                                status : 0,
+                                data :[],
+                                msg : "Internal Server Error"
+                            }
+                            sendData(response)
                         })
                 },
                 deleteCourse:(db,deleteId,sendData)=>{
@@ -143,7 +158,12 @@ let init=function(){
                         sendData(response)
                     })
                         .catch((err)=>{
-                            sendData(err.toString())
+                            let response = {
+                                status : 0,
+                                data :[],
+                                msg : "Internal Server Error"
+                            }
+                            sendData(response)
                         })
                 }
             }

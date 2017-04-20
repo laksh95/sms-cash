@@ -51,7 +51,7 @@ let init=function(){
                         }
                     }).then((data)=>{
                         console.log(data)
-                        if(data.length==0){
+                        if(data.length === 0){
                             db.course.create({
                                 name:setData.course_name,
                                 duration:setData.duration
@@ -89,7 +89,7 @@ let init=function(){
                                     }
                                     sendData(response)
                                 })
-                                    .catcH((err)=>{
+                                    .catch((err)=>{
                                         sendData(err.toString())
                                     })
                             }

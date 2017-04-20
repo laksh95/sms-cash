@@ -50,13 +50,13 @@ let init=function(){
                             name:setData.course_name
                         }
                     }).then((data)=>{
-                        console.log(data)
                         if(data.length === 0){
                             db.course.create({
                                 name:setData.course_name,
                                 duration:setData.duration
                             }).then((data)=>{
-                                data[noOfDept]=0
+                                data = data.dataValues
+                                data.noOfDept=0
                                 response={
                                     status:1,
                                     data,
@@ -64,9 +64,9 @@ let init=function(){
                                 }
                                 sendData(response)
                             })
-                                .catch((err)=>{
-                                    sendData(err.toString())
-                                })
+                            .catch((err)=>{
+                                sendData(err.toString())
+                            })
                         }
                         else {
                             let course = data

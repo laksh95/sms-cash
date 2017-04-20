@@ -35,11 +35,6 @@ class TopBar extends React.Component {
     return { muiTheme: getMuiTheme(baseTheme) };
    }
   
-
-
- 
-
-
   handleToggle =() => { this.setState({open: !this.state.open});}
 
 
@@ -48,6 +43,7 @@ class TopBar extends React.Component {
       <MuiThemeProvider muiTheme={muiTheme}>
        <AppBar
          title={<span  style={style.titleStyle}>S T U D E N T &nbsp;&nbsp; M A N A G E M E N T &nbsp;&nbsp; S Y S T E M </span>}
+         showMenuIconButton={false}
          iconClassNameRight=""
          iconClassNameLeft=""   
        />

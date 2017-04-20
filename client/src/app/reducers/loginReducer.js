@@ -5,9 +5,11 @@ const initialLoginState={
   isLogin : false,
   loginUser: {},
   token: "",
-      errorText:"",
-    prevPathName: "/",
-    receivedResponse: true
+  errorText:"",
+  prevPathName: "/",
+  receivedResponse: true,
+  showErrorPage: false,
+  errorMessage: ""
 } 
 
 const loginReducer= (state=initialLoginState, action) => {
@@ -85,9 +87,11 @@ const loginReducer= (state=initialLoginState, action) => {
 
              if(action.payload.response === undefined){
 
-                       Auth.deauthenticateUser();
+                      Auth.deauthenticateUser();
                       state={
                          ...state,
+                         showErrorPage: true,
+                         errorMessage: "Network Error",
                          isLogin: false,
                          token: "", 
                          errorText:action.payload.message,
@@ -166,6 +170,14 @@ const loginReducer= (state=initialLoginState, action) => {
                   loginUser: {}
                  } 
         break;
+
+        case types.RESET_ERROR:
+          state={
+            ...state,
+            showErrorPage: false,
+            errorMessage: ""
+          }
+        break
     }
     return state;
 };

@@ -5,7 +5,7 @@ const courseReducer = (state = {
     snackbarMessage:"",
     value : "a",
     totalPages : "",
-    currentPage : ""
+    currentPage : 1
 },action) => {
     switch(action.type){
         case "SET_COURSE":
@@ -154,6 +154,16 @@ const courseReducer = (state = {
                 snackbarOpen :true ,
                 snackbarMessage : "Course Deleted",
                 pagedCourses:pagedCourses
+            }
+            break
+        case "SET_PAGINATION":
+            var data = action.payload
+            var pagedCourses = data.pagedCourses
+            var currentPage = data.currentPage
+            state = {
+                ...state ,
+                pagedCourses ,
+                currentPage
             }
             break
     }

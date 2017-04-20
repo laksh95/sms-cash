@@ -90,15 +90,15 @@ class SideBarMenu extends React.Component {
 
               {this.props.user.role.isAdmin ?
               <Link to ="/dashboard" style={{textDecoration: 'none'}}>
+
                 <ListItem
                   primaryText="DashBoard"
                   leftIcon={ <img  src={dashboardImage}
                    />} 
                    style={{backgroundColor: list["Dashboard"]}}
                    onTouchTap = {this.handleTouchTap.bind(this, "Dashboard")}
-                >
-                 
-                </ListItem>
+                />
+
               </Link> : null}
               <Link to ="/department" style={{textDecoration: 'none'}}>
                 <ListItem

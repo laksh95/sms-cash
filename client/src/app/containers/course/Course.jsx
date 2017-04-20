@@ -7,8 +7,10 @@ import AddCourse from './AddCourse.jsx'
 import ViewCourse from './ViewCourse.jsx'
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import {setCourse,setPagedCourse,setSnackbarOpen,setSnackbarMessage,setValue} from '../../actions/courseActions.jsx'
+import {setCourse,setPagedCourse,setSnackbarOpen,setSnackbarMessage,setValue, resetToNoError} from '../../actions/courseActions.jsx'
 import {connect} from 'react-redux'
+import {setErrorMessage} from "./../../actions/errorActions";
+
 const Pagination = require('rc-pagination');
 require('rc-pagination/assets/index.css');
 
@@ -22,8 +24,15 @@ class Course extends React.Component{
     handleChange = (value) => {
         this.props.setValue(value)
     };
+    componentWillMount(){
+        this.props.resetToNoError();
+    }
     componentWillReceiveProps(props){
         this.props = props
+        if(this.props.courseReducer.showErrorPage){
+            this.props.setErrorMessage(this.props.courseReducer.errorMessage);
+            browserHistory.push('/error');
+        }
     }
     render(){
         return (
@@ -80,6 +89,12 @@ const mapDispatchToProps = (dispatch) => {
         },
         deleteCourse:(data) =>{
             dispatch(deleteCourse(data))
+        },
+        setErrorMessage: (message) =>{
+            dispatch(setErrorMessage(message));
+        },
+        resetToNoError:()=>{
+            dispatch(resetToNoError())
         }
     };
 };

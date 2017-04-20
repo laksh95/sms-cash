@@ -37,6 +37,7 @@ export function getCourses(){
         type : types.GET_COURSES,
         payload : course.getCourses()
             .then((response) => {
+                response.data.status= response.status
                 return response.data
             })
     }
@@ -46,6 +47,7 @@ export function addCourse(data){
         type : types.ADD_COURSE,
         payload : course.addCourse(data)
             .then((response) => {
+                response.data.status= response.status
                 return response.data
             })
     }
@@ -56,6 +58,7 @@ export function editCourse(data) {
         type : types.EDIT_COURSE,
         payload : course.editCourse(data)
             .then((response) => {
+                response.data.status= response.status
                 return response.data
             })
     }
@@ -65,6 +68,7 @@ export function deleteCourse(data) {
         type :types.DELETE_COURSE ,
         payload : course.deleteCourse(data)
             .then((response) => {
+                response.data.status= response.status
                 return response.data
             })
     }
@@ -73,5 +77,11 @@ export function setPagination(data){
     return {
         type : types.SET_PAGINATION ,
         payload :data
+    }
+}
+
+export function resetToNoError(){
+    return {
+        type: types.RESET_ERROR
     }
 }

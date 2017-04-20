@@ -1,9 +1,7 @@
 import * as types from './../constants';
-
 const initialErrorState={
   errorMessage: ""
-} 
-
+}
 const errorReducer= (state=initialErrorState, action) => {
 	switch(action.type){
 		case types.SET_ERROR_MESSAGE:
@@ -15,5 +13,4 @@ const errorReducer= (state=initialErrorState, action) => {
 	}
 	return state;
 }
-
 export default errorReducer;

@@ -19,7 +19,8 @@ const departmentReducer= (state=initialLoginState, action) => {
     switch(action.type){
         case types.GET_ALL_DEPARTMENT_FOR_COURSE + "_FULFILLED":
         	var response= action.payload;
-        	if(response){
+            console.log("response-------", response);
+        	if(response.status==200){
                 let departmentList= response;
                 let totalCount= departmentList.length;
                 let pageSize=  state.pagination.pageSize;
@@ -42,6 +43,34 @@ const departmentReducer= (state=initialLoginState, action) => {
                     pagination
             	}
         	}
+        break;
+
+        case types.GET_ALL_DEPARTMENT_FOR_COURSE + "_REJECTED":
+            var response= action.payload.response;
+            var errorMessage= "";
+            if(response){
+                if(response.status==500)
+                    errorMessage= "500: Internal Server Error!"
+                else if(response.status==403)
+                    errorMessage= "403: Fobidden!"
+                else if(response.status==400){
+                    if(response.data.message== 'IS_ALREADY_EXISTS')
+                        slackBarMessage="Error: Cannot Add, As the Department already exists!"
+                    else
+                        slackBarMessage="Error: Bad Request!"
+                }
+            }
+            else
+                errorMessage= "500: Internal Server Error!";
+            if(errorMessage){
+                state= {
+                    ...state,
+                    showErrorPage: true,
+                    errorMessage: "500: Internal Server Error!"
+                }   
+            }
+         
+
         break;
 
 
@@ -71,7 +100,7 @@ const departmentReducer= (state=initialLoginState, action) => {
 
         case types.EDIT_DEPARTMENT + "_FULFILLED":
             var response= action.payload;
-            if(response.status==1){
+            if(response.status==200){
                 let selectedDepartment= response.data;
                 let allDepartment= state.departmentList;
                 let pagination= state.pagination;
@@ -132,7 +161,7 @@ const departmentReducer= (state=initialLoginState, action) => {
 
         case types.DELETE_DEPARTMENT + "_FULFILLED":
             var response= action.payload;
-            if(response.status==1){
+            if(response.status==200){
                 let selectedDepartment= response.data;
                 let allDepartment= state.departmentList;
                 let pagination= state.pagination;
@@ -209,45 +238,37 @@ const departmentReducer= (state=initialLoginState, action) => {
         case types.ADD_DEPARTMENT + "_REJECTED":
             var response= action.payload.response;
             console.log("response:: ",response);
+            var errorMessage= "";
+            var slackBarMessage= ""
             if(response){
-                if(response.status==500){
-                    state= {
-                        ...state,
-                        showErrorPage: true,
-                        errorMessage: "500: Internal Server Error!"
-                    }
-                }
-                else if(response.status==403){
-                    state= {
-                        ...state,
-                        showErrorPage: true,
-                        errorMessage: "403: Fobidden!"
-                    }
-                }
+                if(response.status==500)
+                    errorMessage= "500: Internal Server Error!"
+                else if(response.status==403)
+                    errorMessage= "403: Fobidden!"
                 else if(response.status==400){
-                    if(response.data.message== 'IS_ALREADY_EXISTS'){
-                        state= {
-                            ...state,
-                            showSlackBar: true,
-                            queryStatusMessage: "Error: Cannot Add, As the Department already exists!"
-                        }
-                    }
-                    else{
-                        state= {
-                            ...state,
-                            showSlackBar: true,
-                            queryStatusMessage: "Error: Bad Request!"
-                        }
-                    }
+                    if(response.data.message== 'IS_ALREADY_EXISTS')
+                        slackBarMessage="Error: Cannot Add, As the Department already exists!"
+                    else
+                        slackBarMessage="Error: Bad Request!"
                 }
+            }
+            else
+                errorMessage= "500: Internal Server Error!";
+            if(errorMessage){
+                 state= {
+                    ...state,
+                    showErrorPage: true,
+                    errorMessage: errorMessage
+                }   
             }
             else{
                 state= {
-                        ...state,
-                        showErrorPage: true,
-                        errorMessage: "500: Internal Server Error!"
-                }
-            }
+                    ...state,
+                    showSlackBar: true,
+                    queryStatusMessage: slackBarMessage
+                }  
+            }           
+
         break;
 
         case types.HANDLE_TAB_CHANGE:

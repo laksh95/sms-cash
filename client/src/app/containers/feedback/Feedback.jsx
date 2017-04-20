@@ -1,9 +1,7 @@
 import React from 'react'
 import AppBar from 'material-ui/AppBar'
-import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
-import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme'
 import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card'
 import { getSelected } from '../../actions/adminActions.jsx'
 import { connect } from 'react-redux'
@@ -29,9 +27,7 @@ class Feedback extends React.Component {
       errorMessage: ""
     }
   }
-  getChildContext() {
-    return { muiTheme: getMuiTheme(baseTheme) };
-  }
+
   errorSnackBar = (errorMessage) => {
       return (
         <Snackbar
@@ -209,10 +205,6 @@ class Feedback extends React.Component {
      </div>
     )
   }
-}
-
-Feedback.childContextTypes = {
-            muiTheme: React.PropTypes.object.isRequired,
 }
 
 Feedback.contextTypes = {

@@ -21,9 +21,6 @@ class Course extends React.Component{
             open: false,
         };
     }
-    getChildContext() {
-        return { muiTheme: getMuiTheme(baseTheme) };
-    }
     handleChange = (value) => {
         this.props.setValue(value)
     };
@@ -56,9 +53,7 @@ class Course extends React.Component{
         )
     }
 }
-(Course).childContextTypes = {
-    muiTheme: React.PropTypes.object.isRequired,
-};
+
 const history = syncHistoryWithStore(browserHistory, store)
 
 const mapStateToProps = (state) => {

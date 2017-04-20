@@ -9,6 +9,7 @@ import {connect} from "react-redux";
 import {loginUser, checkLogin, resetToNoError} from "./../../actions/loginActions";
 import {setErrorMessage} from "./../../actions/errorActions";
 import Auth from './../../Auth.js';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 class App extends React.Component {
 
@@ -41,24 +42,24 @@ class App extends React.Component {
 
   render() {
     return (
+      <MuiThemeProvider> 
        <div className={loginStyle.mymain} >
          <TopBar />  
          <Login 
          	isLogin={this.props.login.isLogin}
          	token={this.props.login.token}
          	user={this.props.login.loginUser}
-          errorText = {this.props.login.errorText}
+            errorText = {this.props.login.errorText}
          	loginUser= {(credential) => this.props.loginUser(credential)}
          	checkLogin= {() => this.props.checkLogin()}
          />         
       </div>
+    </MuiThemeProvider> 
     );
   }
 }
 
-App.childContextTypes = {
-  muiTheme: React.PropTypes.object.isRequired,
-};
+
 App.contextTypes = { 
     router: React.PropTypes.object.isRequired
 };

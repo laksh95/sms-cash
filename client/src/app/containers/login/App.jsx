@@ -47,7 +47,7 @@ class App extends React.Component {
          	isLogin={this.props.login.isLogin}
          	token={this.props.login.token}
          	user={this.props.login.loginUser}
-          errorText = {this.props.login.errorText}
+            errorText = {this.props.login.errorText}
          	loginUser= {(credential) => this.props.loginUser(credential)}
          	checkLogin= {() => this.props.checkLogin()}
          />         

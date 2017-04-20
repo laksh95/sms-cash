@@ -1,7 +1,7 @@
 const courseReducer = (state = {
     course : [],
     pagedCourses: [],
-    snackbarOpen:"",
+    snackbarOpen:false,
     snackbarMessage:"",
     value : "a",
     totalPages : "",
@@ -173,8 +173,6 @@ const courseReducer = (state = {
                 }
             }
             else {
-                this.props.setSnackbarMessage("Internal Server Error")
-                this.props.setSnackbarOpen(true)
                 state = {
                     ...state ,
                     snackbarMessage : "Internal Server Error",

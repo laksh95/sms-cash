@@ -3,8 +3,6 @@ import {connect} from "react-redux";
 import {loginUser, checkLogin} from "./../../actions/loginActions";
 import {getPost,addComment,editComment,deleteComment,setLikes} from "./../../actions/blogActions.jsx";
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
-import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -42,9 +40,6 @@ class Post extends React.Component {
     }
     componentWillReceiveProps(props){
         this.props= props
-    }
-    getChildContext() {
-        return { muiTheme: getMuiTheme(baseTheme) };
     }
     handleTouchTap = () => {
         this.setState({
@@ -307,9 +302,7 @@ class Post extends React.Component {
         );
     }
 }
-Post.childContextTypes = {
-    muiTheme: React.PropTypes.object.isRequired,
-};
+
 Post.contextTypes = {
     router: React.PropTypes.object.isRequired
 };

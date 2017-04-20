@@ -5,8 +5,6 @@ import {loginUser, checkLogin} from "./../../actions/loginActions";
 import {openModal,getPosts,getStats,setPost,deletePost,setShowEdit} from "./../../actions/blogActions.jsx";
 import AddPost from "./addPost.jsx"
 import EditPost from "./editPost.jsx"
-import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import Paper from 'material-ui/Paper';
@@ -35,9 +33,6 @@ class Blog extends React.Component {
         })
     }
     componentDidMount() {
-    }
-    getChildContext() {
-        return { muiTheme: getMuiTheme(baseTheme) };
     }
     componentDidUpdate(prevProps, prevState) {
     }
@@ -179,9 +174,7 @@ class Blog extends React.Component {
         );
     }
 }
-Blog.childContextTypes = {
-    muiTheme: React.PropTypes.object.isRequired,
-};
+
 Blog.contextTypes = {
     router: React.PropTypes.object.isRequired
 };

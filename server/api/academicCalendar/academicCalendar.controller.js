@@ -78,8 +78,8 @@ var dashboardHandler = {
 				}
 			})
 			.catch((err)=>{
-		        res.status(500).json({error: err.toString(), message: 'IS_INTERNAL_SERVER_ERROR'})
-		      })
+        res.status(500).json({error: err.toString(), message: 'IS_INTERNAL_SERVER_ERROR'})
+      })
 		}
 		else{
 			res.status(400).json({error: "Missing Paramters", message: 'BAD_REQUEST'})

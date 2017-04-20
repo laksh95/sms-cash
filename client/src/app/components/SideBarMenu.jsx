@@ -1,4 +1,3 @@
-// 
 import React from 'react';
 import Drawer from 'material-ui/Drawer';
 import AppBar from 'material-ui/AppBar';
@@ -10,34 +9,55 @@ import {browserHistory } from 'react-router';
 import Subheader from 'material-ui/Subheader';
 import Divider from 'material-ui/Divider';
 import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
-import DashBoard from '../containers/Dashboard/App.jsx';
+import DashBoard from './../containers/Dashboard/App.jsx';
+let userImage =  require('./../images/user.png');
+let departmentImage =  require('./../images/department.png');
+let studentImage =  require('./../images/student.png');
+let dashboardImage =  require('./../images/dashboard.png');
 import {Link} from 'react-router';
 import { getSelected } from '../actions/adminActions.jsx';
 import { connect } from 'react-redux';
 
-let userImage =  require('./../images/user.png');
 class SideBarMenu extends React.Component {
+
   constructor(props) {
     super(props);
     this.state = {
-      selected:this.props.headerReducer.selectedTab
+      selected:this.props.headerReducer.selectedTab,
+      refresh: true
     };
   }
-  componentWillMount() {
-    //  if(!this.props.isLogin){
-    //     browserHistory.push('/');
-    // }
+
+  componentDidUpdate(prevProps, prevState) {
+    if(this.state.refresh){
+      console.log("+++prevPathName+++: ", this.props.prevPathName);
+      let selected ="";
+      let path= this.props.prevPathName.trim();
+       if(path ==="/dashboard" || path === "/")
+           selected= "Dashboard"
+       else if(path === '/department')
+           selected= "Department"
+       else if(path === '/student')
+           selected= "Students"
+       else if(path === '/course')
+           selected = 'Course'
+        else if(path === '/blog')
+            selected = 'Blog'
+        else if(path === '/feedback')
+            selected = 'Feedback'
+      if(this.state.selected !== selected){
+        this.setState({selected: selected})
+      }
+    }
   }
-  componentWillReceiveProps(nextProps) {
-     // if(!this.props.isLogin){
-     //     browserHistory.push('/');
-     // }
-  }
+
  getChildContext(){
     return { muiTheme: getMuiTheme(baseTheme) };
  }
  handleTouchTap = (item , event) => {
+  console.log("Selected: +++",item )
         this.setState({
+              refresh: false,
               selected: item
                 });
    };
@@ -68,11 +88,12 @@ class SideBarMenu extends React.Component {
             {
               (this.props.user.role) ?
            ( <List>
+
               {this.props.user.role.isAdmin ?
               <Link to ="/dashboard" style={{textDecoration: 'none'}}>
                 <ListItem
                   primaryText="DashBoard"
-                  leftAvatar={<Avatar src={userImage}
+                  leftAvatar={<Avatar src={dashboardImage}
                    />}
                    style={{backgroundColor: list["Dashboard"]}}
                    onTouchTap = {this.handleTouchTap.bind(this, "Dashboard")}
@@ -81,19 +102,20 @@ class SideBarMenu extends React.Component {
               <Link to ="/department" style={{textDecoration: 'none'}}>
                 <ListItem
                   primaryText="Department"
-                  leftAvatar={<Avatar src={userImage} />}
+                  leftAvatar={<Avatar src={departmentImage} />}
                    style={{backgroundColor: list["Department"]}}
                       onTouchTap = {this.handleTouchTap.bind(this,"Department")}
                 />
               </Link>
-              <Link to ="/student" style={{textDecoration: 'none'}}>
+              {/*<Link to ="/student" style={{textDecoration: 'none'}}>
                <ListItem
                  primaryText="Student"
                  leftAvatar={<Avatar src={userImage} />}
                    style={{backgroundColor: list["Students"]}}
                        onTouchTap = {this.handleTouchTap.bind(this,"Students")}
                />
-              </Link>
+              </Link>*/}
+
                {this.props.user.role.isAdmin ?
                    <Link to ="/blog" style={{textDecoration: 'none'}}>
                        <ListItem
@@ -114,6 +136,7 @@ class SideBarMenu extends React.Component {
                            onTouchTap = {this.handleTouchTap.bind(this, "Course")}
                        />
                    </Link> : null}
+
                    <Link to ="/feedback" style={{textDecoration: 'none'}}>
                      <ListItem
                        primaryText="Feedback"
@@ -124,6 +147,7 @@ class SideBarMenu extends React.Component {
                    </Link>
                 </List>): null}
         </Drawer>
+
   </div>
     );
   }
@@ -139,4 +163,5 @@ const mapStateToProps = (state) => {
     headerReducer: state.headerReducer
     }
 }
+
 export default connect(mapStateToProps)(SideBarMenu);

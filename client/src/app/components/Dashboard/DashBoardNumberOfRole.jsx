@@ -3,13 +3,13 @@ import AppBar from 'material-ui/AppBar';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
-class DashBoard extends React.Component { 
+class DashBoard extends React.Component {
 	constructor(props) {
 		super(props);
 	}
 	getChildContext() {
-		return { 
-			muiTheme: getMuiTheme(baseTheme) 
+		return {
+			muiTheme: getMuiTheme(baseTheme)
 		};
 	}
 	render() {
@@ -20,7 +20,7 @@ class DashBoard extends React.Component {
 						title={this.props.studentNo}
 						subtitle="Total number of students"
 						style={{color:'white', fontWeight: 'bold'}}
-					/>					
+					/>
 				</Card>
 				<br/><br/>
 				<Card className='imgt'>
@@ -28,7 +28,7 @@ class DashBoard extends React.Component {
 						title={this.props.teacherNo}
 						subtitle="Total number of teachers"
 						style={{color:'white', fontWeight: 'bold'}}
-					/>					
+					/>
 				</Card>
 				<br/><br/>
 				<Card className='imgs'>

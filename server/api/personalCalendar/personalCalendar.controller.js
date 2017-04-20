@@ -18,7 +18,7 @@ var dashboardHandler = {
 				if(data.length === 0){
 					response.status(200).json({ message: 'NO_RECORDS_FOUND'})
 				}
-			
+
 				response.status(200).json({data: dataToClient, message: 'SUCCESS_OPERATION'})
 			})
 			.catch((err)=>{

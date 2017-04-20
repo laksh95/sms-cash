@@ -24,10 +24,20 @@ let courseFunctions = {
          }
     },
     getCourses: (req, res) => {
-        model.getCourse(db)
-            .then((data) => {
-            res.send(data)
-        })
+        console.log("-------------------",req.body)
+        if (Object.keys(req).length !== 0) {
+            model.getCourse(db)
+                .then((data) => {
+                    res.status(200).json({data: data, msg: data.msg})
+                })
+                .catch((error) => {
+                    res.status(500).json({data: [], msg:"Internal Server Error"})
+                })
+        }
+        else {
+             res.status(400).json({data:[],msg:"BAD REQUEST"})
+        }
+
     },
     addCourse: (req, res) => {
         if (Object.keys(req).length !== 0) {
@@ -38,7 +48,10 @@ let courseFunctions = {
                         res.status(200).json({data:data.data,msg:data.msg})
                     }
                     else {
-                        res.status(500).json({data:[],msg:data.msg})
+                        if(data.msg=="COURSE_ALREADY_EXISTS")
+                            res.status(400).json({data:[],msg:data.msg})
+                        else
+                            res.status(500).json({data:[],msg:data.msg})
                     }
                 })
             }

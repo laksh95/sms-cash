@@ -150,8 +150,8 @@ let init=function() {
                 .catch((data)=>{
                     let response = {
                         status : "0",
-                        data :{},
-                        msg :"Internal Server Error"
+                        data : data,
+                        msg :"IS_INTERNAL_SERVER_ERROR"
                     }
                     cb(response)
                 })
@@ -170,6 +170,14 @@ let init=function() {
                         status : "1",
                         msg : "deleted Successfully",
                         data : {id: cur_id}
+                    }
+                    cb(response)
+                })
+                .catch((data)=>{
+                    let response = {
+                        status : "0",
+                        data : data,
+                        msg :"IS_INTERNAL_SERVER_ERROR"
                     }
                     cb(response)
                 })

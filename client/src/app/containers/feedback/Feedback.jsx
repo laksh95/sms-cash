@@ -46,7 +46,7 @@ class Feedback extends React.Component {
          subtitle={dataTeacher.designation}
          actAsExpander={true}
          showExpandableButton={true}
-         avatar="images/jsa-128.jpg"
+         avatar="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcR7LBEv8FJQGibN96zw-vWvm1M-9I3tTgomzbV8NzTQCxu1aCk8Rw4cmBo"
        />
        <CardText expandable={true}>
         <div>
@@ -61,6 +61,8 @@ class Feedback extends React.Component {
     )
   }
   componentWillMount() {
+    this.props.resetToNoErrorTeacher()
+    this.props.resetToNoErrorSubject()
     if(this.props.headerReducer.selectedCourseId == ""){
       errorSnackBar("Select Course")
     }
@@ -84,8 +86,16 @@ class Feedback extends React.Component {
       this.props.getSubjectAndDepartment({"courseId": nextProps.headerReducer.selectedCourseId})
     }
     this.props = nextProps
+    if(this.props.teacherReducer.showErrorPage){
+        this.props.setErrorMessage(this.props.courseReducer.errorMessage);
+        browserHistory.push('/error');
+    }
+    if(this.props.subjectReducer.showErrorPage){
+        this.props.setErrorMessage(this.props.courseReducer.errorMessage);
+        browserHistory.push('/error');
+    }
   }
-  
+
   selectDepartment = (event, index, values) => {
     this.setState({
       selectedDepartment: values
@@ -219,6 +229,12 @@ const mapDispatchToProps = (dispatch) => {
       },
       getSubjectAndDepartment: (data) => {
         dispatch(getSubjectAndDepartment(data))
+      },
+      resetToNoErrorSubject: () => {
+        dispatch(resetToNoErrorSubject())
+      },
+      resetToNoErrorTeacher: () => {
+        dispatch(resetToNoErrorTeacher())
       }
     }
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import AppBar from 'material-ui/AppBar';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
-import { getSelected } from '../../actions/adminActions.jsx';
+import { getSelected } from '../../actions/adminActions.js';
 import { connect } from 'react-redux';
 
 class Department extends React.Component {

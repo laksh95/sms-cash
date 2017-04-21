@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {loginUser, checkLogin} from "./../../actions/loginActions";
-import {getPost,addComment,editComment,deleteComment,setLikes} from "./../../actions/blogActions.jsx";
+import {getPost,addComment,editComment,deleteComment,setLikes} from "../../actions/blogActions.js";
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
@@ -202,8 +202,8 @@ class Post extends React.Component {
                         </List>
                     </div>
                     <div className="postHeader">
-                        {/*{this.props.blogReducer.post.heading}*/}
-                        Cracking the Coding Interview
+                        {this.props.blogReducer.post.heading}
+                        {/*Cracking the Coding Interview*/}
                     </div>
                     <div className="postImage">
                         <img src="https://cdn-images-1.medium.com/max/1260/1*3lZYFSUsa1S-l8X5HjTvfg.jpeg" width={1000} alt=""/>

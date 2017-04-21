@@ -1,6 +1,6 @@
 import React from 'react';
 import AppBar from 'material-ui/AppBar';
-import { getSelected } from '../../actions/adminActions.jsx';
+import { getSelected } from '../../actions/adminActions.js';
 import { connect } from 'react-redux';
 
 class Student extends React.Component {

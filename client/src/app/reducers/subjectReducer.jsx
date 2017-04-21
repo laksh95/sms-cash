@@ -7,17 +7,23 @@ const subjectReducer = (
     status: 200,
     errorMessage: "Loading",
     showErrorPage: false,
+    setSnackbarOpenTeacher: false
   },
   action
 ) => {
   switch (action.type) {
     case "GET_SUBJECT_AND_DEPARTMENT_FULFILLED":
+    let setSnack = false
+    if(action.payload.data.message == "NO_ROWS_FOUND"){
+      setSnack = true
+    }
       state = {
         ...state,
         status: 200,
         department: action.payload.data.department,
         subject: action.payload.data.subject,
-        errorMessage: action.payload.message
+        errorMessage: action.payload.message,
+        setSnackbarOpenTeacher: setSnack
       }
       return state
     case "GET_SUBJECT_AND_DEPARTMENT_REJECTED":

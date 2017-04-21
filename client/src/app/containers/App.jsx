@@ -13,13 +13,13 @@ let style = {
          marginTop:-10,
          marginLeft: 70,
          marginRight:0,
-         transition: 'margin-left 100ms cubic-bezier(0.23, 1, 0.32, 1)' 
+         transition: 'margin-left 100ms cubic-bezier(0.23, 1, 0.32, 1)'
    },
    "ContentTitle":{
        marginTop:10,
        marginLeft: 70,
        marginRight:0,
-       transition: 'margin-left 100ms cubic-bezier(0.23, 1, 0.32, 1)' 
+       transition: 'margin-left 100ms cubic-bezier(0.23, 1, 0.32, 1)'
    }
 }
 class App extends React.Component {
@@ -28,24 +28,23 @@ class App extends React.Component {
         super(props);
         this.state = {
           open: true,
-          request: 'default'       
+          request: 'default'
         };
     }
-    handleToggle = (request) => { 
+    handleToggle = (request) => {
       this.setState({open: !this.state.open , request: request});
     }
 
-    handleRequest = (request) => { 
+    handleRequest = (request) => {
       this.setState( {request: request});
     }
     componentWillMount() {
-      console.log("In APP compo ====================");
       var token = Auth.getToken();
       let path= this.props.location.pathname;
 
       this.props.setUrl(path);
       this.props.setReceivedResponse(false);
-      
+
       if(token !== null){
         this.props.checkLogin();
       }
@@ -76,37 +75,37 @@ class App extends React.Component {
       style.MainContentStyle.marginLeft = 60;
       style.ContentTitle.marginLeft =  70;
     }
-    var header = 
-              <TopBar handleToggle = { (request) =>{ 
-                this.handleToggle(request)}}  handleRequest = { (request) =>{ 
+    var header =
+              <TopBar handleToggle = { (request) =>{
+                this.handleToggle(request)}}  handleRequest = { (request) =>{
                 this.handleRequest(request)}} open = {this.state.open} request = {this.state.request}
               logoutUser= {() => this.props.logoutUser()} /> ;
 
-    var content = <span> 
-          {this.props.children}  
+    var content = <span>
+          {this.props.children}
            </span>;
-             
+
     if(this.props.login.loginUser.name === undefined ){
 
           header =  <span></span>;
-          content = <center><CircularProgress size={80} thickness={5} /> </center>; 
+          content = <center><CircularProgress size={80} thickness={5} /> </center>;
     }
-    return(       
-      <div className="mymain">   
-          
+    return(
+      <div className="mymain">
+
         <div style={style.MainContentStyle}>
          {header}
          </div>
-       
+
         <SideBarMenu handleToggle = {(request) => this.handleToggle(request)} open = {this.state.open}
           user= {this.props.login.loginUser} isLogin= {this.props.login.isLogin} prevPathName= {this.props.login.prevPathName}
-        />   
+        />
         <div style={style.ContentTitle}>
-          {this.props.children}  
+          {this.props.children}
         </div>
-     
+
      </div>
-    );         
+    );
   }
 }
 App.childContextTypes = {
@@ -136,7 +135,7 @@ const mapDispatchToProps= (dispatch) => {
     setReceivedResponse: (value) => {
        dispatch(setReceivedResponse(value));
     }
-  
+
   };
 };
 export default connect(mapStateToProps,mapDispatchToProps)(App);

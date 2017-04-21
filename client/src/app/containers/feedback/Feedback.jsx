@@ -33,6 +33,10 @@ class Feedback extends React.Component {
     return { muiTheme: getMuiTheme(baseTheme) };
   }
   errorSnackBar = (errorMessage) => {
+    if(this.props.subjectReducer.showErrorPage === true){
+      browserHistory.push('/error');
+    }
+    else{
       return (
         <Snackbar
         open={true}
@@ -41,16 +45,18 @@ class Feedback extends React.Component {
         onRequestClose={this.handleRequestClose}
         />
       )
+    }
   }
   teacherList = (dataTeacher, index) => {
     return(
-      <Card key={index}>
+      <Card key={index}>this.props.setErrorMessage(this.props.courseReducer.errorMessage);
+      browserHistory.push('/error');
        <CardHeader
          title={dataTeacher.user_name}
          subtitle={dataTeacher.designation}
          actAsExpander={true}
          showExpandableButton={true}
-         avatar="images/jsa-128.jpg"
+         avatar="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcR7LBEv8FJQGibN96zw-vWvm1M-9I3tTgomzbV8NzTQCxu1aCk8Rw4cmBo"
        />
        <CardText expandable={true}>
         <div>
@@ -81,6 +87,7 @@ class Feedback extends React.Component {
   }
 
   componentWillReceiveProps(nextProps){
+
     if(nextProps.headerReducer.selectedCourseId !== this.props.headerReducer.selectedCourseId){
       this.props.getTeacherAndFeedback({
          "offset": 0,
@@ -91,11 +98,9 @@ class Feedback extends React.Component {
     }
     this.props = nextProps
     if(this.props.teacherReducer.showErrorPage){
-        this.props.setErrorMessage(this.props.courseReducer.errorMessage);
         browserHistory.push('/error');
     }
     if(this.props.subjectReducer.showErrorPage){
-        this.props.setErrorMessage(this.props.courseReducer.errorMessage);
         browserHistory.push('/error');
     }
   }
@@ -137,12 +142,12 @@ class Feedback extends React.Component {
           multiple={true}
         >
        {
-         this.props.subjectReducer.errorMessage==="SUCCESS_OPERATION"?
+         this.props.subjectReducer.showErrorPage===false && this.props.subjectReducer.setSnackbarOpenTeacher===false?
          (this.props.subjectReducer.department.map((data, index)=>{
            return(
              <MenuItem key={data.id} value={data.name} primaryText={data.name} />
            )
-        })) : null
+        })) :  this.errorSnackBar(this.props.subjectReducer.errorMessag)
        }
        </SelectField>
        &nbsp;&nbsp;
@@ -204,7 +209,7 @@ class Feedback extends React.Component {
                   }
                 }
     				})
-            : this.errorSnackBar(this.props.teacherReducer.errorMessage)
+            : this.errorSnackBar(this.props.teacherReducer.errorMessag)
     			}
      </div>
     )

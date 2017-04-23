@@ -4,6 +4,7 @@ const blogReducer = ( state = {
     post : {},
     comments : [],
     username : "admin",
+    userId : 1,
     stats :{},
     showEdit : false
 } , action) => {
@@ -106,6 +107,17 @@ const blogReducer = ( state = {
                 ...state ,
                 showEdit : action.payload
             }
+            return state
+        case "SET_CURRENT_LIKE":
+            let post = state.post
+            post.liked= action.payload.liked
+            post.likes=action.payload.likes
+            state = {
+                ...state ,
+                post
+            }
+            return state
+        case "SET_LIKES":
             return state
         default:
             return state

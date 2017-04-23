@@ -69,19 +69,22 @@ h6{
 }
 .center {
     text-align: center;
-    margin-top :15 px ;
+    margin-top :15px ;
 }
 .post {
     width:70%;
     margin:auto;
+    /*text-align:center ;*/
 }
 .postHeader{
     font-size : 33px ;
     font-weight: bold;
+    /*text-align: center;*/
 }
 .postContent{
-    font-size:26px;
+    font-size:20px;
     font-family: 'Raleway', sans-serif;
+    text-align:justify;
 }
 .postFooter{
     font-size:22px ;
@@ -130,6 +133,7 @@ h6{
     padding-right:2% ;
 }
 .postImage{
+    /*text-align:center ;*/
 }
 .addCourse{
     text-align:center ;

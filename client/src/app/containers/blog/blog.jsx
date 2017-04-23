@@ -107,7 +107,7 @@ class Blog extends React.Component {
                     <br/><br/>
                     {
                         this.props.blogReducer.posts.map((data,index)=>{
-                            var url = '/post/'+data.id
+                            var url = '/blog/post/'+data.id
                             return(
                                 <Paper className="card" zDepth={2} >
                                     <div>

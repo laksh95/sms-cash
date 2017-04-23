@@ -202,7 +202,6 @@ const departmentReducer= (state=initialLoginState, action) => {
 
         case types.ADD_DEPARTMENT + "_FULFILLED":
             var response= action.payload;
-            console.log("response:: ",response);
             if(response.status==200){
                 let addedDepartment= response.data;
                 console.log("AddedDepartment:" , addedDepartment);
@@ -237,7 +236,6 @@ const departmentReducer= (state=initialLoginState, action) => {
 
         case types.ADD_DEPARTMENT + "_REJECTED":
             var response= action.payload.response;
-            console.log("response:: ",response);
             var errorMessage= "";
             var slackBarMessage= ""
             if(response){

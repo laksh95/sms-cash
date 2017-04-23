@@ -7,8 +7,8 @@ import MenuItem from 'material-ui/MenuItem';
 import Auth from '../Auth.js';
 import {Router, browserHistory} from 'react-router'
 import { connect } from 'react-redux'
-import { getSession, getBatch, getCourse, getDepartment } from '../actions/adminActions.jsx'
-import { getInitialData , setCurrentSession , setCurrentCourse } from '../actions/headerActions.jsx'
+import { getSession, getBatch, getCourse, getDepartment } from '../actions/adminActions.js'
+import { getInitialData , setCurrentSession , setCurrentCourse } from '../actions/headerActions.js'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 

@@ -2,7 +2,7 @@ import {Link} from 'react-router';
 import React from 'react';
 import {connect} from "react-redux";
 import {loginUser, checkLogin} from "./../../actions/loginActions";
-import {openModal,getPosts,getStats,setPost,deletePost,setShowEdit} from "./../../actions/blogActions.jsx";
+import {openModal,getPosts,getStats,setPost,deletePost,setShowEdit} from "../../actions/blogActions.js";
 import AddPost from "./addPost.jsx"
 import EditPost from "./editPost.jsx"
 import FloatingActionButton from 'material-ui/FloatingActionButton';

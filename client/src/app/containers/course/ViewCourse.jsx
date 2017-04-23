@@ -7,7 +7,7 @@ import NumberInput from 'material-ui-number-input';
 import axios from 'axios'
 import Snackbar from 'material-ui/Snackbar';
 require('rc-pagination/assets/index.css');
-import {setCourse,setPagedCourse,setPagination,setSnackbarOpen,setSnackbarMessage,setValue,editCourse,addCourse , deleteCourse,getCourses} from '../../actions/courseActions.jsx'
+import {setCourse,setPagedCourse,setPagination,setSnackbarOpen,setSnackbarMessage,setValue,editCourse,addCourse , deleteCourse,getCourses} from '../../actions/courseActions.js'
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 import { Router, Route, browserHistory } from 'react-router'
 import store from './../../store'

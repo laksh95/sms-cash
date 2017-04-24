@@ -2,10 +2,8 @@ import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import {connect} from "react-redux";
 import {loginUser, checkLogin} from "./../../actions/loginActions";
-import {openModal,addPost} from "./../../actions/blogActions.jsx";
+import {openModal,addPost} from "../../actions/blogActions.js";
 import FlatButton from 'material-ui/FlatButton';
-import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import TextField from 'material-ui/TextField';
 import Snackbar from 'material-ui/Snackbar';
 let Dropzone = require('react-dropzone');
@@ -45,9 +43,6 @@ class AddPost extends React.Component {
             open: false,
         });
     };
-    getChildContext() {
-        return { muiTheme: getMuiTheme(baseTheme) };
-    }
     handleOpen = () => {
         this.props.openModal(true)
     };
@@ -71,7 +66,6 @@ class AddPost extends React.Component {
             default:
                 break
         }
-
     };
     onDrop(files){
         console.log(files)
@@ -195,9 +189,7 @@ class AddPost extends React.Component {
         );
     }
 }
-AddPost.childContextTypes = {
-    muiTheme: React.PropTypes.object.isRequired,
-};
+
 AddPost.contextTypes = {
     router: React.PropTypes.object.isRequired
 };

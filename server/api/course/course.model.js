@@ -43,6 +43,7 @@ let init=function(){
                 },
                 addNewCourse:(db,setData,sendData)=>{
                     let course=db.course
+                    setData.course_name = setData.course_name.toUpperCase()
                     let response={}
                     course.findAll({
                         attributes:['name','status'],
@@ -50,8 +51,7 @@ let init=function(){
                             name:setData.course_name
                         }
                     }).then((data)=>{
-                        if(data.length==0){
-
+                        if(data.length === 0){
                             db.course.create({
                                 name:setData.course_name,
                                 duration:setData.duration
@@ -66,7 +66,12 @@ let init=function(){
                                 sendData(response)
                             })
                             .catch((err)=>{
-                                sendData(err.toString())
+                                let response = {
+                                    status : 0,
+                                    data :[],
+                                    msg : "Internal Server Error"
+                                }
+                                sendData(response)
                             })
                         }
                         else {
@@ -90,15 +95,20 @@ let init=function(){
                                     }
                                     sendData(response)
                                 })
-                                    .catcH((err)=>{
-                                        sendData(err.toString())
+                                    .catch((err)=>{
+                                        let response = {
+                                            status : 0,
+                                            data :[],
+                                            msg : "Internal Server Error"
+                                        }
+                                        sendData(response)
                                     })
                             }
                             else {
                                 response = {
                                     status: 0,
                                     data:{},
-                                    msg: 'course Already exists.'
+                                    msg: 'COURSE_ALREADY_EXISTS'
                                 }
                                 sendData(response)
                             }
@@ -123,7 +133,12 @@ let init=function(){
                         sendData(response)
                     })
                         .catch((err)=>{
-                            sendData(err.toString())
+                            let response = {
+                                status : 0,
+                                data :[],
+                                msg : "Internal Server Error"
+                            }
+                            sendData(response)
                         })
                 },
                 deleteCourse:(db,deleteId,sendData)=>{
@@ -144,7 +159,12 @@ let init=function(){
                         sendData(response)
                     })
                         .catch((err)=>{
-                            sendData(err.toString())
+                            let response = {
+                                status : 0,
+                                data :[],
+                                msg : "Internal Server Error"
+                            }
+                            sendData(response)
                         })
                 }
             }

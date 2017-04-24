@@ -1,6 +1,5 @@
 let post = require('./post.model')()
 let models = require('./../../sqldb')()
-
 module.exports = {
     addPost : (req,res) => {
         if (req.body){
@@ -13,8 +12,8 @@ module.exports = {
                         res.status(500).json({data:[], message: 'NO_ROW_INSERTED'});
                 }
                 else {
-                    if(error=='IS_ALREADY_EXISTS')
-                        res.status(400).json({error:'Post already exists', message: 'IS_ALREADY_EXISTS'});
+                    if(error==='IS_ALREADY_EXISTS')
+                        res.status(400).json({error:error, message: 'IS_ALREADY_EXISTS'});
                     else
                         res.status(500).json({error: error, message: 'IS_INTERNAL_SERVER_ERROR'});
                 }
@@ -98,7 +97,7 @@ module.exports = {
         if(req.body){
             post.setLikes(models,req.body,(error,result)=>{
                 if(result){
-                    res.status(200).json({data:result ,message: "SUCCESSFULLY_LIKED"})
+                        res.status(200).json({data:result ,message: "SUCCESSFULLY_LIKED"})
                 }
                 else{
                     res.status(500).json({data:[], message: 'UNSUCCESSFUL'});

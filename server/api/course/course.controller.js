@@ -24,54 +24,79 @@ let courseFunctions = {
          }
     },
     getCourses: (req, res) => {
-        model.getCourse(db)
-            .then((data) => {
-            res.send(data)
-        })
+        console.log("-------------------",req.body)
+        if (Object.keys(req).length !== 0) {
+            model.getCourse(db)
+                .then((data) => {
+                    res.status(200).json({data: data, msg: data.msg})
+                })
+                .catch((error) => {
+                    res.status(500).json({data: [], msg:"Internal Server Error"})
+                })
+        }
+        else {
+             res.status(400).json({data:[],msg:"BAD REQUEST"})
+        }
+
     },
     addCourse: (req, res) => {
         if (Object.keys(req).length !== 0) {
             if (Object.keys(req.body).length !== 0) {
                 model.addNewCourse(db, req.body, function (data) {
-                    res.send(data)
+                    console.log(data)
+                    if(1==data.status){
+                        res.status(200).json({data:data.data,msg:data.msg})
+                    }
+                    else {
+                        if(data.msg=="COURSE_ALREADY_EXISTS")
+                            res.status(400).json({data:[],msg:data.msg})
+                        else
+                            res.status(500).json({data:[],msg:data.msg})
+                    }
                 })
             }
             else {
-                res.status(400).end()
+                res.status(400).json({data:[],msg:data.msg})
             }
         }
         else {
-            res.status(400).end()
+            res.status(400).json({data:[],msg:data.msg})
         }
     },
     editCourse: (req, res) => {
         if (Object.keys(req).length !== 0) {
             if (Object.keys(req.body).length !== 0) {
                 model.editCourse(db, req.body, (data) => {
-                    res.send(data)
+                    if(1==data.status)
+                        res.status(200).json({data:data.data,msg:data.msg})
+                    else
+                        res.status(500).json({data:[],msg:"INTERNAL_SERVER_ERROR"})
                 })
             }
             else {
-                res.status(400).end()
+                res.status(400).json({data:[],msg:"BAD_REQUEST"})
             }
         }
         else {
-            res.status(400).end()
+            res.status(400).json({data:[],msg:"BAD_REQUEST"})
         }
     },
     deleteCourse: (req, res) => {
         if (Object.keys(req).length !== 0) {
             if (Object.keys(req.body).length !== 0) {
                 model.deleteCourse(db, req.body.id, (data) => {
-                    res.send(data)
+                    if(1==data.status)
+                        res.status(200).json({data:data.data,msg:data.msg})
+                    else
+                        res.status(500).json({data:[],msg:"INTERNAL_SERVER_ERROR"})
                 })
             }
             else {
-                res.status(400).end()
+                res.status(400).json({data:[],msg:"BAD_REQUEST"})
             }
         }
         else {
-            res.status(400).end()
+            res.status(400).json({data:[],msg:"BAD_REQUEST"})
         }
     }
 }

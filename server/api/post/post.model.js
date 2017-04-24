@@ -107,18 +107,19 @@ let sql = function(){
                         cb(error,null)
                     })
                 },
-                getPost : function(models , data ,cb){
+                getPost : function(models , setData ,cb){
                     let post = models.post
                     post.findOne({
                         where :{
-                            id : data.id
+                            id : setData.id
                         }
                     }).then((response)=>{
                         if(response){
                             let postLike = models.post_like
                             postLike.count({
                                 where : {
-                                    post_id : response.dataValues.id
+                                    post_id : response.dataValues.id,
+                                    status : true
                                 }
                             }).then((data)=>{
                                 response.dataValues.likes = data
@@ -152,10 +153,26 @@ let sql = function(){
                                                 id:response.dataValues.by
                                             }
                                         })
-                                        .then((data)=>{
-                                            response.dataValues.user_name = data[0].dataValues.name
-                                            response.dataValues.profile_pic_url = data[0].dataValues.profile_pic_url
-                                            cb(null,response.dataValues)
+                                        .then((conclude)=>{
+                                            response.dataValues.user_name = conclude[0].dataValues.name
+                                            response.dataValues.profile_pic_url =conclude[0].dataValues.profile_pic_url
+                                            postLike.findOne({
+                                                where : {
+                                                    status : 't',
+                                                    post_id : setData.id,
+                                                    liked_by : setData.user_id
+                                                }
+                                            }).then((r)=>{
+                                                console.log("-------------------------------->>",r.dataValues)
+                                                if(r!=null){
+                                                    response.dataValues.liked = true
+                                                }
+                                                else {
+                                                    response.dataValues.liked = false
+                                                }
+                                                cb(null,response.dataValues)
+                                            })
+
                                         })
                                     })
                                 })
@@ -210,22 +227,42 @@ let sql = function(){
                     // to be continued 
                     // let postObj = data.post
                     // let likes = data.likes
-                    // let postLike = models.post_like
-                    // postLike.findOne({
-                    //     where : {
-                    //         post_id : postObj.id,
-                    //     }
-                    // }).then((response)=>{
-                    //     if(response!=null){
-                    //         console.log(response.dataValues)
-                    //         postLike.update({
-                    //
-                    //         })
-                    //     }
-                    //     else {
-                    //
-                    //     }
-                    // })
+                    let postLike = models.post_like
+                    postLike.findOne({
+                        where : {
+                            post_id : data.post.id,
+                            liked_by : data.user_id,
+
+                        }
+                    }).then((response)=>{
+                        if(response!=null){
+                            console.log(response.dataValues)
+                            postLike.update({
+                                status :data.liked
+                            },{
+                                where :{
+                                    post_id:data.post.id,
+                                    liked_by :data.user_id
+                                }
+                            }).then((response)=>{
+                                console.log(response)
+                                cb(null,response)
+                            }).catch((error)=>{
+                                cb(error,null)
+                            })
+                        }
+                        else{
+                              postLike.insert({
+                                postid : data.post.id ,
+                                liked_by : data.user_id
+                              }).then((response)=>{
+                                  console.log(response)
+                                  cb(null,response)
+                              }).catch((error)=>{
+                                  cb(error,null)
+                              })
+                        }
+                    })
                 },
                 getStats:function(models,data,cb){
                     let post= models.post

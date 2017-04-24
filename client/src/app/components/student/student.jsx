@@ -1,18 +1,12 @@
 import React from 'react';
 import AppBar from 'material-ui/AppBar';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
-import { getSelected } from '../../actions/adminActions.jsx';
+import { getSelected } from '../../actions/adminActions.js';
 import { connect } from 'react-redux';
 
 class Student extends React.Component {
    constructor(props) {
     super(props);
   }
-
-  getChildContext() {
-      return { muiTheme: getMuiTheme(baseTheme) };
-    }
 
  componentWillMount() {
      this.props.getSelected(""+this.props.location.pathname);
@@ -26,9 +20,7 @@ class Student extends React.Component {
     );
   }
 }
-Student.childContextTypes = {
-            muiTheme: React.PropTypes.object.isRequired,
-};
+
 Student.contextTypes = {
     router: React.PropTypes.object.isRequired
 };

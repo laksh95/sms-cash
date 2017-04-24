@@ -3,7 +3,7 @@ import RaisedButton from 'material-ui/RaisedButton'
 import TextField from 'material-ui/TextField'
 import NumberInput from 'material-ui-number-input'
 import Snackbar from 'material-ui/Snackbar'
-import {setCourse,setPagedCourse,setSnackbarOpen,setSnackbarMessage,setValue,getCourses,editCourse,deleteCourse,addCourse} from '../../actions/courseActions.jsx'
+import {setCourse,setPagedCourse,setSnackbarOpen,setSnackbarMessage,setValue,getCourses,editCourse,deleteCourse,addCourse} from '../../actions/courseActions.js'
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 import { Router, Route, browserHistory } from 'react-router'
 import store from './../../store'
@@ -63,10 +63,25 @@ class AddCourse extends React.Component {
     };
     addCourseName = (event) =>{
         let name = event.target.value
+        let specialCharacter = name.match(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g)
+        let numCharacter=name.match(/\d+/g)
         if(name.trim()==''){
             this.setState({
                 errorText3:"",
+                newCourse : "",
                 validateNewCourseName : false
+            })
+        }
+        else if(specialCharacter !== null){
+            this.setState({
+                errorText3:'Input cannot contain Special Character',
+                validateNewCourseName:false
+            })
+        }
+        else if(numCharacter !== null){
+            this.setState({
+                errorText3:'Input cannot contain Numerical Value',
+                validateNewCourseName:false
             })
         }
         else if(name.length>20){
@@ -111,6 +126,13 @@ class AddCourse extends React.Component {
             course_name : newCourse,
             duration : newDuration
         })
+        this.setState({
+            newCourse : "",
+            newDuration : "",
+            validateNewCourseName : false,
+            validateNewCourseDuration:false,
+
+        })
     }
     render(){
         console.log('addCourse.jsx')
@@ -124,29 +146,34 @@ class AddCourse extends React.Component {
         }
         return (
             <div className="addCourse">
-                <h2 className="headline">Add a course</h2>
-                <TextField
-                    hintText="Course Name"
-                    onChange={this.addCourseName}
-                    errorText={this.state.errorText3}
-                /><br/>
-                <NumberInput
-                    id="num"
-                    hintText="Duration"
-                    defaultValue=""
-                    strategy="warn"
-                    errorText={this.state.errorText4}
-                    onValid={onValid}
-                    onChange={this.addCourseDuration}
-                    onError={onError1}
-                    onRequestValue={onRequestValue} />
-                <br />
-                <RaisedButton label="Submit"
-                              onClick={()=>this.addCourse()}
-                              primary={true}
-                              className="style"
-                              disabled = {!(this.state.validateNewCourseName && this.state.validateNewCourseDuration)}
-                />
+                <form onSubmit={()=>this.addCourse()}>
+                    <h2 className="headline">Add a course</h2>
+                    <TextField
+                        hintText="Course Name"
+                        onChange={this.addCourseName}
+                        errorText={this.state.errorText3}
+                        value = {this.state.newCourse}
+                    /><br/>
+                    <NumberInput
+                        id="num"
+                        value ={this.state.newDuration}
+                        hintText="Duration"
+                        defaultValue=""
+                        strategy="warn"
+                        errorText={this.state.errorText4}
+                        onValid={onValid}
+                        onChange={this.addCourseDuration}
+                        onError={onError1}
+                        onRequestValue={onRequestValue} />
+                    <br />
+                    <RaisedButton label="Submit"
+                                  type="submit"
+                                  onClick={()=>this.addCourse()}
+                                  primary={true}
+                                  className="style"
+                                  disabled = {!(this.state.validateNewCourseName && this.state.validateNewCourseDuration)}
+                    />
+                </form>
                 <Snackbar
                     open={this.props.courseReducer.snackbarOpen}
                     message={this.props.courseReducer.snackbarMessage}

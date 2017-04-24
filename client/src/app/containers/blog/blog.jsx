@@ -2,11 +2,9 @@ import {Link} from 'react-router';
 import React from 'react';
 import {connect} from "react-redux";
 import {loginUser, checkLogin} from "./../../actions/loginActions";
-import {openModal,getPosts,getStats,setPost,deletePost,setShowEdit} from "./../../actions/blogActions.jsx";
+import {openModal,getPosts,getStats,setPost,deletePost,setShowEdit} from "../../actions/blogActions.js";
 import AddPost from "./addPost.jsx"
 import EditPost from "./editPost.jsx"
-import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import Paper from 'material-ui/Paper';
@@ -17,10 +15,10 @@ import ActionFavorite from 'material-ui/svg-icons/action/favorite';
 import ActionFavoriteBorder from 'material-ui/svg-icons/action/favorite-border';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
-let loginStyle = require('./../../css/login.css');
 import Dialog from 'material-ui/Dialog';
-
 import {blue300, indigo900} from 'material-ui/styles/colors';
+let loginStyle = require('./../../css/login.css');
+
 class Blog extends React.Component {
     constructor(props){
         super(props)
@@ -35,9 +33,6 @@ class Blog extends React.Component {
         })
     }
     componentDidMount() {
-    }
-    getChildContext() {
-        return { muiTheme: getMuiTheme(baseTheme) };
     }
     componentDidUpdate(prevProps, prevState) {
     }
@@ -112,7 +107,7 @@ class Blog extends React.Component {
                     <br/><br/>
                     {
                         this.props.blogReducer.posts.map((data,index)=>{
-                            var url = '/post/'+data.id
+                            var url = '/blog/post/'+data.id
                             return(
                                 <Paper className="card" zDepth={2} >
                                     <div>
@@ -165,10 +160,6 @@ class Blog extends React.Component {
                             <Avatar color={blue300} backgroundColor={indigo900} size={32}>{this.props.blogReducer.stats.totalComments}</Avatar>
                             Total Comments Posted
                         </Chip><br/><br/>
-                        <Chip >
-                            <Avatar color={blue300} backgroundColor={indigo900} size={32}>23</Avatar>
-                            Total Rating
-                        </Chip>
                     </div>
                 </div>
                 <Dialog
@@ -183,9 +174,7 @@ class Blog extends React.Component {
         );
     }
 }
-Blog.childContextTypes = {
-    muiTheme: React.PropTypes.object.isRequired,
-};
+
 Blog.contextTypes = {
     router: React.PropTypes.object.isRequired
 };

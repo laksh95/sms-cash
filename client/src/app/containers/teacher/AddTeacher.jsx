@@ -6,7 +6,7 @@ import SelectField from 'material-ui/SelectField'
 import TextField from 'material-ui/TextField'
 import MenuItem from 'material-ui/MenuItem'
 import DatePicker from 'material-ui/DatePicker'
-import { addUser } from '../../actions/teacherAction.jsx'
+import { addUser } from '../../actions/teacherActions'
 import { connect } from 'react-redux'
 
 class AddTeacher extends React.Component{

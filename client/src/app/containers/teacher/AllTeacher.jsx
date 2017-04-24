@@ -9,7 +9,7 @@ import DatePicker from 'material-ui/DatePicker'
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card'
 import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
-import { getTeacher, changeDetails, deleteTeacher, approveDetails } from '../../actions/teacherAction.jsx'
+import { getTeacher, changeDetails, deleteTeacher, approveDetails } from '../../actions/teacherActions.js'
 import { connect } from 'react-redux'
 
 class AllTeacher extends React.Component{

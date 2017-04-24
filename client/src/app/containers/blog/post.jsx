@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {loginUser, checkLogin} from "./../../actions/loginActions";
-import {getPost,addComment,editComment,deleteComment,setLikes} from "../../actions/blogActions.js";
+import {getPost,addComment,editComment,deleteComment,setLikes,setCurrentLike} from "./../../actions/blogActions.js"
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
@@ -35,7 +35,8 @@ class Post extends React.Component {
     }
     componentWillMount() {
         this.props.getPost({
-            id : this.props.params.postid
+            id : this.props.params.postid,
+            user_id : this.props.blogReducer.userId
         })
     }
     componentWillReceiveProps(props){
@@ -128,23 +129,51 @@ class Post extends React.Component {
     }
     handleCheck=(event,checked)=> {
         let likes = this.props.blogReducer.post.likes
+        console.log(checked)
+        if(checked===false){
+            let data = {
+                liked : false ,
+                likes : likes-1
+            }
+            this.props.setCurrentLike(data)
+            let data1 = {
+                post : this.props.blogReducer.post,
+                liked : false ,
+                user_id : this.props.blogReducer.userId
+            }
 
-        if(checked==true) {
-            let data = {
-                post : this.props.blogReducer.post,
-                likes : likes +1
-            }
-            this.props.setLikes(data)
+            this.props.setLikes(data1)
         }
-        else {
+        else{
             let data = {
-                post : this.props.blogReducer.post,
-                likes : likes -1
+                liked : true ,
+                likes : likes+1
             }
-            this.props.setLikes(data)
+            this.props.setCurrentLike(data)
+            let data1 = {
+                post :this.props.blogReducer.post ,
+                liked :true ,
+                user_id : this.props.blogReducer.userId
+            }
+            this.props.setLikes(data1)
+
         }
+
+        // if(checked==true) {
+        //     let data = {
+        //         post : this.props.blogReducer.post,
+        //         likes : likes+1
+        //     }
+        //     this.props.setLikes(data)
+        // }
+        // else {
+        //     let data = {
+        //         post : this.props.blogReducer.post,
+        //         likes : likes-1
+        //     }
+        //     this.props.setLikes(data)
+        // }
     }
-
     render(){
         const actions = [
             <FlatButton
@@ -206,14 +235,13 @@ class Post extends React.Component {
                         {/*Cracking the Coding Interview*/}
                     </div>
                     <div className="postImage">
-                        <img src="https://cdn-images-1.medium.com/max/1260/1*3lZYFSUsa1S-l8X5HjTvfg.jpeg" width={1000} alt=""/>
+                        <img src="https://cdn-images-1.medium.com/max/1260/1*3lZYFSUsa1S-l8X5HjTvfg.jpeg" width={700} alt=""/>
                     </div>
                     <div className="postContent">
                         <p>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Delectus, magni molestiae obcaecati quibusdam quisquam quod ut voluptates. Aliquam numquam, ratione. Deserunt eaque ex inventore itaque minima optio sapiente, sed tempora.
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda error id molestiae nihil quasi voluptatum? Aliquam atque autem dolore eos esse fugit incidunt inventore maiores mollitia nobis omnis, quos, ut.
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium amet, assumenda consectetur cumque eaque eligendi enim fugiat id in incidunt iste laborum molestiae, natus obcaecati omnis quisquam vel velit voluptatum?
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. A animi assumenda at dolores dolorum eligendi explicabo id iste nisi obcaecati, odit, provident qui quis quos rem repellat tempora ullam velit.
+                            {/*{this.props.blogReducer.post.content}*/}
+                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
                         </p>
                     </div>
                     <div className="postFooter">
@@ -224,6 +252,7 @@ class Post extends React.Component {
                             className="left"
                             onCheck={this.handleCheck.bind(this)}
                             style={{...styles.checkbox,...styles.block}}
+                            checked={this.props.blogReducer.post.liked}
                         />
                         <br/><br/>
                         <div className="addComment">
@@ -334,6 +363,9 @@ const mapDispatchToProps= (dispatch) => {
         },
         setLikes:(data)=>{
             dispatch(setLikes(data));
+        },
+        setCurrentLike:(data)=>{
+            dispatch(setCurrentLike(data))
         }
     };
 };

@@ -122,7 +122,7 @@ class AddDepartment extends React.Component{
               <br/><br/>
               <Divider />
           </div>
-          <p>@2017 Rookies cronj.com|version 1.0</p>
+          <p className="fontSize">@2017 Rookies cronj.com|version 1.0</p>
         </div>
         );
     }

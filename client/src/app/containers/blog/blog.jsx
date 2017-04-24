@@ -15,10 +15,10 @@ import ActionFavorite from 'material-ui/svg-icons/action/favorite';
 import ActionFavoriteBorder from 'material-ui/svg-icons/action/favorite-border';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
-let loginStyle = require('./../../css/login.css');
 import Dialog from 'material-ui/Dialog';
-
 import {blue300, indigo900} from 'material-ui/styles/colors';
+let loginStyle = require('./../../css/login.css');
+
 class Blog extends React.Component {
     constructor(props){
         super(props)
@@ -107,7 +107,7 @@ class Blog extends React.Component {
                     <br/><br/>
                     {
                         this.props.blogReducer.posts.map((data,index)=>{
-                            var url = '/post/'+data.id
+                            var url = '/blog/post/'+data.id
                             return(
                                 <Paper className="card" zDepth={2} >
                                     <div>

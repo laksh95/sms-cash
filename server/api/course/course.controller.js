@@ -15,7 +15,7 @@ let courseFunctions = {
                 model.checkOTP(db,req.body,req.headers.authorization)
                     .then((data)=>{
                     console.log(data,'----------data--------')
-                        if(data.length !== 0){
+                        if(data !== null){
                             model.deleteCourse(db,req.body,(response)=>{
                                 console.log('----------------',response,'------------------')
                                 if(1 === response.status){

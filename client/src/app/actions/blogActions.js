@@ -101,3 +101,9 @@ export function setShowEdit(data){
         payload : data
     }
 }
+export function setCurrentLike(data){
+    return {
+        type:types.SET_CURRENT_LIKE,
+        payload : data
+    }
+}

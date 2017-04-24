@@ -4,13 +4,28 @@ const courseReducer = (state = {
     snackbarOpen:false,
     snackbarMessage:"",
     value : "a",
-
     totalPages : 0,
     currentPage : 1,
     showErrorPage: false,
     errorMessage: ""
 },action) => {
     switch(action.type){
+        case 'GENERATE_OTP_FULFILLED':
+            state = {
+                ...state,
+
+            }
+            break
+        case 'GENERATE_OTP_REJECTED':
+            let data=action.payload
+            if(data.status === 500){
+                state={
+                    ...state,
+                    showErrorPage:true,
+                    errorMessage:'500: Internal Server Error'
+                }
+            }
+            break
         case "SET_COURSE":
             state = {
                 ...state ,
@@ -214,7 +229,7 @@ const courseReducer = (state = {
             console.log(course)
             console.log(data)
             for(let index in course){
-                if(course[index].id==data){
+                if(course[index].id === data){
                     console.log("true")
                     course.splice(index,1)
                 }

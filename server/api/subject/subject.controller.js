@@ -5,7 +5,7 @@ let db=sql()
 
 let subjectFunctions={
   getSubjectAndDepartment: (request, response) => {
-    if(request !== null && request != undefined && request.body != undefined && Object.keys(request).length!==0 && Object.keys(request.body).length!==0 || request.user != null){
+    if(request !== null && request !== undefined && request.body !== undefined && Object.keys(request).length!==0 && Object.keys(request.body).length!==0 || request.user !== null){
       let data = {}
       subject.getSubjectAndDepartment(db, request.body)
       .then((result)=>{

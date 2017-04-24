@@ -8,7 +8,7 @@ import Subheader from 'material-ui/Subheader';
 import Divider from 'material-ui/Divider';
 import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
 import DashBoard from './dashboard/DashBoard.jsx';
-import Teacher from './teacher/Teacher.jsx'
+import Teacher from '../containers/teacher/Teacher.jsx'
 let userImage =  require('./../images/user.png');
 let departmentImage =  require('./../images/department.png');
 let studentImage =  require('./../images/student.png');

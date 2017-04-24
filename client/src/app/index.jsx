@@ -8,7 +8,7 @@ import App from './containers/App.jsx';
 import Dashboard from './components/dashboard/DashBoard.jsx'
 import Department from './containers/department/Department.jsx'
 import Course from './containers/course/Course.jsx'
-import Teacher from './components/teacher/Teacher.jsx'
+import Teacher from './containers/teacher/Teacher.jsx'
 import AllTeacher from './containers/teacher/AllTeacher.jsx'
 import AddTeacher from './containers/teacher/AddTeacher.jsx'
 import Feedback from './containers/feedback/Feedback.jsx'
@@ -34,7 +34,7 @@ render((
 					 <Route path = "/course" component={Course} />
 					 <Route path = "/student" component = {Student} />
 	         <Route path = "/blog/post/:postid" component = {Post} />
-	         <Route path = "/teachers" component = {Teacher} />
+	         <Route path = "/teacher" component = {Teacher} />
 			 	 	<Route path = "/feedback" component = {Feedback} />
 	      </Route>
 	      <Route path = "/login" component = {Login}/>

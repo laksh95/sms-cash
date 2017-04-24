@@ -17,6 +17,11 @@ let init = function(){
                type: sequelize.STRING,
                allowNull: false
            },
+           approved: {
+             type: sequelize.BOOLEAN,
+             allowNull: false,
+             defaultValue: false
+           },
            experience_years: {
                type: sequelize.INTEGER,
                allowNull: false
@@ -47,6 +52,31 @@ let init = function(){
                  teacher.belongsTo(user_detail, {foreignKey: 'user_detail_id'});
                  teacher.belongsTo(department, {foreignKey: 'department_id'});
 
+               },
+               /*getting teacher list as per the course selected*/
+               fetchTeacherByCourseId: (db, request) => {
+                 let teacher = db.teacher
+                 let user_detail = db.user_detail
+                 let department = db.department
+
+                 return teacher.findAll({
+                   attributes: ['id','designation','user_detail_id',[sequelize.col('user_detail.name','teacher_name')],'approved','joining_date','experience_years','experience_description'],
+                   where:{
+                    status: true
+                  },
+                  offset: request.offset,
+                  limit: request.limit,
+                  include:[
+                    {
+                      model: department,
+                      attributes: [],
+                      where : {
+                        status : true,
+                        course_id: request.courseId
+                      }
+                    }
+                  ]
+                 })
                },
                getTeacherAndFeedback: (db, request) => {
                  let teacher = db.teacher

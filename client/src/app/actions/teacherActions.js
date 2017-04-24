@@ -26,6 +26,7 @@ export function addUser(details){
 		payload:
 			teacher.addUser(details)
 			.then((response) => {
+				response.data.status= response.status
 				return response.data;
       })
 	}
@@ -37,6 +38,7 @@ export function getTeacher(){
 		payload:
 			teacher.getTeacher()
 			.then((response) => {
+				response.data.status= response.status
 				return response.data
 			})
 	}
@@ -48,6 +50,7 @@ export function changeDetails(details){
 		payload:
 			teacher.changeDetails(details)
 			.then((response) => {
+				response.data.status= response.status
 				return response.data
 			})
 	}
@@ -59,6 +62,7 @@ export function deleteTeacher(teacherId){
 		payload:
 			teacher.deleteTeacher(teacherId)
 			.then((response) => {
+				response.data.status= response.status
 				return response.data
 			})
 	}
@@ -70,6 +74,7 @@ export function approveDetails(teacherId) {
 		payload:
 			teacher.approveDetails(teacherId)
 			.then((response) => {
+				response.data.status= response.status
 				return response.data
 			})
 	}

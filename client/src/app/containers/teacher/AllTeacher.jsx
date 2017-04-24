@@ -116,12 +116,12 @@ class AllTeacher extends React.Component{
           <CardHeader
             title={data.name}
             subtitle={data.designation}
-            avatar="images/ok-128.jpg"
+            avatar="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcR7LBEv8FJQGibN96zw-vWvm1M-9I3tTgomzbV8NzTQCxu1aCk8Rw4cmBo"
             actAsExpander={true}
           />
           {
             data.adminApproved?
-            <FlatButton  label="APPROVE DETAILS"
+            <FlatButton key={index} label="APPROVE DETAILS"
               primary={true}
               style={{mergin: 12, marginLeft: '75%'}}
               onTouchTap={this.handleTouchTap.bind(event, "approveDetails")}/>
@@ -131,7 +131,7 @@ class AllTeacher extends React.Component{
           <CardText expandable={true}>
             ALL TEACHER DETAILS
             <br/><br/>
-              <FlatButton  label="EDIT" primary={true} style={style} onTouchTap={this.handleTouchTap.bind(event, "openEditDialog")}/>
+              <FlatButton key={index}  label="EDIT" primary={true} style={style} onTouchTap={this.handleTouchTap.bind(event, "openEditDialog")}/>
               <Dialog
               title="Dialog With Actions"
               modal={true}
@@ -154,9 +154,9 @@ class AllTeacher extends React.Component{
                       onChange={this.handleTouchTap.bind(this, "getEmail")}
                       />
                       <br /><br />
-                      <DatePicker hintText="Join Date" mode="landscape" onChange={ this.getDate }/>
+                      <DatePicker key={index} hintText="Join Date" mode="landscape" onChange={ this.getDate }/>
                   </form>
-                <RaisedButton  label="SAVE"  style={style} onTouchTap={this.handleTouchTap.bind(event, "saveDetails")}/>
+                <RaisedButton key={index} label="SAVE"  style={style} onTouchTap={this.handleTouchTap.bind(event, "saveDetails")}/>
               </Dialog>
 
             <FlatButton  label="DELETE" secondary={true} style={style} onTouchTap={this.handleTouchTap.bind(event, "deleteTeacher")}/>

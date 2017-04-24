@@ -6,7 +6,7 @@ const adminReducer = ( state = {
 	selectedTab:"",
 	selectedCourse:"Course",
 	selectedSession:"Session",
-	selectedCourseId: localStorage.getItem("courseId") || action.payload.course[0].id
+	selectedCourseId: localStorage.getItem("courseId")
 } , action) => {
 	switch (action.type){
 		case "GET_DEPARTMENTS":

@@ -1,7 +1,8 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {loginUser, checkLogin} from "./../../actions/loginActions";
-import {getPost,addComment,editComment,deleteComment,setLikes,setCurrentLike} from "./../../actions/blogActions.js"
+
+import {getPost,addComment,editComment,deleteComment,setLikes,setCurrentLike} from "./../../actions/blogActions.js";
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';

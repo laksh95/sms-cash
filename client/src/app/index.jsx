@@ -9,6 +9,8 @@ import Dashboard from './components/dashboard/DashBoard.jsx'
 import Department from './containers/department/Department.jsx'
 import Course from './containers/course/Course.jsx'
 import Teacher from './containers/teacher/Teacher.jsx'
+import AllTeacher from './containers/teacher/AllTeacher.jsx'
+import AddTeacher from './containers/teacher/AddTeacher.jsx'
 import Feedback from './containers/feedback/Feedback.jsx'
 import { Provider } from 'react-redux'
 import store from './store.js'
@@ -30,6 +32,8 @@ render((
 	         <Route path = "/post/:postid" component = {Post} />
 	         <Route path = "/teacher" component = {Teacher} />
 			     <Route path = "/feedback" component = {Feedback} />
+					 <Route path = '/teacher/allTeacher' component = {AllTeacher} />
+					 <Route path = '/teacher/addTeacher' component = {AddTeacher} />
 	      </Route>
 	      <Route path = "/login" component = {Login}/>
 	   </Router>

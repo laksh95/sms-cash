@@ -71,18 +71,12 @@ class Teacher extends React.Component{
           </Tabs>
 
           <div style={tabStyle}>
-            {
-              renderIf(this.state.allTeacher)
-              (
-               <AllTeacher/>
-              )
-            }
-            {
-              renderIf(this.state.addTeacher)
-              (
-               <AddTeacher/>
-              )
-            }
+              <Link to = '/teacher/allTeacher'>
+                <AllTeacher/>
+              </Link>
+              <Link to = '/teacher/addTeacher'>
+                <AddTeacher/>
+              </Link>
           </div>
         </div>
       )

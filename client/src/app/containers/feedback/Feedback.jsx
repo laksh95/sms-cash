@@ -7,7 +7,7 @@ import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme'
 import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card'
 import { getSelected } from '../../actions/adminActions.jsx'
 import { connect } from 'react-redux'
-import { getTeacherAndFeedback } from './../../actions/teacherActions.jsx'
+import { getTeacherAndFeedback } from './../../actions/teacherAction.jsx'
 import { getSubjectAndDepartment } from './../../actions/subjectActions.jsx'
 import {List, ListItem} from 'material-ui/List'
 import ActionGrade from 'material-ui/svg-icons/action/grade'
@@ -89,7 +89,7 @@ class Feedback extends React.Component {
     }
     this.props = nextProps
   }
-  
+
   selectDepartment = (event, index, values) => {
     this.setState({
       selectedDepartment: values

@@ -58,15 +58,31 @@ let init = function(){
                  let teacher = db.teacher
                  let user_detail = db.user_detail
                  let department = db.department
-
+                 console.log("inside model-----------------------")
                  return teacher.findAll({
-                   attributes: ['id','designation','user_detail_id',[sequelize.col('user_detail.name','teacher_name')],'approved','joining_date','experience_years','experience_description'],
+                  attributes: ['id','designation','user_detail_id',
+                   [sequelize.col('user_detail.name'),'teacher_name'],
+                   [sequelize.col('user_detail.email_id'),'teacher_email'],
+                   [sequelize.col('user_detail.contact_number'),'contact_number'],
+                   [sequelize.col('user_detail.alternate_number'),'alternate_number'],
+                   [sequelize.col('department.name'),'department_name'],
+                   'approved',
+                   'joining_date','experience_years',
+                   'experience_description'
+                 ],
                    where:{
                     status: true
                   },
                   offset: request.offset,
                   limit: request.limit,
                   include:[
+                    {
+                       model: user_detail,
+                       attributes:[],
+                       where:{
+                           status: true
+                       },
+                     },
                     {
                       model: department,
                       attributes: [],
@@ -76,6 +92,16 @@ let init = function(){
                       }
                     }
                   ]
+                 })
+               },
+               approveDetails: (db, request) => {
+                 let teacher = db.teacher
+                 return teacher.update({
+                    approved: true
+                  },{
+                   where:{
+                    id: request.teacherId
+                  }
                  })
                },
                getTeacherAndFeedback: (db, request) => {

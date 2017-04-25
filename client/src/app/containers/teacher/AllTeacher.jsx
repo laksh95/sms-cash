@@ -10,7 +10,10 @@ import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'mat
 import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
 import { getTeacher, changeDetails, deleteTeacher, approveDetails } from '../../actions/teacherActions.js'
+import {Table, TableBody, TableFooter, TableHeader, TableHeaderColumn, TableRow, TableRowColumn}
+  from 'material-ui/Table'
 import { connect } from 'react-redux'
+var moment = require('moment')
 
 class AllTeacher extends React.Component{
     constructor(props) {
@@ -41,7 +44,7 @@ class AllTeacher extends React.Component{
        	}
     }
 
-    handleTouchTap = (type ,event) => {
+    handleTouchTap = (type, item, event) => {
       switch(type){
         case "openEditDialog":
           this.setState({
@@ -84,8 +87,15 @@ class AllTeacher extends React.Component{
         case "deleteTeacher":
           this.props.deleteTeacher(1)
           break
-        case "approveDetails":
-          this.props.approveDetails(1)
+        case "approveDetails": (item) => (event) =>
+          {
+            let teacher = {
+              teacherId: item
+            }
+            console.log(item)
+            this.props.approveDetails(teacher)
+          }
+          break
         default:
           break
       }
@@ -102,7 +112,7 @@ class AllTeacher extends React.Component{
     }
 
     componentWillUnmount() {
-      this.props.getTeacher
+
     }
 
     componentWillGetProps(nextProps){
@@ -110,30 +120,66 @@ class AllTeacher extends React.Component{
     }
 
     teacherList = (data,index,style) => {
-      console.log(data.adminApproved)
       return(
         <Card key={index}>
           <CardHeader
-            title={data.name}
+            title={data.teacher_name}
             subtitle={data.designation}
             avatar="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcR7LBEv8FJQGibN96zw-vWvm1M-9I3tTgomzbV8NzTQCxu1aCk8Rw4cmBo"
             actAsExpander={true}
           />
           {
-            data.adminApproved?
+            data.approved==false?
             <FlatButton key={index} label="APPROVE DETAILS"
               primary={true}
               style={{mergin: 12, marginLeft: '75%'}}
-              onTouchTap={this.handleTouchTap.bind(event, "approveDetails")}/>
+              onTouchTap={this.handleTouchTap.bind(this, "approveDetails", data.id)}/>
             :null
           }
 
           <CardText expandable={true}>
-            ALL TEACHER DETAILS
-            <br/><br/>
+                <Table
+               height={this.state.height}
+               fixedHeader={this.state.fixedHeader}
+               fixedFooter={this.state.fixedFooter}
+               >
+                <TableHeader displaySelectAll= {false}>
+                   <TableRow>
+                     <TableHeaderColumn colSpan="3" style={{textAlign: 'center'}}>
+                       Teacher Details
+                     </TableHeaderColumn>
+                   </TableRow>
+                </TableHeader>
+                <TableBody displayRowCheckbox= {false}>
+                   <TableRow key={index}>
+                     <TableRowColumn>Joine Date</TableRowColumn>
+                     <TableRowColumn colSpan="3">{moment(data.joining_date).format("MMM Do YY")}</TableRowColumn>
+                   </TableRow>
+                   <TableRow>
+                     <TableRowColumn>Experience (In years)</TableRowColumn>
+                     <TableRowColumn colSpan="3">{data.experience_years}</TableRowColumn>
+                   </TableRow>
+                   <TableRow>
+                     <TableRowColumn>Email ID</TableRowColumn>
+                     <TableRowColumn colSpan="3" >{data.teacher_email}</TableRowColumn>
+                   </TableRow>
+                   <TableRow>
+                     <TableRowColumn>Phone number</TableRowColumn>
+                     <TableRowColumn colSpan="3" >{data.contact_number}</TableRowColumn>
+                   </TableRow>
+                   <TableRow>
+                     <TableRowColumn>Email ID</TableRowColumn>
+                     <TableRowColumn colSpan="3" >{data.alternate_number}</TableRowColumn>
+                   </TableRow>
+                   <TableRow>
+                     <TableRowColumn>Experience Description</TableRowColumn>
+                     <TableRowColumn colSpan="3" >{data.experience_description}</TableRowColumn>
+                   </TableRow>
+                </TableBody>
+              </Table>
+              <br/><br/>
               <FlatButton key={index}  label="EDIT" primary={true} style={style} onTouchTap={this.handleTouchTap.bind(event, "openEditDialog")}/>
               <Dialog
-              title="Dialog With Actions"
               modal={true}
               open={this.state.editButtonHit}
               onRequestClose={this.handleTouchTap.bind(event,"closeDialog")}
@@ -171,7 +217,7 @@ class AllTeacher extends React.Component{
         margin: 12
       }
     	return(
-    		<div>
+    		<div id="divTeacherMain">
           <SelectField
           floatingLabelText="Department"
           value={this.state.departmentSelected}
@@ -179,27 +225,29 @@ class AllTeacher extends React.Component{
           multiple={true}
           >
           {
-            this.state.allDepartments.map((data,index)=>{
+            this.props.subjectReducer.error===false?
+            (this.props.subjectReducer.department.map((data, index)=>{
               return(
-                  <MenuItem key={index} value={data.name} primaryText={data.name}/>
+                <MenuItem key={data.id} value={data.name} primaryText={data.name} />
               )
-            })
+           })) : null
           }
           </SelectField>
     			{
-    				this.state.allTeacherList.map((data,index)=>{
+            this.props.teacherReducer.status == 200 && this.props.teacherReducer.error === false?
+    				this.props.teacherReducer.allTeacher.map((data,index)=>{
                 if(this.state.departmentSelected.length==0){
-                  return this.teacherList(data,index,style)
+                  return this.teacherList(data,data.id,style)
                 }
                 else{
                   for(let index=0; index <this.state.departmentSelected.length; index++)
                   {
-                    if(data.department==this.state.departmentSelected[index]){
-                      return this.teacherList(data,index,style)
+                    if(data.department_name==this.state.departmentSelected[index]){
+                      return this.teacherList(data,data.id,style)
                     }
                   }
                 }
-    				})
+    				}) : null
     			}
     		</div>
     	)
@@ -209,7 +257,9 @@ class AllTeacher extends React.Component{
 
 const mapStateToProps = (state) => {
   return {
-    teacher: state.teacherReducer
+    teacherReducer: state.teacherReducer,
+    subjectReducer: state.subjectReducer,
+    headerReducer: state.headerReducer
     }
 }
 

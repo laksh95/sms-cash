@@ -14,8 +14,8 @@ const utils = {
 		}
 		return axios.post(url, data, config);
 	},
-	getTeacher: () => {
-		let url = serverAddress + '/api/getTeacher'
+	getTeacher: (courseDetails) => {
+		let url = serverAddress + '/api/teacher/fetchTeacherByCourseId'
 		let token = Auth.getToken();
 		let authString = 'bearer ' + token
 		let config = {
@@ -23,10 +23,10 @@ const utils = {
         		'Authorization': authString
    	 		}
 		}
-		return axios.post(url, config);
+		return axios.post(url, courseDetails, config);
 	},
 	changeDetails: (details) => {
-		let url = serverAddress + '/api/changeDetails'
+		let url = serverAddress + '/api/teacher/changeDetails'
 		let token = Auth.getToken();
 		let authString = 'bearer ' + token
 		let config = {
@@ -37,7 +37,7 @@ const utils = {
 		return axios.post(url, details, config);
 	},
 	deleteTeacher: (teacherId) => {
-		let url = serverAddress + '/api/deleteTeacher'
+		let url = serverAddress + '/api/teacher/deleteTeacher'
 		let token = Auth.getToken();
 		let authString = 'bearer ' + token
 		let config = {
@@ -48,7 +48,7 @@ const utils = {
 		return axios.post(url, teacherId, config);
 	},
 	approveDetails: (teacherId) => {
-		let url = serverAddress + '/api/deleteTeacher'
+		let url = serverAddress + '/api/teacher/approveDetails'
 		let token = Auth.getToken();
 		let authString = 'bearer ' + token
 		let config = {

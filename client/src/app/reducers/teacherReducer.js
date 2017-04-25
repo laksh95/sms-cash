@@ -8,7 +8,8 @@ const teacherReducer = (
     status: 200,
     errorMessage: "Loading",
     allTeacher: [],
-    showErrorPage: false
+    showErrorPage: false,
+    error: false
   },
   action
 ) => {
@@ -27,9 +28,39 @@ const teacherReducer = (
     case "GET_TEACHER_FULFILLED":
       state = {
         ...state,
-        allTeacher: action.payload.allTeacher
+        allTeacher: action.payload.result,
+        errorMessage: action.payload.message
       }
       return state
+    case "GET_TEACHER_REJECTED":
+      errorStatus = action.payload.response.status
+      switch(errorStatus){
+        case 500:
+          state = {
+            error: true,
+            status: 500,
+            showErrorPage: true,
+            errorMessage: "500 : Internal Server Error"
+          }
+          return state
+        case 400:
+          state = {
+            error: true,
+            status: 400,
+            errorMessage: "BAD REQUEST"
+          }
+          return state
+        case 403:
+          state = {
+            ...state ,
+            error: true,
+            showErrorPage : true,
+            errorMessage : "403: Forbidden"
+          }
+          return state
+        default:
+          return state
+      }
     /*changing the details of the teacher*/
     case "CHANGE_DETAILS_FULFILLED":
       state = {

@@ -7,6 +7,7 @@ const subjectReducer = (
     status: 200,
     errorMessage: "Loading",
     showErrorPage: false,
+    error: false
   },
   action
 ) => {

@@ -32,11 +32,11 @@ export function addUser(details){
 	}
 }
 
-export function getTeacher(){
+export function getTeacher(courseDetails){
 	return {
 		type: types.GET_TEACHER,
 		payload:
-			teacher.getTeacher()
+			teacher.getTeacher(courseDetails)
 			.then((response) => {
 				response.data.status= response.status
 				return response.data

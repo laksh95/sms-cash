@@ -87,24 +87,24 @@ class AllTeacher extends React.Component{
         case "deleteTeacher":
           this.props.deleteTeacher(1)
           break
-        case "approveDetails": (item) => (event) =>
-          {
+        case "approveDetails":
             let teacher = {
               teacherId: item
             }
-            console.log(item)
             this.props.approveDetails(teacher)
-          }
-          break
+            break
+
         default:
           break
       }
     }
+    /*gets the date and sets it as joining date for a teacher*/
     getDate = (event, date) => {
       this.setState({
         joinDate: date
       })
     }
+    /*selecting departments*/
     handleChangeDepartment = (event, index, value) => {
       this.setState({
         departmentSelected: value

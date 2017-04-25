@@ -56,7 +56,7 @@ const utils = {
         		'Authorization': authString
    	 		}
 		}
-		return axios.post(url, teacherId, config);
+		return axios.put(url, teacherId, config);
 	}
 }
 

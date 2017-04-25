@@ -50,14 +50,18 @@ let sql = function(){
                     })
                 },
                 getPosts:function(models,data,cb){
+                    console.log("Inside GetPosts")
                     let post = models.post
                     let userDetail = models.user_detail
                     let promises = []
                     post.findAll({
+                        offset : (data.pageNumber-1)*5 ,
+                        limit : 5,
                         where :{
                             status :true
                         }
                     }).then(function(response){
+                        console.log("inside then",response)
                         let posts = []
                         for(let index in response){
                             posts.push(response[index].dataValues)

@@ -12,7 +12,8 @@ const blogReducer = (state = {
     showErrorPage: false,
     errorMessage: "",
     commentPageNumber :2,
-    moreComments : true
+    moreComments : true,
+    isScrollActive : true
 } , action) => {
     switch (action.type){
         case "OPEN_MODAL":
@@ -22,29 +23,27 @@ const blogReducer = (state = {
             }
             return state
         case "GET_POSTS_FULFILLED":
-            state = {
-                ...state,
-                posts : action.payload.data
+            if(action.payload.data.length===0){
+                state = {
+                    ...state,
+                    isScrollActive: false
+                }
+            }
+            else {
+                var posts = state.posts
+                posts = posts.concat(action.payload.data)
+                state = {
+                    ...state,
+                    posts
+                }
             }
             return state
         case "GET_POST_FULFILLED":
-            // if (action.payload.data.comments.length<6){
-            //     state = {
-            //         ...state ,
-            //         moreComments:false,
-            //         post :action.payload.data,
-            //         comments :action.payload.data.comments
-            //     }
-            // }
-            // else {
-            //     var comments = action.payload.data.comments
-            //     comments.splice(5,1)
             state = {
                 ...state ,
                 post :action.payload.data,
                 comments :action.payload.data.comments
             }
-            // console.log("-----------------------",state.post)
             return state
         case "ADD_COMMENT_FULFILLED":
             let comment = action.payload.data
@@ -163,7 +162,6 @@ const blogReducer = (state = {
             }
             return state
         case "GET_COMMENTS_FULFILLED":
-            console.log("==============================",action.payload.data.length)
             let c = state.commentPageNumber
             let newComments = action.payload.data
             var  comments = state.comments
@@ -172,7 +170,6 @@ const blogReducer = (state = {
                 console.log("yayyyyyyyy")
                 state = {
                     ...state ,
-                    // moreComments:false,
                     snackbarMessage:"No more comments",
                     snackbarOpen:true
                 }

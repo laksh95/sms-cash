@@ -24,8 +24,10 @@ module.exports = {
         }
     },
     getPosts :(req,res) =>{
+        console.log('inside controller')
         if(req.body){
             post.getPosts(models,req.body,(error,result)=>{
+                console.log("result of controller",result)
                 if(result){
                     if(result.length>0)
                         res.status(200).json({data:result,message:"SUCCESSFULLY_FETCHED"})

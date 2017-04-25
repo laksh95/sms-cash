@@ -19,22 +19,52 @@ import Dialog from 'material-ui/Dialog';
 import {blue300, indigo900} from 'material-ui/styles/colors';
 import TextField from 'material-ui/TextField';
 import Snackbar from 'material-ui/Snackbar';
-
-
 let loginStyle = require('./../../css/login.css');
 
 class Blog extends React.Component {
     constructor(props){
         super(props)
         this.state = {
-            open : false
+            open : false,
+            pageNumber :1
+        }
+        this.handleScroll = this.handleScroll.bind(this);
+    }
+
+    handleScroll() {
+        const windowHeight = "innerHeight" in window ? window.innerHeight : document.documentElement.offsetHeight;
+        const body = document.body;
+        const html = document.documentElement;
+        const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight,  html.scrollHeight, html.offsetHeight);
+        const windowBottom = windowHeight + window.pageYOffset;
+        if (windowBottom >= docHeight) {
+            if(this.props.blogReducer.isScrollActive){
+                let pg= this.state.pageNumber
+                pg = pg +1
+                this.setState({
+                    pageNumber:pg
+                })
+                this.props.getPosts({pageNumber:pg})
+            }
+            else {
+                //do nothing
+            }
+        } else {
+            // do nothing
         }
     }
     componentWillMount() {
-        this.props.getPosts()
+        this.props.getPosts({
+            pageNumber : this.state.pageNumber
+        })
+        window.addEventListener("scroll", this.handleScroll);
         this.props.getStats({
             id : 1
         })
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener("scroll", this.handleScroll);
     }
     componentWillReceiveProps(props){
         this.props= props
@@ -223,8 +253,8 @@ const mapDispatchToProps= (dispatch) => {
         openModal :(data) =>{
             dispatch(openModal(data))
         },
-        getPosts:()=>{
-            dispatch(getPosts())
+        getPosts:(data)=>{
+            dispatch(getPosts(data))
         },
         getStats:(data)=>{
             dispatch(getStats(data))

@@ -11,14 +11,14 @@ let configHeader= ()=> {
     }
 }
 const utils ={
-    getPosts : () =>{
+    getPosts : (data) =>{
         let url = serverAddress + 'api/post/getPosts';
-        let config= configHeader();
-        return axios.get(url,config);
+        let config = configHeader();
+        return axios.post(url,data,  config);
     },
     getPost : (data) =>{
         let url = serverAddress + 'api/post/getPost';
-        let config= configHeader();
+        let config = configHeader();
         return axios.post(url,data,  config);
     },
     addComment : (data) =>{

@@ -8,11 +8,13 @@ export function openModal(data){
         payload : data
     }
 }
-export function getPosts(){
+export function getPosts(data){
+    console.log("inside actions")
     return{
         type:types.GET_POSTS,
-        payload : blog.getPosts()
+        payload : blog.getPosts(data)
             .then((response) => {
+                console.log("inside response of get posts ")
                 return response.data
             })
         }

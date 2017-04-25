@@ -34,7 +34,7 @@ const utils = {
         		'Authorization': authString
    	 		}
 		}
-		return axios.post(url, details, config);
+		return axios.put(url, details, config);
 	},
 	deleteTeacher: (teacherId) => {
 		let url = serverAddress + '/api/teacher/deleteTeacher'
@@ -45,7 +45,7 @@ const utils = {
         		'Authorization': authString
    	 		}
 		}
-		return axios.post(url, teacherId, config);
+		return axios.put(url, teacherId, config);
 	},
 	approveDetails: (teacherId) => {
 		let url = serverAddress + '/api/teacher/approveDetails'

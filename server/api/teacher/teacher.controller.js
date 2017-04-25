@@ -23,14 +23,42 @@ let teacherFunctions={
   			res.status(400).json({error: "Missing Paramters: courseId", message: 'IS_INVALID_INPUT_FORM'})
   		}
   },
+  deleteTeacher: (req, res) => {
+    if(req !== null && req != undefined && req.body != undefined && Object.keys(req).length!==0 && Object.keys(req.body).length!==0 || req.user != null){
+      teacher.deleteTeacher(db, req.body)
+      .then((result)=>{
+          res.status(200).json({teacher: req.body.teacherId, message: 'SUCCESS_OPERATION'})
+      })
+      .catch((err)=>{
+        res.status(500).json({error: err.toString(), teacher: req.body.teacherId, message: 'IS_INTERNAL_SERVER_ERROR'})
+      })
+    }
+    else{
+      res.status(400).json({error: "Missing Paramters: courseId", message: 'IS_INVALID_INPUT_FORM'})
+    }
+  },
   approveDetails: (req, res) => {
     if(req !== null && req != undefined && req.body != undefined && Object.keys(req).length!==0 && Object.keys(req.body).length!==0 || req.user != null){
       teacher.approveDetails(db, req.body)
       .then((result)=>{
-          res.status(200).json({result, message: 'SUCCESS_OPERATION'})
+          res.status(200).json({teacher: req.body.teacherId, message: 'SUCCESS_OPERATION'})
       })
       .catch((err)=>{
-        res.status(500).json({error: err.toString(), message: 'IS_INTERNAL_SERVER_ERROR'})
+        res.status(500).json({error: err.toString(), teacher: req.body.teacherId, message: 'IS_INTERNAL_SERVER_ERROR'})
+      })
+    }
+    else{
+      res.status(400).json({error: "Missing Paramters: courseId", message: 'IS_INVALID_INPUT_FORM'})
+    }
+  },
+  changeDetails: (req, res) => {
+    if(req !== null && req != undefined && req.body != undefined && Object.keys(req).length!==0 && Object.keys(req.body).length!==0 || req.user != null){
+      teacher.changeDetails(db, req.body)
+      .then((result)=>{
+          res.status(200).json({result: req.body, message: 'SUCCESS_OPERATION'})
+      })
+      .catch((err)=>{
+        res.status(500).json({error: err.toString(), teacher: req.body.teacherId, message: 'IS_INTERNAL_SERVER_ERROR'})
       })
     }
     else{

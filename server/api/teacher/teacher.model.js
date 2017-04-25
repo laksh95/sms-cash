@@ -58,7 +58,7 @@ let init = function(){
                  let teacher = db.teacher
                  let user_detail = db.user_detail
                  let department = db.department
-                 console.log("inside model-----------------------")
+
                  return teacher.findAll({
                   attributes: ['id','designation','user_detail_id',
                    [sequelize.col('user_detail.name'),'teacher_name'],
@@ -68,7 +68,8 @@ let init = function(){
                    [sequelize.col('department.name'),'department_name'],
                    'approved',
                    'joining_date','experience_years',
-                   'experience_description'
+                   'experience_description',
+                   'department_id'
                  ],
                    where:{
                     status: true
@@ -94,8 +95,10 @@ let init = function(){
                   ]
                  })
                },
+               /*approvong the theacher's addition to the system*/
                approveDetails: (db, request) => {
                  let teacher = db.teacher
+
                  return teacher.update({
                     approved: true
                   },{
@@ -104,6 +107,70 @@ let init = function(){
                   }
                  })
                },
+               changeDetails: (db, request) => {
+                 let teacher = db.teacher
+                 let user_detail = db.user_detail
+                 let department = db.department
+
+                 return teacher.update({
+                    designation: request.designation,
+                    joining_date: new Date(request.joinDate),
+                    department_id: request.department
+                  },{
+                   where:{
+                    id: request.teacherId
+                  },
+                  include: [
+                    {
+                      model: user_detail,
+                      name: request.name,
+                      email_id: request.email,
+                      where:{
+                       id: teacher.user_detail_id
+                     }
+                   }
+                  ]
+                 })
+               },
+               deleteTeacher: (db, request) => {
+                 let teacher = db.teacher
+                 let user_detail = db.user_detail
+                 let teacherSubjectAllocation = db.teacher_subject_allocation
+                 let feedback = db.feedback
+
+                 return teacher.update({
+                    status: false
+                  },
+                  {
+                   where:{
+                    id: request.teacherId
+                  },
+                  include: [
+                    {
+                      model: user_detail,
+                      status: false,
+                      where:{
+                       id: teacher.user_detail_id
+                     }
+                    },
+                    {
+                      model: feedback,
+                      status: false,
+                      where:{
+                       teacher_id: request.teacherId
+                     }
+                    },
+                    {
+                      model: teacherSubjectAllocation,
+                      status: false,
+                      where:{
+                       teacher_id: request.teacherId
+                     }
+                    }
+                  ]
+                 })
+               },
+               /*getting teacher list and the feedback from feedback table as per the course selected*/
                getTeacherAndFeedback: (db, request) => {
                  let teacher = db.teacher
                  let user_detail = db.user_detail

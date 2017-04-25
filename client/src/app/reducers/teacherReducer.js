@@ -13,7 +13,8 @@ const teacherReducer = (
   },
   action
 ) => {
-  let errorStatus3
+  let errorStatus
+  let allTeacher
   switch (action.type) {
     /*adding the teacher to database*/
     case "ADD_USER_TEACHER_FULFILLED":
@@ -63,23 +64,45 @@ const teacherReducer = (
       }
     /*changing the details of the teacher*/
     case "CHANGE_DETAILS_FULFILLED":
-      state = {
-        ...state,
-        allTeacher: action.payload.allTeacher
-      }
-      return state
-    /*deleting teachers*/
-    case "DELETE_TEACHER_FULFILLED":
-      let allTeacher = state.allTeacher
+      allTeacher = state.allTeacher
+      let result = action.payload.result
       for(let index = 0; index < allTeacher.length; index++){
-        if(allTeacher[index.id === action.payload.teacher.id])
+        if(allTeacher[index].id === result.teacherId)
         {
-          allTeacher.splice(index,1)
+          allTeacher[index].department_id = result.department
+          allTeacher[index].department_name = result.departmentName
+          allTeacher[index].designation = result.designation
+          allTeacher[index].joining_date = new Date(result.joinDate)
+          allTeacher[index].teacher_email = result.email
+          allTeacher[index].teacher_name = result.name
+          break
         }
       }
       state = {
         ...state,
         allTeacher: allTeacher
+      }
+      return state
+    /*deleting teachers*/
+    case "DELETE_TEACHER_FULFILLED":
+      allTeacher = state.allTeacher
+      let isTeacherListEmptyError = false
+      let message = "Loading"
+      for(let index = 0; index < allTeacher.length; index++){
+        if(allTeacher[index].id === action.payload.teacher)
+        {
+          allTeacher.splice(index,1)
+        }
+      }
+      if(allTeacher.length == 0){
+        isTeacherListEmptyError = true
+        message = "No records found"
+      }
+      state = {
+        ...state,
+        error: isTeacherListEmptyError,
+        allTeacher: allTeacher,
+        errorMessage: message
       }
       return state
     case "DELETE_TEACHER_REJECTED":
@@ -112,9 +135,9 @@ const teacherReducer = (
     case "APPROVE_TEACHER_FULFILLED":
       let allTeacherStored = state.allTeacher
       for(let index = 0; index < allTeacherStored.length; index++){
-        if(allTeacherStored[index.id === action.payload.teacher.id])
+        if(allTeacherStored[index].id === action.payload.teacher)
         {
-          allTeacherStored[index].adminApproved = true
+          allTeacherStored[index].approved = true
         }
       }
       state = {
@@ -122,6 +145,32 @@ const teacherReducer = (
         allTeacher: allTeacherStored
       }
       return state
+    case "APPROVE_TEACHER_REJECTED":
+      errorStatus = action.payload.response.status
+      switch(errorStatus){
+        case 500:
+          state = {
+            status: 500,
+            showErrorPage: true,
+            errorMessage: "500 : Internal Server Error"
+          }
+          return state
+        case 400:
+          state = {
+            status: 400,
+            errorMessage: "BAD REQUEST"
+          }
+          return state
+        case 403:
+          state = {
+              ...state ,
+              showErrorPage : true,
+              errorMessage : "403: Forbidden"
+          }
+          return state
+        default:
+          return state
+      }
     /*getting teacher as per the course selected and their respective feedbacks(used in feedback module)*/
     case "GET_TEACHER_AND_FEEDBACK_FULFILLED":
       state = {

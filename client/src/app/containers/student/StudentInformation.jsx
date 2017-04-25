@@ -30,17 +30,6 @@ class StudentInformation extends React.Component{
     componentWillReceiveProps(props){
         this.props=props
     }
-    /*handleTouchTap = (event)=>{
-        event.preventDefault()
-        this.setState({
-            open:true
-        })
-    }
-    handleRequestChange = ()=>{
-        this.setState({
-            open:false
-        })
-    }*/
     /**********************************************
     Handles the drop down selects for all 3 filters
     ***********************************************/

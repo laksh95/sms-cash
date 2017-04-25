@@ -67,8 +67,7 @@ const teacherReducer = (
       allTeacher = state.allTeacher
       let result = action.payload.result
       for(let index = 0; index < allTeacher.length; index++){
-        if(allTeacher[index].id === result.teacherId)
-        {
+        if(allTeacher[index].id === result.teacherId){
           allTeacher[index].department_id = result.department
           allTeacher[index].department_name = result.departmentName
           allTeacher[index].designation = result.designation

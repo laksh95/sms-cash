@@ -112,24 +112,36 @@ let init = function(){
                  let user_detail = db.user_detail
                  let department = db.department
 
-                 return teacher.update({
-                    designation: request.designation,
-                    joining_date: new Date(request.joinDate),
-                    department_id: request.department
-                  },{
+                 return teacher.findOne({
+                   attributes: ['user_detail_id'],
                    where:{
                     id: request.teacherId
-                  },
-                  include: [
-                    {
-                      model: user_detail,
-                      name: request.name,
-                      email_id: request.email,
-                      where:{
-                       id: teacher.user_detail_id
-                     }
-                   }
-                  ]
+                  }
+                 })
+                 .then((data)=>{
+                   let user_detail_id = data.dataValues.user_detail_id
+                   return teacher.update({
+                      designation: request.designation,
+                      joining_date: new Date(request.joinDate),
+                      department_id: request.department
+                    },{
+                     where:{
+                      id: request.teacherId
+                    }
+                   })
+                   .then((data) => {
+                     return user_detail.update({
+                       name: request.name,
+                       email_id: request.email,
+                      },{
+                        where:{
+                         id: user_detail_id
+                       }
+                     })
+                   })
+                 })
+                 .catch((data)=>{
+                   return data
                  })
                },
                deleteTeacher: (db, request) => {
@@ -138,36 +150,52 @@ let init = function(){
                  let teacherSubjectAllocation = db.teacher_subject_allocation
                  let feedback = db.feedback
 
-                 return teacher.update({
-                    status: false
-                  },
-                  {
+                 return teacher.findOne({
+                   attributes: ['user_detail_id'],
                    where:{
                     id: request.teacherId
-                  },
-                  include: [
-                    {
-                      model: user_detail,
-                      status: false,
-                      where:{
-                       id: teacher.user_detail_id
-                     }
+                  }
+                 })
+                 .then((data)=>{
+                   let user_detail_id = data.dataValues.user_detail_id
+                   return teacher.update({
+                      status: false
                     },
                     {
-                      model: feedback,
-                      status: false,
-                      where:{
-                       teacher_id: request.teacherId
-                     }
-                    },
-                    {
-                      model: teacherSubjectAllocation,
-                      status: false,
-                      where:{
-                       teacher_id: request.teacherId
-                     }
+                     where:{
+                      id: request.teacherId
                     }
-                  ]
+                   })
+                   .then((data) => {
+                     return user_detail.update({
+                       status: false,
+                      },{
+                        where:{
+                         id: user_detail_id
+                       }
+                     })
+                     .then((data)=>{
+                       return feedback.update({
+                         status: false,
+                        },{
+                          where:{
+                           teacher_id: request.teacherId
+                         }
+                       })
+                       .then((data)=>{
+                         return teacherSubjectAllocation.update({
+                           status: false,
+                          },{
+                            where:{
+                             teacher_id: request.teacherId
+                           }
+                         })
+                       })
+                     })
+                   })
+                 })
+                 .catch((data)=>{
+                   return data
                  })
                },
                /*getting teacher list and the feedback from feedback table as per the course selected*/

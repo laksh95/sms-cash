@@ -27,7 +27,8 @@ class AllTeacher extends React.Component{
           email: null,
           joinDate: new Date(),
           designation: null,
-          departmentIdForChangeDetails: null
+          departmentIdForChangeDetails: null,
+          disableSaveButton: false
        	}
     }
 
@@ -78,16 +79,46 @@ class AllTeacher extends React.Component{
           this.setState({
             teacherName: event
           })
+          if(event == ""){
+            this.setState({
+              disableSaveButton: true
+            })
+          }
+          else{
+            this.setState({
+              disableSaveButton: false
+            })
+          }
           break
         case "getDesignation":
           this.setState({
             designation: event
           })
+          if(event == ""){
+            this.setState({
+              disableSaveButton: true
+            })
+          }
+          else{
+            this.setState({
+              disableSaveButton: false
+            })
+          }
           break
         case "getEmail":
           this.setState({
             email: event
           })
+          if(event == ""){
+            this.setState({
+              disableSaveButton: true
+            })
+          }
+          else{
+            this.setState({
+              disableSaveButton: false
+            })
+          }
           break
         case "deleteTeacher":
           teacher = {
@@ -240,7 +271,7 @@ class AllTeacher extends React.Component{
                       <br /><br />
                       <DatePicker key={index} defaultDate={this.state.joinDate} hintText="Join Date" mode="landscape" onChange={ this.getDate }/>
                   </form>
-                <RaisedButton key={index} label="SAVE"  style={style} onTouchTap={this.handleTouchTap.bind(event, "saveDetails", data.id)}/>
+                <RaisedButton key={index} label="SAVE" disabled={this.state.disableSaveButton} style={style} onTouchTap={this.handleTouchTap.bind(event, "saveDetails", data.id)}/>
                 <RaisedButton key={index+1} label="CANCEL"  style={style} onTouchTap={this.handleTouchTap.bind(event, "closeDialog")}/>
               </Dialog>
 

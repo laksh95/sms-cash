@@ -10,7 +10,8 @@ const blogReducer = ( state = {
     snackbarOpen:false,
     snackbarMessage:"",
     showErrorPage: false,
-    errorMessage: ""
+    errorMessage: "",
+    commentPageNumber :2
 
 } , action) => {
     switch (action.type){
@@ -148,7 +149,18 @@ const blogReducer = ( state = {
                 snackbarOpen:action.payload
             }
             return state
-        case "GET_COMMENTS":
+        case "GET_COMMENTS_FULFILLED":
+            console.log("==============================",action.payload)
+            let c = state.commentPageNumber
+            let newComments = action.payload.data
+            var  comments = state.comments
+            let updatedComments = newComments.concat(comments)
+
+            state= {
+                ...state ,
+                commentPageNumber:c+1,
+                comments : updatedComments
+            }
             return state
         default:
             return state

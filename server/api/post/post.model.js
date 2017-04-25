@@ -126,6 +126,8 @@ let sql = function(){
                                 let postComment = models.post_comment
                                 let commentPromises = []
                                 postComment.findAll({
+                                    offset :1,
+                                    limit : 5 ,
                                     where : {
                                         post_id : response.dataValues.id,
                                         status : true
@@ -179,7 +181,7 @@ let sql = function(){
                             })
                         }
                         else {
-                            cb("NOT_ROWS_FOUND",null)
+                            cb("NO_ROWS_FOUND",null)
                         }
                     })
                 },

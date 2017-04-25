@@ -124,7 +124,10 @@ export function setSnackbarOpen(data){
 }
 export function getComments(data){
     return {
-        typ:types.GET_COMMENTS,
-        payload :data
+        type:types.GET_COMMENTS,
+        payload :blog.getComments(data)
+            .then((response)=>{
+                return response.data
+            })
     }
 }

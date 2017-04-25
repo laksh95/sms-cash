@@ -204,27 +204,36 @@ let init=function(){
                 },
                 deleteCourse:(db,data,sendData)=>{
                     let course = db.course
+                    let id = data.data
                     course.update({
                         status:'f'
                     },{
                         where:{
-                            id:data.deleteId,
+                            id:data.data,
                             status:'t'
                         }
-                    }).then((data)=>{
-                        let response = {
-                            msg : "Deleted Successfully",
-                            data,
-                            status : 1
+                    }).then((deletedData)=>{
+                        console.log('------',deletedData.length)
+                        if(deletedData[0] !== 0) {
+                            let response = {
+                                data:id,
+                                status: 1
+                            }
+                            sendData(response)
                         }
-                        sendData(response)
+                        else{
+                            let response = {
+                                status : 0,
+                                data :[]
+                            }
+                            sendData(response)
+                        }
                     })
                         .catch((err)=>{
                         console.log(err.toString(),'--------------')
                             let response = {
                                 status : 0,
-                                data :[],
-                                msg : "Internal Server Error"
+                                data :[]
                             }
                             sendData(response)
                         })

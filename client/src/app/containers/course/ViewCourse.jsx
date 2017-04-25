@@ -29,7 +29,7 @@ class ViewCourse extends React.Component {
             open:false,
             verificationDialog:false,
             errorTextOTP:"",
-            otpValue:0
+            otp:0
 
         };
         this.setCourseName = this.setCourseName.bind(this)
@@ -162,7 +162,7 @@ class ViewCourse extends React.Component {
     handleOTP = (event)=>{
         let otp=event.target.value
         this.setState({
-            otpValue:otp
+            otp
         })
     }
     setCourseName(event){
@@ -218,8 +218,16 @@ class ViewCourse extends React.Component {
             })
         }
         else{
-            let response = this.state.otpValue
+            console.log('------',this.state.curCourse.id,'-----------')
+            let response = {
+                otp:this.state.otp,
+                data:this.state.curCourse.id
+            }
+            this.setState({
+                verificationDialog:false
+            })
             this.props.deleteCourse(response)
+
         }
     }
     render(){

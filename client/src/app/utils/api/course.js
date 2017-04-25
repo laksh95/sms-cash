@@ -14,16 +14,16 @@ const utils = {
         }
         return axios.post(url,data,config)
     },
-    sendOTP:()=>{
-
-    },
     generateOTP:()=>{
         let url = serverAddress + '/api/course/generateOTP'
-        let token = Auth.token()
-        let authString = 'bearer' + token
-        let config={
-            'Authorization':authString
+        let token = Auth.getToken()
+        let authString = 'bearer ' + token;
+        let config = {
+            headers: {
+                'Authorization': authString
+            }
         }
+        console.log('--------',config,'-------------')
         return axios.get(url,config)
     },
     getCourses : () => {

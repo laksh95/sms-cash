@@ -37,10 +37,11 @@ let courseFunctions = {
         }
     },
     generateOTP:(req,res)=>{
+        console.log('-------generateOTP called---------')
         if(Object.keys(req).length !== 0){
             console.log('----------inside first if condition--------------')
             console.log('---------',!req.headers.authorization,'--------')
-            if(!req.headers.authorizaton === false) {
+            if(req.headers.authorizaton === false) {
                 console.log('--------second gateway--------',req.headers.authorization)
                 res.status(401).end()
             }

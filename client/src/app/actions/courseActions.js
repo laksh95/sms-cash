@@ -8,6 +8,7 @@ export function setCourse(course){
     }
 }
 export function generateOTP(){
+    console.log('-------generate OTP called-----------')
     return{
         type:'GENERATE_OTP',
         payload: course.generateOTP()

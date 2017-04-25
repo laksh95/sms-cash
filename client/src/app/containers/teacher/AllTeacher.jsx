@@ -100,9 +100,16 @@ class AllTeacher extends React.Component{
             })
           }
           else{
-            this.setState({
-              disableSaveButton: false
-            })
+            if (isChar(event)) {
+              this.setState({
+                disableSaveButton: false
+              })
+            }
+            else{
+              this.setState({
+                disableSaveButton: true
+              })
+            }
           }
           break
         case "getEmail":
@@ -324,6 +331,9 @@ class AllTeacher extends React.Component{
     }
 }
 
+function isChar(str) {
+  return /^[a-zA-Z]+$/.test(str);
+}
 
 const mapStateToProps = (state) => {
   return {

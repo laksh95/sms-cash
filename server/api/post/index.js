@@ -11,5 +11,7 @@ router.post('/deleteComment',controller.deleteComment)
 router.post('/setLikes',controller.setLikes)
 router.post('/getStats',controller.getStats)
 router.post('/deletePost',controller.deletePost)
+router.post('/searchPost',controller.searchPost)
+router.post('/getComments',controller.getComments)
 
 module.exports = router

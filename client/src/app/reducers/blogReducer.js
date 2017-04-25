@@ -6,7 +6,12 @@ const blogReducer = ( state = {
     username : "admin",
     userId : 1,
     stats :{},
-    showEdit : false
+    showEdit : false,
+    snackbarOpen:false,
+    snackbarMessage:"",
+    showErrorPage: false,
+    errorMessage: ""
+
 } , action) => {
     switch (action.type){
         case "OPEN_MODAL":
@@ -118,6 +123,32 @@ const blogReducer = ( state = {
             }
             return state
         case "SET_LIKES":
+            return state
+        case "SEARCH_POST_FULFILLED":
+            let posts = action.payload.data
+            if(posts.length===0){
+                state ={
+                    ...state,
+                    posts,
+                    snackbarOpen:true,
+                    snackbarMessage:"Not Found"
+                }
+            }
+            else{
+                state ={
+                    ...state,
+                    posts
+                }
+            }
+
+            return state
+        case "SET_SNACKBAR_OPEN":
+            state ={
+                ...state ,
+                snackbarOpen:action.payload
+            }
+            return state
+        case "GET_COMMENTS":
             return state
         default:
             return state

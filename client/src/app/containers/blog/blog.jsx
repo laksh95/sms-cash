@@ -2,7 +2,7 @@ import {Link} from 'react-router';
 import React from 'react';
 import {connect} from "react-redux";
 import {loginUser, checkLogin} from "./../../actions/loginActions";
-import {openModal,getPosts,getStats,setPost,deletePost,setShowEdit} from "../../actions/blogActions.js";
+import {openModal,getPosts,getStats,setPost,deletePost,setShowEdit,searchPost,setSnackbarOpen} from "../../actions/blogActions.js";
 import AddPost from "./addPost.jsx"
 import EditPost from "./editPost.jsx"
 import FloatingActionButton from 'material-ui/FloatingActionButton';
@@ -17,6 +17,10 @@ import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import Dialog from 'material-ui/Dialog';
 import {blue300, indigo900} from 'material-ui/styles/colors';
+import TextField from 'material-ui/TextField';
+import Snackbar from 'material-ui/Snackbar';
+
+
 let loginStyle = require('./../../css/login.css');
 
 class Blog extends React.Component {
@@ -32,6 +36,9 @@ class Blog extends React.Component {
             id : 1
         })
     }
+    componentWillReceiveProps(props){
+        this.props= props
+    }
     componentDidMount() {
     }
     componentDidUpdate(prevProps, prevState) {
@@ -40,7 +47,6 @@ class Blog extends React.Component {
         alert('You clicked the Chip.');
     }
     openModal(event,data){
-        console.log("---------",data)
         this.props.openModal(data)
     }
     handleCheck=(event,checked, data)=> {
@@ -71,6 +77,17 @@ class Blog extends React.Component {
                 break
         }
     };
+    handleKeyPress = (e)=>{
+        if(e.key==='Enter'){
+            console.log("Haye",e.target.value)
+            this.props.searchPost({
+                heading : e.target.value
+            })
+        }
+    }
+    handleRequestClose = () => {
+        this.props.setSnackbarOpen(false);
+    };
     render(){
         const actions = [
             <FlatButton
@@ -98,6 +115,11 @@ class Blog extends React.Component {
         };
         return (
             <div className={loginStyle.mymain}>
+                <TextField
+                    className = 'searchBox'
+                    hintText="Search"
+                    onKeyPress={this.handleKeyPress}
+                /><br />
                 <div className="leftContent">
                     <FloatingActionButton className="addPost" onClick={this.openModal.bind(this ,true)}>
                         <ContentAdd />
@@ -170,6 +192,12 @@ class Blog extends React.Component {
                 >
                     Are you sure you want to delete ?
                 </Dialog>
+                <Snackbar
+                    open={this.props.blogReducer.snackbarOpen}
+                    message={this.props.blogReducer.snackbarMessage}
+                    autoHideDuration={4000}
+                    onRequestClose={this.handleRequestClose}
+                />
             </div>
         );
     }
@@ -209,6 +237,12 @@ const mapDispatchToProps= (dispatch) => {
         },
         setShowEdit:(data)=>{
             dispatch(setShowEdit(data))
+        },
+        searchPost:(data)=>{
+            dispatch(searchPost(data))
+        },
+        setSnackbarOpen:(data)=>{
+            dispatch(setSnackbarOpen(data))
         }
     };
 };

@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {loginUser, checkLogin} from "./../../actions/loginActions";
-import {getPost,addComment,editComment,deleteComment,setLikes,setCurrentLike} from "./../../actions/blogActions.jsx";
+import {getPost,addComment,editComment,deleteComment,setLikes,setCurrentLike} from "./../../actions/blogActions.js";
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
@@ -16,6 +16,8 @@ import ActionFavoriteBorder from 'material-ui/svg-icons/action/favorite-border';
 import Snackbar from 'material-ui/Snackbar';
 import LazyLoad from 'react-lazyload';
 let loginStyle = require('./../../css/login.css');
+
+import RichTextEditor from 'react-rte';
 class Post extends React.Component {
     constructor(props){
         super(props)
@@ -29,14 +31,16 @@ class Post extends React.Component {
             editComment: "",
             validateEditComment : true,
             showComments : false,
-            likes: 0
+            likes: 0,
+            commentsNumber : 1
         }
         this.handleChange= this.handleChange.bind(this)
     }
     componentWillMount() {
         this.props.getPost({
             id : this.props.params.postid,
-            user_id : this.props.blogReducer.userId
+            user_id : this.props.blogReducer.userId,
+            commentsNumber : this.state.commentsNumber
         })
     }
     componentWillReceiveProps(props){
@@ -156,25 +160,15 @@ class Post extends React.Component {
                 user_id : this.props.blogReducer.userId
             }
             this.props.setLikes(data1)
-
         }
 
-        // if(checked==true) {
-        //     let data = {
-        //         post : this.props.blogReducer.post,
-        //         likes : likes+1
-        //     }
-        //     this.props.setLikes(data)
-        // }
-        // else {
-        //     let data = {
-        //         post : this.props.blogReducer.post,
-        //         likes : likes-1
-        //     }
-        //     this.props.setLikes(data)
-        // }
     }
     render(){
+        let content = RichTextEditor.createEmptyValue()
+        let post = this.props.blogReducer.post
+        console.log(post)
+        content = post.content
+        console.log(content)
         const actions = [
             <FlatButton
                 label="Cancel"
@@ -239,9 +233,7 @@ class Post extends React.Component {
                     </div>
                     <div className="postContent">
                         <p>
-                            {/*{this.props.blogReducer.post.content}*/}
-                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                            <div dangerouslySetInnerHTML={{ __html: content }}></div>
                         </p>
                     </div>
                     <div className="postFooter">
@@ -331,7 +323,6 @@ class Post extends React.Component {
         );
     }
 }
-
 Post.contextTypes = {
     router: React.PropTypes.object.isRequired
 };

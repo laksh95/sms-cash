@@ -63,6 +63,16 @@ const utils ={
         let config= configHeader();
         return axios.post(url,data,config)
 
+    },
+    searchPost : (data)=>{
+        let url = serverAddress + 'api/post/searchPost';
+        let config= configHeader();
+        return axios.post(url,data,config)
+    },
+    getComments:(data)=>{
+        let url = serverAddress + 'api/post/getComments'
+        let config = configHeader()
+        return axios.post(url,data,config)
     }
 }
 export default utils ;

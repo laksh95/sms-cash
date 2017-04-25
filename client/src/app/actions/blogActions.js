@@ -107,3 +107,24 @@ export function setCurrentLike(data){
         payload : data
     }
 }
+export function searchPost(data){
+    return {
+        type : types.SEARCH_POST,
+        payload :blog.searchPost(data)
+            .then((response)=>{
+                return response.data
+            })
+    }
+}
+export function setSnackbarOpen(data){
+    return {
+        type : types.SET_SNACKBAR_OPEN,
+        payload : data
+    }
+}
+export function getComments(data){
+    return {
+        typ:types.GET_COMMENTS,
+        payload :data
+    }
+}

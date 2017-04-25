@@ -163,7 +163,7 @@ let sql = function(){
                                                     liked_by : setData.user_id
                                                 }
                                             }).then((r)=>{
-                                                console.log("-------------------------------->>",r.dataValues)
+                                                // console.log("-------------------------------->>",r.dataValues)
                                                 if(r!=null){
                                                     response.dataValues.liked = true
                                                 }
@@ -224,7 +224,7 @@ let sql = function(){
                     })
                 },
                 setLikes : function(models,data,cb){
-                    // to be continued 
+                    // to be continued
                     // let postObj = data.post
                     // let likes = data.likes
                     let postLike = models.post_like
@@ -313,6 +313,53 @@ let sql = function(){
                         }
                     }).then((response)=>{
                         cb(null,response)
+                    })
+                },
+                searchPost:function(models,data,cb){
+                    let post = models.post
+                    let promises = []
+                    promises.push(post.findAll({
+                        where : {
+                            status : true
+                        }
+                    }))
+                    Promise.all(promises).then((result)=>{
+                        let temp = result[0]
+                        let posts = []
+                        for(let index in temp){
+                            posts[index]=temp[index].dataValues
+                        }
+                        // console.log(posts)
+                        let headings = []
+                        for(let index in posts){
+                            console.log(posts[index].heading.toLowerCase())
+                            console.log(data.heading)
+                            if(posts[index].heading.toLowerCase().indexOf(data.heading)!==-1){
+                                headings.push(posts[index])
+                            }
+                        }
+
+                        cb(null,headings)
+                    })
+
+                },
+                getComments:function(models,data,cb){
+                    let postComment = models.post_comment
+                    console.log(data.pageNumber)
+                    postComment.findAll({
+                        offset:(data.pageNumber-1)*5,
+                        limit: 5,
+                        where :{
+                            post_id : data.id ,
+                            status : true ,
+                        }
+                    }).then((response)=>{
+                        let comments = []
+                        for(let index in response){
+                            comments.push(response[index].dataValues)
+                        }
+                        console.log(comments)
+                        cb(null,comments)
                     })
                 }
             }

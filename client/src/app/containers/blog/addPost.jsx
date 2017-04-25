@@ -55,9 +55,11 @@ class AddPost extends React.Component {
                 break
             case "POST":
                 var image =this.state.image
+                console.log('_-----------------',this.state.value)
+                console.log('_-----------------',this.state.value.toString('html'))
                 var data = {
                     heading : this.state.heading,
-                    content : this.state.value
+                    content : this.state.value.toString('html')
                 }
                 this.props.addPost(data)
                 this.props.openModal(true)
@@ -151,6 +153,8 @@ class AddPost extends React.Component {
                     modal={true}
                     autoScrollBodyContent={true}
                     open={this.props.blogReducer.open}
+                    // contentStyle={{height:1000}}
+                    className="postModal"
                 >
                     <TextField
                         hintText="Post Heading"
@@ -175,6 +179,7 @@ class AddPost extends React.Component {
                             value={this.state.value}
                             onChange={this.setContent}
                             toolbarConfig={toolbarConfig}
+                            className="richTextEditor"
                         />
                     </div>
                     <br/>

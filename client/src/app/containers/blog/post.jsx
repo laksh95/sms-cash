@@ -262,12 +262,7 @@ class Post extends React.Component {
                             <RaisedButton label="Post Comment" onClick={()=>this.postComment()} primary={true}/><br/><br/>
                         </div>
                         <div className="postComments">
-                            <RaisedButton label="Load More" onClick={()=>{
-                                this.props.getComments({
-                                    id : this.props.blogReducer.post.id ,
-                                    pageNumber : this.props.blogReducer.commentPageNumber
-                                })
-                            }} fullWidth={true} /><br/><br/>
+                            <br/><br/>
                             {this.state.showComments?
                                 this.props.blogReducer.comments.map((data,index)=>{
                                     return(
@@ -294,6 +289,12 @@ class Post extends React.Component {
                                     )
                                 })
                                 : null}
+                            <RaisedButton label="Load More" onClick={()=>{
+                                this.props.getComments({
+                                    id : this.props.blogReducer.post.id ,
+                                    pageNumber : this.props.blogReducer.commentPageNumber
+                                })
+                            }} fullWidth={true} />
                         </div>
                     </div>
                 </div>

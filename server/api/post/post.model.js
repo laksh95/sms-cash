@@ -128,6 +128,7 @@ let sql = function(){
                                 postComment.findAll({
                                     offset :1,
                                     limit : 5 ,
+                                    order: 'created_at DESC',
                                     where : {
                                         post_id : response.dataValues.id,
                                         status : true
@@ -229,14 +230,16 @@ let sql = function(){
                     // to be continued
                     // let postObj = data.post
                     // let likes = data.likes
+                    console.log("inside setLikes",data.post.id)
+                    console.log("inside setLikes",data.user_id)
                     let postLike = models.post_like
                     postLike.findOne({
                         where : {
                             post_id : data.post.id,
                             liked_by : data.user_id,
-
                         }
                     }).then((response)=>{
+                        console.log(response)
                         if(response!=null){
                             console.log(response.dataValues)
                             postLike.update({
@@ -254,8 +257,8 @@ let sql = function(){
                             })
                         }
                         else{
-                              postLike.insert({
-                                postid : data.post.id ,
+                              postLike.create({
+                                post_id : data.post.id ,
                                 liked_by : data.user_id
                               }).then((response)=>{
                                   console.log(response)
@@ -351,6 +354,7 @@ let sql = function(){
                     postComment.findAll({
                         offset:(data.pageNumber-1)*5,
                         limit: 5,
+                        order: 'created_at DESC',
                         where :{
                             post_id : data.id ,
                             status : true ,

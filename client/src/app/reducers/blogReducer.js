@@ -155,11 +155,19 @@ const blogReducer = ( state = {
             let newComments = action.payload.data
             var  comments = state.comments
             let updatedComments = newComments.concat(comments)
-
-            state= {
-                ...state ,
-                commentPageNumber:c+1,
-                comments : updatedComments
+            if(newComments.length===0){
+                state = {
+                    ...state ,
+                    snackbarOpen:true ,
+                    snackbarMessage:"No more comments"
+                }
+            }
+            else {
+                state= {
+                    ...state ,
+                    commentPageNumber:c+1,
+                    comments : updatedComments
+                }
             }
             return state
         default:

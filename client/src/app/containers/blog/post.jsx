@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {loginUser, checkLogin} from "./../../actions/loginActions";
-import {getPost,addComment,editComment,deleteComment,setLikes,setCurrentLike,getComments} from "./../../actions/blogActions.js";
+import {getPost,addComment,editComment,deleteComment,setLikes,setCurrentLike,getComments,setSnackbarOpen} from "./../../actions/blogActions.js";
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
@@ -53,9 +53,7 @@ class Post extends React.Component {
     };
 
     handleRequestClose = () => {
-        this.setState({
-            open: false,
-        });
+        this.props.setSnackbarOpen(false)
     };
     // handleTouchTap() {
     //     alert('You clicked the Chip.');
@@ -289,18 +287,20 @@ class Post extends React.Component {
                                     )
                                 })
                                 : null}
-                            <RaisedButton label="Load More" onClick={()=>{
-                                this.props.getComments({
-                                    id : this.props.blogReducer.post.id ,
-                                    pageNumber : this.props.blogReducer.commentPageNumber
-                                })
-                            }} fullWidth={true} />
+                            {this.props.blogReducer.moreComments?
+                                <RaisedButton label="Load More" onClick={()=>{
+                                    this.props.getComments({
+                                        id : this.props.blogReducer.post.id ,
+                                        pageNumber : this.props.blogReducer.commentPageNumber
+                                    })
+                                }} fullWidth={true} /> :null}
+
                         </div>
                     </div>
                 </div>
                 <Snackbar
-                    open={this.state.open}
-                    message="Comment Added"
+                    open={this.props.blogReducer.snackbarOpen}
+                    message={this.props.blogReducer.snackbarMessage}
                     autoHideDuration={4000}
                     onRequestClose={this.handleRequestClose}
                 />
@@ -364,6 +364,9 @@ const mapDispatchToProps= (dispatch) => {
         },
         getComments:(data)=>{
             dispatch(getComments(data))
+        },
+        setSnackbarOpen:(data)=>{
+            dispatch(setSnackbarOpen(data))
         }
     };
 };

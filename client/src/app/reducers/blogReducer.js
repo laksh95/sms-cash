@@ -1,4 +1,4 @@
-const blogReducer = ( state = {
+const blogReducer = (state = {
     open : false,
     posts : [],
     post : {},
@@ -11,8 +11,8 @@ const blogReducer = ( state = {
     snackbarMessage:"",
     showErrorPage: false,
     errorMessage: "",
-    commentPageNumber :2
-
+    commentPageNumber :2,
+    moreComments : true
 } , action) => {
     switch (action.type){
         case "OPEN_MODAL":
@@ -28,18 +28,32 @@ const blogReducer = ( state = {
             }
             return state
         case "GET_POST_FULFILLED":
+            // if (action.payload.data.comments.length<6){
+            //     state = {
+            //         ...state ,
+            //         moreComments:false,
+            //         post :action.payload.data,
+            //         comments :action.payload.data.comments
+            //     }
+            // }
+            // else {
+            //     var comments = action.payload.data.comments
+            //     comments.splice(5,1)
             state = {
                 ...state ,
                 post :action.payload.data,
                 comments :action.payload.data.comments
             }
-            console.log("-----------------------",state.post)
+            // console.log("-----------------------",state.post)
             return state
         case "ADD_COMMENT_FULFILLED":
             let comment = action.payload.data
             comment.user_name = state.username
+            let temp = []
+            temp.push(comment)
             let comments = state.comments
-            comments.push(comment)
+            // comments.push(comment)
+            comments = temp.concat(comments)
             state = {
                 ...state ,
                 comments
@@ -141,7 +155,6 @@ const blogReducer = ( state = {
                     posts
                 }
             }
-
             return state
         case "SET_SNACKBAR_OPEN":
             state ={
@@ -150,16 +163,18 @@ const blogReducer = ( state = {
             }
             return state
         case "GET_COMMENTS_FULFILLED":
-            console.log("==============================",action.payload)
+            console.log("==============================",action.payload.data.length)
             let c = state.commentPageNumber
             let newComments = action.payload.data
             var  comments = state.comments
             let updatedComments = newComments.concat(comments)
             if(newComments.length===0){
+                console.log("yayyyyyyyy")
                 state = {
                     ...state ,
-                    snackbarOpen:true ,
-                    snackbarMessage:"No more comments"
+                    // moreComments:false,
+                    snackbarMessage:"No more comments",
+                    snackbarOpen:true
                 }
             }
             else {

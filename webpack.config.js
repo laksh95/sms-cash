@@ -1,3 +1,4 @@
+
 let path = require("path")
 let DIST_DIR = path.resolve(__dirname+'/client/dist/')
 let SRC_DIR = path.resolve(__dirname+'/client/src/')

@@ -7,6 +7,7 @@ const subjectReducer = (
     status: 200,
     errorMessage: "Loading",
     showErrorPage: false,
+    error: false
   },
   action
 ) => {
@@ -48,7 +49,9 @@ const subjectReducer = (
           state={
               ...state,
               showErrorPage: false,
-              errorMessage: "Loading"
+              errorMessage: "Loading",
+              error: false,
+              status: 200
           }
           return state
     default:

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Auth from './../../Auth.js';
-let serverAddress = 'http://localhost:3000/'
+import {serverAddress} from '../../constants'
 let configHeader= ()=> {
     let token = Auth.getToken();
     let authString = 'bearer ' + token;

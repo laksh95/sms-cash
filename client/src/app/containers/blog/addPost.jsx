@@ -1,7 +1,7 @@
 import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import {connect} from "react-redux";
-import {loginUser, checkLogin} from "./../../actions/loginActions";
+import {loginUser, checkLogin} from "./../../actions/loginActions.js";
 import {openModal,addPost} from "../../actions/blogActions.js";
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';

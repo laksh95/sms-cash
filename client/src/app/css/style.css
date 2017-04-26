@@ -1,12 +1,93 @@
 .content{
     height:100%; width:100%;
 }
-#main{
+
+
+.content{
+ height:100% !important; 
+ width:100% !important;
+}
+.smalldiv{
+ height:80% !important; 
+ width:70% !important; 
+ float:left;
+}
+.smallerDiv{
+ height:80% !important; 
+ width:25% !important; 
+ margin-left: 2%; 
+ float:right;
+}
+.centerMenu{
+	z-index:100;
+	margin:auto;
+}
+.cardName{
+  background: rgba(223,238,242,1);
+  background: -moz-linear-gradient(left, rgba(223,238,242,1) 0%, rgba(250,254,255,1) 100%);
+  background: -webkit-gradient(left top, right top, color-stop(0%, rgba(223,238,242,1)), color-stop(100%, rgba(250,254,255,1)));
+  background: -webkit-linear-gradient(left, rgba(223,238,242,1) 0%, rgba(250,254,255,1) 100%);
+  background: -o-linear-gradient(left, rgba(223,238,242,1) 0%, rgba(250,254,255,1) 100%);
+  background: -ms-linear-gradient(left, rgba(223,238,242,1) 0%, rgba(250,254,255,1) 100%);
+  background: linear-gradient(to right, rgba(223,238,242,1) 0%, rgba(250,254,255,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dfeef2', endColorstr='#fafeff', GradientType=1 );
+}
+.color  input[type="text"]{
+  color:black !important;
+}
+input[type="time"]::-webkit-clear-button {
+    display: none;
+}
+input[type="date"]::-webkit-clear-button {
+    display: none;
+}
+.style-4 input[type="time"] {
+  padding: 10px;
+  border: none;
+  border-bottom: solid 2px #c9c9c9;
+  transition: border 0.3s;
+}
+.style-4 input[type="time"]:focus,
+.style-4 input[type="time"].focus {
+  border-bottom: solid 2px #718EF1;
+}
+.lerr{
+  color:#ff0000;
+  font:90% arial, sans-serif;
+}
+.imgp {
+  height:30%;
+  background: #0073b7 url(../images/parent.png)  right no-repeat !important;
+}
+
+.imgs{
+  height:30%;
+  color:white !important;
+  background: #00a65a url(../images/student.png) right no-repeat !important;
+}
+.imgt{
+  height:30%;
+  color:white !important;
+  background: #f56954 url(../images/teacher.png) right no-repeat !important;
+}
+.imgs span{
+    color:white !important;
+}
+.imgp span{
+    color:white !important;
+}
+.imgt span{
+    color:white !important;
+}
+.content{
+ height:100%; width:100%;
+}
+/*#app{
     height: 100%;
 }
 .mymain{
     height: 100%;
-}
+}*/
 #studentMenu{
     margin-left:40%
 }

@@ -1,4 +1,5 @@
 let path = require('path');
+
 let data = require('../config/db')
 let models = ['academicCalendar','academicYear','admin','attendance',
 'batch','club','clubMembers', 'course','curriculum','curriculumSubject',
@@ -6,7 +7,7 @@ let models = ['academicCalendar','academicYear','admin','attendance',
 'educationalDetail','elective','event','eventComment','eventLike','exam','examType',
 'feedback','grade','hod','otp','parent','personalCalendar','post','postComment','postFollowed','postLike','publicEvent',
 'publicNotice','rating','relativeGrading','resign','result','role',
-'section','semester','skill','student','studentElective','subject',
+'section','semester','skill','student','studentElective','studentSectionAllocation','subject',
 'teacher', 'teacherSubjectAllocation','timetable',
 'uploadAttendance','uploadResult','userDetail'];
 let db ={};
@@ -20,8 +21,6 @@ Object.keys(db).forEach(function(modelName){
        db[modelName].associate(db);
    }
 });
-
-//test
 let sql = function(){
    return db;
 }

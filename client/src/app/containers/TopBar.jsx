@@ -285,18 +285,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-      getSession: () => {
-        dispatch(getSession())
-      },
-      getBatch: (item) => {
-        dispatch(getBatch(item))
-      },
-      getCourse: () => {
-        dispatch(getCourse())
-      },
-      getDepartment: (item) => {
-        dispatch(getDepartment(item))
-      },
       getInitialData : (config) => {
        dispatch(getInitialData(config));
      },

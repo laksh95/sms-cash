@@ -1,6 +1,5 @@
 let checkRole= require('./../config/roleCheck');
 let express=require('express')
-
 let apiRouter = (app) => {
 
   app.use('/api/department',checkRole(['admin','teacher']), require('../api/department'))
@@ -10,6 +9,9 @@ let apiRouter = (app) => {
   app.use('/api/feedback',checkRole(['teacher','admin']), require('../api/feedback'))
   app.use('/api/post',checkRole(['admin']), require('../api/post'));
   app.use('/api/student',checkRole(['admin']), require('../api/student'));
+  app.use('/api/academicCalendar',checkRole(['admin']), require('../api/academicCalendar'));
+  app.use('/api/parent',checkRole(['admin']), require('../api/parent'));
+  app.use('/api/personalCalendar',checkRole(['admin']), require('../api/personalCalendar'));
 
   app.get('/api/check', (req, res) => {
   let user ={};

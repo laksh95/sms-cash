@@ -1,6 +1,7 @@
 module.exports= (accessArray) => {
 	let flag = 0
 	return (req, res, next) => {
+		let flag = 0
 		if(!accessArray){
 			flag=1;
 			next();
@@ -13,6 +14,7 @@ module.exports= (accessArray) => {
 				break;
 			}
 		}
+
 		if(flag==0){
 			console.log("-------------Role check failed!--------------")
 			res.status(403).end();

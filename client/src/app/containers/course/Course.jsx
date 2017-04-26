@@ -7,7 +7,7 @@ import AddCourse from './AddCourse.jsx'
 import ViewCourse from './ViewCourse.jsx'
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import {setCourse,setPagedCourse,setSnackbarOpen,setSnackbarMessage,setValue, resetToNoError} from '../../actions/courseActions.jsx'
+import {setCourse,setPagedCourse,setSnackbarOpen,setSnackbarMessage,setValue, resetToNoError} from '../../actions/courseActions.js'
 import {connect} from 'react-redux'
 import {setErrorMessage} from "./../../actions/errorActions";
 
@@ -20,9 +20,6 @@ class Course extends React.Component{
         this.state = {
             open: false,
         };
-    }
-    getChildContext() {
-        return { muiTheme: getMuiTheme(baseTheme) };
     }
     handleChange = (value) => {
         this.props.setValue(value)
@@ -56,9 +53,7 @@ class Course extends React.Component{
         )
     }
 }
-(Course).childContextTypes = {
-    muiTheme: React.PropTypes.object.isRequired,
-};
+
 const history = syncHistoryWithStore(browserHistory, store)
 
 const mapStateToProps = (state) => {

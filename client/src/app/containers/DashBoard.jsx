@@ -3,19 +3,25 @@ import AppBar from 'material-ui/AppBar';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 
-class Student extends React.Component { 
+
+class DashBoard extends React.Component {
    constructor(props) {
     super(props);
   }
+
   getChildContext() {
       return { muiTheme: getMuiTheme(baseTheme) };
   }
- render(){
-   return(
-     <div>
-      <div>Student</div>
-     </div>
-    );
-  }
+
+  render() {
+    return(
+        <div>
+        <div>DashBoard</div>
+        </div>
+        );
+    }
 }
-export default Student;
+DashBoard.childContextTypes = {
+  muiTheme: React.PropTypes.object.isRequired,
+};
+export default DashBoard;

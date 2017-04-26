@@ -1,6 +1,4 @@
 import React from 'react';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme'
 import TopBar from './../../components/login/TopBar.jsx'; 
 import {setErrorMessage} from "./../../actions/errorActions";
 import {connect} from "react-redux";
@@ -13,9 +11,6 @@ class ErrorApp extends React.Component {
         };
     }
 
-    getChildContext() {
-      return { muiTheme: getMuiTheme(baseTheme) };
-    }
 
     render(){
         return (
@@ -28,9 +23,6 @@ class ErrorApp extends React.Component {
     }
 }
 
-ErrorApp.childContextTypes = {
-    muiTheme: React.PropTypes.object.isRequired,
-};
 ErrorApp.contextTypes = { 
     router: React.PropTypes.object.isRequired
 };

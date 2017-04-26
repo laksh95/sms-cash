@@ -3,7 +3,7 @@ import RaisedButton from 'material-ui/RaisedButton'
 import TextField from 'material-ui/TextField'
 import NumberInput from 'material-ui-number-input'
 import Snackbar from 'material-ui/Snackbar'
-import {setCourse,setPagedCourse,setSnackbarOpen,setSnackbarMessage,setValue,getCourses,editCourse,deleteCourse,addCourse} from '../../actions/courseActions.jsx'
+import {setCourse,setPagedCourse,setSnackbarOpen,setSnackbarMessage,setValue,getCourses,editCourse,deleteCourse,addCourse} from '../../actions/courseActions.js'
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 import { Router, Route, browserHistory } from 'react-router'
 import store from './../../store'
@@ -146,31 +146,34 @@ class AddCourse extends React.Component {
         }
         return (
             <div className="addCourse">
-                <h2 className="headline">Add a course</h2>
-                <TextField
-                    hintText="Course Name"
-                    onChange={this.addCourseName}
-                    errorText={this.state.errorText3}
-                    value = {this.state.newCourse}
-                /><br/>
-                <NumberInput
-                    id="num"
-                    value ={this.state.newDuration}
-                    hintText="Duration"
-                    defaultValue=""
-                    strategy="warn"
-                    errorText={this.state.errorText4}
-                    onValid={onValid}
-                    onChange={this.addCourseDuration}
-                    onError={onError1}
-                    onRequestValue={onRequestValue} />
-                <br />
-                <RaisedButton label="Submit"
-                              onClick={()=>this.addCourse()}
-                              primary={true}
-                              className="style"
-                              disabled = {!(this.state.validateNewCourseName && this.state.validateNewCourseDuration)}
-                />
+                <form onSubmit={()=>this.addCourse()}>
+                    <h2 className="headline">Add a course</h2>
+                    <TextField
+                        hintText="Course Name"
+                        onChange={this.addCourseName}
+                        errorText={this.state.errorText3}
+                        value = {this.state.newCourse}
+                    /><br/>
+                    <NumberInput
+                        id="num"
+                        value ={this.state.newDuration}
+                        hintText="Duration"
+                        defaultValue=""
+                        strategy="warn"
+                        errorText={this.state.errorText4}
+                        onValid={onValid}
+                        onChange={this.addCourseDuration}
+                        onError={onError1}
+                        onRequestValue={onRequestValue} />
+                    <br />
+                    <RaisedButton label="Submit"
+                                  type="submit"
+                                  onClick={()=>this.addCourse()}
+                                  primary={true}
+                                  className="style"
+                                  disabled = {!(this.state.validateNewCourseName && this.state.validateNewCourseDuration)}
+                    />
+                </form>
                 <Snackbar
                     open={this.props.courseReducer.snackbarOpen}
                     message={this.props.courseReducer.snackbarMessage}

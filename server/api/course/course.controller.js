@@ -3,6 +3,63 @@ let sql= require('../../sqldb')
 let batch = require('../batch/batch.model')()
 let db=sql()
 let courseFunctions = {
+    /*Called to create a new OTP, store it in database and send it via email.*/
+    checkOTP:(req,res)=>{
+        if(Object.keys(req).length !== 0 && Object.keys(req.body).length !== 0){
+            console.log('----------inside first if condition--------------')
+            console.log('---------',!req.headers.authorization,'--------')
+            if(!req.headers.authorization){
+                res.status(401).end()
+            }
+            else{
+                model.checkOTP(db,req.body,req.headers.authorization)
+                    .then((data)=>{
+                    console.log(data,'----------data--------')
+                        if(data !== null){
+                            model.deleteCourse(db,req.body,(response)=>{
+                                console.log('----------------',response,'------------------')
+                                if(1 === response.status){
+                                    res.status(200).json({data:response,msg:'Course deleted successfully.'})
+                                }
+                                else{
+                                    res.status(500).json({data:[],msg:'INTERNAL SERVER ERROR'})
+                                }
+                            })
+                        }
+                        else{
+                            res.status(200).json({data:[],msg:'NO ROW(s) FOUND'})
+                        }
+                    })
+            }
+        }
+        else{
+            res.status(400).json({data:[],msg:'BAD REQUEST'})
+        }
+    },
+    generateOTP:(req,res)=>{
+        console.log('-------generateOTP called---------')
+        if(Object.keys(req).length !== 0){
+            console.log('----------inside first if condition--------------')
+            console.log('---------',!req.headers.authorization,'--------')
+            if(req.headers.authorizaton === false) {
+                console.log('--------second gateway--------',req.headers.authorization)
+                res.status(401).end()
+            }
+            else{
+                model.generateOTP(req.headers,db,(data)=>{
+                    if(data.status === 1){
+                        res.status(200).json(data)
+                    }
+                    else{
+                        res.status(500).json(data)
+                    }
+                })
+            }
+        }
+        else{
+            res.status(400).json({data:[],msg:'BAD REQUEST'})
+        }
+    },
     getInitialData: (req,res) => {
         let dataToClient = {}
         if(req.body !== null){
@@ -44,11 +101,11 @@ let courseFunctions = {
             if (Object.keys(req.body).length !== 0) {
                 model.addNewCourse(db, req.body, function (data) {
                     console.log(data)
-                    if(1==data.status){
+                    if(1 === data.status){
                         res.status(200).json({data:data.data,msg:data.msg})
                     }
                     else {
-                        if(data.msg=="COURSE_ALREADY_EXISTS")
+                        if(data.msg === "COURSE_ALREADY_EXISTS")
                             res.status(400).json({data:[],msg:data.msg})
                         else
                             res.status(500).json({data:[],msg:data.msg})
@@ -67,7 +124,7 @@ let courseFunctions = {
         if (Object.keys(req).length !== 0) {
             if (Object.keys(req.body).length !== 0) {
                 model.editCourse(db, req.body, (data) => {
-                    if(1==data.status)
+                    if(1 === data.status)
                         res.status(200).json({data:data.data,msg:data.msg})
                     else
                         res.status(500).json({data:[],msg:"INTERNAL_SERVER_ERROR"})
@@ -85,7 +142,7 @@ let courseFunctions = {
         if (Object.keys(req).length !== 0) {
             if (Object.keys(req.body).length !== 0) {
                 model.deleteCourse(db, req.body.id, (data) => {
-                    if(1==data.status)
+                    if(1 === data.status)
                         res.status(200).json({data:data.data,msg:data.msg})
                     else
                         res.status(500).json({data:[],msg:"INTERNAL_SERVER_ERROR"})

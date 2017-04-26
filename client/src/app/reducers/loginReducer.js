@@ -51,11 +51,12 @@ const loginReducer= (state=initialLoginState, action) => {
             user.role=role;
           if(response.isLogin){
                 Auth.authenticateUser(response.token);
+                console.log('-------login info---------',response.token)
             state= {
                   ...state,
                   isLogin:true,
-          token: response.token,
-          loginUser: user
+                  token: response.token,
+                  loginUser: user
               }
           }            
         break; 
@@ -177,7 +178,7 @@ const loginReducer= (state=initialLoginState, action) => {
             showErrorPage: false,
             errorMessage: ""
           }
-        break
+        break;
     }
     return state;
 };

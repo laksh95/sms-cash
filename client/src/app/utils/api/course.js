@@ -1,7 +1,7 @@
 import axios from 'axios'
 import Auth from './../../Auth.js';
 
-let serverAddress = 'http://localhost:3000'
+import {serverAddress} from '../../constants'
 const utils = {
     addCourse : (data) => {
         let url = serverAddress + '/api/course/addCourse'
@@ -13,6 +13,18 @@ const utils = {
             }
         }
         return axios.post(url,data,config)
+    },
+    generateOTP:()=>{
+        let url = serverAddress + '/api/course/generateOTP'
+        let token = Auth.getToken()
+        let authString = 'bearer ' + token;
+        let config = {
+            headers: {
+                'Authorization': authString
+            }
+        }
+        console.log('--------',config,'-------------')
+        return axios.get(url,config)
     },
     getCourses : () => {
         let url = serverAddress + '/api/course/getCourses'

@@ -2,11 +2,11 @@ import React from 'react'
 import DropDownMenu from 'material-ui/DropDownMenu'
 import MenuItem from 'material-ui/MenuItem'
 import {connect} from 'react-redux'
-import {getInitialData,getFilteredData} from '../../actions/studentAction.jsx'
+import {getInitialData,getFilteredData} from '../../actions/studentAction.js'
 import FlatButton from 'material-ui/FlatButton'
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table'
 import EditDialog from './EditDialog.jsx'
-import {openDialog} from '../../actions/studentAction.jsx'
+import {openDialog} from '../../actions/studentAction.js'
 class StudentInformation extends React.Component{
     constructor(props){
         super(props)
@@ -30,17 +30,6 @@ class StudentInformation extends React.Component{
     componentWillReceiveProps(props){
         this.props=props
     }
-    /*handleTouchTap = (event)=>{
-        event.preventDefault()
-        this.setState({
-            open:true
-        })
-    }
-    handleRequestChange = ()=>{
-        this.setState({
-            open:false
-        })
-    }*/
     /**********************************************
     Handles the drop down selects for all 3 filters
     ***********************************************/

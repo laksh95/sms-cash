@@ -1,6 +1,8 @@
 let database=require('../../config/db')
 let sequelize=database.sequelize
 let connection=database.connection
+let totp = require('totp-generator')
+let mailer = require('nodemailer')
 let init=function(){
    return course=connection.define('course',{
            id:{
@@ -26,6 +28,65 @@ let init=function(){
            classMethods:{
                associate:(model)=>{
                 },
+                generateOTP:(data,db,cb)=>{
+                   const token = data.authorization.split(' ')[1];
+                   console.log(token,'--------course model---------')
+                   let otp = totp('JBSWY3DPEHPK3PXP')
+                    db.otp.update({
+                        status:'f'
+                    },{
+                        where:{token:token}
+                    }).then((response)=>{
+                        db.otp.create({
+                            token:token,
+                            otp:otp
+                        }).then((data)=>{
+                            let transporter = mailer.createTransport({
+                                service:'gmail',
+                                auth:{
+                                    user:'ignore.john2017@gmail.com',
+                                    pass:'madman2017'
+                                }
+                            })
+                            let message={
+                                from:'"John Doe" <ignore.john@gmail.com>',
+                                to: 'laksh@cronj.com',
+                                subject:'Email Verification',
+                                text:' This is the 6 digit OTP which will expire in 5 minutes.' + otp.toString()
+                            }
+                            transporter.sendMail(message,(error, info)=>{
+                                let response = {}
+                                if(error){
+                                    response = {
+                                        data:[],
+                                        msg:'internal server error',
+                                        status:0
+                                    }
+                                }
+                                else{
+                                    response = {
+                                        data:data,
+                                        msg:'added successfully',
+                                        status:1
+                                    }
+                                }
+                                cb(response)
+                            })
+                        })
+                    })
+                },
+                checkOTP:(db,data,authorization)=>{
+                   let otp = db.otp;
+                   const token = authorization.split(' ')[1];
+                   let number = data.otp;
+                   return otp.findOne({
+                       attributes:['token'],
+                       where:{
+                           token,
+                           otp:number
+                       }
+                   })
+                },
                 getCourse:(db)=>{
                     let course=db.course
                     let department=db.department
@@ -43,6 +104,7 @@ let init=function(){
                 },
                 addNewCourse:(db,setData,sendData)=>{
                     let course=db.course
+                    setData.course_name = setData.course_name.toUpperCase()
                     let response={}
                     course.findAll({
                         attributes:['name','status'],
@@ -140,28 +202,38 @@ let init=function(){
                             sendData(response)
                         })
                 },
-                deleteCourse:(db,deleteId,sendData)=>{
+                deleteCourse:(db,data,sendData)=>{
                     let course = db.course
+                    let id = data.data
                     course.update({
                         status:'f'
                     },{
                         where:{
-                            id:deleteId,
+                            id:data.data,
                             status:'t'
                         }
-                    }).then((data)=>{
-                        let response = {
-                            msg : "Deleted Successfully",
-                            data : deleteId ,
-                            status : data[0]
+                    }).then((deletedData)=>{
+                        console.log('------',deletedData.length)
+                        if(deletedData[0] !== 0) {
+                            let response = {
+                                data:id,
+                                status: 1
+                            }
+                            sendData(response)
                         }
-                        sendData(response)
-                    })
-                        .catch((err)=>{
+                        else{
                             let response = {
                                 status : 0,
-                                data :[],
-                                msg : "Internal Server Error"
+                                data :[]
+                            }
+                            sendData(response)
+                        }
+                    })
+                        .catch((err)=>{
+                        console.log(err.toString(),'--------------')
+                            let response = {
+                                status : 0,
+                                data :[]
                             }
                             sendData(response)
                         })

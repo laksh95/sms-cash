@@ -3,13 +3,13 @@ import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import TextField from 'material-ui/TextField';
 import LinearProgress from 'material-ui/LinearProgress';
 import {Link} from 'react-router'
 import {Router, browserHistory} from 'react-router';
 import Auth from '../../Auth.js';
 import Snackbar from 'material-ui/Snackbar';
+import CircularProgress from 'material-ui/CircularProgress';
 
 var style = {
 
@@ -59,10 +59,6 @@ export default class Login extends React.Component  {
     };
   }
 
-  getChildContext() {
-    return { muiTheme: getMuiTheme(baseTheme) };
-   }
-
   handleTouchTap = (item,event) => {
     switch(item){
       case HANDLE_CODES.ON_LOGIN:
@@ -88,6 +84,7 @@ export default class Login extends React.Component  {
     }
 
 };
+
 
 
     updateDimensions = () =>{
@@ -212,7 +209,6 @@ render() {
 
 return(
     <div >
-
      <LinearProgress
        mode="determinate"
        value={this.state.completed}
@@ -289,6 +285,7 @@ return(
         <span style={style.cardTextStyle}>
           Login
         </span>
+        
       <form onSubmit={this.handleTouchTap.bind(this, HANDLE_CODES.ON_LOGIN)}>
        <TextField
         hintText="Username"
@@ -332,9 +329,6 @@ return(
  }
 }
 
-Login.childContextTypes = {
-       muiTheme: React.PropTypes.object.isRequired,
-}
 Login.contextTypes = {
    router: React.PropTypes.object.isRequired
 }

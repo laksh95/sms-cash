@@ -2,12 +2,11 @@ import React from 'react';
 import SideBarMenu from './../components/SideBarMenu.jsx';
 import TopBar from './TopBar.jsx';
 import Auth from '../Auth.js';
-import {checkLogin, logoutUser, setUrl,setReceivedResponse} from "./../actions/loginActions";
+import {checkLogin, logoutUser, setUrl,setReceivedResponse} from "./../actions/loginActions.js";
 import {connect} from "react-redux";
 import {browserHistory} from 'react-router';
 import CircularProgress from 'material-ui/CircularProgress';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 let style = {
    "MainContentStyle":{
          marginTop:-10,
@@ -41,7 +40,6 @@ class App extends React.Component {
     componentWillMount() {
       var token = Auth.getToken();
       let path= this.props.location.pathname;
-
       this.props.setUrl(path);
       this.props.setReceivedResponse(false);
 
@@ -57,9 +55,6 @@ class App extends React.Component {
 
     }
 
-     getChildContext() {
-      return { muiTheme: getMuiTheme(baseTheme) };
-    }
     componentDidUpdate(prevProps, prevState) {
       console.log("In Component will receive props,  going to login: ");
       console.log("Login state: ", this.props.login);
@@ -90,7 +85,10 @@ class App extends React.Component {
           header =  <span></span>;
           content = <center><CircularProgress size={80} thickness={5} /> </center>;
     }
+
+
     return(
+    <MuiThemeProvider>
       <div className="mymain">
 
         <div style={style.MainContentStyle}>
@@ -99,18 +97,19 @@ class App extends React.Component {
 
         <SideBarMenu handleToggle = {(request) => this.handleToggle(request)} open = {this.state.open}
           user= {this.props.login.loginUser} isLogin= {this.props.login.isLogin} prevPathName= {this.props.login.prevPathName}
+
         />
         <div style={style.ContentTitle}>
           {this.props.children}
         </div>
 
      </div>
+
+    </MuiThemeProvider>
     );
   }
 }
-App.childContextTypes = {
-    muiTheme: React.PropTypes.object.isRequired
-}
+
 App.contextTypes = {
     router: React.PropTypes.object.isRequired
 };

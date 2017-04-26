@@ -4,10 +4,9 @@ import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import Dialog from 'material-ui/Dialog';
 import NumberInput from 'material-ui-number-input';
-import axios from 'axios'
 import Snackbar from 'material-ui/Snackbar';
 require('rc-pagination/assets/index.css');
-import {setCourse,setPagedCourse,setPagination,setSnackbarOpen,setSnackbarMessage,setValue,editCourse,addCourse , deleteCourse,getCourses} from '../../actions/courseActions.jsx'
+import {setCourse,setPagedCourse,setPagination,setSnackbarOpen,setSnackbarMessage,setValue,editCourse,addCourse , deleteCourse,getCourses,generateOTP} from '../../actions/courseActions.js'
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 import { Router, Route, browserHistory } from 'react-router'
 import store from './../../store'
@@ -26,7 +25,12 @@ class ViewCourse extends React.Component {
             errorText1 :"",
             errorText :"",
             validateCourseName :true,
-            validateCourseDuration : true
+            validateCourseDuration : true,
+            open:false,
+            verificationDialog:false,
+            errorTextOTP:"",
+            otp:0
+
         };
         this.setCourseName = this.setCourseName.bind(this)
         this.setCourseDuration = this.setCourseDuration.bind(this)
@@ -99,12 +103,12 @@ class ViewCourse extends React.Component {
         console.log("inside set duration")
         let duration = event.target.value
         let course = this.state.curCourse
-        if(duration.trim()==''){
+        if(duration.trim() === ''){
             this.setState({
                 validateCourseDuration:false
             })
         }
-        else if(this.state.errorText==undefined || this.state.errorText==""){
+        else if(this.state.errorText === undefined || this.state.errorText === ""){
             this.setState({
                 validateCourseDuration:true
             })
@@ -128,8 +132,9 @@ class ViewCourse extends React.Component {
     handleDeleteCloseWithUpdate = () => {
         let data = this.state.curCourse
         console.log("Inside Handle",data)
-        this.props.deleteCourse(data)
-        this.setState({deleteDialog: false});
+        /*this.props.deleteCourse(data)*/
+        this.setState({deleteDialog: false, verificationDialog:true});
+        this.props.generateOTP()
     };
     handleClose = (key) => {
         this.setState({open: false});
@@ -150,6 +155,15 @@ class ViewCourse extends React.Component {
     };
     handleToggle(){
         this.setState({open: !this.state.open});
+    }
+    /*************************************************************************
+    Handle text value change for OTP text field in the verification dialog box
+    **************************************************************************/
+    handleOTP = (event)=>{
+        let otp=event.target.value
+        this.setState({
+            otp
+        })
     }
     setCourseName(event){
         let course = this.state.curCourse
@@ -189,12 +203,48 @@ class ViewCourse extends React.Component {
         })
     }
     componentWillMount(){
-        console.log("inside will mount ")
         this.props.getCourses()
     }
+    handleVerificationClose = ()=>{
+        this.setState({
+            verificationDialog:false
+        })
+    }
+    handleVerificationSubmit = ()=>{
+        let data= this.state.curCourse
+        if(this.state.otpValue === 0){
+            this.setState({
+                errorTextOTP:'Cannot be left blank'
+            })
+        }
+        else{
+            console.log('------',this.state.curCourse.id,'-----------')
+            let response = {
+                otp:this.state.otp,
+                data:this.state.curCourse.id
+            }
+            this.setState({
+                verificationDialog:false
+            })
+            this.props.deleteCourse(response)
+
+        }
+    }
     render(){
-        if(this.state.errorText=='none'||this.state.errorText.trim()=='')
+        if(this.state.errorText === 'none' || this.state.errorText.trim() === '')
             this.state.validateCourseDuration=true
+        const verificationActions=[
+            <FlatButton
+                label="Cancel"
+                primary={true}
+                onTouchTap={this.handleVerificationClose}
+            />,
+            <FlatButton
+                label="Submit"
+                primary={true}
+                onTouchTap={this.handleVerificationSubmit}
+            />
+        ]
         const dialogActions = [
             <FlatButton
                 label="No"
@@ -260,17 +310,17 @@ class ViewCourse extends React.Component {
                         <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
                             <TableRow >
                                 <TableHeaderColumn>Course_Name</TableHeaderColumn>
-                                <TableHeaderColumn>Course_Duration</TableHeaderColumn>
+                                <TableHeaderColumn>Course_Duration(Years)</TableHeaderColumn>
                                 <TableHeaderColumn>No of Department</TableHeaderColumn>
-                                <TableHeaderColumn></TableHeaderColumn>
-                                <TableHeaderColumn></TableHeaderColumn>
+                                <TableHeaderColumn/>
+                                <TableHeaderColumn/>
                             </TableRow>
                         </TableHeader>
                         <TableBody displayRowCheckbox={false}>
                             {
                                 this.props.courseReducer.pagedCourses.map((data,index)=>{
                                     return (
-                                        <TableRow>
+                                        <TableRow key={index}>
                                             <TableRowColumn><FlatButton label={data.name}/></TableRowColumn>
                                             <TableRowColumn>{data.duration}</TableRowColumn>
                                             <TableRowColumn>{data.noOfDept}</TableRowColumn>
@@ -293,6 +343,21 @@ class ViewCourse extends React.Component {
                 >
                     Are you sure you want to delete ?
                 </Dialog>
+                <Dialog
+                    actions={verificationActions}
+                    modal={false}
+                    open={this.state.verificationDialog}
+                    onRequestClose={this.handleVerificationClose}
+                >
+                    On Deleting this course all departments and student data will also be lost.
+                    <br/>One Time Password has been sent to your email ID, enter below.
+                    <br/>
+                    <TextField
+                        hintText='Enter OTP'
+                        onChange={this.handleOTP}
+                        errorText={this.state.errorTextOTP}
+                    />
+                </Dialog>
                 <Snackbar
                     open={this.props.courseReducer.snackbarOpen}
                     message={this.props.courseReducer.snackbarMessage}
@@ -307,7 +372,7 @@ const history = syncHistoryWithStore(browserHistory, store)
 
 const mapStateToProps = (state) => {
     return {
-        courseReducer: state.courseReducer
+        courseReducer: state.courseReducer,
     };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -341,6 +406,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         setPagination:(data)=>{
             dispatch(setPagination(data))
+        },
+        generateOTP:()=>{
+            dispatch(generateOTP())
         }
     };
 };

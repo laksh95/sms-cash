@@ -32,9 +32,9 @@ class AddStudent extends React.Component {
             dept: 0,
             father_name: '',
             mother_name: '',
-            father_emailID: '',
-            father_contact_number: 0,
-            department: [],
+            parent_emailID: '',
+            parent_number: 0,
+            department:0,
             errorName: '',
             errorGender: '',
             errorAddress: '',
@@ -54,7 +54,6 @@ class AddStudent extends React.Component {
         this.props.getDepartment({
             courseId:1
         })
-        console.log('from add student')
 
     }
     /********************************************************
@@ -96,13 +95,12 @@ class AddStudent extends React.Component {
             father_name:this.state.father_name,
             mother_name:this.state.mother_name,
             parent_emailID:this.state.parent_emailID,
-            parent_contact_number:this.state.parent_contact_number
+            parent_contact_number:this.state.parent_number
         }
         let flag = 1
         Object.keys(studentInfo).forEach((key)=>{
             console.log('---->',key, studentInfo[key])
             if(studentInfo[key] === '' || studentInfo[key] === undefined || studentInfo[key] === [] || studentInfo[key] === 0){
-                console.log(studentInfo[key])
                 flag = 0
             }
         })
@@ -111,14 +109,13 @@ class AddStudent extends React.Component {
             this.setState({
                 message:'Student Added Successfully'
             })
-            this.handleTouchTap()
         }
         else{
             this.setState({
                 message:'All fields are mandatory'
             })
-            this.handleTouchTap()
         }
+        this.handleTouchTap()
     }
     cancel=(event)=>{
         event.preventDefault()
@@ -144,7 +141,6 @@ class AddStudent extends React.Component {
 
         switch(type){
             case 'name':
-                console.log(type)
                 let inputChar=event.target.value
                 let specialCharacter = inputChar.match(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g)
                 let numCharacter=inputChar.match(/\d+/g)
@@ -160,12 +156,12 @@ class AddStudent extends React.Component {
                 }
                 else{
                     this.setState({
-                        errorName:''
+                        errorName:'',
+                        name:inputChar
                     })
                 }
                 break
             case 'gender':
-                console.log(value)
                 if(value === 1){
                     this.setState({
                         gender:'M'
@@ -190,7 +186,6 @@ class AddStudent extends React.Component {
                 }
                 break
             case 'dob':
-                console.log(value)
                 this.setState({
                     dob:value
                 })
@@ -280,18 +275,27 @@ class AddStudent extends React.Component {
             case 'email_id':
                 let email=event.target.value
                 let content = email.match(/\S+@\S+\.\S+/g)
-                console.log(content)
-                if(content !== null){
+                if(email.trim() === ''){
+                    this.setState({errorEmail:'Mandatory Field'})
+                }
+                else if(content === null){
                     this.setState({
                         errorEmail:'Email should be of type: example@example.com'
                     })
                 }
                 else{
                     this.setState({
-                        errorEmail:''
+                        errorEmail:'',
+                        emailID:email
                     })
                 }
-
+                break
+            case 'department':
+                if(value !== 0){
+                    this.setState({
+                        department:value
+                    })
+                }
                 break
             case 'father_name':
                 let father_name=event.target.value
@@ -338,7 +342,45 @@ class AddStudent extends React.Component {
                         })
                     }
                 }
-
+                break
+            case 'parent_email':
+                let parentEmail=event.target.value
+                content = parentEmail.match(/\S+@\S+\.\S+/g)
+                console.log(content)
+                if(parentEmail.trim() === ''){
+                    this.setState({errorParentEmail:'Mandatory Field'})
+                }
+                else if(content === null){
+                    this.setState({
+                        errorParentEmail:'Email should be of type: example@example.com'
+                    })
+                }
+                else{
+                    this.setState({
+                        errorParentEmail:'',
+                        parent_emailID:parentEmail
+                    })
+                }
+                break
+            case 'parent_number':
+                number=event.target.value
+                numberMatch=number.match(/\d+/g)
+                if(numberMatch === null){
+                    this.setState({
+                        errorParentNumber:'Characters are not allowed.'
+                    })
+                }
+                else if(number.length > 10){
+                    this.setState({
+                        errorParentNumber:'Number cannot be greater than 10 digits'
+                    })
+                }
+                else{
+                    this.setState({
+                        parent_number:number,
+                        errorNumber:''
+                    })
+                }
                 break
         }
     }
@@ -361,11 +403,9 @@ class AddStudent extends React.Component {
             "EMAIL":"email_id",
             "FATHER_NAME":"father_name",
             "MOTHER_NAME":"mother_name",
-            "PARENT_NUMBER":"parent_number",
-            "PARENT_EMAIL":"parent_email"
-
+            "PARENT_EMAIL":"parent_email",
+            "PARENT_NUMBER":"parent_number"
         }
-        console.log(this.props.departmentList)
         const startDate=new Date()
         return(
             <div id="AddStudent" >
@@ -390,6 +430,7 @@ class AddStudent extends React.Component {
                         <label className="extra_space">Alternate Number</label><br/>
                         <label className="extra_space">Email ID</label><br/>
                         <label className="extra_space">Department</label><br/>
+                        <label className="extra_space">Batch</label><br/>
                         <label className="extra_space">Father's Name</label><br/>
                         <label className="extra_space">Mother's Name</label><br />
                         <label className="extra_space">Father's Email ID</label><br/>
@@ -454,11 +495,10 @@ class AddStudent extends React.Component {
                             ref="emailID"
                         />
                         <DropDownMenu
-                            value={this.state.dept}
+                            value={this.state.department}
                             onChange={this.handleChange.bind(this,HANDLE_CODE.DEPARTMENT)}
                             autoWidth={false}
                             style={styles.customWidth}
-
                         >
                             <MenuItem
                                 primaryText="Select Department"
@@ -471,7 +511,7 @@ class AddStudent extends React.Component {
                                             <MenuItem
                                                 id={index}
                                                 primaryText={data.abbreviatedName}
-                                                value={index+1}
+                                                value={data.id}
                                             />
                                         )
                                     })):null

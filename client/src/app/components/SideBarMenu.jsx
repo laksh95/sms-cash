@@ -16,6 +16,7 @@ let dashboardImage =  require('./../images/dashboard.png');
 let courseImage =  require('./../images/curriculum.png');
 let feedbackImage =  require('./../images/feedback.png');
 let blogImage =  require('./../images/blog.png');
+
 import {Link} from 'react-router';
 import { getSelected } from '../actions/adminActions.js';
 import { connect } from 'react-redux';
@@ -114,9 +115,9 @@ class SideBarMenu extends React.Component {
               <Link to ="/student" style={{textDecoration: 'none'}}>
                <ListItem
                  primaryText="Student"
-                 leftAvatar={<Avatar src={userImage} />}
-                   style={{backgroundColor: list["Students"]}}
-                       onTouchTap = {this.handleTouchTap.bind(this,"Students")}
+                 leftIcon={<img src={studentImage} />}
+                 style={{backgroundColor: list["Students"]}}
+                 onTouchTap = {this.handleTouchTap.bind(this,"Students")}
                />
               </Link>
 

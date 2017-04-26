@@ -10,7 +10,6 @@ export function isEmpty(value){
    return false ;
 }
 
-
 export function isLengthInvalid(value, min, max){
 	value= value.trim();
 	if(value.length<min || value.length>max)
@@ -18,3 +17,7 @@ export function isLengthInvalid(value, min, max){
 	return false;
 }
 
+export function validateEmail(email) {
+  var reg = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+    return reg.test(email);
+}

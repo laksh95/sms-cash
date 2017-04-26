@@ -130,7 +130,7 @@ input[type="date"]::-webkit-clear-button {
 }
 .extra_space {
     display:block;
-    margin-bottom: 10px;
+    margin-bottom: 16px;
 }
 .addBulk{
     margin:auto;

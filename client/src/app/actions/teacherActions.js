@@ -78,5 +78,11 @@ export function approveDetails(teacherId) {
 				return response.data
 			})
 	}
+}
 
+export function setPagination(data){
+    return {
+        type : types.SET_PAGINATION_TEACHER ,
+        payload :data
+    }
 }

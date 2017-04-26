@@ -18,16 +18,16 @@ let studentFunctions={
         let offset=request.body.recordsPerPage;
         if(request.body.semester !== undefined && request.body.semester !== null){
             include=[{
-              model:db.curriculum,
-              include:[{
-                model:db.semester,
+                model:db.curriculum,
+                include:[{
+                    model:db.semester,
+                    where:{
+                        name:request.body.semester,
+                    }
+                }],
                 where:{
-                    name:request.body.semester,
-                } 
-              }],
-              where:{
-                status:'t'
-             }              
+                    status:'t'
+                }
             }]
         }
         else {
@@ -52,6 +52,17 @@ let studentFunctions={
         let include;
         let student=checkRequestParameters(request, response);
         model.addOneStudent(db,student,(data)=>{
+            response.status(data.status).json({
+                data:data.data,
+                message:data.msg
+            })
+        })
+    },
+    addBulkStudents:(request, response)=>{
+        console.log("dfhkjshdkfkjsdh")
+        let include;
+        let student=checkRequestParameters(request, response);
+        model.addBulkStudents(db,student,(data)=>{
             response.status(data.status).json({
                 data:data.data,
                 message:data.msg
@@ -95,7 +106,7 @@ let checkRequestParameters=(request, response)=>{
     if(request.body==null||request.body==undefined){
         response.status(400).send({
             message:'Bad Request'
-        })    
+        })
     }
     else  return request.body
 }

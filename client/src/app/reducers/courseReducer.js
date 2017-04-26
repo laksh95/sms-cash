@@ -13,7 +13,6 @@ const courseReducer = (state = {
         case 'GENERATE_OTP_FULFILLED':
             state = {
                 ...state,
-
             }
             break
         case 'GENERATE_OTP_REJECTED':

@@ -19,6 +19,17 @@ const utils={
         let config=configHeader()
         return axios.post(url,fileContent,config)
     },
+    deleteStudent:(data)=>{
+      let url = baseAddress + '/api/student/deleteStudentDetails'
+        let config = configHeader()
+        return axios.put(url,data,config)
+    },
+    studentDetails:(data)=>{
+        console.log('--------util api being called-----',data)
+        let url = baseAddress + '/api/student/getStudentDetails'
+        let config = configHeader()
+        return axios.post(url,data,config)
+    },
     addStudent: (data)=>{
         let url= serverAddress + '/api/student/addStudent'
         let config=configHeader()
@@ -33,6 +44,7 @@ const utils={
     getFilteredStudent : (departmentId, semester, batchId)=>{
         let url = serverAddress + '/api/student/getStudents'
         let config = configHeader()
+        console.log('-----util api called----getFilteredStudent-----',departmentId,semester,batchId)
         let data={
             departmentId,
             semester,

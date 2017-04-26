@@ -8,22 +8,58 @@ import MenuItem from 'material-ui/MenuItem'
 import DatePicker from 'material-ui/DatePicker'
 import { addUser } from '../../actions/teacherActions'
 import { connect } from 'react-redux'
+import { validateEmail,isAllAlphabets } from '../../utils/validation.js'
+import {setErrorMessage} from './../../actions/errorActions'
+import { resetToNoErrorTeacher } from '../../actions/teacherActions.js'
+import { resetToNoErrorSubject } from '../../actions/subjectActions.js'
+import { browserHistory } from 'react-router'
+import Snackbar from 'material-ui/Snackbar'
 
 class AddTeacher extends React.Component{
     constructor(props) {
     	super(props);
       this.state = {
-          allDepartments: [{
-            name: "CSE"
-          },
-          {
-            name: "MECH"
-          }],
           departmentSelected: null,
           teacherName: null,
           joinDate: "",
           designation: null,
-          email: null
+          email: null,
+          emailInvalid: true,
+          nameInvalid: true,
+          designationInvalid: true,
+          dateInvalid: true,
+          genderInvalid: true,
+          departmentInvalid: true,
+          birthDateInvalid: true,
+          departmentId: null,
+          disableAddButton: true,
+          birthDate: null,
+          gender: null,
+          allGender: [
+            {
+              name: "MALE"
+            },
+            {
+              name: "FEMALE"
+            },
+            {
+              name: "OTHERS"
+            }
+          ]
+      }
+    }
+    checkAllValidations = () => {
+      if(this.state.emailInvalid == false && this.state.nameInvalid == false && this.state.designationInvalid == false
+        && this.state.dateInvalid == false && this.state.departmentInvalid == false && this.state.birthDateInvalid == false
+        && this.state.genderInvalid == false){
+        this.setState({
+          disableAddButton: false
+        })
+      }
+      else{
+        this.setState({
+          disableAddButton: true
+        })
       }
     }
     handleChange = (type, event) => {
@@ -32,26 +68,112 @@ class AddTeacher extends React.Component{
           let details = {
             name: this.state.teacherName,
             department: this.state.departmentSelected,
-            email: this.state.email,
+            emailId: this.state.email,
             joinDate: this.state.joinDate,
-            designation: this.state.designation
+            designation: this.state.designation,
+            deptId: this.state.departmentId,
+            dateOfBirth: this.state.birthDate,
+            gender: this.state.gender
           }
           this.props.addUser(details)
+          this.setState({
+            teacherName: null,
+            departmentForChangeDetails: null,
+            email: null,
+            joinDate: null,
+            designation: null,
+            departmentId: null,
+            emailInvalid: true,
+            nameInvalid: true,
+            designationInvalid: true,
+            dateInvalid: true,
+            departmentInvalid: true,
+            genderInvalid: true,
+          })
           break
         case "getName":
           this.setState({
             teacherName: event.target.value
           })
+          if(event.target.value == ""){
+            this.setState({
+              nameInvalid: true
+            }, ()=> {
+              this.checkAllValidations()
+            })
+          }
+          else{
+            if ( isAllAlphabets(event.target.value)) {
+              this.setState({
+                nameInvalid: true
+              },  ()=> {
+                this.checkAllValidations()
+              })
+            }
+            else{
+              this.setState({
+                nameInvalid: false
+              },  () => {
+                this.checkAllValidations()
+              })
+            }
+          }
           break
-        case "getDesignation" :
+        case "getDesignation":
           this.setState({
             designation: event.target.value
           })
+          if(event.target.value == ""){
+            this.setState({
+              designationInvalid: true
+            },  ()=> {
+              this.checkAllValidations()
+            })
+          }
+          else{
+            if ( isAllAlphabets(event.target.value)) {
+              this.setState({
+                designationInvalid: true
+              }, ()=> {
+                this.checkAllValidations()
+              })
+            }
+            else{
+              this.setState({
+                designationInvalid: false
+              },  ()=> {
+                this.checkAllValidations()
+              })
+            }
+          }
           break
-        case "getEmail" :
+        case "getEmail":
           this.setState({
             email: event.target.value
           })
+          if(event.target.value == ""){
+            this.setState({
+              emailInvalid: true
+            },  ()=> {
+              this.checkAllValidations()
+            })
+          }
+          else{
+            if( validateEmail(event.target.value)){
+              this.setState({
+                emailInvalid: false
+              },  ()=> {
+                this.checkAllValidations()
+              })
+            }
+            else{
+              this.setState({
+                emailInvalid: true
+              },  ()=> {
+                this.checkAllValidations()
+              })
+            }
+          }
           break
         default:
           break
@@ -59,18 +181,81 @@ class AddTeacher extends React.Component{
     }
     getDate = (event, date) => {
       this.setState({
-        joinDate: date
+        joinDate: date,
+        dateInvalid: false
+      }, ()=> {
+        this.checkAllValidations()
       })
     }
-
-    hadleChangeDepartment = (event, index, value) => {
+    getBirthDate = (event, date) => {
       this.setState({
-        departmentSelected: value
+        birthDate: date,
+        birthDateInvalid: false
+      }, ()=> {
+        this.checkAllValidations()
       })
     }
+    hadleChangeDepartment = (event, index, value) => {
+      let departmentId = null
+      let departmentExisting = this.props.subjectReducer.department
+      for(let index = 0; index<departmentExisting.length; index++){
+        if(departmentExisting[index].name==value){
+          departmentId = departmentExisting[index].id
+          break
+        }
+      }
+      this.setState({
+        departmentSelected: value,
+        departmentId: departmentId,
+        departmentInvalid: false
+      }, ()=> {
+        this.checkAllValidations()
+      })
+    }
+    hadleChangeGender = (event, index, value) => {
+      this.setState({
+        gender: value,
+        genderInvalid: false
+      }, ()=> {
+        this.checkAllValidations()
+      })
+    }
+    errorSnackBar = (errorMessage) => {
+      if(this.props.teacherReducer.error == false){
+        if(this.props.teacherReducer.successSnackBar == true)
+        return (
+          <Snackbar
+          open={true}
+          message={"Added a teacher"}
+          autoHideDuration={4000}
+          />
+      )
+      }
+      else{
+        return (
+          <Snackbar
+          open={true}
+          message={"Added a teacher"}
+          autoHideDuration={4000}
+          />
+        )
+      }
+    }
+    componentWillUnmount() {
+      this.props.resetToNoErrorTeacher()
+      this.props.resetToNoErrorSubject()
+    }
 
-    componentWillGetProps(nextProps){
+    componentWillReceiveProps(nextProps){
       this.props = nextProps
+      if(this.props.teacherReducer.showErrorPage){
+          this.props.setErrorMessage(this.props.teacherReducer.errorMessage);
+          browserHistory.push('/error');
+      }
+      if(this.props.subjectReducer.showErrorPage){
+          this.props.setErrorMessage(this.props.subjectReducer.errorMessage);
+          browserHistory.push('/error');
+      }
     }
 
     render(){
@@ -94,11 +279,28 @@ class AddTeacher extends React.Component{
           onChange={this.hadleChangeDepartment }
           >
           {
-            this.state.allDepartments.map((data,index)=>{
+            this.props.subjectReducer.errorDepartment===false?
+            (this.props.subjectReducer.department.map((data, index)=>{
               return(
-                  <MenuItem value={data.name} primaryText={data.name}/>
+                <MenuItem key={data.id} value={data.name} primaryText={data.name} />
               )
-            })
+           })) : (
+               <MenuItem key={1} disabled={true} value='No data' primaryText='No data' />
+             )
+          }
+          </SelectField>
+          <br />
+          <SelectField
+          floatingLabelText="Gender"
+          value={this.state.gender}
+          onChange={this.hadleChangeGender }
+          >
+          {
+            (this.state.allGender.map((data, index)=>{
+              return(
+                <MenuItem key={index} value={data.name} primaryText={data.name} />
+              )
+            }))
           }
           </SelectField>
           <br />
@@ -119,9 +321,17 @@ class AddTeacher extends React.Component{
               />
               <br /><br />
               <DatePicker hintText="Join Date" mode="landscape" onChange={ this.getDate }/>
-              <RaisedButton  label="ADD" primary={true} style={style} onTouchTap= {this.handleChange.bind(this,"addUser")}/>
+              <br /><br />
+              <DatePicker hintText="Birth Date" mode="landscape" onChange={ this.getBirthDate }/>
+              <RaisedButton  label="ADD" disabled={this.state.disableAddButton} primary={true} style={style} onTouchTap= {this.handleChange.bind(this,"addUser")}/>
           </form>
     		</div>
+        {
+          this.props.teacherReducer.error == true || this.props.teacherReducer.successSnackBar == true?
+          this.errorSnackBar(this.props.teacherReducer.errorMessage)
+          : null
+        }
+
       </div>
     	)
     }
@@ -129,7 +339,8 @@ class AddTeacher extends React.Component{
 
 const mapStateToProps = (state) => {
   return {
-    teacher: state.teacherReducer
+      teacherReducer: state.teacherReducer,
+      subjectReducer: state.subjectReducer
     }
 }
 
@@ -137,6 +348,15 @@ const mapDispatchToProps = (dispatch) => {
   return {
     addUser: (details) => {
       dispatch(addUser(details))
+    },
+    setErrorMessage: (message) =>{
+        dispatch(setErrorMessage(message));
+    },
+    resetToNoErrorSubject: () => {
+      dispatch(resetToNoErrorSubject())
+    },
+    resetToNoErrorTeacher: () => {
+      dispatch(resetToNoErrorTeacher())
     }
   }
 }

@@ -232,7 +232,8 @@ const mapStateToProps = (state) => {
   return {
     teacherReducer: state.teacherReducer,
     subjectReducer: state.subjectReducer,
-    headerReducer: state.headerReducer
+    headerReducer: state.headerReducer,
+    errorRedu
     }
 }
 
@@ -246,6 +247,9 @@ const mapDispatchToProps = (dispatch) => {
       },
       getSubjectAndDepartment: (data) => {
         dispatch(getSubjectAndDepartment(data))
+      },
+      setErrorMessage: (message) =>{
+          dispatch(setErrorMessage(message));
       },
       resetToNoErrorSubject: () => {
         dispatch(resetToNoErrorSubject())

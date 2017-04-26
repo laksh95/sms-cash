@@ -4,13 +4,28 @@ const courseReducer = (state = {
     snackbarOpen:false,
     snackbarMessage:"",
     value : "a",
-
     totalPages : 0,
     currentPage : 1,
     showErrorPage: false,
     errorMessage: ""
 },action) => {
     switch(action.type){
+        case 'GENERATE_OTP_FULFILLED':
+            state = {
+                ...state,
+            }
+            break
+        case 'GENERATE_OTP_REJECTED':
+            let data=action.payload
+            console.log('-----------reducer-----',data)
+            if(data.status === 500 || data.status === 400 || data.status === 401){
+                state={
+                    ...state,
+                    showErrorPage:true,
+                    errorMessage:data.msg
+                }
+            }
+            break
         case "SET_COURSE":
             state = {
                 ...state ,
@@ -50,7 +65,7 @@ const courseReducer = (state = {
                     pagedCourses.push(course[index])
                 }
             }
-            if(0==pagedCourses){
+            if(0 === pagedCourses){
                 state = {
                     ...state ,
                     snackbarMessage : "Nothing to Show",
@@ -211,10 +226,10 @@ const courseReducer = (state = {
         case "DELETE_COURSE_FULFILLED":
             var course = state.course
             var data = action.payload.data
-            console.log(course)
-            console.log(data)
+            console.log('------course------',course)
+            console.log('++++++++++++++++',data,'-------------')
             for(let index in course){
-                if(course[index].id==data){
+                if(course[index].id == data){
                     console.log("true")
                     course.splice(index,1)
                 }

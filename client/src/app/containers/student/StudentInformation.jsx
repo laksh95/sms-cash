@@ -2,7 +2,7 @@ import React from 'react'
 import DropDownMenu from 'material-ui/DropDownMenu'
 import MenuItem from 'material-ui/MenuItem'
 import {connect} from 'react-redux'
-import {getInitialData,getFilteredData} from '../../actions/studentAction.js'
+import {getInitialData,getFilteredData,deleteStudent} from '../../actions/studentAction.js'
 import FlatButton from 'material-ui/FlatButton'
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table'
 import EditDialog from './EditDialog.jsx'
@@ -25,22 +25,11 @@ class StudentInformation extends React.Component{
         this.props.getInitialData({
             courseId:1
         })
-        console.log('inside component will mount')
+
     }
     componentWillReceiveProps(props){
         this.props=props
     }
-    /*handleTouchTap = (event)=>{
-        event.preventDefault()
-        this.setState({
-            open:true
-        })
-    }
-    handleRequestChange = ()=>{
-        this.setState({
-            open:false
-        })
-    }*/
     /**********************************************
     Handles the drop down selects for all 3 filters
     ***********************************************/
@@ -48,33 +37,33 @@ class StudentInformation extends React.Component{
         switch(type){
             case 'department':
                 if(value !== 0){
+                    console.log('department------->',value)
                     this.setState({
                         department:value
                     })
                 }
                 if(this.state.semester !== 0 && this.state.batch !== 0){
-                    console.log('------api call from dept')
-                    this.props.getAllStudents(this.state.department,this.state.semester,this.state.batch)
+                    this.props.getAllStudents(value,this.state.semester,this.state.batch)
                 }
                 break
             case 'semester':
                 if(value !== 0){
+                    console.log('Semester---------------->',value)
                     this.setState({
                         semester:value
                     })
                 }
                 if(this.state.department !== 0 && this.state.batch !== 0){
-                    console.log('------api call from semester')
-                    this.props.getAllStudents(this.state.department,this.state.semester,this.state.batch)
+                    this.props.getAllStudents(this.state.department,value,this.state.batch)
                 }
                 break
             case 'batch':
                 if(value !== 0){
+                    console.log('batch---------->',value)
                     this.setState({batch:value})
                }
                 if(this.state.department !== 0 && this.state.semester !== 0){
-                    console.log('--------api call from batch')
-                    this.props.getAllStudents(this.state.department,this.state.semester,this.state.batch)
+                    this.props.getAllStudents(this.state.department,this.state.semester,value)
                 }
                 break
         }
@@ -127,6 +116,16 @@ class StudentInformation extends React.Component{
                 )
             })):null
     }
+    handleDeleteTap = (content)=>{
+        let data = {
+            studentId:content.studentId,
+            parentId:content.parentId,
+            sectionId:content.sectionId,
+            username:content.username
+        }
+        console.log('-----------data-------',data)
+        this.props.deleteStudent(data)
+    }
     render(){
         const HANDLE_CODES={
             "DEPARTMENT":"department",
@@ -134,7 +133,7 @@ class StudentInformation extends React.Component{
             "BATCH":"batch",
             "ACTION":"action"
         }
-        console.log('-------student info------',this.props.studentInfo)
+        console.log('-------student info------',this.props.studentInfo.data)
         return(
             <div>
                 <div id="studentFilter">
@@ -198,10 +197,10 @@ class StudentInformation extends React.Component{
                             displayRowCheckbox={false}
                             stripedRows={true}
                         >{
-                            this.props.studentInfo.students?
-                                (this.props.studentInfo.students.map((data,index)=>{
+                            this.props.studentInfo.data?
+                                (this.props.studentInfo.data.map((data,index)=>{
                                         return (
-                                            <TableRow id={index}>
+                                            <TableRow id={data.id}>
                                                 <TableRowColumn>
                                                     {data.admissionNo}
                                                 </TableRowColumn>
@@ -218,13 +217,17 @@ class StudentInformation extends React.Component{
                                                     {data.batchName}
                                                 </TableRowColumn>
                                                 <TableRowColumn>
-                                        getInitialData            <FlatButton primary={true} label="EDIT" onTouchTap={() => {
+                                                    <FlatButton primary={true} label="EDIT" onTouchTap={() => {
                                                         this.props.showDialog(true)
                                                     }}/>
-                                                    {this.props.dialogValue ?
-                                                        <EditDialog currentStudent={data}/> : null}
                                                     <FlatButton secondary={true} label="DELETE"
-                                                                onTouchTap={this.handleDeleteTap}/>
+                                                                onTouchTap={this.handleDeleteTap.bind(this,data)}/>
+                                                    &nbsp;
+                                                    {this.props.dialogValue ?
+                                                        <EditDialog
+                                                            studentId={data.studentId}
+                                                        /> : null}
+
                                                 </TableRowColumn>
                                             </TableRow>
                                         )
@@ -243,7 +246,7 @@ const mapStateToProps = (state)=>{
     return {
         allStudents: state.studentReducer,
         filterData: state.studentReducer.initialData,
-        studentInfo:state.studentReducer.allStudentData,
+        studentInfo:state.studentReducer.students,
         dialogValue:state.studentReducer.dialogOpen
     }
 }
@@ -257,6 +260,9 @@ const mapDispatchToProps = (dispatch)=>{
         },
         showDialog: (show)=>{
             dispatch(openDialog(show))
+        },
+        deleteStudent:(content)=>{
+            dispatch(deleteStudent(content))
         }
     }
 }

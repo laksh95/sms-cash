@@ -7,7 +7,7 @@ import {browserHistory } from 'react-router';
 import Subheader from 'material-ui/Subheader';
 import Divider from 'material-ui/Divider';
 import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
-import DashBoard from './dashboard/DashBoard.jsx';
+import DashBoard from './../containers/Dashboard/App.jsx';
 import Teacher from '../containers/teacher/Teacher.jsx'
 let userImage =  require('./../images/user.png');
 let departmentImage =  require('./../images/department.png');
@@ -16,12 +16,12 @@ let dashboardImage =  require('./../images/dashboard.png');
 let courseImage =  require('./../images/curriculum.png');
 let feedbackImage =  require('./../images/feedback.png');
 let blogImage =  require('./../images/blog.png');
+
 import {Link} from 'react-router';
 import { getSelected } from '../actions/adminActions.js';
 import { connect } from 'react-redux';
 
 class SideBarMenu extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -29,7 +29,6 @@ class SideBarMenu extends React.Component {
       refresh: true
     };
   }
-
   componentDidUpdate(prevProps, prevState) {
     if(this.state.refresh){
       console.log("+++prevPathName+++: ", this.props.prevPathName);
@@ -58,9 +57,9 @@ class SideBarMenu extends React.Component {
  handleTouchTap = (item , event) => {
   console.log("Selected: +++",item )
         this.setState({
-              refresh: false,
-              selected: item
-                });
+            refresh: false,
+            selected: item
+          });
    };
   render() {
     let list = {
@@ -106,20 +105,21 @@ class SideBarMenu extends React.Component {
               <Link to ="/department" style={{textDecoration: 'none'}}>
                 <ListItem
                   primaryText="Department"
+
                   leftIcon={ <img  src={departmentImage}
                    />}
                    style={{backgroundColor: list["Department"]}}
                       onTouchTap = {this.handleTouchTap.bind(this,"Department")}
                 />
               </Link>
-              {/*<Link to ="/student" style={{textDecoration: 'none'}}>
+              <Link to ="/student" style={{textDecoration: 'none'}}>
                <ListItem
                  primaryText="Student"
-                 leftAvatar={<Avatar src={userImage} />}
-                   style={{backgroundColor: list["Students"]}}
-                       onTouchTap = {this.handleTouchTap.bind(this,"Students")}
+                 leftIcon={<img src={studentImage} />}
+                 style={{backgroundColor: list["Students"]}}
+                 onTouchTap = {this.handleTouchTap.bind(this,"Students")}
                />
-              </Link>*/}
+              </Link>
 
                {this.props.user.role.isAdmin ?
                    <Link to ="/blog" style={{textDecoration: 'none'}}>

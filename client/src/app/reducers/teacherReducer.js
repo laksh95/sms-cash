@@ -2,14 +2,17 @@ import * as codes from './../constants/responseMessageCodes.js'
 
 const teacherReducer = (
   state = {
-    email: null,
-    password: null,
-    userId: null,
     status: 200,
     errorMessage: "Loading",
     allTeacher: [],
+    allTeacherAndFeedback: [],
     showErrorPage: false,
-    error: false
+    error: false,
+    noDataError: false,
+    pagedTeachers: [],
+    currentPage: 1,
+    totalPages : 0,
+    successSnackBar: false
   },
   action
 ) => {
@@ -18,20 +21,73 @@ const teacherReducer = (
   switch (action.type) {
     /*adding the teacher to database*/
     case "ADD_USER_TEACHER_FULFILLED":
+      allTeacher = state.allTeacher
+      let newTeacher = action.payload.result
+
+      allTeacher.push(newTeacher)
       state = {
         ...state,
-        email: action.payload.email,
-        password: action.payload.password,
-        userId: action.payload.userId
+        allTeacher: allTeacher,
+        error: false,
+        errorMessage: action.payload.message,
+        noDataError: false,
+        successSnackBar: true
       }
       return state
+    case "ADD_USER_TEACHER_REJECTED":
+      errorStatus = action.payload.response.status
+      switch(errorStatus){
+        case 500:
+          state = {
+            ...state,
+            error: true,
+            status: 500,
+            showErrorPage: true,
+            errorMessage: "500 : Internal Server Error",
+            successSnackBar: false
+          }
+          return state
+        case 400:
+          state = {
+            ...state,
+            error: true,
+            status: 400,
+            errorMessage: "BAD REQUEST",
+            successSnackBar: false
+          }
+          return state
+        case 403:
+          state = {
+              ...state ,
+              error: true,
+              showErrorPage : true,
+              errorMessage : "403: Forbidden",
+              successSnackBar: false
+          }
+          return state
+        default:
+          return state
+      }
     /*getting teacher list as per the course selected*/
     case "GET_TEACHER_FULFILLED":
       state = {
         ...state,
         allTeacher: action.payload.result,
-        errorMessage: action.payload.message
+        errorMessage: action.payload.message,
+        error: false,
+        noDataError: false
       }
+      if(action.payload.message == "NO_ROWS_FOUND"){
+        state = {
+          ...state,
+          status: 200,
+          allTeacher: action.payload.data,
+          errorMessage: action.payload.message,
+          error: true,
+          noDataError: true
+        }
+      }
+      return state
       return state
     case "GET_TEACHER_REJECTED":
       errorStatus = action.payload.response.status
@@ -81,7 +137,8 @@ const teacherReducer = (
       }
       state = {
         ...state,
-        allTeacher: allTeacher
+        allTeacher: allTeacher,
+        error: false
       }
       return state
     case "CHANGE_DETAILS_REJECTED":
@@ -134,7 +191,8 @@ const teacherReducer = (
         ...state,
         error: isTeacherListEmptyError,
         allTeacher: allTeacher,
-        errorMessage: message
+        errorMessage: message,
+        error: false
       }
       return state
     case "DELETE_TEACHER_REJECTED":
@@ -179,7 +237,8 @@ const teacherReducer = (
       }
       state = {
         ...state,
-        allTeacher: allTeacherStored
+        allTeacher: allTeacherStored,
+        error: false
       }
       return state
     case "APPROVE_TEACHER_REJECTED":
@@ -213,8 +272,20 @@ const teacherReducer = (
       state = {
         ...state,
         status: 200,
-        allTeacher: action.payload.data,
-        errorMessage: action.payload.message
+        allTeacherAndFeedback: action.payload.data,
+        errorMessage: action.payload.message,
+        error: false,
+        noDataError: false
+      }
+      if(action.payload.message == "NO_ROWS_FOUND"){
+        state = {
+          ...state,
+          status: 200,
+          allTeacherAndFeedback: action.payload.data,
+          errorMessage: action.payload.message,
+          error: true,
+          noDataError: true
+        }
       }
       return state
     case "GET_TEACHER_AND_FEEDBACK_REJECTED":
@@ -248,6 +319,16 @@ const teacherReducer = (
         default:
           return state
       }
+    case "SET_PAGINATION_TEACHER":
+        var data = action.payload
+        var pagedTeachers = data.pagedTeachers
+        var currentPage = data.currentPage
+        state = {
+            ...state ,
+            pagedTeachers ,
+            currentPage
+        }
+        break
     /*resets the error page to false so that the error page does not open for every case*/
     case "RESET_ERROR_TEACHER":
         state={
@@ -255,7 +336,9 @@ const teacherReducer = (
             showErrorPage: false,
             errorMessage: "Loading",
             error: false,
-            status: 200
+            status: 200,
+            noDataError: false,
+            successSnackBar: false
         }
         return state
 

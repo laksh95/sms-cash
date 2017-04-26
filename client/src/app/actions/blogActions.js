@@ -8,11 +8,13 @@ export function openModal(data){
         payload : data
     }
 }
-export function getPosts(){
+export function getPosts(data){
+    console.log("inside actions")
     return{
         type:types.GET_POSTS,
-        payload : blog.getPosts()
+        payload : blog.getPosts(data)
             .then((response) => {
+                console.log("inside response of get posts ")
                 return response.data
             })
         }
@@ -105,5 +107,29 @@ export function setCurrentLike(data){
     return {
         type:types.SET_CURRENT_LIKE,
         payload : data
+    }
+}
+export function searchPost(data){
+    return {
+        type : types.SEARCH_POST,
+        payload :blog.searchPost(data)
+            .then((response)=>{
+                return response.data
+            })
+    }
+}
+export function setSnackbarOpen(data){
+    return {
+        type : types.SET_SNACKBAR_OPEN,
+        payload : data
+    }
+}
+export function getComments(data){
+    return {
+        type:types.GET_COMMENTS,
+        payload :blog.getComments(data)
+            .then((response)=>{
+                return response.data
+            })
     }
 }

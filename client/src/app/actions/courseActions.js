@@ -1,4 +1,3 @@
-import axios from 'axios'
 import course from './../utils/api/course';
 import * as types from './../constants';
 
@@ -6,6 +5,16 @@ export function setCourse(course){
     return {
         type : types.SET_COURSE,
         payload : course
+    }
+}
+export function generateOTP(){
+    console.log('-------generate OTP called-----------')
+    return{
+        type:'GENERATE_OTP',
+        payload: course.generateOTP()
+            .then((response)=>{
+                return response
+        })
     }
 }
 export function setPagedCourse(course){

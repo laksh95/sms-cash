@@ -12,8 +12,7 @@ import errorReducer from './reducers/errorReducer.js'
 import courseReducer from './reducers/courseReducer.js'
 import subjectReducer from './reducers/subjectReducer.js'
 import teacherReducer from './reducers/teacherReducer.js'
-
-
+import getDataReducer from './reducers/getDataDashboardreducer.jsx'
 export default createStore(
     combineReducers({
     	login,
@@ -24,6 +23,7 @@ export default createStore(
       studentReducer,
 		  courseReducer,
     	headerReducer,
+      getDataReducer,
       teacherReducer,
       subjectReducer,
     }),

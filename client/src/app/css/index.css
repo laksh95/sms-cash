@@ -138,3 +138,17 @@ h6{
 .addCourse{
     text-align:center ;
 }
+.searchBox {
+    margin-left :2% ;
+}
+.postModal{
+    height:100% ;
+}
+.richTextEditor{
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    font-family: Georgia,serif;
+    font-size: 14px;
+    height: 150px;
+}

@@ -2,7 +2,7 @@ import React from 'react';
 import SideBarMenu from './../components/SideBarMenu.jsx';
 import TopBar from './TopBar.jsx';
 import Auth from '../Auth.js';
-import {checkLogin, logoutUser, setUrl,setReceivedResponse} from "./../actions/loginActions";
+import {checkLogin, logoutUser, setUrl,setReceivedResponse} from "./../actions/loginActions.js";
 import {connect} from "react-redux";
 import {browserHistory} from 'react-router';
 import CircularProgress from 'material-ui/CircularProgress';
@@ -38,10 +38,8 @@ class App extends React.Component {
       this.setState( {request: request});
     }
     componentWillMount() {
-      console.log("In APP compo ====================");
       var token = Auth.getToken();
       let path= this.props.location.pathname;
-
       this.props.setUrl(path);
       this.props.setReceivedResponse(false);
 
@@ -88,6 +86,7 @@ class App extends React.Component {
           content = <center><CircularProgress size={80} thickness={5} /> </center>;
     }
 
+
     return(
     <MuiThemeProvider>
       <div className="mymain">
@@ -105,6 +104,7 @@ class App extends React.Component {
         </div>
 
      </div>
+
     </MuiThemeProvider>
     );
   }

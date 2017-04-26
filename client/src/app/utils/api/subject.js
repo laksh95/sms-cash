@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Auth from './../../Auth.js';
-let serverAddress= 'http://localhost:3000';
+import {serverAddress} from '../../constants'
 
 const utils = {
 	getSubjectAndDepartment: (data) => {

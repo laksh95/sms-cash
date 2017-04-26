@@ -14,7 +14,6 @@ let init=function(app){
            res.send(200);
      next();
     });
-
     const localLoginStrategy = require('./../passport/loginStrategy');
 	passport.use('local-login', localLoginStrategy);
 

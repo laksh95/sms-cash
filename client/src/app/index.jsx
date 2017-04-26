@@ -5,7 +5,7 @@ import {syncHistoryWithStore} from 'react-router-redux'
 import {Router, Route ,IndexRoute, browserHistory} from 'react-router'
 import Login from './containers/login/App.jsx';
 import App from './containers/App.jsx';
-import Dashboard from './components/dashboard/DashBoard.jsx'
+import Dashboard from './containers/Dashboard/App.jsx';
 import Department from './containers/department/Department.jsx'
 import Course from './containers/course/Course.jsx'
 import Teacher from './containers/teacher/Teacher.jsx'

@@ -55,11 +55,11 @@ let teacherFunctions={
     if(req !== null && req != undefined && req.body != undefined && Object.keys(req).length!==0 && Object.keys(req.body).length!==0 || req.user != null){
       teacher.changeDetails(db, req.body)
       .then((result)=>{
-        
-          res.status(200).json({result: req.body, suc: result, message: 'SUCCESS_OPERATION'})
+
+          res.status(200).json({result: req.body, result: result, message: 'SUCCESS_OPERATION'})
       })
       .catch((err)=>{
-     
+
         res.status(500).json({error: err.toString(), teacher: req.body.teacherId, message: 'IS_INTERNAL_SERVER_ERROR'})
       })
     }
@@ -68,26 +68,21 @@ let teacherFunctions={
     }
   },
   addTeacher:(req , res)=>{
-
      if(req !== null && req != undefined && req.body != undefined && Object.keys(req).length!==0 && Object.keys(req.body).length!==0 || req.user != null){
       teacher.addTeacher(db, req.body)
       .then((result)=>{
         console.log("Success");
-          res.status(200).json({result: req.body, suc: result, message: 'SUCCESS_OPERATION'})
+          res.status(200).json({result: req.body, result: result, message: 'SUCCESS_OPERATION'})
       })
       .catch((err)=>{
-        
          console.log("Invalid");
-        res.status(500).json({error: err.toString(), teacher: req.body.teacherId, message: 'IS_INTERNAL_SERVER_ERROR'})
+        res.status(500).json({error: err.toString(), teacher: req.body, message: 'IS_INTERNAL_SERVER_ERROR'})
       })
     }
     else{
          console.log("Invalid");
       res.status(400).json({error: "Missing Paramters", message: 'IS_INVALID_INPUT_FORM'})
     }
-
-
-
   },
   getTeacherAndFeedback: (req, res) => {
     if(req !== null && req != undefined && req.body != undefined && Object.keys(req).length!==0 && Object.keys(req.body).length!==0 || req.user != null){
@@ -125,7 +120,7 @@ let teacherFunctions={
       })
 		}
 		else{
-			res.status(400).json({error: "Missing Paramters: courseId", message: 'IS_INVALID_INPUT_FORM'})
+			res.status(400).json({error: "Missing Paramters", message: 'IS_INVALID_INPUT_FORM'})
 		}
   }
 }

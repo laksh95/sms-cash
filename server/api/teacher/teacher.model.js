@@ -31,7 +31,7 @@ let addUser=((data,db)=>{
       where:{
         name:{
           $iLike: name+'%'
-        },     
+        },
       }
     })
     .then((users)=>{
@@ -39,7 +39,7 @@ let addUser=((data,db)=>{
       let yearOfBirth=moment(data.dateOfBirth).year();
       let username=uname+"_"+yearOfBirth+(users.count+1)
       let password=''
-      
+
       var firstName=name[0].split('')
       for (var ch in firstName) {
           myPlaintextPassword=firstName[ch]+ (Math.floor(Math.random()*90000) + 10000);
@@ -50,18 +50,14 @@ let addUser=((data,db)=>{
             username:username,
             password: password,
             name:data.name,
-            date_of_birth: data.dateOfBirth,
+            date_of_birth: new Date(data.dateOfBirth),
             gender:data.gender ,
             email_id:data.emailId ,
             status:'t'
           })
         });
-    }) 
+    })
   })
-
-
- 
-
 
 let init = function(){
    return teacher = connection.define('teacher',{
@@ -90,10 +86,6 @@ let init = function(){
            experience_description: {
                type: sequelize.TEXT
            },
-           skill_set:{
-            type: sequelize.ARRAY(sequelize.INTEGER),
-            defaultValue:null
-          },
            status:{
                type:sequelize.BOOLEAN,
                allowNull:false,
@@ -114,6 +106,10 @@ let init = function(){
                  teacher.belongsTo(department, {foreignKey: 'department_id'});
 
                },
+                totalTeacher: function(db, cb){ //counting number of teachers
+                    let teacher = db.teacher
+                    return teacher.findAndCountAll()
+                },
                /*getting teacher list as per the course selected*/
                fetchTeacherByCourseId: (db, request) => {
                  let teacher = db.teacher
@@ -266,7 +262,7 @@ let init = function(){
                   addUser(request,db)
                  .then((user)=>{
                    userAdded=user;
-                   request.userId=userAdded.id; 
+                   request.userId=userAdded.id;
                    data=request;
                    let message={
                      from:'"Ghost In Action" <ignore.john@gmail.com>',
@@ -280,7 +276,7 @@ let init = function(){
                               status:'t',
                               user_detail_id:data.userId,
                               department_id:data.deptId,
-                              joining_date: data.joinDate,
+                              joining_date: new Date(data.joinDate),
                               designation: data.designation,
                               experience_years: 0
                            }).then((data)=>{
@@ -303,7 +299,7 @@ let init = function(){
                  })
                 })
                  return p;
-               
+
                },
                /*getting teacher list and the feedback from feedback table as per the course selected*/
                getTeacherAndFeedback: (db, request) => {

@@ -52,7 +52,7 @@ class Teacher extends React.Component{
 
     componentWillReceiveProps(nextProps){
       if(nextProps.headerReducer.selectedCourseId !== this.props.headerReducer.selectedCourseId){
-        this.props.getTeacher({"courseId":this.props.headerReducer.selectedCourseId})
+        this.props.getTeacher({"courseId": nextProps.headerReducer.selectedCourseId})
         this.props.getSubjectAndDepartment({"courseId": nextProps.headerReducer.selectedCourseId})
       }
       this.props = nextProps

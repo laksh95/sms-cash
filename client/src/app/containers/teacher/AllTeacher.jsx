@@ -9,11 +9,15 @@ import DatePicker from 'material-ui/DatePicker'
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card'
 import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
-import { getTeacher, changeDetails, deleteTeacher, approveDetails } from '../../actions/teacherActions.js'
+import { getTeacher, changeDetails, deleteTeacher, approveDetails, resetToNoErrorTeacher } from '../../actions/teacherActions.js'
+import { resetToNoErrorSubject } from '../../actions/subjectActions.js'
 import {Table, TableBody, TableFooter, TableHeader, TableHeaderColumn, TableRow, TableRowColumn}
   from 'material-ui/Table'
 import { connect } from 'react-redux'
 var moment = require('moment')
+import Snackbar from 'material-ui/Snackbar'
+import {setErrorMessage} from './../../actions/errorActions'
+import { browserHistory } from 'react-router'
 
 class AllTeacher extends React.Component{
     constructor(props) {
@@ -32,6 +36,15 @@ class AllTeacher extends React.Component{
        	}
     }
 
+    errorSnackBar = (errorMessage) => {
+        return (
+          <Snackbar
+          open={true}
+          message={errorMessage}
+          autoHideDuration={4000}
+          />
+        )
+    }
     handleTouchTap = (type, item, event) => {
       let teacher = {}
       switch(type){
@@ -85,9 +98,16 @@ class AllTeacher extends React.Component{
             })
           }
           else{
-            this.setState({
-              disableSaveButton: false
-            })
+            if (isChar(event)) {
+              this.setState({
+                disableSaveButton: false
+              })
+            }
+            else{
+              this.setState({
+                disableSaveButton: true
+              })
+            }
           }
           break
         case "getDesignation":
@@ -122,9 +142,16 @@ class AllTeacher extends React.Component{
             })
           }
           else{
-            this.setState({
-              disableSaveButton: false
-            })
+            if(validateEmail(event)){
+              this.setState({
+                disableSaveButton: false
+              })
+            }
+            else{
+              this.setState({
+                disableSaveButton: true
+              })
+            }
           }
           break
         case "deleteTeacher":
@@ -170,11 +197,20 @@ class AllTeacher extends React.Component{
       })
     }
     componentWillUnmount() {
-
+      this.props.resetToNoErrorTeacher()
+      this.props.resetToNoErrorSubject()
     }
 
-    componentWillGetProps(nextProps){
+    componentWillReceiveProps(nextProps){
       this.props = nextProps
+      if(this.props.teacherReducer.showErrorPage){
+          this.props.setErrorMessage(this.props.teacherReducer.errorMessage);
+          browserHistory.push('/error');
+      }
+      if(this.props.subjectReducer.showErrorPage){
+          this.props.setErrorMessage(this.props.subjectReducer.errorMessage);
+          browserHistory.push('/error');
+      }
     }
     /*displays all the teacehrs in cards*/
     teacherList = (data,index,style) => {
@@ -254,7 +290,8 @@ class AllTeacher extends React.Component{
                           return(
                             <MenuItem key={department.id} value={department.name} primaryText={department.name} />
                           )
-                       })) : null
+                       })) :  this.errorSnackBar(this.props.subjectReducer.errorMessage)
+
                       }
                       </SelectField>
                       <br />
@@ -307,12 +344,12 @@ class AllTeacher extends React.Component{
               return(
                 <MenuItem key={data.id} value={data.name} primaryText={data.name} />
               )
-           })) : null
+           })) :  this.errorSnackBar(this.props.subjectReducer.errorMessage)
           }
           </SelectField>
     			{
             this.props.teacherReducer.status == 200 && this.props.teacherReducer.error === false?
-    				this.props.teacherReducer.allTeacher.map((data,index)=>{
+    				(this.props.teacherReducer.allTeacher.map((data,index)=>{
                 if(this.state.departmentSelected.length==0){
                   return this.teacherList(data,data.id,style)
                 }
@@ -324,7 +361,7 @@ class AllTeacher extends React.Component{
                     }
                   }
                 }
-    				}) : null
+    				})) : this.errorSnackBar(this.props.teacherReducer.errorMessage)
     			}
     		</div>
     	)
@@ -333,6 +370,11 @@ class AllTeacher extends React.Component{
 
 function isChar(str) {
   return /^[a-zA-Z]+$/.test(str);
+}
+
+function validateEmail(email) {
+  var reg = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+    return reg.test(email);
 }
 
 const mapStateToProps = (state) => {
@@ -356,6 +398,15 @@ const mapDispatchToProps = (dispatch) => {
     },
     approveDetails: (teacherId) => {
       dispatch(approveDetails(teacherId))
+    },
+    setErrorMessage: (message) =>{
+        dispatch(setErrorMessage(message));
+    },
+    resetToNoErrorSubject: () => {
+      dispatch(resetToNoErrorSubject())
+    },
+    resetToNoErrorTeacher: () => {
+      dispatch(resetToNoErrorTeacher())
     }
   }
 }

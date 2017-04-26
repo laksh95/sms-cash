@@ -11,10 +11,12 @@ import AddTeacher from './AddTeacher.jsx'
 import renderIf from 'render-if'
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
-import { getTeacher } from './../../actions/teacherActions.js'
+import { getTeacher, resetToNoErrorTeacher } from './../../actions/teacherActions.js'
 import { getSelected } from '../../actions/adminActions.js'
 import { connect } from 'react-redux'
 import { getSubjectAndDepartment, resetToNoErrorSubject } from '../../actions/subjectActions.js'
+import Snackbar from 'material-ui/Snackbar'
+import {setErrorMessage} from './../../actions/errorActions'
 
 class Teacher extends React.Component{
     constructor(props) {
@@ -26,9 +28,21 @@ class Teacher extends React.Component{
        return { muiTheme: getMuiTheme(baseTheme) };
     }
 
+    errorSnackBar = (errorMessage) => {
+        return (
+          <Snackbar
+          open={true}
+          message={errorMessage}
+          autoHideDuration={4000}
+          />
+        )
+    }
+
     componentWillMount() {
+      this.props.resetToNoErrorTeacher()
+      this.props.resetToNoErrorSubject()
       if(this.props.headerReducer.selectedCourseId == ""){
-        errorSnackBar("Select Course")
+        this.errorSnackBar("Select Course")
       }
       else{
         this.props.getTeacher({"courseId":this.props.headerReducer.selectedCourseId})
@@ -36,9 +50,20 @@ class Teacher extends React.Component{
       }
     }
 
-    componentWillGetProps(nextProps){
+    componentWillReceiveProps(nextProps){
+      if(nextProps.headerReducer.selectedCourseId !== this.props.headerReducer.selectedCourseId){
+        this.props.getTeacher({"courseId":this.props.headerReducer.selectedCourseId})
+        this.props.getSubjectAndDepartment({"courseId": nextProps.headerReducer.selectedCourseId})
+      }
       this.props = nextProps
-      //add the error page thing Not done yet
+      if(this.props.teacherReducer.showErrorPage){
+          this.props.setErrorMessage(this.props.teacherReducer.errorMessage);
+          browserHistory.push('/error');
+      }
+      if(this.props.subjectReducer.showErrorPage){
+          this.props.setErrorMessage(this.props.subjectReducer.errorMessage);
+          browserHistory.push('/error');
+      }
     }
 
     render(){
@@ -46,7 +71,7 @@ class Teacher extends React.Component{
       return(
         <div>
           <Tabs style={tabStyle}>
-            <Tab label="Show Teacher">
+            <Tab label="Manage Teacher">
                 <AllTeacher/>
             </Tab>
             <Tab label="Add Teachers">
@@ -77,6 +102,15 @@ const mapDispatchToProps = (dispatch) => {
     },
     getSubjectAndDepartment: (data) => {
       dispatch(getSubjectAndDepartment(data))
+    },
+    setErrorMessage: (message) =>{
+        dispatch(setErrorMessage(message));
+    },
+    resetToNoErrorSubject: () => {
+      dispatch(resetToNoErrorSubject())
+    },
+    resetToNoErrorTeacher: () => {
+      dispatch(resetToNoErrorTeacher())
     }
   }
 }

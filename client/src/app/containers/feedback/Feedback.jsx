@@ -13,6 +13,8 @@ import ActionFace from 'material-ui/svg-icons/action/face'
 import ActionAssignment from 'material-ui/svg-icons/action/assignment'
 import ActionFavorite from 'material-ui/svg-icons/action/favorite'
 import Snackbar from 'material-ui/Snackbar'
+import {setErrorMessage} from './../../actions/errorActions'
+import { browserHistory } from 'react-router'
 
 class Feedback extends React.Component {
    constructor(props) {
@@ -34,7 +36,6 @@ class Feedback extends React.Component {
         open={true}
         message={errorMessage}
         autoHideDuration={4000}
-        onRequestClose={this.handleRequestClose}
         />
       )
   }
@@ -64,7 +65,7 @@ class Feedback extends React.Component {
     this.props.resetToNoErrorTeacher()
     this.props.resetToNoErrorSubject()
     if(this.props.headerReducer.selectedCourseId == ""){
-      errorSnackBar("Select Course")
+      this.errorSnackBar("Select Course")
     }
     else{
       this.props.getTeacherAndFeedback({
@@ -87,11 +88,11 @@ class Feedback extends React.Component {
     }
     this.props = nextProps
     if(this.props.teacherReducer.showErrorPage){
-        this.props.setErrorMessage(this.props.courseReducer.errorMessage);
+        this.props.setErrorMessage(this.props.teacherReducer.errorMessage);
         browserHistory.push('/error');
     }
     if(this.props.subjectReducer.showErrorPage){
-        this.props.setErrorMessage(this.props.courseReducer.errorMessage);
+        this.props.setErrorMessage(this.props.subjectReducer.errorMessage);
         browserHistory.push('/error');
     }
   }

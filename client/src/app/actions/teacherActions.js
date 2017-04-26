@@ -15,7 +15,7 @@ export function getTeacherAndFeedback(data){
 
 export function resetToNoErrorTeacher(){
     return {
-        type: types.RESET_ERROR
+        type: types.RESET_ERROR_TEACHER
     }
 }
 

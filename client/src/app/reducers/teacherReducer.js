@@ -38,6 +38,7 @@ const teacherReducer = (
       switch(errorStatus){
         case 500:
           state = {
+            ...state,
             error: true,
             status: 500,
             showErrorPage: true,
@@ -46,6 +47,7 @@ const teacherReducer = (
           return state
         case 400:
           state = {
+            ...state,
             error: true,
             status: 400,
             errorMessage: "BAD REQUEST"
@@ -53,10 +55,10 @@ const teacherReducer = (
           return state
         case 403:
           state = {
-            ...state ,
-            error: true,
-            showErrorPage : true,
-            errorMessage : "403: Forbidden"
+              ...state ,
+              error: true,
+              showErrorPage : true,
+              errorMessage : "403: Forbidden"
           }
           return state
         default:
@@ -82,6 +84,37 @@ const teacherReducer = (
         allTeacher: allTeacher
       }
       return state
+    case "CHANGE_DETAILS_REJECTED":
+      errorStatus = action.payload.response.status
+      switch(errorStatus){
+        case 500:
+          state = {
+            ...state,
+            error: true,
+            status: 500,
+            showErrorPage: true,
+            errorMessage: "500 : Internal Server Error"
+          }
+          return state
+        case 400:
+          state = {
+            ...state,
+            error: true,
+            status: 400,
+            errorMessage: "BAD REQUEST"
+          }
+          return state
+        case 403:
+          state = {
+              ...state ,
+              error: true,
+              showErrorPage : true,
+              errorMessage : "403: Forbidden"
+          }
+          return state
+        default:
+          return state
+      }
     /*deleting teachers*/
     case "DELETE_TEACHER_FULFILLED":
       allTeacher = state.allTeacher
@@ -109,6 +142,8 @@ const teacherReducer = (
       switch(errorStatus){
         case 500:
           state = {
+            ...state,
+            error: true,
             status: 500,
             showErrorPage: true,
             errorMessage: "500 : Internal Server Error"
@@ -116,6 +151,8 @@ const teacherReducer = (
           return state
         case 400:
           state = {
+            ...state,
+            error: true,
             status: 400,
             errorMessage: "BAD REQUEST"
           }
@@ -123,6 +160,7 @@ const teacherReducer = (
         case 403:
           state = {
               ...state ,
+              error: true,
               showErrorPage : true,
               errorMessage : "403: Forbidden"
           }
@@ -184,6 +222,8 @@ const teacherReducer = (
       switch(errorStatus){
         case 500:
           state = {
+            ...state,
+            error: true,
             status: 500,
             showErrorPage: true,
             errorMessage: "500 : Internal Server Error"
@@ -191,6 +231,8 @@ const teacherReducer = (
           return state
         case 400:
           state = {
+            ...state,
+            error: true,
             status: 400,
             errorMessage: "BAD REQUEST"
           }
@@ -198,6 +240,7 @@ const teacherReducer = (
         case 403:
           state = {
               ...state ,
+              error: true,
               showErrorPage : true,
               errorMessage : "403: Forbidden"
           }
@@ -206,11 +249,13 @@ const teacherReducer = (
           return state
       }
     /*resets the error page to false so that the error page does not open for every case*/
-    case "RESET_ERROR":
+    case "RESET_ERROR_TEACHER":
         state={
             ...state,
             showErrorPage: false,
-            errorMessage: "Loading"
+            errorMessage: "Loading",
+            error: false,
+            status: 200
         }
         return state
 

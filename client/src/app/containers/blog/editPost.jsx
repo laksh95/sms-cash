@@ -1,8 +1,8 @@
 import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import {connect} from "react-redux";
-import {loginUser, checkLogin} from "./../../actions/loginActions.jsx";
-import {openModal,addPost,setShowEdit} from "./../../actions/blogActions.jsx";
+import {loginUser, checkLogin} from "./../../actions/loginActions.js";
+import {openModal,addPost,setShowEdit} from "../../actions/blogActions.js";
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import Snackbar from 'material-ui/Snackbar';

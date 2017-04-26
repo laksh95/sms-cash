@@ -12,8 +12,8 @@ module.exports = {
                         res.status(500).json({data:[], message: 'NO_ROW_INSERTED'});
                 }
                 else {
-                    if(error=='IS_ALREADY_EXISTS')
-                        res.status(400).json({error:'Post already exists', message: 'IS_ALREADY_EXISTS'});
+                    if(error==='IS_ALREADY_EXISTS')
+                        res.status(400).json({error:error, message: 'IS_ALREADY_EXISTS'});
                     else
                         res.status(500).json({error: error, message: 'IS_INTERNAL_SERVER_ERROR'});
                 }
@@ -24,8 +24,10 @@ module.exports = {
         }
     },
     getPosts :(req,res) =>{
+        console.log('inside controller')
         if(req.body){
             post.getPosts(models,req.body,(error,result)=>{
+                console.log("result of controller",result)
                 if(result){
                     if(result.length>0)
                         res.status(200).json({data:result,message:"SUCCESSFULLY_FETCHED"})
@@ -97,7 +99,7 @@ module.exports = {
         if(req.body){
             post.setLikes(models,req.body,(error,result)=>{
                 if(result){
-                    res.status(200).json({data:result ,message: "SUCCESSFULLY_LIKED"})
+                        res.status(200).json({data:result ,message: "SUCCESSFULLY_LIKED"})
                 }
                 else{
                     res.status(500).json({data:[], message: 'UNSUCCESSFUL'});
@@ -127,6 +129,30 @@ module.exports = {
                 }
                 else{
                     res.status(500).json({data:[], message: 'UNSUCCESSFUL'});
+                }
+            })
+        }
+    },
+    searchPost :(req,res)=>{
+        if(req.body){
+            post.searchPost(models,req.body,(error,result)=>{
+                if(result){
+                    res.status(200).json({data:result,message:"SUCCESSFUL"})
+                }
+                else {
+                    res.status(500).json({data:[],message : 'UNSUCCESSFUL'})
+                }
+            })
+        }
+    },
+    getComments:(req,res)=>{
+        if(req.body){
+            post.getComments(models,req.body,(error,result)=>{
+                if(result){
+                    res.status(200).json({data:result,message:"SUCCESSFUL"})
+                }
+                else {
+                    res.status(500).json({data:[],message : 'UNSUCCESSFUL'})
                 }
             })
         }

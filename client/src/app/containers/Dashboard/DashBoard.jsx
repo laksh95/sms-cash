@@ -20,7 +20,7 @@ import Snackbar from 'material-ui/Snackbar';
 import RaisedButton from 'material-ui/RaisedButton';
 import {store} from "../../store.js";
 import {connect} from "react-redux";
-import {addToCalendar,deleteFromCalendar,setSnack} from '../../actions/getAdminDashboardDataAction.jsx';
+import {addToCalendar,deleteFromCalendar,setSnack} from '../../actions/getAdminDashboardDataAction';
 const currentdate=moment().format("YYYY-MM-DD");
 class DashBoard extends React.Component { 
 	constructor(props) {

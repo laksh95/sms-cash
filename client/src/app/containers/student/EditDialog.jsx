@@ -2,7 +2,7 @@ import React from 'react'
 import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
 import {connect} from 'react-redux'
-import {openDialog} from '../../actions/studentAction.jsx'
+import {openDialog} from '../../actions/studentAction.js'
 import TextField from 'material-ui/TextField'
 class EditDialog extends React.Component{
     constructor(props){

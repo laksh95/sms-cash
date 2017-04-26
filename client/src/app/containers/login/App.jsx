@@ -6,7 +6,7 @@ import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import {browserHistory} from 'react-router';
 let loginStyle = require('./../../css/login.css');
 import {connect} from "react-redux";
-import {loginUser, checkLogin, resetToNoError} from "./../../actions/loginActions.jsx";
+import {loginUser, checkLogin, resetToNoError} from "./../../actions/loginActions.js";
 import {setErrorMessage} from "./../../actions/errorActions";
 import Auth from './../../Auth.js';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';

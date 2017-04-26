@@ -28,9 +28,8 @@ render((
 			 <Route path = "/blog" component = {Blog} />
 			 <Route path = "/course" component={Course} />
 			 <Route path = "/student" component = {Student} />
-	         <Route path = "/post/:postid" component = {Post} />
+	         <Route path = "/blog/post/:postid" component = {Post} />
 			 <Route path = "/feedback" component = {Feedback} />
-			 <Route path = "/student" component = {Student} />
 	      </Route>
 	      <Route path = "/login" component = {Login}/>
 	      <Route path = "/error" component = {ErrorApp}/>

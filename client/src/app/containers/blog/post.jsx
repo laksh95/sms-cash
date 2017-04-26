@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from "react-redux";
-import {loginUser, checkLogin} from "./../../actions/loginActions.jsx";
-import {getPost,addComment,editComment,deleteComment,setLikes} from "./../../actions/blogActions.jsx";
+import {loginUser, checkLogin} from "./../../actions/loginActions.js";
+import {getPost,addComment,editComment,deleteComment,setLikes,setCurrentLike,getComments,setSnackbarOpen} from "./../../actions/blogActions.js";
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
@@ -16,6 +16,8 @@ import ActionFavoriteBorder from 'material-ui/svg-icons/action/favorite-border';
 import Snackbar from 'material-ui/Snackbar';
 import LazyLoad from 'react-lazyload';
 let loginStyle = require('./../../css/login.css');
+
+import RichTextEditor from 'react-rte';
 class Post extends React.Component {
     constructor(props){
         super(props)
@@ -28,14 +30,17 @@ class Post extends React.Component {
             comment : {},
             editComment: "",
             validateEditComment : true,
-            showComments : false,
-            likes: 0
+            showComments : true,
+            likes: 0,
+            pageNumber :1
         }
         this.handleChange= this.handleChange.bind(this)
     }
     componentWillMount() {
         this.props.getPost({
-            id : this.props.params.postid
+            id : this.props.params.postid,
+            user_id : this.props.blogReducer.userId,
+            // commentsNumber : this.state.commentsNumber
         })
     }
     componentWillReceiveProps(props){
@@ -48,9 +53,7 @@ class Post extends React.Component {
     };
 
     handleRequestClose = () => {
-        this.setState({
-            open: false,
-        });
+        this.props.setSnackbarOpen(false)
     };
     // handleTouchTap() {
     //     alert('You clicked the Chip.');
@@ -128,24 +131,42 @@ class Post extends React.Component {
     }
     handleCheck=(event,checked)=> {
         let likes = this.props.blogReducer.post.likes
+        console.log(checked)
+        if(checked===false){
+            let data = {
+                liked : false ,
+                likes : likes-1
+            }
+            this.props.setCurrentLike(data)
+            let data1 = {
+                post : this.props.blogReducer.post,
+                liked : false ,
+                user_id : this.props.blogReducer.userId
+            }
 
-        if(checked==true) {
-            let data = {
-                post : this.props.blogReducer.post,
-                likes : likes +1
-            }
-            this.props.setLikes(data)
+            this.props.setLikes(data1)
         }
-        else {
+        else{
             let data = {
-                post : this.props.blogReducer.post,
-                likes : likes -1
+                liked : true ,
+                likes : likes+1
             }
-            this.props.setLikes(data)
+            this.props.setCurrentLike(data)
+            let data1 = {
+                post :this.props.blogReducer.post ,
+                liked :true ,
+                user_id : this.props.blogReducer.userId
+            }
+            this.props.setLikes(data1)
         }
+
     }
-
     render(){
+        let content = RichTextEditor.createEmptyValue()
+        let post = this.props.blogReducer.post
+        console.log(post)
+        content = post.content
+        console.log(content)
         const actions = [
             <FlatButton
                 label="Cancel"
@@ -202,18 +223,15 @@ class Post extends React.Component {
                         </List>
                     </div>
                     <div className="postHeader">
-                        {/*{this.props.blogReducer.post.heading}*/}
-                        Cracking the Coding Interview
+                        {this.props.blogReducer.post.heading}
+                        {/*Cracking the Coding Interview*/}
                     </div>
                     <div className="postImage">
-                        <img src="https://cdn-images-1.medium.com/max/1260/1*3lZYFSUsa1S-l8X5HjTvfg.jpeg" width={1000} alt=""/>
+                        <img src="https://cdn-images-1.medium.com/max/1260/1*3lZYFSUsa1S-l8X5HjTvfg.jpeg" width={700} alt=""/>
                     </div>
                     <div className="postContent">
                         <p>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Delectus, magni molestiae obcaecati quibusdam quisquam quod ut voluptates. Aliquam numquam, ratione. Deserunt eaque ex inventore itaque minima optio sapiente, sed tempora.
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda error id molestiae nihil quasi voluptatum? Aliquam atque autem dolore eos esse fugit incidunt inventore maiores mollitia nobis omnis, quos, ut.
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium amet, assumenda consectetur cumque eaque eligendi enim fugiat id in incidunt iste laborum molestiae, natus obcaecati omnis quisquam vel velit voluptatum?
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. A animi assumenda at dolores dolorum eligendi explicabo id iste nisi obcaecati, odit, provident qui quis quos rem repellat tempora ullam velit.
+                            <div dangerouslySetInnerHTML={{ __html: content }}></div>
                         </p>
                     </div>
                     <div className="postFooter">
@@ -224,6 +242,7 @@ class Post extends React.Component {
                             className="left"
                             onCheck={this.handleCheck.bind(this)}
                             style={{...styles.checkbox,...styles.block}}
+                            checked={this.props.blogReducer.post.liked}
                         />
                         <br/><br/>
                         <div className="addComment">
@@ -241,9 +260,7 @@ class Post extends React.Component {
                             <RaisedButton label="Post Comment" onClick={()=>this.postComment()} primary={true}/><br/><br/>
                         </div>
                         <div className="postComments">
-                            <RaisedButton label="Show All responses" onClick={()=>{
-                                this.setState({showComments:true})
-                            }} fullWidth={true} /><br/><br/>
+                            <br/><br/>
                             {this.state.showComments?
                                 this.props.blogReducer.comments.map((data,index)=>{
                                     return(
@@ -270,12 +287,20 @@ class Post extends React.Component {
                                     )
                                 })
                                 : null}
+                            {this.props.blogReducer.moreComments?
+                                <RaisedButton label="Load More" onClick={()=>{
+                                    this.props.getComments({
+                                        id : this.props.blogReducer.post.id ,
+                                        pageNumber : this.props.blogReducer.commentPageNumber
+                                    })
+                                }} fullWidth={true} /> :null}
+
                         </div>
                     </div>
                 </div>
                 <Snackbar
-                    open={this.state.open}
-                    message="Comment Added"
+                    open={this.props.blogReducer.snackbarOpen}
+                    message={this.props.blogReducer.snackbarMessage}
                     autoHideDuration={4000}
                     onRequestClose={this.handleRequestClose}
                 />
@@ -302,7 +327,6 @@ class Post extends React.Component {
         );
     }
 }
-
 Post.contextTypes = {
     router: React.PropTypes.object.isRequired
 };
@@ -334,6 +358,15 @@ const mapDispatchToProps= (dispatch) => {
         },
         setLikes:(data)=>{
             dispatch(setLikes(data));
+        },
+        setCurrentLike:(data)=>{
+            dispatch(setCurrentLike(data))
+        },
+        getComments:(data)=>{
+            dispatch(getComments(data))
+        },
+        setSnackbarOpen:(data)=>{
+            dispatch(setSnackbarOpen(data))
         }
     };
 };

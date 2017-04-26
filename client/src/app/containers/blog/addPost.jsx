@@ -1,8 +1,8 @@
 import React from 'react';
 import Dialog from 'material-ui/Dialog';
 import {connect} from "react-redux";
-import {loginUser, checkLogin} from "./../../actions/loginActions.jsx";
-import {openModal,addPost} from "./../../actions/blogActions.jsx";
+import {loginUser, checkLogin} from "./../../actions/loginActions.js";
+import {openModal,addPost} from "../../actions/blogActions.js";
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import Snackbar from 'material-ui/Snackbar';
@@ -55,9 +55,11 @@ class AddPost extends React.Component {
                 break
             case "POST":
                 var image =this.state.image
+                console.log('_-----------------',this.state.value)
+                console.log('_-----------------',this.state.value.toString('html'))
                 var data = {
                     heading : this.state.heading,
-                    content : this.state.value
+                    content : this.state.value.toString('html')
                 }
                 this.props.addPost(data)
                 this.props.openModal(true)
@@ -66,7 +68,6 @@ class AddPost extends React.Component {
             default:
                 break
         }
-
     };
     onDrop(files){
         console.log(files)
@@ -152,6 +153,8 @@ class AddPost extends React.Component {
                     modal={true}
                     autoScrollBodyContent={true}
                     open={this.props.blogReducer.open}
+                    // contentStyle={{height:1000}}
+                    className="postModal"
                 >
                     <TextField
                         hintText="Post Heading"
@@ -176,6 +179,7 @@ class AddPost extends React.Component {
                             value={this.state.value}
                             onChange={this.setContent}
                             toolbarConfig={toolbarConfig}
+                            className="richTextEditor"
                         />
                     </div>
                     <br/>

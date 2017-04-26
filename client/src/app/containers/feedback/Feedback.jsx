@@ -4,8 +4,8 @@ import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
 import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card'
 import { connect } from 'react-redux'
-import { getTeacherAndFeedback,resetToNoErrorTeacher } from './../../actions/teacherActions.jsx'
-import { getSubjectAndDepartment,resetToNoErrorSubject } from './../../actions/subjectActions.jsx'
+import { getTeacherAndFeedback, resetToNoErrorTeacher } from '../../actions/teacherActions.js'
+import { getSubjectAndDepartment, resetToNoErrorSubject } from '../../actions/subjectActions.js'
 import {List, ListItem} from 'material-ui/List'
 import ActionGrade from 'material-ui/svg-icons/action/grade'
 import ActionFace from 'material-ui/svg-icons/action/face'
@@ -162,7 +162,7 @@ class Feedback extends React.Component {
             this.props.teacherReducer.allTeacher.map((data,id)=>{
                 let noSubject = 0
                 let noDepartment = 0
-                if(this.state.selectedSubject.length==0){
+                if(this.state.selectedSubject.length === 0){
                   noSubject = 1
                 }
                 if(this.state.selectedDepartment.length==0){

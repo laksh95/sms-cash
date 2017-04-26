@@ -2,7 +2,7 @@ import React from 'react';
 import AppBar from 'material-ui/AppBar';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
-import {getInitialData} from '../../actions/getAdminDashboardDataAction.jsx';
+import {getInitialData} from '../../actions/getAdminDashboardDataAction';
 import {store} from "../../store.js";
 import {connect} from "react-redux";
 import DashBoard from './DashBoard.jsx'; 

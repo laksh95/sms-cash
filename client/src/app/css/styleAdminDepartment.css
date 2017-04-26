@@ -1,19 +1,15 @@
-
-
 .contentCenter{
 	text-align: center !important;
-
 }
-
-
 .headline {
-	fontSize: 24,
-	paddingTop: 16,
-	marginBottom: 12,
-	fontWeight: 400
+	font-size: 24;
+	padding-top: 16;
+	margin-bottom: 12;
+	font-weight: 400;
 }
-
-
 .errorMsg{
 	color: red
+}
+.fontSize {
+	font-size:12px;
 }

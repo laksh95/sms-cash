@@ -2,7 +2,7 @@ import React from 'react';
 import SideBarMenu from './../components/SideBarMenu.jsx';
 import TopBar from './TopBar.jsx';
 import Auth from '../Auth.js';
-import {checkLogin, logoutUser, setUrl,setReceivedResponse} from "./../actions/loginActions.jsx";
+import {checkLogin, logoutUser, setUrl,setReceivedResponse} from "./../actions/loginActions.js";
 import {connect} from "react-redux";
 import {browserHistory} from 'react-router';
 import CircularProgress from 'material-ui/CircularProgress';

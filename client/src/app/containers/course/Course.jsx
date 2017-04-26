@@ -7,7 +7,7 @@ import AddCourse from './AddCourse.jsx'
 import ViewCourse from './ViewCourse.jsx'
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import {setCourse,setPagedCourse,setSnackbarOpen,setSnackbarMessage,setValue, resetToNoError} from '../../actions/courseActions.jsx'
+import {setCourse,setPagedCourse,setSnackbarOpen,setSnackbarMessage,setValue, resetToNoError} from '../../actions/courseActions.js'
 import {connect} from 'react-redux'
 import {setErrorMessage} from "./../../actions/errorActions";
 

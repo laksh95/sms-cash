@@ -50,14 +50,18 @@ let sql = function(){
                     })
                 },
                 getPosts:function(models,data,cb){
+                    console.log("Inside GetPosts")
                     let post = models.post
                     let userDetail = models.user_detail
                     let promises = []
                     post.findAll({
+                        offset : (data.pageNumber-1)*5 ,
+                        limit : 5,
                         where :{
                             status :true
                         }
                     }).then(function(response){
+                        console.log("inside then",response)
                         let posts = []
                         for(let index in response){
                             posts.push(response[index].dataValues)
@@ -107,24 +111,28 @@ let sql = function(){
                         cb(error,null)
                     })
                 },
-                getPost : function(models , data ,cb){
+                getPost : function(models , setData ,cb){
                     let post = models.post
                     post.findOne({
                         where :{
-                            id : data.id
+                            id : setData.id
                         }
                     }).then((response)=>{
                         if(response){
                             let postLike = models.post_like
                             postLike.count({
                                 where : {
-                                    post_id : response.dataValues.id
+                                    post_id : response.dataValues.id,
+                                    status : true
                                 }
                             }).then((data)=>{
                                 response.dataValues.likes = data
                                 let postComment = models.post_comment
                                 let commentPromises = []
                                 postComment.findAll({
+                                    offset :1,
+                                    limit : 5 ,
+                                    order: 'created_at DESC',
                                     where : {
                                         post_id : response.dataValues.id,
                                         status : true
@@ -152,17 +160,33 @@ let sql = function(){
                                                 id:response.dataValues.by
                                             }
                                         })
-                                        .then((data)=>{
-                                            response.dataValues.user_name = data[0].dataValues.name
-                                            response.dataValues.profile_pic_url = data[0].dataValues.profile_pic_url
-                                            cb(null,response.dataValues)
+                                        .then((conclude)=>{
+                                            response.dataValues.user_name = conclude[0].dataValues.name
+                                            response.dataValues.profile_pic_url =conclude[0].dataValues.profile_pic_url
+                                            postLike.findOne({
+                                                where : {
+                                                    status : 't',
+                                                    post_id : setData.id,
+                                                    liked_by : setData.user_id
+                                                }
+                                            }).then((r)=>{
+                                                // console.log("-------------------------------->>",r.dataValues)
+                                                if(r!=null){
+                                                    response.dataValues.liked = true
+                                                }
+                                                else {
+                                                    response.dataValues.liked = false
+                                                }
+                                                cb(null,response.dataValues)
+                                            })
+
                                         })
                                     })
                                 })
                             })
                         }
                         else {
-                            cb("NOT_ROWS_FOUND",null)
+                            cb("NO_ROWS_FOUND",null)
                         }
                     })
                 },
@@ -207,25 +231,47 @@ let sql = function(){
                     })
                 },
                 setLikes : function(models,data,cb){
-                    // to be continued 
+                    // to be continued
                     // let postObj = data.post
                     // let likes = data.likes
-                    // let postLike = models.post_like
-                    // postLike.findOne({
-                    //     where : {
-                    //         post_id : postObj.id,
-                    //     }
-                    // }).then((response)=>{
-                    //     if(response!=null){
-                    //         console.log(response.dataValues)
-                    //         postLike.update({
-                    //
-                    //         })
-                    //     }
-                    //     else {
-                    //
-                    //     }
-                    // })
+                    console.log("inside setLikes",data.post.id)
+                    console.log("inside setLikes",data.user_id)
+                    let postLike = models.post_like
+                    postLike.findOne({
+                        where : {
+                            post_id : data.post.id,
+                            liked_by : data.user_id,
+                        }
+                    }).then((response)=>{
+                        console.log(response)
+                        if(response!=null){
+                            console.log(response.dataValues)
+                            postLike.update({
+                                status :data.liked
+                            },{
+                                where :{
+                                    post_id:data.post.id,
+                                    liked_by :data.user_id
+                                }
+                            }).then((response)=>{
+                                console.log(response)
+                                cb(null,response)
+                            }).catch((error)=>{
+                                cb(error,null)
+                            })
+                        }
+                        else{
+                              postLike.create({
+                                post_id : data.post.id ,
+                                liked_by : data.user_id
+                              }).then((response)=>{
+                                  console.log(response)
+                                  cb(null,response)
+                              }).catch((error)=>{
+                                  cb(error,null)
+                              })
+                        }
+                    })
                 },
                 getStats:function(models,data,cb){
                     let post= models.post
@@ -276,6 +322,54 @@ let sql = function(){
                         }
                     }).then((response)=>{
                         cb(null,response)
+                    })
+                },
+                searchPost:function(models,data,cb){
+                    let post = models.post
+                    let promises = []
+                    promises.push(post.findAll({
+                        where : {
+                            status : true
+                        }
+                    }))
+                    Promise.all(promises).then((result)=>{
+                        let temp = result[0]
+                        let posts = []
+                        for(let index in temp){
+                            posts[index]=temp[index].dataValues
+                        }
+                        // console.log(posts)
+                        let headings = []
+                        for(let index in posts){
+                            console.log(posts[index].heading.toLowerCase())
+                            console.log(data.heading)
+                            if(posts[index].heading.toLowerCase().indexOf(data.heading)!==-1){
+                                headings.push(posts[index])
+                            }
+                        }
+
+                        cb(null,headings)
+                    })
+
+                },
+                getComments:function(models,data,cb){
+                    let postComment = models.post_comment
+                    console.log(data.pageNumber)
+                    postComment.findAll({
+                        offset:(data.pageNumber-1)*5,
+                        limit: 5,
+                        order: 'created_at DESC',
+                        where :{
+                            post_id : data.id ,
+                            status : true ,
+                        }
+                    }).then((response)=>{
+                        let comments = []
+                        for(let index in response){
+                            comments.push(response[index].dataValues)
+                        }
+                        console.log(comments)
+                        cb(null,comments)
                     })
                 }
             }

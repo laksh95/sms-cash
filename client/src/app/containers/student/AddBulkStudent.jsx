@@ -2,7 +2,7 @@ import React from 'react'
 import LinearProgress from 'material-ui/LinearProgress'
 import DropZone from 'react-dropzone'
 import {connect} from 'react-redux'
-import {addBulkStudent} from '../../actions/studentAction.jsx'
+import {addBulkStudent} from '../../actions/studentAction.js'
 class AddBulkStudent extends React.Component{
     constructor(props){
         super(props)

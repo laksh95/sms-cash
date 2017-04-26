@@ -1,11 +1,19 @@
-const blogReducer = ( state = {
+const blogReducer = (state = {
     open : false,
     posts : [],
     post : {},
     comments : [],
     username : "admin",
+    userId : 1,
     stats :{},
-    showEdit : false
+    showEdit : false,
+    snackbarOpen:false,
+    snackbarMessage:"",
+    showErrorPage: false,
+    errorMessage: "",
+    commentPageNumber :2,
+    moreComments : true,
+    isScrollActive : true
 } , action) => {
     switch (action.type){
         case "OPEN_MODAL":
@@ -15,9 +23,19 @@ const blogReducer = ( state = {
             }
             return state
         case "GET_POSTS_FULFILLED":
-            state = {
-                ...state,
-                posts : action.payload.data
+            if(action.payload.data.length===0){
+                state = {
+                    ...state,
+                    isScrollActive: false
+                }
+            }
+            else {
+                var posts = state.posts
+                posts = posts.concat(action.payload.data)
+                state = {
+                    ...state,
+                    posts
+                }
             }
             return state
         case "GET_POST_FULFILLED":
@@ -30,8 +48,11 @@ const blogReducer = ( state = {
         case "ADD_COMMENT_FULFILLED":
             let comment = action.payload.data
             comment.user_name = state.username
+            let temp = []
+            temp.push(comment)
             let comments = state.comments
-            comments.push(comment)
+            // comments.push(comment)
+            comments = temp.concat(comments)
             state = {
                 ...state ,
                 comments
@@ -104,6 +125,61 @@ const blogReducer = ( state = {
             state = {
                 ...state ,
                 showEdit : action.payload
+            }
+            return state
+        case "SET_CURRENT_LIKE":
+            let post = state.post
+            post.liked= action.payload.liked
+            post.likes=action.payload.likes
+            state = {
+                ...state ,
+                post
+            }
+            return state
+        case "SET_LIKES":
+            return state
+        case "SEARCH_POST_FULFILLED":
+            let posts = action.payload.data
+            if(posts.length===0){
+                state ={
+                    ...state,
+                    posts,
+                    snackbarOpen:true,
+                    snackbarMessage:"Not Found"
+                }
+            }
+            else{
+                state ={
+                    ...state,
+                    posts
+                }
+            }
+            return state
+        case "SET_SNACKBAR_OPEN":
+            state ={
+                ...state ,
+                snackbarOpen:action.payload
+            }
+            return state
+        case "GET_COMMENTS_FULFILLED":
+            let c = state.commentPageNumber
+            let newComments = action.payload.data
+            var  comments = state.comments
+            let updatedComments = newComments.concat(comments)
+            if(newComments.length===0){
+                console.log("yayyyyyyyy")
+                state = {
+                    ...state ,
+                    snackbarMessage:"No more comments",
+                    snackbarOpen:true
+                }
+            }
+            else {
+                state= {
+                    ...state ,
+                    commentPageNumber:c+1,
+                    comments : updatedComments
+                }
             }
             return state
         default:

@@ -391,6 +391,25 @@ let sql = function(){
                                 headings.push(posts[index])
                             }
                         }
+                        let likedPromises = []
+                        let postLike = models.post_like
+                        for(let index in headings){
+                            likedPromises.push(postLike.findOne({
+                                where : {
+                                    status : 't',
+                                    post_id : posts[index].id,
+                                    liked_by : 1
+                                }
+                            }))
+                        }
+                        Promise.all(likedPromises).then(resultData=>{
+                            for(let index in resultData){
+                                if(resultData[index]!==null)
+                                    headings[index].liked=true
+                                else
+                                    headings[index].liked=false
+                            }
+                        })
                         let userDetail = models.user_detail
                         promises = []
                         for(let index in headings){
@@ -403,7 +422,7 @@ let sql = function(){
                         }
                         let likePromises = []
                         let commentPromises = []
-                        let postLike = models.post_like
+                        // let postLike = models.post_like
                         let postComment = models.post_comment
                         Promise.all(promises).then(data=>{
 

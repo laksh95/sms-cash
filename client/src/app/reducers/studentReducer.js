@@ -15,12 +15,33 @@ const studentReducer = (state={
                                     batches:[],
                                 message:''
                             },
-                            allStudentData:{
-                                students:[]
-                            },
-                           studentData:{}
+                            students:[],
+                            studentData:{},
+                            snackbarDisplay:false
                         },action)=>{
     switch(action.type){
+        case 'DELETE_STUDENT_FULFILLED':
+            let students = state.students
+            let data = action.payload.data.data
+            for(let index in students.data){
+                if(students.data[index].studentId === data.studentId){
+                    console.log('------inside if-------',students)
+                    students.data.splice(index,1)
+                }
+            }
+            console.log('--------------',students.data)
+            state={
+                ...state,
+                students:students
+            }
+            break
+        case 'STUDENT_DETAILS_FULFILLED':
+            console.log('-----------reducer called-------',action.payload.data)
+            state={
+                ...state,
+                studentData:action.payload.data
+            }
+            break
         case 'GET_DATA_FULFILLED':
             console.log('-------action-------',action.payload)
             state={
@@ -65,9 +86,10 @@ const studentReducer = (state={
             }
             break
         case 'GET_FILTER_DATA_FULFILLED':
+            console.log(action.payload.data,'----student data----')
             state={
                 ...state,
-                allStudentData:action.payload
+                students:action.payload.data
             }
             console.log('-------------->',action.payload.data)
             break

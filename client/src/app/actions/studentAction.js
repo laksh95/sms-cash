@@ -10,6 +10,25 @@ const ingestFileBegin = (filename) => ({
         filename
     }
 })
+export const deleteStudent = (data)=>{
+    return{
+        type:'DELETE_STUDENT',
+        payload:studentApi.deleteStudent(data)
+            .then((data)=>{
+                return data
+            })
+    }
+}
+export const studentDetails = (data)=>{
+    console.log('------inside action-----',data)
+    return{
+        type:'STUDENT_DETAILS',
+        payload: studentApi.studentDetails(data)
+            .then((data)=>{
+                return data
+            })
+    }
+}
 export const getInitialData = (courseId)=>{
     console.log(courseId)
     return{
@@ -32,6 +51,7 @@ export const getFilteredData = (department, semester, batch)=>{
     }
 }
 export const addStudent = (studentInfo)=>{
+    console.log('Add student action called-----',studentInfo)
     return{
         type:'ADD_STUDENT',
         payload: studentApi.addStudent(studentInfo)

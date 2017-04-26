@@ -49,7 +49,7 @@ let init=function(){
                                 }
                             })
                             let message={
-                                from:'"John Doe" <ignore.john@gmail.com>',
+                                from:'"John Doe" <ignore.john2017@gmail.com>',
                                 to: 'laksh@cronj.com',
                                 subject:'Email Verification',
                                 text:' This is the 6 digit OTP which will expire in 5 minutes.' + otp.toString()

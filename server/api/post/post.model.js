@@ -44,7 +44,49 @@ let sql = function(){
                         by :  1,
                         image
                     }).then(function(response){
-                        cb(null,response.dataValues)
+                        let post = response.dataValues
+                        models.user_detail.findOne({
+                            attributes:['name','profile_pic_url'],
+                            where:{
+                                id:post.by
+                            }
+                        }).then(function(response){
+                            post.user_name = response.dataValues.name
+                            post.profile_pic_url = response.dataValues.profile_pic_url
+                            // console.log("response",response.dataValues)
+                            let postLike = models.post_like
+                            postLike.findOne({
+                                where : {
+                                    status : 't',
+                                    post_id : post.id,
+                                    liked_by : 1
+                                }
+                            }).then(function(response){
+                                if(response!==null){
+                                    post.liked = true
+                                }
+                                else
+                                    post.liked =false
+
+                                postLike.count({
+                                    where :{
+                                        post_id  :post.id
+                                    }
+                                }).then(function(response){
+                                    post.likes = response
+                                    let postComment= models.post_comment
+                                    postComment.count({
+                                        where : {
+                                            post_id : post.id,
+                                            status : true
+                                        }
+                                    }).then(function(response){
+                                        post.comments = response
+                                        cb(null,post)
+                                    })
+                                })
+                            })
+                        })
                     })
                     .catch(function(error){
                         cb(error,null)
@@ -61,7 +103,6 @@ let sql = function(){
                             status :true
                         }
                     }).then(function(response){
-
                         let posts = []
                         for(let index in response){
                             posts.push(response[index].dataValues)
@@ -155,7 +196,7 @@ let sql = function(){
                                     }
                                 }).then((comments)=>{
                                     let updatedComments = []
-                                    console.log(comments.length)
+
                                     for(let index in comments){
                                         updatedComments.push(comments[index].dataValues)
                                         commentPromises.push(models.user_detail.findAll({

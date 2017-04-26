@@ -56,17 +56,35 @@ const blogReducer = (state = {
                 }
             }
             return state
-        case "GET_POSTS_REJECTED":
+        case "GET_MORE_POSTS_REJECTED":
             state = {
                 ...state ,
                 isScrollActive:false
             }
             return state
-        case "GET_POST_FULFILLED":
+        case "GET_POSTS_REJECTED":
             state = {
                 ...state ,
-                post :action.payload.data,
-                comments :action.payload.data.comments
+                isScrollActive:false,
+                snackbarMessage:"No Posts to show",
+                snackbarOpen:true
+            }
+            return state
+        case "GET_POST_FULFILLED":
+            if(action.payload.data.comments.length===0){
+                state={
+                    ...state ,
+                    post:action.payload.data ,
+                    comments : action.payload.data.comments ,
+                    moreComments:false
+                }
+            }
+            else {
+                state = {
+                    ...state ,
+                    post :action.payload.data,
+                    comments :action.payload.data.comments
+                }
             }
             return state
         case "ADD_COMMENT_FULFILLED":

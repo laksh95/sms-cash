@@ -18,6 +18,11 @@ let init = function(){
                type: sequelize.STRING,
                allowNull: false
            },
+           approved: {
+             type: sequelize.BOOLEAN,
+             allowNull: false,
+             defaultValue: false
+           },
            experience_years: {
                type: sequelize.INTEGER,
                allowNull: false
@@ -49,6 +54,152 @@ let init = function(){
                     let teacher = db.teacher
                     return teacher.findAndCountAll()
                 },
+               /*getting teacher list as per the course selected*/
+               fetchTeacherByCourseId: (db, request) => {
+                 let teacher = db.teacher
+                 let user_detail = db.user_detail
+                 let department = db.department
+
+                 return teacher.findAll({
+                  attributes: ['id','designation','user_detail_id',
+                   [sequelize.col('user_detail.name'),'teacher_name'],
+                   [sequelize.col('user_detail.email_id'),'teacher_email'],
+                   [sequelize.col('user_detail.contact_number'),'contact_number'],
+                   [sequelize.col('user_detail.alternate_number'),'alternate_number'],
+                   [sequelize.col('department.name'),'department_name'],
+                   'approved',
+                   'joining_date','experience_years',
+                   'experience_description',
+                   'department_id'
+                 ],
+                   where:{
+                    status: true
+                  },
+                  offset: request.offset,
+                  limit: request.limit,
+                  include:[
+                    {
+                       model: user_detail,
+                       attributes:[],
+                       where:{
+                           status: true
+                       },
+                     },
+                    {
+                      model: department,
+                      attributes: [],
+                      where : {
+                        status : true,
+                        course_id: request.courseId
+                      }
+                    }
+                  ]
+                 })
+               },
+               /*approvong the theacher's addition to the system*/
+               approveDetails: (db, request) => {
+                 let teacher = db.teacher
+
+                 return teacher.update({
+                    approved: true
+                  },{
+                   where:{
+                    id: request.teacherId
+                  }
+                 })
+               },
+               changeDetails: (db, request) => {
+                 let teacher = db.teacher
+                 let user_detail = db.user_detail
+                 let department = db.department
+
+                 return teacher.findOne({
+                   attributes: ['user_detail_id'],
+                   where:{
+                    id: request.teacherId
+                  }
+                 })
+                 .then((data)=>{
+                   let user_detail_id = data.dataValues.user_detail_id
+                   return teacher.update({
+                      designation: request.designation,
+                      joining_date: new Date(request.joinDate),
+                      department_id: request.department
+                    },{
+                     where:{
+                      id: request.teacherId
+                    }
+                   })
+                   .then((data) => {
+                     return user_detail.update({
+                       name: request.name,
+                       email_id: request.email,
+                      },{
+                        where:{
+                         id: user_detail_id
+                       }
+                     })
+                   })
+                 })
+                 .catch((data)=>{
+                   return data
+                 })
+               },
+               deleteTeacher: (db, request) => {
+                 let teacher = db.teacher
+                 let user_detail = db.user_detail
+                 let teacherSubjectAllocation = db.teacher_subject_allocation
+                 let feedback = db.feedback
+
+                 return teacher.findOne({
+                   attributes: ['user_detail_id'],
+                   where:{
+                    id: request.teacherId
+                  }
+                 })
+                 .then((data)=>{
+                   let user_detail_id = data.dataValues.user_detail_id
+                   return teacher.update({
+                      status: false
+                    },
+                    {
+                     where:{
+                      id: request.teacherId
+                    }
+                   })
+                   .then((data) => {
+                     return user_detail.update({
+                       status: false,
+                      },{
+                        where:{
+                         id: user_detail_id
+                       }
+                     })
+                     .then((data)=>{
+                       return feedback.update({
+                         status: false,
+                        },{
+                          where:{
+                           teacher_id: request.teacherId
+                         }
+                       })
+                       .then((data)=>{
+                         return teacherSubjectAllocation.update({
+                           status: false,
+                          },{
+                            where:{
+                             teacher_id: request.teacherId
+                           }
+                         })
+                       })
+                     })
+                   })
+                 })
+                 .catch((data)=>{
+                   return data
+                 })
+               },
+               /*getting teacher list and the feedback from feedback table as per the course selected*/
                getTeacherAndFeedback: (db, request) => {
                  let teacher = db.teacher
                  let user_detail = db.user_detail

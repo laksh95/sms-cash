@@ -38,7 +38,6 @@ class App extends React.Component {
       this.setState( {request: request});
     }
     componentWillMount() {
-      console.log("In APP compo ====================");
       var token = Auth.getToken();
       let path= this.props.location.pathname;
       this.props.setUrl(path);
@@ -87,6 +86,7 @@ class App extends React.Component {
           content = <center><CircularProgress size={80} thickness={5} /> </center>;
     }
 
+
     return(
     <MuiThemeProvider>
       <div className="mymain">
@@ -104,6 +104,7 @@ class App extends React.Component {
         </div>
 
      </div>
+
     </MuiThemeProvider>
     );
   }

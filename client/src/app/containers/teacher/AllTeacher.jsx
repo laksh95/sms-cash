@@ -9,15 +9,18 @@ import DatePicker from 'material-ui/DatePicker'
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card'
 import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
-import { getTeacher, changeDetails, deleteTeacher, approveDetails, resetToNoErrorTeacher } from '../../actions/teacherActions.js'
+import { getTeacher, changeDetails, deleteTeacher, approveDetails, resetToNoErrorTeacher, setPagination } from '../../actions/teacherActions.js'
 import { resetToNoErrorSubject } from '../../actions/subjectActions.js'
 import {Table, TableBody, TableFooter, TableHeader, TableHeaderColumn, TableRow, TableRowColumn}
   from 'material-ui/Table'
 import { connect } from 'react-redux'
-var moment = require('moment')
 import Snackbar from 'material-ui/Snackbar'
 import {setErrorMessage} from './../../actions/errorActions'
 import { browserHistory } from 'react-router'
+import { validateEmail,isAllAlphabets } from '../../utils/validation.js'
+require('rc-pagination/assets/index.css');
+var moment = require('moment')
+const Pagination = require('rc-pagination');
 
 class AllTeacher extends React.Component{
     constructor(props) {
@@ -32,18 +35,60 @@ class AllTeacher extends React.Component{
           joinDate: new Date(),
           designation: null,
           departmentIdForChangeDetails: null,
-          disableSaveButton: false
+          disableSaveButton: false,
+          emailInvalid: false,
+          nameInvalid: false,
+          designationInvalid: false
        	}
     }
 
     errorSnackBar = (errorMessage) => {
+      if(this.props.teacherReducer.noDataError == false){
         return (
           <Snackbar
           open={true}
           message={errorMessage}
           autoHideDuration={4000}
           />
+      )
+      }
+      else{
+        return (
+          <div id="labelErrorDiv" style= {{ marginTop: '17%', marginLeft: '20%' }}>
+            <label style = {{color:'#808080', fontSize: 'xx-large'}}> NO DATA </label>
+          </div>
         )
+      }
+    }
+    // pageChange = (currentPage , size) =>{
+    //     console.log("page change",currentPage)
+    //     let teacher = this.props.teacherReducer.allTeacher
+    //     let start = (currentPage-1)*10
+    //     let end = start + 10
+    //     let pagedTeachers = []
+    //     for(let index in course){
+    //         if(index>=start && index<end){
+    //             pagedTeachers.push(teacher[index])
+    //         }
+    //     }
+    //     let  data = {
+    //         currentPage,
+    //         pagedTeachers
+    //     }
+    //     this.props.setPagination(data)
+    // }
+    checkAllValidations = () => {
+      if(this.state.emailInvalid == false && this.state.nameInvalid == false && this.state.designationInvalid == false){
+        this.setState({
+          disableSaveButton: false
+        })
+      }
+      else{
+        this.setState({
+          disableSaveButton: true
+        })
+      }
+
     }
     handleTouchTap = (type, item, event) => {
       let teacher = {}
@@ -61,7 +106,10 @@ class AllTeacher extends React.Component{
           break
         case "closeDialog":
           this.setState({
-            editButtonHit: false
+            editButtonHit: false,
+            emailInvalid: false,
+            nameInvalid: false,
+            designationInvalid: false
           })
           break
         case "saveDetails":
@@ -77,7 +125,6 @@ class AllTeacher extends React.Component{
             joinDate: this.state.joinDate,
             designation: this.state.designation
           }
-          console.log(details)
           this.props.changeDetails(details)
           this.setState({
             teacherName: null,
@@ -85,7 +132,10 @@ class AllTeacher extends React.Component{
             email: null,
             joinDate: null,
             designation: null,
-            departmentIdForChangeDetails: null
+            departmentIdForChangeDetails: null,
+            emailInvalid: false,
+            nameInvalid: false,
+            designationInvalid: false
           })
           break
         case "getName":
@@ -94,18 +144,24 @@ class AllTeacher extends React.Component{
           })
           if(event == ""){
             this.setState({
-              disableSaveButton: true
+              nameInvalid: true
+            }, ()=> {
+              this.checkAllValidations()
             })
           }
           else{
-            if (isChar(event)) {
+            if ( isAllAlphabets(event)) {
               this.setState({
-                disableSaveButton: false
+                nameInvalid: true
+              },  ()=> {
+                this.checkAllValidations()
               })
             }
             else{
               this.setState({
-                disableSaveButton: true
+                nameInvalid: false
+              },  () => {
+                this.checkAllValidations()
               })
             }
           }
@@ -116,18 +172,24 @@ class AllTeacher extends React.Component{
           })
           if(event == ""){
             this.setState({
-              disableSaveButton: true
+              designationInvalid: true
+            },  ()=> {
+              this.checkAllValidations()
             })
           }
           else{
-            if (isChar(event)) {
+            if ( isAllAlphabets(event)) {
               this.setState({
-                disableSaveButton: false
+                designationInvalid: true
+              }, ()=> {
+                this.checkAllValidations()
               })
             }
             else{
               this.setState({
-                disableSaveButton: true
+                designationInvalid: false
+              },  ()=> {
+                this.checkAllValidations()
               })
             }
           }
@@ -138,18 +200,24 @@ class AllTeacher extends React.Component{
           })
           if(event == ""){
             this.setState({
-              disableSaveButton: true
+              emailInvalid: true
+            },  ()=> {
+              this.checkAllValidations()
             })
           }
           else{
-            if(validateEmail(event)){
+            if( validateEmail(event)){
               this.setState({
-                disableSaveButton: false
+                emailInvalid: false
+              },  ()=> {
+                this.checkAllValidations()
               })
             }
             else{
               this.setState({
-                disableSaveButton: true
+                emailInvalid: true
+              },  ()=> {
+                this.checkAllValidations()
               })
             }
           }
@@ -348,7 +416,7 @@ class AllTeacher extends React.Component{
           }
           </SelectField>
     			{
-            this.props.teacherReducer.status == 200 && this.props.teacherReducer.error === false?
+            this.props.teacherReducer.status == 200 && this.props.teacherReducer.error === false && this.props.teacherReducer.allTeacher !== undefined?
     				(this.props.teacherReducer.allTeacher.map((data,index)=>{
                 if(this.state.departmentSelected.length==0){
                   return this.teacherList(data,data.id,style)
@@ -363,18 +431,19 @@ class AllTeacher extends React.Component{
                 }
     				})) : this.errorSnackBar(this.props.teacherReducer.errorMessage)
     			}
+          {
+            // <Pagination className="ant-pagination" defaultCurrent={1}
+            //   total={this.props.teacherReducer.totalPages}
+            //   current={this.props.teacherReducer.currentPage}
+            //   defaultPageSize={10}
+            //   onChange={this.pageChange}
+            // />
+          }
+
+
     		</div>
     	)
     }
-}
-
-function isChar(str) {
-  return /^[a-zA-Z]+$/.test(str);
-}
-
-function validateEmail(email) {
-  var reg = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-    return reg.test(email);
 }
 
 const mapStateToProps = (state) => {
@@ -408,7 +477,10 @@ const mapDispatchToProps = (dispatch) => {
     resetToNoErrorTeacher: () => {
       dispatch(resetToNoErrorTeacher())
     }
-  }
+  //   setPagination:(data)=>{
+  //       dispatch(setPagination(data))
+  //   }
+   }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AllTeacher);

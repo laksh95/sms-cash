@@ -422,12 +422,9 @@ let sql = function(){
                         }
                         let likePromises = []
                         let commentPromises = []
-                        // let postLike = models.post_like
                         let postComment = models.post_comment
                         Promise.all(promises).then(data=>{
-
                             for(let index in data){
-
                                 headings[index].user_name = data[index][0].dataValues.name
                                 headings[index].profile_pic_url=data[index][0].dataValues.profile_pic_url
                                 likePromises.push(postLike.count({

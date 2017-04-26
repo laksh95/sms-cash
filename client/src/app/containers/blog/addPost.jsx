@@ -25,6 +25,7 @@ class AddPost extends React.Component {
                 validateHeading : false ,
                 open : false,
                 validateContent : false,
+                validateImage : false ,
                 heading : "" ,
                 content : "",
                 image : "",
@@ -55,10 +56,9 @@ class AddPost extends React.Component {
         switch(event){
             case "CANCEL":
                 this.props.openModal(false)
-                this.setState({image : {}})
+                this.setState({image : {},value: RichTextEditor.createEmptyValue()})
                 break
             case "POST":
-                var image =this.state.image
                 var data = {
                     heading : this.state.heading,
                     content : this.state.value.toString('html'),
@@ -66,16 +66,19 @@ class AddPost extends React.Component {
                 }
                 this.props.addPost(data)
                 this.props.openModal(true)
-                this.setState({open : true, message : "Post Added" })
+                this.setState({open : true, message : "Post Added" ,value: RichTextEditor.createEmptyValue()})
+
                 break
             default:
                 break
         }
     };
     onDrop(files){
+
         console.log("Files onDrop",files)
         this.setState({
-            image : files[0]
+            image : files[0],
+            validateImage:true
         })
         this.handleImageUpload(files[0])
 
@@ -159,7 +162,7 @@ class AddPost extends React.Component {
             <FlatButton
                 label="Post"
                 primary={true}
-                disabled={!(this.state.validateContent&&this.state.validateHeading)}
+                disabled={!(this.state.validateContent&&this.state.validateHeading&&this.state.validateImage)}
                 onTouchTap={this.handleClose.bind(this,"POST")}
             />,
         ];

@@ -160,7 +160,9 @@ const blogReducer = (state = {
             }
             state = {
                 ...state ,
-                posts: posts
+                posts: posts,
+                snackbarOpen:true ,
+                snackbarMessage:"Post Deleted"
             }
             return state
         case "SET_SHOW_EDIT":

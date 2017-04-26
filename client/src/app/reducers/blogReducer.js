@@ -38,6 +38,12 @@ const blogReducer = (state = {
                 }
             }
             return state
+        case "GET_POSTS_REJECTED":
+            state = {
+                ...state ,
+                isScrollActive:false
+            }
+            return state
         case "GET_POST_FULFILLED":
             state = {
                 ...state ,

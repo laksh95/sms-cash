@@ -20,7 +20,7 @@ let teacherFunctions={
         })
       }
       else{
-  			res.status(400).json({error: "Missing Paramters: courseId", message: 'IS_INVALID_INPUT_FORM'})
+  			res.status(400).json({error: "Missing Paramters", message: 'IS_INVALID_INPUT_FORM'})
   		}
   },
   deleteTeacher: (req, res) => {
@@ -34,7 +34,7 @@ let teacherFunctions={
       })
     }
     else{
-      res.status(400).json({error: "Missing Paramters: courseId", message: 'IS_INVALID_INPUT_FORM'})
+      res.status(400).json({error: "Missing Paramters", message: 'IS_INVALID_INPUT_FORM'})
     }
   },
   approveDetails: (req, res) => {
@@ -48,7 +48,7 @@ let teacherFunctions={
       })
     }
     else{
-      res.status(400).json({error: "Missing Paramters: courseId", message: 'IS_INVALID_INPUT_FORM'})
+      res.status(400).json({error: "Missing Paramters", message: 'IS_INVALID_INPUT_FORM'})
     }
   },
   changeDetails: (req, res) => {
@@ -62,7 +62,7 @@ let teacherFunctions={
       })
     }
     else{
-      res.status(400).json({error: "Missing Paramters: courseId", message: 'IS_INVALID_INPUT_FORM'})
+      res.status(400).json({error: "Missing Paramters", message: 'IS_INVALID_INPUT_FORM'})
     }
   },
   getTeacherAndFeedback: (req, res) => {
@@ -101,7 +101,7 @@ let teacherFunctions={
       })
 		}
 		else{
-			res.status(400).json({error: "Missing Paramters: courseId", message: 'IS_INVALID_INPUT_FORM'})
+			res.status(400).json({error: "Missing Paramters", message: 'IS_INVALID_INPUT_FORM'})
 		}
   }
 }

@@ -85,7 +85,7 @@ class Feedback extends React.Component {
       this.props.getSubjectAndDepartment({"courseId":this.props.headerReducer.selectedCourseId})
     }
   }
-  
+
   componentWillReceiveProps(nextProps){
     if(nextProps.headerReducer.selectedCourseId !== this.props.headerReducer.selectedCourseId){
       // this.props.resetToNoErrorTeacher()

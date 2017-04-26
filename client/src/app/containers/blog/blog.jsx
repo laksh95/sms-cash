@@ -1,8 +1,8 @@
 import {Link} from 'react-router';
 import React from 'react';
 import {connect} from "react-redux";
-import {loginUser, checkLogin} from "./../../actions/loginActions.js";
-import {openModal,getPosts,getStats,setPost,deletePost,setShowEdit,searchPost,setSnackbarOpen} from "../../actions/blogActions.js";
+import {loginUser, checkLogin} from "./../../actions/loginActions";
+import {openModal,getPosts,getStats,setPost,deletePost,setShowEdit,searchPost,setSnackbarOpen,setCurrentLike,setLikes} from "../../actions/blogActions.js";
 import AddPost from "./addPost.jsx"
 import EditPost from "./editPost.jsx"
 import FloatingActionButton from 'material-ui/FloatingActionButton';
@@ -30,7 +30,39 @@ class Blog extends React.Component {
         }
         this.handleScroll = this.handleScroll.bind(this);
     }
+    handleCheck=(post,event,checked)=> {
+        let likes = post.likes
+        console.log(post)
+        if(checked===false){
+            let data = {
+                liked : false ,
+                likes : likes-1,
+                post : post
+            }
+            this.props.setCurrentLike(data)
+            let data1 = {
+                post : post,
+                liked : false ,
+                user_id : this.props.blogReducer.userId
+            }
+            this.props.setLikes(data1)
+        }
+        else{
+            let data = {
+                liked : true ,
+                likes : likes+1,
+                post:post
+            }
+            this.props.setCurrentLike(data)
+            let data1 = {
+                post :post ,
+                liked :true ,
+                user_id : this.props.blogReducer.userId
+            }
+            this.props.setLikes(data1)
+        }
 
+    }
     handleScroll() {
         const windowHeight = "innerHeight" in window ? window.innerHeight : document.documentElement.offsetHeight;
         const body = document.body;
@@ -55,7 +87,8 @@ class Blog extends React.Component {
     }
     componentWillMount() {
         this.props.getPosts({
-            pageNumber : this.state.pageNumber
+            pageNumber : this.state.pageNumber,
+            user_id : 1
         })
         window.addEventListener("scroll", this.handleScroll);
         this.props.getStats({
@@ -79,11 +112,7 @@ class Blog extends React.Component {
     openModal(event,data){
         this.props.openModal(data)
     }
-    handleCheck=(event,checked, data)=> {
-        console.log(event)
-        console.log(checked)
-        console.log(data)
-    }
+
     deletePost = (data) =>{
         console.log(data)
         this.setState({open: true})
@@ -177,6 +206,15 @@ class Blog extends React.Component {
                                     <Link to={url}><h6 className="readMore">Read More</h6></Link>
                                     <div className="footer">
                                         <div className="checkbox">
+                                            {/*<Checkbox*/}
+                                                {/*checkedIcon={<ActionFavorite />}*/}
+                                                {/*uncheckedIcon={<ActionFavoriteBorder />}*/}
+                                                {/*label={this.props.blogReducer.post.likes}*/}
+                                                {/*className="left"*/}
+                                                {/*onCheck={this.handleCheck.bind(this)}*/}
+                                                {/*style={{...styles.checkbox,...styles.block}}*/}
+                                                {/*checked={this.props.blogReducer.post.liked}*/}
+                                            {/*/>*/}
                                             <Checkbox
                                                 checkedIcon={<ActionFavorite />}
                                                 uncheckedIcon={<ActionFavoriteBorder />}
@@ -184,6 +222,7 @@ class Blog extends React.Component {
                                                 className="left"
                                                 style={{...styles.checkbox,...styles.block}}
                                                 onCheck={this.handleCheck.bind(this,data)}
+                                                checked={data.liked}
                                             />
                                         </div>
                                         <i className="material-icons left">comment</i><label className="left">{data.comments} responses</label>
@@ -273,6 +312,12 @@ const mapDispatchToProps= (dispatch) => {
         },
         setSnackbarOpen:(data)=>{
             dispatch(setSnackbarOpen(data))
+        },
+        setLikes:(data)=>{
+            dispatch(setLikes(data));
+        },
+        setCurrentLike:(data)=>{
+            dispatch(setCurrentLike(data))
         }
     };
 };

@@ -66,6 +66,8 @@ let sql = function(){
                         for(let index in response){
                             posts.push(response[index].dataValues)
                         }
+                        let likedPromises= []
+                        let postLike = models.post_like
                         for(let index in posts){
                             promises.push(userDetail.findAll({
                                 attributes:['name','profile_pic_url'],
@@ -73,10 +75,25 @@ let sql = function(){
                                     id:posts[index].by
                                 }
                             }))
+                            likedPromises.push(postLike.findOne({
+                                where : {
+                                    status : 't',
+                                    post_id : posts[index].id,
+                                    liked_by : data.user_id
+                                }
+                            }))
                         }
+                        Promise.all(likedPromises).then(resultData=>{
+                            console.log("resultdata",resultData)
+                            for(let index in resultData){
+                                if(resultData[index]!==null)
+                                    posts[index].liked=true
+                                else
+                                    posts[index].liked=false
+                            }
+                        })
                         let likePromises = []
                         let commentPromises = []
-                        let postLike = models.post_like
                         let postComment = models.post_comment
                         Promise.all(promises).then(data=>{
                             for(let index in data){
@@ -170,7 +187,6 @@ let sql = function(){
                                                     liked_by : setData.user_id
                                                 }
                                             }).then((r)=>{
-                                                // console.log("-------------------------------->>",r.dataValues)
                                                 if(r!=null){
                                                     response.dataValues.liked = true
                                                 }
@@ -231,11 +247,6 @@ let sql = function(){
                     })
                 },
                 setLikes : function(models,data,cb){
-                    // to be continued
-                    // let postObj = data.post
-                    // let likes = data.likes
-                    console.log("inside setLikes",data.post.id)
-                    console.log("inside setLikes",data.user_id)
                     let postLike = models.post_like
                     postLike.findOne({
                         where : {
@@ -243,7 +254,6 @@ let sql = function(){
                             liked_by : data.user_id,
                         }
                     }).then((response)=>{
-                        console.log(response)
                         if(response!=null){
                             console.log(response.dataValues)
                             postLike.update({

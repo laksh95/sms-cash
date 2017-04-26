@@ -67,9 +67,9 @@ const departmentReducer= (state=initialLoginState, action) => {
                     ...state,
                     showErrorPage: true,
                     errorMessage: "500: Internal Server Error!"
-                }   
+                }
             }
-         
+
 
         break;
 
@@ -257,15 +257,15 @@ const departmentReducer= (state=initialLoginState, action) => {
                     ...state,
                     showErrorPage: true,
                     errorMessage: errorMessage
-                }   
+                }
             }
             else{
                 state= {
                     ...state,
                     showSlackBar: true,
                     queryStatusMessage: slackBarMessage
-                }  
-            }           
+                }
+            }
 
         break;
 

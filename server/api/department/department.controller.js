@@ -26,7 +26,7 @@ let departmentFunctions={
             })
         }
         else
-            res.status(400).json({data: "Missing Paramters", message:'IS_INVALID_INPUT_FORM'});  
+            res.status(400).json({data: "Missing Paramters", message:'IS_INVALID_INPUT_FORM'});
     },
     editDepartment : function(req,res){
         if(req.body){
@@ -50,7 +50,7 @@ let departmentFunctions={
             })
         }
         else
-            res.status(400).json({data: "Missing Paramters", message:'IS_INVALID_INPUT_FORM'}); 
+            res.status(400).json({data: "Missing Paramters", message:'IS_INVALID_INPUT_FORM'});
     },
 
     deleteDepartment : function(req,res){
@@ -66,7 +66,7 @@ let departmentFunctions={
             })
         }
         else
-            res.status(400).json({data: "Missing Paramters", message:'IS_INVALID_INPUT_FORM'}); 
+            res.status(400).json({data: "Missing Paramters", message:'IS_INVALID_INPUT_FORM'});
     },
     getDepartments : function(req, res){
         if(req !== null && req !== undefined && req.body !== undefined && Object.keys(req).length!==0 && Object.keys(req.body).length!==0 || req.user !== null){
@@ -77,7 +77,7 @@ let departmentFunctions={
             if(departments.length>0)
                 res.status(200).json({data: departments, message:'SUCCESS_OPERATION'})
             else
-                res.status(200).json({data: [], message:'NO_ROWS_FOUND'}) 
+                res.status(200).json({data: [], message:'NO_ROWS_FOUND'})
           })
         }
         else{

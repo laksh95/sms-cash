@@ -135,7 +135,8 @@ class Post extends React.Component {
         if(checked===false){
             let data = {
                 liked : false ,
-                likes : likes-1
+                likes : likes-1,
+                post : this.props.blogReducer.post
             }
             this.props.setCurrentLike(data)
             let data1 = {
@@ -149,7 +150,8 @@ class Post extends React.Component {
         else{
             let data = {
                 liked : true ,
-                likes : likes+1
+                likes : likes+1,
+                post : this.props.blogReducer.post
             }
             this.props.setCurrentLike(data)
             let data1 = {

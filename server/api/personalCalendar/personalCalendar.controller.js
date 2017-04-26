@@ -31,7 +31,6 @@ var dashboardHandler = {
 	},
 	//deleting event from personal calendar
 	deletePersonalEvent: (request, response) => {
-		console.log('---------------------->inside called controller')
 		if(request !== null && request != undefined  && request.user != null && request.user != undefined && request.body != undefined && Object.keys(request).length!==0 && Object.keys(request.body).length!==0){
 			personalCalendar().deletePersonalEvent(db, request.body)
 			.then((data)=>{

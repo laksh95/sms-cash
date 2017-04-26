@@ -8,6 +8,7 @@ import Subheader from 'material-ui/Subheader';
 import Divider from 'material-ui/Divider';
 import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
 import DashBoard from './../containers/Dashboard/App.jsx';
+import Teacher from '../containers/teacher/Teacher.jsx'
 let userImage =  require('./../images/user.png');
 let departmentImage =  require('./../images/department.png');
 let studentImage =  require('./../images/student.png');
@@ -44,6 +45,8 @@ class SideBarMenu extends React.Component {
             selected = 'Blog'
         else if(path === '/feedback')
             selected = 'Feedback'
+        else if (path === '/teacher')
+            selected = 'Teacher'
       if(this.state.selected !== selected){
         this.setState({selected: selected})
       }
@@ -79,7 +82,7 @@ class SideBarMenu extends React.Component {
     return (
       <div>
         <Drawer width={sizeWidth} openSecondary={false} docked={true} zDepth={2} open={true} >
-          <AppBar title="Menu" zDepth={0} 
+          <AppBar title="Menu" zDepth={0}
             style={{height:'9.2%'}}
            onLeftIconButtonTouchTap = { () => this.props.handleToggle('Sidebar')} />
             {
@@ -92,18 +95,18 @@ class SideBarMenu extends React.Component {
                 <ListItem
                   primaryText="DashBoard"
                   leftIcon={ <img  src={dashboardImage}
-                   />} 
+                   />}
                    style={{backgroundColor: list["Dashboard"]}}
                    onTouchTap = {this.handleTouchTap.bind(this, "Dashboard")}
                 />
-   
+
               </Link> : null}
               <Link to ="/department" style={{textDecoration: 'none'}}>
                 <ListItem
                   primaryText="Department"
 
                   leftIcon={ <img  src={departmentImage}
-                   />} 
+                   />}
                    style={{backgroundColor: list["Department"]}}
                       onTouchTap = {this.handleTouchTap.bind(this,"Department")}
                 />
@@ -122,7 +125,7 @@ class SideBarMenu extends React.Component {
                        <ListItem
                            primaryText="Blog"
                            leftIcon={ <img  src={blogImage}
-                           />} 
+                           />}
                            style={{backgroundColor: list["Blog"]}}
                            onTouchTap = {this.handleTouchTap.bind(this, "Blog")}
                        />
@@ -132,17 +135,27 @@ class SideBarMenu extends React.Component {
                        <ListItem
                            primaryText="Course"
                            leftIcon={ <img  src={courseImage}
-                            />} 
+                            />}
                            style={{backgroundColor: list["Course"]}}
                            onTouchTap = {this.handleTouchTap.bind(this, "Course")}
                        />
                    </Link> : null}
 
+                   <Link to = '/teacher'  style={{textDecoration: 'none'}}>
+                     <ListItem
+                       primaryText="Teacher"
+                       leftIcon={ <img  src={feedbackImage}
+                        />}
+                       style={{backgroundColor: list["Teacher"]}}
+                       onTouchTap = {this.handleTouchTap.bind(this,"Teacher")}
+                     />
+                   </Link>
+
                    <Link to ="/feedback" style={{textDecoration: 'none'}}>
                      <ListItem
                        primaryText="Feedback"
                        leftIcon={ <img  src={feedbackImage}
-                        />} 
+                        />}
                        style={{backgroundColor: list["Feedback"]}}
                        onTouchTap = {this.handleTouchTap.bind(this,"Feedback")}
                      />

@@ -134,12 +134,28 @@ const blogReducer = (state = {
             }
             return state
         case "SET_CURRENT_LIKE":
-            let post = state.post
-            post.liked= action.payload.liked
-            post.likes=action.payload.likes
-            state = {
-                ...state ,
-                post
+
+            if(state.post.id===action.payload.post.id){
+                let post = state.post
+                post.liked= action.payload.liked
+                post.likes=action.payload.likes
+                state = {
+                    ...state ,
+                    post
+                }
+            }
+            else{
+                let posts = state.posts
+                for(let index in posts){
+                    if(posts[index].id===action.payload.post.id){
+                        posts[index].liked = action.payload.liked
+                        posts[index].likes = action.payload.likes
+                    }
+                }
+                state = {
+                    ...state ,
+                    posts
+                }
             }
             return state
         case "SET_LIKES":

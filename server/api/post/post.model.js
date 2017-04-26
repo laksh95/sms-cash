@@ -347,8 +347,51 @@ let sql = function(){
                                 headings.push(posts[index])
                             }
                         }
-
-                        cb(null,headings)
+                        console.log("Headings",headings.length)
+                        let userDetail = models.user_detail
+                        promises = []
+                        for(let index in headings){
+                            promises.push(userDetail.findAll({
+                                attributes:['name','profile_pic_url'],
+                                where:{
+                                    id:headings[index].by
+                                }
+                            }))
+                        }
+                        let likePromises = []
+                        let commentPromises = []
+                        let postLike = models.post_like
+                        let postComment = models.post_comment
+                        Promise.all(promises).then(data=>{
+                            console.log("data\n",data.length)
+                            for(let index in data){
+                                console.log("index",index)
+                                headings[index].user_name = data[index][0].dataValues.name
+                                headings[index].profile_pic_url=data[index][0].dataValues.profile_pic_url
+                                likePromises.push(postLike.count({
+                                    where :{
+                                        post_id  :headings[index].id
+                                    }
+                                }))
+                                commentPromises.push(postComment.count({
+                                    where : {
+                                        post_id : headings[index].id,
+                                        status : true
+                                    }
+                                }))
+                            }
+                            Promise.all(likePromises).then(data=>{
+                                for(let index in data){
+                                    headings[index].likes= data[index]
+                                }
+                                Promise.all(commentPromises).then(data=>{
+                                    for(let index in data){
+                                        headings[index].comments= data[index]
+                                    }
+                                    cb(null,headings)
+                                })
+                            })
+                        })
                     })
 
                 },

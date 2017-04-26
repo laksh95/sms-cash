@@ -4,40 +4,9 @@ var bcrypt = require('bcrypt');
 const saltRounds = 10;
 let sequelize = data.sequelize;
 let connection = data.connection;
-// {
-//     "studentId": 15,
-//     "batchId": 1,
-//     "batchName": 2019,
-//     "departmentId": 1,
-//     "departmentName": "Information Technology",
-//     "departmentAbbreviatedName": "IT",
-//     "parentId": 23,
-//     "motherName": "Chumki Mukherjee",
-//     "fatherName": "Sushant Mukherjee",
-//     "parentEmailId": "xyz1@xyz.com",
-//     "parentContactNumber": "9999999999",
-//     "parentCountryCode": 3333,
-//     "username": "Swati_19951",
-//     "admissionNo": 1112,
-//     "dateOfBirth": "Mon Dec 25 1995",
-//     "profilePicUrl": "",
-//     "gender": "FEMALE",
-//     "permanentAddress": "jhegfhgqwjhfgjqwh",
-//     "currentAddress": "jhegfhgqwjhfgjqwh",
-//     "emailId": "abc1@abc.com",
-//     "contactNumber": "9741725714",
-//     "countryCodeOne": 1111,
-//     "alternateNumber": "11111",
-//     "countryCodeTwo": 111111,
-//     "sectionId": 1,
-//     "sectionName": "A",
-//     "curriculumId": 1,
-//     "curriculumName": "All-1-2016-Chemistry",
-//     "semesterId": 1,
-//     "semesterType": "monsoon",
-//     "semesterName": 1
-//   }
 let departments=[];
+let mailer = require('nodemailer')
+let passwordOrig='';
 let fetchDepartment=((courseId,db)=>{
     console.log("in fetchDepartment",courseId);
      return db.department.findAll({
@@ -109,7 +78,7 @@ let fetchStudentsOnSemDeptBatch=((db,limit,offset,where)=>{
         },
         {
           model:db.user_detail,
-          attributes:['name'],
+          attributes:['name','username'],
         },
         {
           model:db.section,
@@ -136,7 +105,7 @@ let addUser=((data,db)=>{
   let uname='';
   let nameArray=removeSpaces.split(" ");
   if(nameArray[1]!=undefined||nameArray[1]!=null){
-    name=nameArray[0]+" "+nameArray[1];
+    name=nameArray[0];
     uname=nameArray[0]+"_"+nameArray[1];
   }
   else{
@@ -154,10 +123,14 @@ let addUser=((data,db)=>{
       let username=uname+"_"+yearOfBirth+(users.count+1)
       let password=''
       let myPlaintextPassword=''
-      var firstName=name[0].split('')
-      for (var ch in firstName) {
-          myPlaintextPassword=firstName[ch]+Math.floor(Math.random() * 100);
+      for (var ch in name) {
+              console.log("usersssss uname-------------->",name);
+
+          myPlaintextPassword=myPlaintextPassword+name[ch]+Math.floor(Math.random() * 10);
+                console.log("usersssss password-------------->",myPlaintextPassword);
+
       }
+      passwordOrig=myPlaintextPassword
       return bcrypt.hash(myPlaintextPassword, saltRounds).
         then((password)=> {
           return db.user_detail.create({
@@ -449,6 +422,7 @@ module.exports=function(){
                   console.log(typeof studentsList[0])
                   let newStudent={
                     admissionNo:student.admission_no,
+                    username:student.user_detail.dataValues.username,
                     studentId:student.id,
                     batchId:student.batch.dataValues.id,
                     batchName:student.batch.dataValues.name,
@@ -459,7 +433,8 @@ module.exports=function(){
                     semesterId:list.sections[0].dataValues.curriculum.dataValues.semester.dataValues.id,
                     sectionId:list.sections[0].dataValues.id,
                     section:list.sections[0].dataValues.name,
-                    parentId:student.parent.dataValues.id
+                    parentId:student.parent.dataValues.id,
+
                   }
                   studentsList.push(newStudent)
                 })
@@ -563,11 +538,35 @@ module.exports=function(){
           .then((studentSection)=>{
             return getSemesterBySection(studentSection.section_id,db)
           })
-          .then((section)=>{         
-            console.log("section---------------->", section.dataValues);
+          .then((section)=>{     
+              let transporter = mailer.createTransport({
+                  service:'gmail',
+                  auth:{
+                      user:'ignore.john2017@gmail.com',
+                      pass:'madman2017'
+                      }
+                  })
+              let message={
+                  from:'"John Doe" <ignore.john@gmail.com>',
+                  to: data.emailId,
+                  subject:'Email Verification',
+                  text:'Dear Student, your login credentials: Username =' + userAdded.username +' password:'+ passwordOrig
+              }
+              console.log("message=============>", message)
+              transporter.sendMail(message,(error, info)=>{
+                let response = {}
+                  if(error){
+                      response = {
+                        data:[],
+                        msg:'internal server error',
+                        status:0
+                      }
+                  }
+                })
               allDetailsOfStudent={
                 data:{
                   admissionNo:studentAdded.admission_no,
+                  username:userAdded.username,
                   studentId:studentAdded.id,
                   name:userAdded.name,
                   batchId:data.batchId,
@@ -582,6 +581,7 @@ module.exports=function(){
                 status:200,
                 msg:"Done"
               }
+
               cb(allDetailsOfStudent)
           })
           .catch((error)=>{
@@ -592,6 +592,92 @@ module.exports=function(){
             }
             cb(sendData)
           })
+        },
+        addBulkStudents:(db,data,cb)=>{
+          let allStudents=[]
+            return connection.transaction((t)=>{
+              for(var studentIterator in data){
+                let allDetailsOfStudent={}
+                let userAdded,studentAdded;
+                addUser(data,db)
+                .then((user)=>{
+                  userAdded=user;
+                  return addParent(data,db,t)
+                })
+                .then((parent)=>{ 
+                  data.parentId=parent.id;
+                  data.userId=userAdded.id;          
+                  return addStudent(data,db,t)
+                })
+                .then((student)=>{
+                  studentAdded=student;          
+                  return addStudentToSection(student, db,t)
+                })
+                .then((studentSection)=>{
+                  return getSemesterBySection(studentSection.section_id,db,t)
+                })
+                .then((section)=>{
+                    let transporter = mailer.createTransport({
+                        service:'gmail',
+                        auth:{
+                            user:'ignore.john2017@gmail.com',
+                            pass:'madman2017'
+                            }
+                        })
+                    let message={
+                        from:'"John Doe" <ignore.john@gmail.com>',
+                        to: data.emailId,
+                        subject:'Email Verification',
+                        text:'Dear Student, your login credentials: Username =' + userAdded.username +' password:'+ passwordOrig
+                    }
+                    console.log("message=============>", message)
+                    transporter.sendMail(message,(error, info)=>{
+                      let response = {}
+                        if(error){
+                            response = {
+                              data:[],
+                              msg:'internal server error',
+                              status:0
+                            }
+                        }
+                      })
+                    allDetailsOfStudent={
+                      data:{
+                        admissionNo:studentAdded.admission_no,
+                        username:userAdded.username,
+                        studentId:studentAdded.id,
+                        name:userAdded.name,
+                        batchId:data.batchId,
+                        batchName:data.batchName,
+                        deptId:data.deptId,
+                        deptName:data.deptName,
+                        sectionId:section.id ,
+                        section: section.name,
+                        semesterId:section.dataValues.curriculum.dataValues.semester.dataValues.id,
+                        semester:section.dataValues.curriculum.dataValues.semester.dataValues.name
+                      },
+                      status:200,
+                      msg:"Done"
+                    }
+                    allStudents.push(allDetailsOfStudent);
+                })
+              
+              }
+            })
+            .then((addedAll)=>{
+                sendData={
+                  status:200,
+                  data:allStudents,
+                  msg:'Successfull Insertion'
+                }
+            })
+            .catch((error)=>{
+                sendData={
+                  status:500,
+                  msg:'Internal Server Error'
+                }
+              })
+          
         },
         editStudentDetails:(db,data,cb)=>{
           editUserDetails(data, db)

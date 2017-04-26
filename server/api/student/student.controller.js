@@ -58,6 +58,17 @@ let studentFunctions={
             })
         })
     },
+    addBulkStudents:(request, response)=>{
+        console.log("dfhkjshdkfkjsdh")
+        let include;
+        let student=checkRequestParameters(request, response);
+        model.addBulkStudents(db,student,(data)=>{
+            response.status(data.status).json({
+                data:data.data,
+                message:data.msg
+            })
+        })
+    },
     getStudentDetails:(request, response)=>{
         let sendData = checkRequestParameters(request, response)
         console.log("data--------->",sendData)

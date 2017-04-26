@@ -6,6 +6,7 @@ router.post('/getInitialData',controller.getInitialData)
 router.post('/getStudents',controller.getStudents)
 router.post('/getStudentDetails',controller.getStudentDetails)
 router.post('/addOneStudent',controller.addOneStudent)
+router.post('/addBulkStudents',controller.addBulkStudents)
 router.put('/editStudentDetails',controller.editStudentDetails)
 router.put('/deleteStudentDetails',controller.deleteStudentDetails)
 module.exports = router;

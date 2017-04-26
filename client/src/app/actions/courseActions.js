@@ -94,3 +94,9 @@ export function resetToNoError(){
         type: types.RESET_ERROR
     }
 }
+export function setCurrentPage(data){
+    return {
+        type : types.SET_CURRENT_PAGE,
+        payload :data
+    }
+}

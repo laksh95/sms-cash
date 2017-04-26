@@ -132,7 +132,7 @@ class SideBarMenu extends React.Component {
                        />
                    </Link> : null}
                {this.props.user.role.isAdmin ?
-                   <Link to ="/course" style={{textDecoration: 'none'}}>
+                   <Link to ="/course/1" style={{textDecoration: 'none'}}>
                        <ListItem
                            primaryText="Course"
                            leftIcon={ <img  src={courseImage}

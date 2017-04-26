@@ -11,7 +11,6 @@ import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 import { Router, Route, browserHistory } from 'react-router'
 import store from './../../store'
 import {connect} from 'react-redux'
-
 const Pagination = require('rc-pagination');
 class ViewCourse extends React.Component {
     constructor(props) {
@@ -36,7 +35,6 @@ class ViewCourse extends React.Component {
         this.setCourseDuration = this.setCourseDuration.bind(this)
         this.onError = (error) => {
             let errorText;
-            console.log(error);
             switch (error) {
                 case 'required':
                     errorText = 'This field is required';
@@ -72,8 +70,7 @@ class ViewCourse extends React.Component {
     componentWillReceiveProps(props){
         this.props= props
     }
-    pageChange = (currentPage , size) =>{
-        console.log("page change",currentPage)
+        pageChange = (currentPage , size) =>{
         let course = this.props.courseReducer.course
         let start = (currentPage-1)*10
         let end = start + 10
@@ -88,6 +85,8 @@ class ViewCourse extends React.Component {
             pagedCourses
         }
         this.props.setPagination(data)
+        browserHistory.push('/course/'+currentPage)
+
     };
     handleDeleteOpen = (index,data) => {
         this.setState({
@@ -100,7 +99,6 @@ class ViewCourse extends React.Component {
         this.props.setSnackbarOpen(false)
     };
     setCourseDuration(event){
-        console.log("inside set duration")
         let duration = event.target.value
         let course = this.state.curCourse
         if(duration.trim() === ''){
@@ -131,7 +129,6 @@ class ViewCourse extends React.Component {
     };
     handleDeleteCloseWithUpdate = () => {
         let data = this.state.curCourse
-        console.log("Inside Handle",data)
         /*this.props.deleteCourse(data)*/
         this.setState({deleteDialog: false, verificationDialog:true});
         this.props.generateOTP()
@@ -143,11 +140,9 @@ class ViewCourse extends React.Component {
     handleCloseWithEdit = (key) => {
         this.setState({open: false});
         let data = this.state.curCourse
-        console.log("~~~~~~~~~~~~~~~~~",data)
         this.props.editCourse(data)
     }
     handleOpen = (key,data) => {
-        console.log("******************",data)
         this.setState({open: true});
         this.setState({
             curCourse : data
@@ -204,6 +199,7 @@ class ViewCourse extends React.Component {
     }
     componentWillMount(){
         this.props.getCourses()
+        console.log(this.props.courseReducer.currentPage)
     }
     handleVerificationClose = ()=>{
         this.setState({
@@ -218,7 +214,6 @@ class ViewCourse extends React.Component {
             })
         }
         else{
-            console.log('------',this.state.curCourse.id,'-----------')
             let response = {
                 otp:this.state.otp,
                 data:this.state.curCourse.id
@@ -231,6 +226,7 @@ class ViewCourse extends React.Component {
         }
     }
     render(){
+        console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",this.props.courseReducer.currentPage)
         if(this.state.errorText === 'none' || this.state.errorText.trim() === '')
             this.state.validateCourseDuration=true
         const verificationActions=[
@@ -333,7 +329,7 @@ class ViewCourse extends React.Component {
                         </TableBody>
                     </Table>
                 </div>
-                <Pagination className="ant-pagination" defaultCurrent={1} total={this.props.courseReducer.totalPages} current={this.props.courseReducer.currentPage} defaultPageSize={10} onChange={this.pageChange}/>
+                <Pagination className="ant-pagination" defaultCurrent={this.props.courseReducer.currentPage} total={this.props.courseReducer.totalPages} current={this.props.courseReducer.currentPage} defaultPageSize={10} onChange={this.pageChange}/>
                 {/*Confirm delete option*/}
                 <Dialog
                     actions={dialogActions}

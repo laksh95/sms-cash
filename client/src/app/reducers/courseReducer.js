@@ -60,24 +60,29 @@ const courseReducer = (state = {
             var course  = action.payload.data
             var size = course.length
             var pagedCourses = []
-            for(let index in course ){
-                if(index<10){
+            let start = (state.currentPage-1)*10
+            let end = start + 10
+            for(let index in course){
+                if(index>=start && index<end){
                     pagedCourses.push(course[index])
                 }
             }
-            if(0 === pagedCourses){
+            if(0 === pagedCourses.length){
                 state = {
                     ...state ,
                     snackbarMessage : "Nothing to Show",
                     snackbarOpen : true
                 }
             }
-            state  = {
-                ...state ,
-                course : course ,
-                totalPages : size ,
-                pagedCourses : pagedCourses
+            else {
+                state  = {
+                    ...state ,
+                    course : course ,
+                    totalPages : size ,
+                    pagedCourses : pagedCourses
+                }
             }
+
             break
         case "GET_COURSES_REJECTED":
             var data= action.payload.response
@@ -293,6 +298,11 @@ const courseReducer = (state = {
                 errorMessage: ""
             }
             break
+        case "SET_CURRENT_PAGE":
+            state={
+                ...state ,
+                currentPage:action.payload
+            }
     }
     return state
 }

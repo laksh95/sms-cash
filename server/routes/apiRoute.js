@@ -27,4 +27,4 @@ let apiRouter = (app) => {
   })
 };
 
-module.exports = apiRouter 
+module.exports = apiRouter

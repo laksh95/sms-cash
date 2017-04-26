@@ -36,13 +36,14 @@ let sql = function(){
                 addPost:function(models,data,cb){
                     let heading = data.heading
                     let content = data.content.toString('html')
+                    let image = data.image
                     let post = models.post
                     post.create({
                         heading ,
                         content ,
-                        by :  1
+                        by :  1,
+                        image
                     }).then(function(response){
-                        // console.log("inside then ",response.dataValues)
                         cb(null,response.dataValues)
                     })
                     .catch(function(error){
@@ -50,7 +51,6 @@ let sql = function(){
                     })
                 },
                 getPosts:function(models,data,cb){
-                    console.log("Inside GetPosts")
                     let post = models.post
                     let userDetail = models.user_detail
                     let promises = []

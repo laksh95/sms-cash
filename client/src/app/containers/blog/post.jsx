@@ -227,7 +227,7 @@ class Post extends React.Component {
                         {/*Cracking the Coding Interview*/}
                     </div>
                     <div className="postImage">
-                        <img src="https://cdn-images-1.medium.com/max/1260/1*3lZYFSUsa1S-l8X5HjTvfg.jpeg" width={700} alt=""/>
+                        <img src={this.props.blogReducer.post.image} width={700} alt=""/>
                     </div>
                     <div className="postContent">
                         <p>

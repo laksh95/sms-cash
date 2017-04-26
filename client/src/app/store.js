@@ -28,5 +28,6 @@ export default createStore(
         subjectReducer,
     }),
     {},
-    applyMiddleware(logger(),thunk , promise())
+    // applyMiddleware(logger(),thunk , promise())
+	applyMiddleware(thunk,promise())
 )

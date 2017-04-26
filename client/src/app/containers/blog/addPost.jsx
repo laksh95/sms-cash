@@ -6,12 +6,15 @@ import {openModal,addPost} from "../../actions/blogActions.js";
 import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import Snackbar from 'material-ui/Snackbar';
-let Dropzone = require('react-dropzone');
+import request from 'superagent';
 import {Component, PropTypes} from 'react';
-
+let Dropzone = require('react-dropzone');
 import RichTextEditor from 'react-rte';
 
 let loginStyle = require('./../../css/login.css');
+const CLOUDINARY_UPLOAD_PRESET = 'sbidnltg';
+const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/yash04/image/upload';
+
 class AddPost extends React.Component {
 
     constructor(props) {
@@ -26,11 +29,13 @@ class AddPost extends React.Component {
                 content : "",
                 image : "",
                 value: RichTextEditor.createEmptyValue(),
-                message : ""
+                message : "",
+                uploadedFileCloudinaryUrl:""
 
         }
         this.onDrop= this.onDrop.bind(this)
         this.setContent= this.setContent.bind(this)
+        this.handleImageUpload= this.handleImageUpload.bind(this)
     }
     static propTypes = {
         onChange: PropTypes.func
@@ -47,7 +52,6 @@ class AddPost extends React.Component {
         this.props.openModal(true)
     };
     handleClose = (event,type) => {
-        console.log(event)
         switch(event){
             case "CANCEL":
                 this.props.openModal(false)
@@ -55,11 +59,10 @@ class AddPost extends React.Component {
                 break
             case "POST":
                 var image =this.state.image
-                console.log('_-----------------',this.state.value)
-                console.log('_-----------------',this.state.value.toString('html'))
                 var data = {
                     heading : this.state.heading,
-                    content : this.state.value.toString('html')
+                    content : this.state.value.toString('html'),
+                    image : this.state.uploadedFileCloudinaryUrl
                 }
                 this.props.addPost(data)
                 this.props.openModal(true)
@@ -70,12 +73,27 @@ class AddPost extends React.Component {
         }
     };
     onDrop(files){
-        console.log(files)
+        console.log("Files onDrop",files)
         this.setState({
             image : files[0]
-        },()=>{
-            console.log("this.state.image",this.state.image)
         })
+        this.handleImageUpload(files[0])
+
+    }
+    handleImageUpload(file){
+        let upload = request.post(CLOUDINARY_UPLOAD_URL)
+            .field('upload_preset', CLOUDINARY_UPLOAD_PRESET)
+            .field('file', file);
+        upload.end((err, response) => {
+            if (err) {
+                console.error(err);
+            }
+            if (response.body.secure_url !== '') {
+                this.setState({
+                    uploadedFileCloudinaryUrl: response.body.secure_url
+                });
+            }
+        });
     }
     handleChange = (type, event) => {
         switch(type){
@@ -112,6 +130,7 @@ class AddPost extends React.Component {
         }
     }
     render(){
+        console.log("INSIDE RENDER",this.state)
         const toolbarConfig = {
             // Optionally specify the groups to display (displayed in the order listed).
             display: ['INLINE_STYLE_BUTTONS', 'BLOCK_TYPE_BUTTONS', 'LINK_BUTTONS', 'BLOCK_TYPE_DROPDOWN', 'HISTORY_BUTTONS'],
@@ -131,7 +150,6 @@ class AddPost extends React.Component {
                 {label: 'OL', style: 'ordered-list-item'}
             ]
         };
-        console.log("this.state",this.state)
         const actions = [
             <FlatButton
                 label="Cancel"
@@ -169,7 +187,7 @@ class AddPost extends React.Component {
                             multiple={false}
                             className="dropzone"
                         >
-                            <div><img s rc={this.state.image.preview} width={200} height={200} alt=""/></div>
+                            <div><img src={this.state.image.preview} width={200} height={200} alt=""/></div>
                         </Dropzone>
                     </div>
                     <br/><br/>

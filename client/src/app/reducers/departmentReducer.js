@@ -161,7 +161,7 @@ const departmentReducer= (state=initialLoginState, action) => {
 
         case types.DELETE_DEPARTMENT + "_FULFILLED":
             var response= action.payload;
-            if(response.status==200){
+            if(response.status===200){
                 let selectedDepartment= response.data;
                 let allDepartment= state.departmentList;
                 let pagination= state.pagination;
@@ -171,7 +171,7 @@ const departmentReducer= (state=initialLoginState, action) => {
                 let pageSize= pagination.pageSize;
                 let pagedDepartment= state.pagedDepartment
                 for(let i in allDepartment){
-                    if(allDepartment[i].id== selectedDepartment.id){
+                    if(allDepartment[i].id=== selectedDepartment.id){
                         allDepartment.splice(i,1);
                         index=i;
                         break;
@@ -179,13 +179,12 @@ const departmentReducer= (state=initialLoginState, action) => {
                 }
                 if(index>=startIndex && index<=endIndex){
                     for(let j in pagedDepartment){
-                        if(pagedDepartment[j].id== selectedDepartment.id){
+                        if(pagedDepartment[j].id=== selectedDepartment.id){
                             pagedDepartment.splice(j,1);
                         break;
                         }
                     }
                 }
-
                 pagination.totalPages= pagination.totalPages-1;
                 pagination.currentPage=1;
 

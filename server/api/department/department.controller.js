@@ -16,7 +16,7 @@ let departmentFunctions={
                 if(data.status==1)
                     res.status(200).json({data: data.data, message:'SUCCESS_OPERATION'})
                 else if(data.msg=='NO_ROWS_FOUND')
-                    res.status(400).json({data: "Course doesnot exists", message:'IS_INVALID_INPUT_FORM'})
+                    res.status(400).json({data: "Course does not exists", message:'IS_INVALID_INPUT_FORM'})
                 else if(data.msg=='IS_ALREADY_EXISTS')
                     res.status(400).json({data: "Department Already exists", message:'IS_ALREADY_EXISTS'})
                 else if(data.msg=='IS_INTERNAL_SERVER_ERROR')

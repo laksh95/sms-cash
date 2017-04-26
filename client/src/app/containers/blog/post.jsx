@@ -46,18 +46,11 @@ class Post extends React.Component {
     componentWillReceiveProps(props){
         this.props= props
     }
-    handleTouchTap = () => {
-        this.setState({
-            open: true,
-        });
-    };
-
+    /* close snackbar*/
     handleRequestClose = () => {
         this.props.setSnackbarOpen(false)
     };
-    // handleTouchTap() {
-    //     alert('You clicked the Chip.');
-    // }
+    /*handle change for data fields*/
     handleChange(type,event) {
         switch(type){
             case "COMMENT":
@@ -75,6 +68,7 @@ class Post extends React.Component {
             default : break
         }
     }
+    /*post comment */
     postComment(){
         let comment = this.state.value
         if(comment.trim()==''){
@@ -95,6 +89,7 @@ class Post extends React.Component {
             });
         }
     }
+    /*handle close for edit and delete */
     handleClose = (type) => {
         // to be changed
         switch(type){
@@ -119,16 +114,19 @@ class Post extends React.Component {
         }
 
     };
+    /*edit a comment*/
     editComment(data){
         this.setState({showEdit: true});
         this.setState({
             comment: data
         })
     }
+    /*delete a comment*/
     deleteComment(data){
         this.setState({showDelete:true})
         this.setState({comment:data})
     }
+    /*event for checkbox*/
     handleCheck=(event,checked)=> {
         let likes = this.props.blogReducer.post.likes
         console.log(checked)

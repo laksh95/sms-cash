@@ -41,14 +41,17 @@ class EditPost extends React.Component {
     componentWillReceiveProps(props){
         this.props= props
     }
+    /*handle snackbar close*/
     handleRequestClose = () => {
         this.setState({
             open: false,
         });
     };
+    /*opens a dialog */
     handleOpen = () => {
         this.props.openModal(true)
     };
+    /*close event for dialog*/
     handleClose = (event,type) => {
         console.log(event)
         switch(event){
@@ -74,6 +77,7 @@ class EditPost extends React.Component {
                 break
         }
     };
+    /*image drop */
     onDrop(files){
         console.log(files)
         this.setState({
@@ -82,6 +86,7 @@ class EditPost extends React.Component {
             console.log("this.state.image",this.state.image)
         })
     }
+    /*change event for all fields */
     handleChange = (type, event) => {
         switch(type){
             case "HEADING":
@@ -101,6 +106,7 @@ class EditPost extends React.Component {
                 break
         }
     }
+    /*setting post content and validating the submit button*/
     setContent(value){
         this.setState({
             value  :value

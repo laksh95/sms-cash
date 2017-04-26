@@ -40,7 +40,7 @@ class SideBarMenu extends React.Component {
            selected= "Department"
        else if(path === '/student')
            selected= "Students"
-       else if(path === '/course')
+       else if(path === '/course/')
            selected = 'Course'
         else if(path === '/blog')
             selected = 'Blog'

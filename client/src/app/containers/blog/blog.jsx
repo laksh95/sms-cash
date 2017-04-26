@@ -30,6 +30,7 @@ class Blog extends React.Component {
         }
         this.handleScroll = this.handleScroll.bind(this);
     }
+    /*handler for checkbox*/
     handleCheck=(post,event,checked)=> {
         let likes = post.likes
         console.log(post)
@@ -63,6 +64,7 @@ class Blog extends React.Component {
         }
 
     }
+    /*infinite scrolling implementation*/
     handleScroll() {
         const windowHeight = "innerHeight" in window ? window.innerHeight : document.documentElement.offsetHeight;
         const body = document.body;
@@ -102,28 +104,27 @@ class Blog extends React.Component {
     componentWillReceiveProps(props){
         this.props= props
     }
-    componentDidMount() {
-    }
-    componentDidUpdate(prevProps, prevState) {
-    }
+    /*open up the user profile */
     handleTouchTap() {
         alert('You clicked the Chip.');
     }
     openModal(event,data){
         this.props.openModal(data)
     }
-
+    /*delete a post*/
     deletePost = (data) =>{
         console.log(data)
         this.setState({open: true})
         this.props.setPost(data)
     }
+    /*edit a post*/
     editPost = (data)=>{
         console.log(data)
         this.props.setShowEdit(true)
         this.props.setPost(data)
 
     }
+    /*handler for dialog close*/
     handleClose = (type) => {
         console.log(type)
         switch(type){
@@ -136,6 +137,7 @@ class Blog extends React.Component {
                 break
         }
     };
+    /*handler for search after enter*/
     handleKeyPress = (e)=>{
         if(e.key==='Enter'){
             console.log("Haye",e.target.value)
@@ -144,6 +146,7 @@ class Blog extends React.Component {
             })
         }
     }
+    /*snackbar close*/
     handleRequestClose = () => {
         this.props.setSnackbarOpen(false);
     };
@@ -206,15 +209,6 @@ class Blog extends React.Component {
                                     <Link to={url}><h6 className="readMore">Read More</h6></Link>
                                     <div className="footer">
                                         <div className="checkbox">
-                                            {/*<Checkbox*/}
-                                                {/*checkedIcon={<ActionFavorite />}*/}
-                                                {/*uncheckedIcon={<ActionFavoriteBorder />}*/}
-                                                {/*label={this.props.blogReducer.post.likes}*/}
-                                                {/*className="left"*/}
-                                                {/*onCheck={this.handleCheck.bind(this)}*/}
-                                                {/*style={{...styles.checkbox,...styles.block}}*/}
-                                                {/*checked={this.props.blogReducer.post.liked}*/}
-                                            {/*/>*/}
                                             <Checkbox
                                                 checkedIcon={<ActionFavorite />}
                                                 uncheckedIcon={<ActionFavoriteBorder />}

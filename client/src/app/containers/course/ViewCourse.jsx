@@ -70,7 +70,8 @@ class ViewCourse extends React.Component {
     componentWillReceiveProps(props){
         this.props= props
     }
-        pageChange = (currentPage , size) =>{
+    /*pagination*/
+    pageChange = (currentPage,size) =>{
         let course = this.props.courseReducer.course
         let start = (currentPage-1)*10
         let end = start + 10
@@ -86,7 +87,6 @@ class ViewCourse extends React.Component {
         }
         this.props.setPagination(data)
         browserHistory.push('/course/'+currentPage)
-
     };
     handleDeleteOpen = (index,data) => {
         this.setState({
@@ -98,6 +98,7 @@ class ViewCourse extends React.Component {
 
         this.props.setSnackbarOpen(false)
     };
+    /*set current course duration*/
     setCourseDuration(event){
         let duration = event.target.value
         let course = this.state.curCourse
@@ -138,9 +139,23 @@ class ViewCourse extends React.Component {
 
     };
     handleCloseWithEdit = (key) => {
-        this.setState({open: false});
-        let data = this.state.curCourse
-        this.props.editCourse(data)
+        let course = this.props.courseReducer.course
+        let flag = 0
+        for(let index in course){
+            if(course[index].name.toLowerCase()===this.state.curCourse.name.toLowerCase()){
+                flag =1
+                break
+            }
+        }
+        if(1===flag){
+            this.props.setSnackbarOpen(true)
+            this.props.setSnackbarMessage("Course Already Exists")
+        }
+        else {
+            this.setState({open: false});
+            let data = this.state.curCourse
+            this.props.editCourse(data)
+        }
     }
     handleOpen = (key,data) => {
         this.setState({open: true});
@@ -226,7 +241,6 @@ class ViewCourse extends React.Component {
         }
     }
     render(){
-        console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%",this.props.courseReducer.currentPage)
         if(this.state.errorText === 'none' || this.state.errorText.trim() === '')
             this.state.validateCourseDuration=true
         const verificationActions=[

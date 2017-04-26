@@ -42,6 +42,7 @@
     "material-ui": "^0.17.1",
     "material-ui-number-input": "^5.0.17",
     "moment": "^2.18.1",
+    "nodemailer": "^4.0.1",
     "nodemon": "^1.11.0",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",

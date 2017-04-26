@@ -23,15 +23,15 @@ module.exports= new passportLocalStrategy({
 	return userDetail.getUserByCredential(models, userData.username, (err, user)=> {
 		if (err) { console.log("Passport received error", err); return cb(err); }
 		if (!user) {
-			const error = new Error('Incorrect username or password'); 
+			const error = new Error('Incorrect username or password');
 			error.name = 'IncorrectCredentialsError';
-			return cb(error); 
+			return cb(error);
 		}
 		if (user.password != password) {
 			console.log("Passport: Invalid username");
-			const error = new Error('Incorrect username or password'); 
+			const error = new Error('Incorrect username or password');
 			error.name = 'IncorrectCredentialsError';
-			return cb(error); 
+			return cb(error);
 		}
 		const payload={
 			sub: user.id
@@ -52,4 +52,3 @@ module.exports= new passportLocalStrategy({
 	})
 
 })
-

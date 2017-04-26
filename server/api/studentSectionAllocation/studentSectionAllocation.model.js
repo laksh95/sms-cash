@@ -6,7 +6,6 @@ let init = function(){
     return studentSectionAllocation = connection.define('student_section_allocation',{
             status:{
                 type:sequelize.BOOLEAN,
-                allowNull:false,
                 defaultValue:true
             }
         },

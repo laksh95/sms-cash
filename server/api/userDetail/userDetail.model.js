@@ -1,4 +1,4 @@
-    let data = require('./../../config/db');
+let data = require('./../../config/db');
 let sequelize = data.sequelize;
 let connection = data.connection;
 

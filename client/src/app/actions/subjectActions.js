@@ -15,6 +15,6 @@ export function getSubjectAndDepartment(data){
 
 export function resetToNoErrorSubject(){
     return {
-        type: types.RESET_ERROR
+        type: types.RESET_ERROR_SUBJECT
     }
 }

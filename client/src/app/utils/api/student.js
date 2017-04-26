@@ -12,10 +12,10 @@ let configHeader= ()=> {
         }
     }
 }
-let baseAddress = 'http://localhost:3000'
+import {serverAddress} from '../../constants'
 const utils={
     addBulkStudent: (fileContent)=>{
-        let url= baseAddress + '/api/student/addBulkStudent'
+        let url= serverAddress + '/api/student/addBulkStudent'
         let config=configHeader()
         return axios.post(url,fileContent,config)
     },
@@ -31,18 +31,18 @@ const utils={
         return axios.post(url,data,config)
     },
     addStudent: (data)=>{
-        let url= baseAddress + '/api/student/addStudent'
+        let url= serverAddress + '/api/student/addStudent'
         let config=configHeader()
         return axios.post(url,data,config)
     },
     getInitialData: (courseID)=>{
-        let url = baseAddress + '/api/student/getInitialData'
+        let url = serverAddress + '/api/student/getInitialData'
         let config = configHeader()
         let data=courseID
         return axios.post(url,data,config)
     },
     getFilteredStudent : (departmentId, semester, batchId)=>{
-        let url = baseAddress + '/api/student/getStudents'
+        let url = serverAddress + '/api/student/getStudents'
         let config = configHeader()
         console.log('-----util api called----getFilteredStudent-----',departmentId,semester,batchId)
         let data={

@@ -12,20 +12,20 @@ import errorReducer from './reducers/errorReducer.js'
 import courseReducer from './reducers/courseReducer.js'
 import subjectReducer from './reducers/subjectReducer.js'
 import teacherReducer from './reducers/teacherReducer.js'
-
-
+import getDataReducer from './reducers/getDataDashboardreducer.jsx'
 export default createStore(
     combineReducers({
     	login,
     	departmentReducer,
     	errorReducer,
-        blogReducer,
+      blogReducer,
     	routing: routerReducer,
-        studentReducer,
-		courseReducer,
+      studentReducer,
+		  courseReducer,
     	headerReducer,
-        teacherReducer,
-        subjectReducer,
+      getDataReducer,
+      teacherReducer,
+      subjectReducer,
     }),
     {},
     applyMiddleware(logger(),thunk , promise())

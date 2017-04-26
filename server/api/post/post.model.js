@@ -36,13 +36,14 @@ let sql = function(){
                 addPost:function(models,data,cb){
                     let heading = data.heading
                     let content = data.content.toString('html')
+                    let image = data.image
                     let post = models.post
                     post.create({
                         heading ,
                         content ,
-                        by :  1
+                        by :  1,
+                        image
                     }).then(function(response){
-                        // console.log("inside then ",response.dataValues)
                         cb(null,response.dataValues)
                     })
                     .catch(function(error){
@@ -54,14 +55,19 @@ let sql = function(){
                     let userDetail = models.user_detail
                     let promises = []
                     post.findAll({
+                        offset : (data.pageNumber-1)*5 ,
+                        limit : 5,
                         where :{
                             status :true
                         }
                     }).then(function(response){
+                        console.log("inside then",response)
                         let posts = []
                         for(let index in response){
                             posts.push(response[index].dataValues)
                         }
+                        let likedPromises= []
+                        let postLike = models.post_like
                         for(let index in posts){
                             promises.push(userDetail.findAll({
                                 attributes:['name','profile_pic_url'],
@@ -69,10 +75,25 @@ let sql = function(){
                                     id:posts[index].by
                                 }
                             }))
+                            likedPromises.push(postLike.findOne({
+                                where : {
+                                    status : 't',
+                                    post_id : posts[index].id,
+                                    liked_by : data.user_id
+                                }
+                            }))
                         }
+                        Promise.all(likedPromises).then(resultData=>{
+                            console.log("resultdata",resultData)
+                            for(let index in resultData){
+                                if(resultData[index]!==null)
+                                    posts[index].liked=true
+                                else
+                                    posts[index].liked=false
+                            }
+                        })
                         let likePromises = []
                         let commentPromises = []
-                        let postLike = models.post_like
                         let postComment = models.post_comment
                         Promise.all(promises).then(data=>{
                             for(let index in data){
@@ -126,6 +147,9 @@ let sql = function(){
                                 let postComment = models.post_comment
                                 let commentPromises = []
                                 postComment.findAll({
+                                    offset :1,
+                                    limit : 5 ,
+                                    order: 'created_at DESC',
                                     where : {
                                         post_id : response.dataValues.id,
                                         status : true
@@ -163,7 +187,6 @@ let sql = function(){
                                                     liked_by : setData.user_id
                                                 }
                                             }).then((r)=>{
-                                                console.log("-------------------------------->>",r.dataValues)
                                                 if(r!=null){
                                                     response.dataValues.liked = true
                                                 }
@@ -179,7 +202,7 @@ let sql = function(){
                             })
                         }
                         else {
-                            cb("NOT_ROWS_FOUND",null)
+                            cb("NO_ROWS_FOUND",null)
                         }
                     })
                 },
@@ -224,15 +247,11 @@ let sql = function(){
                     })
                 },
                 setLikes : function(models,data,cb){
-                    // to be continued 
-                    // let postObj = data.post
-                    // let likes = data.likes
                     let postLike = models.post_like
                     postLike.findOne({
                         where : {
                             post_id : data.post.id,
                             liked_by : data.user_id,
-
                         }
                     }).then((response)=>{
                         if(response!=null){
@@ -252,8 +271,8 @@ let sql = function(){
                             })
                         }
                         else{
-                              postLike.insert({
-                                postid : data.post.id ,
+                              postLike.create({
+                                post_id : data.post.id ,
                                 liked_by : data.user_id
                               }).then((response)=>{
                                   console.log(response)
@@ -313,6 +332,97 @@ let sql = function(){
                         }
                     }).then((response)=>{
                         cb(null,response)
+                    })
+                },
+                searchPost:function(models,data,cb){
+                    let post = models.post
+                    let promises = []
+                    promises.push(post.findAll({
+                        where : {
+                            status : true
+                        }
+                    }))
+                    Promise.all(promises).then((result)=>{
+                        let temp = result[0]
+                        let posts = []
+                        for(let index in temp){
+                            posts[index]=temp[index].dataValues
+                        }
+                        // console.log(posts)
+                        let headings = []
+                        for(let index in posts){
+                            console.log(posts[index].heading.toLowerCase())
+                            console.log(data.heading)
+                            if(posts[index].heading.toLowerCase().indexOf(data.heading)!==-1){
+                                headings.push(posts[index])
+                            }
+                        }
+                        console.log("Headings",headings.length)
+                        let userDetail = models.user_detail
+                        promises = []
+                        for(let index in headings){
+                            promises.push(userDetail.findAll({
+                                attributes:['name','profile_pic_url'],
+                                where:{
+                                    id:headings[index].by
+                                }
+                            }))
+                        }
+                        let likePromises = []
+                        let commentPromises = []
+                        let postLike = models.post_like
+                        let postComment = models.post_comment
+                        Promise.all(promises).then(data=>{
+                            console.log("data\n",data.length)
+                            for(let index in data){
+                                console.log("index",index)
+                                headings[index].user_name = data[index][0].dataValues.name
+                                headings[index].profile_pic_url=data[index][0].dataValues.profile_pic_url
+                                likePromises.push(postLike.count({
+                                    where :{
+                                        post_id  :headings[index].id
+                                    }
+                                }))
+                                commentPromises.push(postComment.count({
+                                    where : {
+                                        post_id : headings[index].id,
+                                        status : true
+                                    }
+                                }))
+                            }
+                            Promise.all(likePromises).then(data=>{
+                                for(let index in data){
+                                    headings[index].likes= data[index]
+                                }
+                                Promise.all(commentPromises).then(data=>{
+                                    for(let index in data){
+                                        headings[index].comments= data[index]
+                                    }
+                                    cb(null,headings)
+                                })
+                            })
+                        })
+                    })
+
+                },
+                getComments:function(models,data,cb){
+                    let postComment = models.post_comment
+                    console.log(data.pageNumber)
+                    postComment.findAll({
+                        offset:(data.pageNumber-1)*5,
+                        limit: 5,
+                        order: 'created_at DESC',
+                        where :{
+                            post_id : data.id ,
+                            status : true ,
+                        }
+                    }).then((response)=>{
+                        let comments = []
+                        for(let index in response){
+                            comments.push(response[index].dataValues)
+                        }
+                        console.log(comments)
+                        cb(null,comments)
                     })
                 }
             }

@@ -593,96 +593,181 @@ module.exports=function(){
                             cb(sendData)
                         })
                 },
+                addBulkStudents:(db,data,cb)=>{
+                    let allStudents=[]
+                    return connection.transaction((t)=>{
+                        for(var studentIterator in data){
+                            let allDetailsOfStudent={}
+                            let userAdded,studentAdded;
+                            addUser(data,db)
+                                .then((user)=>{
+                                    userAdded=user;
+                                    return addParent(data,db,t)
+                                })
+                                .then((parent)=>{
+                                    data.parentId=parent.id;
+                                    data.userId=userAdded.id;
+                                    return addStudent(data,db,t)
+                                })
+                                .then((student)=>{
+                                    studentAdded=student;
+                                    return addStudentToSection(student, db,t)
+                                })
+                                .then((studentSection)=>{
+                                    return getSemesterBySection(studentSection.section_id,db,t)
+                                })
+                                .then((section)=>{
+                                    let transporter = mailer.createTransport({
+                                        service:'gmail',
+                                        auth:{
+                                            user:'ignore.john2017@gmail.com',
+                                            pass:'madman2017'
+                                        }
+                                    })
+                                    let message={
+                                        from:'"John Doe" <ignore.john@gmail.com>',
+                                        to: data.emailId,
+                                        subject:'Email Verification',
+                                        text:'Dear Student, your login credentials: Username =' + userAdded.username +' password:'+ passwordOrig
+                                    }
+                                    console.log("message=============>", message)
+                                    transporter.sendMail(message,(error, info)=>{
+                                        let response = {}
+                                        if(error){
+                                            response = {
+                                                data:[],
+                                                msg:'internal server error',
+                                                status:0
+                                            }
+                                        }
+                                    })
+                                    allDetailsOfStudent={
+                                        data:{
+                                            admissionNo:studentAdded.admission_no,
+                                            username:userAdded.username,
+                                            studentId:studentAdded.id,
+                                            name:userAdded.name,
+                                            batchId:data.batchId,
+                                            batchName:data.batchName,
+                                            deptId:data.deptId,
+                                            deptName:data.deptName,
+                                            sectionId:section.id ,
+                                            section: section.name,
+                                            semesterId:section.dataValues.curriculum.dataValues.semester.dataValues.id,
+                                            semester:section.dataValues.curriculum.dataValues.semester.dataValues.name
+                                        },
+                                        status:200,
+                                        msg:"Done"
+                                    }
+                                    allStudents.push(allDetailsOfStudent);
+                                })
 
-    editStudentDetails:(db,data,cb)=>{
-    editUserDetails(data, db)
-        .then((user)=>{
-            console.log("user updated--->",user)
-            return editParentDetails(data, db)
-        })
-        .then((parent)=>{
-            console.log("parent updated--->",parent)
-            sendData={
-                status:200,
-                data:data,
-                msg:'Done'
-            }
-            cb(sendData)
-        })
-        .catch((error)=>{
-            console.log("error",error)
-            sendData={
-                status:500,
-                msg:'Internal Server Error'
-            }
-            cb(sendData)
-        })
-},
-    deleteStudentDetails:(db,data,cb)=>{
-    countParents(data, db)
-        .then((parentCount)=>{
-            console.log("user updated--->",parentCount)
-            if(parentCount.count>1)
-            {
-                return deleteStudentSectionAllocationDetails(data, db)
-            }
-            else{
-                let allData={}
-                deleteStudentSectionAllocationDetails(data, db)
-                    .then((allocate)=>{
-                        console.log("user updated--->",allocate)
-                        allData.allocate=allocate
-                        return deleteStudentDetails(data, db)
+                        }
                     })
-                    .then((studentSection)=>{
-                        console.log("user updated--->",studentSection)
-                        allData.studentSection=studentSection
-                        return deleteParentDetails(data, db)
-                    })
-                    .then((parentDeleted)=>{
-                        console.log("user updated--->",parentDeleted)
-                        allData.parentDeleted=parentDeleted
-                        return deleteUserDetails(data, db)
-                    })
-                    .then((userDeleted)=>{
-                        console.log("parent updated--->",userDeleted)
-                        if(allData.allocate==1&&allData.studentSection==1&&allData.parentDeleted==1&&userDeleted==1){
+                        .then((addedAll)=>{
                             sendData={
                                 status:200,
-                                data:data,
-                                msg:'Deleted Successfully'
+                                data:allStudents,
+                                msg:'Successfull Insertion'
                             }
-                        }
-                        else{
+                        })
+                        .catch((error)=>{
                             sendData={
                                 status:500,
                                 msg:'Internal Server Error'
                             }
-                        }
-                        cb(sendData)
-                    })
-                    .catch((error)=>{
-                        console.log("error",error)
-                        sendData={
-                            status:500,
-                            msg:'Internal Server Error'
-                        }
-                        cb(sendData)
-                    })
-            }
-        })
-        .catch((error)=>{
-            console.log("error",error)
-            sendData={
-                status:500,
-                msg:'Parent Already Exists'
-            }
-            cb(sendData)
-        })
-}
-},
-}
-);
-return student;
+                        })
+
+                },
+                editStudentDetails:(db,data,cb)=>{
+                    editUserDetails(data, db)
+                        .then((user)=>{
+                            console.log("user updated--->",user)
+                            return editParentDetails(data, db)
+                        })
+                        .then((parent)=>{
+                            console.log("parent updated--->",parent)
+                            sendData={
+                                status:200,
+                                data:data,
+                                msg:'Done'
+                            }
+                            cb(sendData)
+                        })
+                        .catch((error)=>{
+                            console.log("error",error)
+                            sendData={
+                                status:500,
+                                msg:'Internal Server Error'
+                            }
+                            cb(sendData)
+                        })
+                },
+                deleteStudentDetails:(db,data,cb)=>{
+                    countParents(data, db)
+                        .then((parentCount)=>{
+                            console.log("user updated--->",parentCount)
+                            if(parentCount.count>1)
+                            {
+                                return deleteStudentSectionAllocationDetails(data, db)
+                            }
+                            else{
+                                let allData={}
+                                deleteStudentSectionAllocationDetails(data, db)
+                                    .then((allocate)=>{
+                                        console.log("user updated--->",allocate)
+                                        allData.allocate=allocate
+                                        return deleteStudentDetails(data, db)
+                                    })
+                                    .then((studentSection)=>{
+                                        console.log("user updated--->",studentSection)
+                                        allData.studentSection=studentSection
+                                        return deleteParentDetails(data, db)
+                                    })
+                                    .then((parentDeleted)=>{
+                                        console.log("user updated--->",parentDeleted)
+                                        allData.parentDeleted=parentDeleted
+                                        return deleteUserDetails(data, db)
+                                    })
+                                    .then((userDeleted)=>{
+                                        console.log("parent updated--->",userDeleted)
+                                        if(allData.allocate==1&&allData.studentSection==1&&allData.parentDeleted==1&&userDeleted==1){
+                                            sendData={
+                                                status:200,
+                                                data:data,
+                                                msg:'Deleted Successfully'
+                                            }
+                                        }
+                                        else{
+                                            sendData={
+                                                status:500,
+                                                msg:'Internal Server Error'
+                                            }
+                                        }
+                                        cb(sendData)
+                                    })
+                                    .catch((error)=>{
+                                        console.log("error",error)
+                                        sendData={
+                                            status:500,
+                                            msg:'Internal Server Error'
+                                        }
+                                        cb(sendData)
+                                    })
+                            }
+                        })
+                        .catch((error)=>{
+                            console.log("error",error)
+                            sendData={
+                                status:500,
+                                msg:'Parent Already Exists'
+                            }
+                            cb(sendData)
+                        })
+                }
+            },
+        }
+    );
+    return student;
 }
 

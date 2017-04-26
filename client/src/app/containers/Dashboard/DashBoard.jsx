@@ -36,8 +36,6 @@ class DashBoard extends React.Component {
 			endDate:'',			
 			startTime:'',
 			endTime:'',
-			start:'',
-			end:'',
 			typeError:'',
 			contentError:'',
 			valid:0,
@@ -48,11 +46,12 @@ class DashBoard extends React.Component {
 	handleTouch=(event,choice)=>{
 		switch(choice){
 			case 'DELETE_EVENT':
+				var index;
 				console.log("inside delete")
 				var id=this.state.event.id;
 				var events=this.props.getDataReducer.events;
 				for(var i in events){
-					if(events[i]==id){
+					if(events[i]==id && events[i].calendarType==this.state.calendarType){
 						index=i;
 						break;
 					}
@@ -71,7 +70,7 @@ class DashBoard extends React.Component {
 				this.setState({
 					open:false,
 				})
-				this.props.deleteFromCalendar(type,method,id)
+				this.props.deleteFromCalendar(type,method,id,index)
 				break;
 			case 'CLOSE_NEW_EVENT_CARD':
 				this.setState({
@@ -85,7 +84,7 @@ class DashBoard extends React.Component {
 				break;
 			case 'TAP_CALENDAR_SLOT':
 				var newEvent={};
-				console.log("event",moment(event.start).format('HH:mm '))
+				console.log("event",moment(event.end).format('HH:mm'))
 				var endDate=moment(event.end).format("YYYY-MM-DD");
 				var startDate=moment(event.start).format("YYYY-MM-DD");
 				var endTime=moment(event.end).format('HH:mm')	
@@ -138,7 +137,7 @@ class DashBoard extends React.Component {
 					valid++;
 				}
 				if(moment(start).isAfter(end)){
-						dateError="*Start Date ahead of end date"
+					dateError="*Start Date ahead of end date"
 
 				}
 				else{
@@ -149,13 +148,7 @@ class DashBoard extends React.Component {
 				}
 				if(valid==3){
 					var url='';
-					var newEvent={
-						heading: this.state.type,
-						startDate:this.state.start,
-						endDate:this.state.end,
-						content: this.state.content,
-						userId: 1
-					}
+
 					var type='';
 					var method=''
 					if(this.state.calendarType=='personal'){
@@ -166,9 +159,18 @@ class DashBoard extends React.Component {
 						type='academicCalendar'
 						method='addEvent'
 					}
+					var newEvent={
+						heading: this.state.type,
+						startDate:start,
+						endDate:end,
+						content: this.state.content,
+						userId: 1,
+						type:type
+					}
 					this.setState({
 						openCard: false,
 					});
+					console.log("new event=========>",newEvent)
 					this.props.addToCalendar(type,method,newEvent);
 				}
 				else{
@@ -176,8 +178,6 @@ class DashBoard extends React.Component {
 						typeError:typeError,
 						contentError:contentError,
 						dateError:dateError,
-						openCard:false
-
 					});
 				}	
 				break;
@@ -253,8 +253,9 @@ class DashBoard extends React.Component {
 		});
 	}
 	render(){
-		const {date, format, mode, inputFormat} = this.state;
+		console.log("Events in render:",this.props.events,this.props.getDataReducer.events)
 		return(
+
 			<div className="smalldiv">
 				<BigCalendar
 			        popup
@@ -264,8 +265,7 @@ class DashBoard extends React.Component {
 			        step={15}
 			        timeslots={2}
 			        defaultView='month'
-			        scrollToTime={new Date()}
-			        defaultDate={new Date()}
+			        defaultDate={new Date(2017, 3, 1)}
 			        onSelectEvent={(event) => this.handleTouch(event,'SHOW_EVENT_DETAILS')}
 			        onSelectSlot={(event) => this.handleTouch(event,'TAP_CALENDAR_SLOT')}
 			    />

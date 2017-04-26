@@ -12,8 +12,8 @@ class AddDepartment extends React.Component{
       this.state={
         name:"",
         shortName: "",
-        invalidName:"Name is required",
-        invalidShortName:"Short Name is required",
+        invalidName:"",
+        invalidShortName:"",
         errorMessage:""
       };
     }
@@ -24,12 +24,15 @@ class AddDepartment extends React.Component{
       switch(item){
         case "name": 
           let name= event.target.value;
+          let specialCharacter=name.match(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g)
           this.setState({name:name});
           name= name.trim();
           if(isEmpty(name))
             message= "Name is required"; 
           else if(isLengthInvalid(name, 5, 75))
             message= "Length should be greater than 5 characters";
+          else if(specialCharacter !== null)
+              message = 'Name cannot contain special character(s)'
           else 
             message= ""; 
         this.setState({invalidName: message});
@@ -38,11 +41,15 @@ class AddDepartment extends React.Component{
         case "shortName": 
           let shortName= event.target.value;
           this.setState({shortName:shortName});
+          specialCharacter=shortName.match(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g)
           shortName= shortName.trim();
-          if(isEmpty(shortName))
-            message= "Short Name is required";
+          if(isEmpty(shortName)){
+              message= "Short Name is required"
+          }
           else if(isLengthInvalid(shortName, 2, 5))
             message= "Length should be between 2 to 5 characters";
+          else if(specialCharacter !== null)
+              message = 'Short name cannot contain special character(s)'
           else
            message= "";
           this.setState({invalidShortName: message});
@@ -51,7 +58,7 @@ class AddDepartment extends React.Component{
     }
 
     addDepartment= ()=> {
-      if(this.state.invalidShortName=="" && this.state.invalidName==""){
+      if(this.state.invalidShortName === "" && this.state.invalidName ===""){
         this.setState({errorMessage:""})
         let name= this.state.name.trim();
         let shortName= this.state.shortName.trim();
@@ -83,24 +90,27 @@ class AddDepartment extends React.Component{
         return (
           <div>
            <div className="contentCenter">
-              <h2>Add Department</h2><br/>
-              <label className="errorMsg">{this.state.errorMessage}</label><br/>
-              <TextField
-                hintText="Department Full Name"
-                errorText={this.state.invalidName}
-                floatingLabelText="Full Name"
-                onChange={(e)=> this.handleTextChange(e, "name")}
-                value={this.state.name}
-              /><br />
-              <TextField
-                hintText="Department Short Name"
-                errorText={this.state.invalidShortName}
-                floatingLabelText="Short Name"
-                onChange={(e)=> this.handleTextChange(e, "shortName")}
-                value={this.state.shortName}
-              />
-              <br /><br/><br/>
-              <RaisedButton label="ADD" primary={true} onTouchTap= {this.addDepartment}/>
+               <h2>Add Department</h2><br/>
+               <label className="errorMsg">{this.state.errorMessage}</label><br/>
+               <TextField
+                   hintText="Department Full Name"
+                   errorText={this.state.invalidName}
+                   floatingLabelText="Full Name"
+                   onChange={(e)=> this.handleTextChange(e, "name")}
+                   value={this.state.name}
+               /><br />
+               <TextField
+                   hintText="Department Short Name"
+                   errorText={this.state.invalidShortName}
+                   floatingLabelText="Short Name"
+                   onChange={(e)=> this.handleTextChange(e, "shortName")}
+                   value={this.state.shortName}
+               />
+               <br /><br/><br/>
+               <RaisedButton
+                   label="ADD"
+                   primary={true}
+                   onTouchTap= {this.addDepartment}/>
                {//<RefreshIndicator
               //   size={40}
               //   left={10}

@@ -1,7 +1,5 @@
 import React from 'react';
 import AppBar from 'material-ui/AppBar';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import FlatButton from 'material-ui/FlatButton';
 import Popover from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
@@ -9,9 +7,9 @@ import MenuItem from 'material-ui/MenuItem';
 import Auth from '../Auth.js';
 import {Router, browserHistory} from 'react-router'
 import { connect } from 'react-redux'
-import { getSession, getBatch, getCourse, getDepartment } from '../actions/adminActions.jsx'
 import { getInitialData , setCurrentSession , setCurrentCourse } from '../actions/headerActions.jsx'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
   let style = {
 
@@ -70,9 +68,7 @@ class TopBar extends React.Component {
       name: "STUDENT MANAGEMENT SYSTEM",
       open: false,
       currentSession : false,
-      currentSessionValue : this.props.headerReducer.selectedSession,
-      Selectedcourse: this.props.headerReducer.selectedCourse,
-      user: '',
+      user: 'N/A',
       width: window.screen.availWidth,
       height: window.screen.availHeight,
     };
@@ -130,17 +126,10 @@ class TopBar extends React.Component {
     }
 
 
-
-  getChildContext() {
-      return { muiTheme: getMuiTheme(baseTheme) };
-    }
-
-
-     componentWillMount() {
+    componentWillMount() {
       this.updateDimensions();
      this.props.getInitialData();
-
-  }
+    }
 
   handleTouchTap = (item,event) => {
 
@@ -219,7 +208,7 @@ class TopBar extends React.Component {
 
          iconElementLeft={
                   <span  style={style.myStyle} >
-                      <FlatButton label={this.state.currentSessionValue} style={style.CurrentSessionElement} />
+                      <FlatButton label={this.props.headerReducer.selectedSession} style={style.CurrentSessionElement} />
                   </span>
                 }
 
@@ -285,9 +274,6 @@ class TopBar extends React.Component {
 }
 }
 
-TopBar.childContextTypes = {
-            muiTheme: React.PropTypes.object.isRequired,
-        };
 const mapStateToProps = (state) => {
   return {
     loginReducer : state.login,
@@ -298,18 +284,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-      getSession: () => {
-        dispatch(getSession())
-      },
-      getBatch: (item) => {
-        dispatch(getBatch(item))
-      },
-      getCourse: () => {
-        dispatch(getCourse())
-      },
-      getDepartment: (item) => {
-        dispatch(getDepartment(item))
-      },
       getInitialData : (config) => {
        dispatch(getInitialData(config));
      },

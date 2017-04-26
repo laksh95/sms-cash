@@ -8,13 +8,14 @@ import App from './containers/App.jsx';
 import Dashboard from './containers/Dashboard/App.jsx';
 import Department from './containers/department/Department.jsx'
 import Course from './containers/course/Course.jsx'
-import Teacher from './components/teacher/teacher.jsx'
 import Feedback from './containers/feedback/Feedback.jsx'
 import { Provider } from 'react-redux'
 import store from './store.js'
 import Blog from './containers/blog/blog.jsx'
 import Post from './containers/blog/post.jsx'
 import Student from './containers/student/Student.jsx'
+import ErrorApp from './containers/error/ErrorApp.jsx'
+
 const history = syncHistoryWithStore(browserHistory, store);
 injectTapEventPlugin();
 render((
@@ -28,10 +29,11 @@ render((
 			 <Route path = "/course" component={Course} />
 			 <Route path = "/student" component = {Student} />
 	         <Route path = "/post/:postid" component = {Post} />
-	         <Route path = "/teachers" component = {Teacher} />
 			 <Route path = "/feedback" component = {Feedback} />
+			 <Route path = "/student" component = {Student} />
 	      </Route>
 	      <Route path = "/login" component = {Login}/>
+	      <Route path = "/error" component = {ErrorApp}/>
 	   </Router>
 	</Provider>
 ), document.getElementById('app'))

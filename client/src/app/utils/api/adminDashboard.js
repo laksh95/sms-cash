@@ -28,7 +28,7 @@ const utils = {
 	deletefromCalendar:(type,method,id)=>{
 		let url = serverAddress + '/api/'+type+'/dashboard/'+method;
 		let config= configHeader();
-		return axios.post(url, id,config);
+		return axios.put(url, id,config);
 	}
 }
 export default utils;

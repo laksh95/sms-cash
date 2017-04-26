@@ -1,7 +1,42 @@
 let data = require('./../../config/db');
+var moment = require('moment');
+var bcrypt = require('bcrypt');
+const saltRounds = 10;
 let sequelize = data.sequelize;
 let connection = data.connection;
-
+// {
+//     "studentId": 15,
+//     "batchId": 1,
+//     "batchName": 2019,
+//     "departmentId": 1,
+//     "departmentName": "Information Technology",
+//     "departmentAbbreviatedName": "IT",
+//     "parentId": 23,
+//     "motherName": "Chumki Mukherjee",
+//     "fatherName": "Sushant Mukherjee",
+//     "parentEmailId": "xyz1@xyz.com",
+//     "parentContactNumber": "9999999999",
+//     "parentCountryCode": 3333,
+//     "username": "Swati_19951",
+//     "admissionNo": 1112,
+//     "dateOfBirth": "Mon Dec 25 1995",
+//     "profilePicUrl": "",
+//     "gender": "FEMALE",
+//     "permanentAddress": "jhegfhgqwjhfgjqwh",
+//     "currentAddress": "jhegfhgqwjhfgjqwh",
+//     "emailId": "abc1@abc.com",
+//     "contactNumber": "9741725714",
+//     "countryCodeOne": 1111,
+//     "alternateNumber": "11111",
+//     "countryCodeTwo": 111111,
+//     "sectionId": 1,
+//     "sectionName": "A",
+//     "curriculumId": 1,
+//     "curriculumName": "All-1-2016-Chemistry",
+//     "semesterId": 1,
+//     "semesterType": "monsoon",
+//     "semesterName": 1
+//   }
 let departments=[];
 let fetchDepartment=((courseId,db)=>{
     console.log("in fetchDepartment",courseId);
@@ -22,22 +57,13 @@ let fetchStudentsDetails=((db,data)=>{
       include:[{
           model:db.batch,
           attributes:['id','name'],
-          where: {
-            id:data.batchId,
-          },
         },
         {
           model:db.department,
           attributes:['id','name','abbreviated_name'],
-          where: {
-            id:data.deptId,
-          },
         },
         {
           model:db.parent,
-          where: {
-            id:data.parentId,
-          },
         },
         {
           model:db.user_detail,
@@ -48,11 +74,7 @@ let fetchStudentsDetails=((db,data)=>{
           include:[{
             model:db.curriculum,
             include:[{
-              model:db.semester,
-              where:{
-                name:data.semester,
-                status:'t'
-              }
+              model:db.semester
             }]
           }]
         }
@@ -60,18 +82,18 @@ let fetchStudentsDetails=((db,data)=>{
   })
 })
 
-let fetchBatch=(db)=>{
+let fetchBatch=((db)=>{
     return db.batch.findAll({
         attributes:['id','name'],
         where:{
             status:'t'
         }
     })
-}
+})
+
 let fetchStudentsOnSemDeptBatch=((db,limit,offset,where)=>{
-  console.log("inside fetchStudentsOnSemDeptBatch ")
   return db.student.findAll({
-      attributes: ['admission_no'],
+      attributes: ['id','admission_no'],
       where: where.where,
       include:[
         {
@@ -81,6 +103,9 @@ let fetchStudentsOnSemDeptBatch=((db,limit,offset,where)=>{
         {
           model:db.department,
           attributes:['id','name'],
+        },
+        {
+          model:db.parent,
         },
         {
           model:db.user_detail,
@@ -97,11 +122,204 @@ let fetchStudentsOnSemDeptBatch=((db,limit,offset,where)=>{
 let fetchSemester=((courseId,db)=>{
     console.log("in fetchSemesterOfDepartment");
     return db.semester.findAll({
+        limit:8,
         where: {
           course_id: courseId,
           status: 't',
       }
     })
+})
+let addUser=((data,db)=>{
+  console.log("inside add user then---------------------------->")
+  let name=data.name;
+  let removeSpaces=name.trim();
+  let uname='';
+  let nameArray=removeSpaces.split(" ");
+  if(nameArray[1]!=undefined||nameArray[1]!=null){
+    name=nameArray[0]+" "+nameArray[1];
+    uname=nameArray[0]+"_"+nameArray[1];
+  }
+  else{
+    name=uname=nameArray[0]
+  }
+    return db.user_detail.findAndCountAll({
+      where:{
+        name:{
+          $iLike: name+'%'
+        },     
+      }
+    }).then((users)=>{
+      console.log("usersssss-------------->",moment(data.dateOfBirth).year());
+      let yearOfBirth=moment(data.dateOfBirth).year();
+      let username=uname+"_"+yearOfBirth+(users.count+1)
+      let password=''
+      let myPlaintextPassword=''
+      var firstName=name[0].split('')
+      for (var ch in firstName) {
+          myPlaintextPassword=firstName[ch]+Math.floor(Math.random() * 100);
+      }
+      return bcrypt.hash(myPlaintextPassword, saltRounds).
+        then((password)=> {
+          return db.user_detail.create({
+            username:username,
+            password: password,
+            name:data.name,
+            date_of_birth: data.dateOfBirth,
+            profile_pic_url: data.profilePicUrl,
+            gender:data.gender ,
+            permanent_address:data.permanentAddress ,
+            current_address:data.currentAddress ,
+            email_id:data.emailId ,
+            contact_number:data.contactNo ,
+            country_code_one:data.countryCodeOne,
+            alternate_number:data.alternateContactNo ,
+            country_code_two:data.countryCodeTwo ,
+            status:'t'
+          })
+        });
+    }) 
+  })
+  let addParent=((data,db)=>{
+    return db.parent.create({
+      mother_name:data.motherName ,
+      father_name:data.fatherName ,
+      email_id:data.parentEmailId,
+      contact_number:data.parentContactNumber,
+      country_code:data.parentCountryCode,
+      status:'t'
+    })
+})
+let addStudent=((data,db)=>{
+  let admissionNumber=0;
+  return db.student.max('admission_no')
+  .then((max)=> {
+    if(max==0){
+      admissionNumber=1111;
+    }
+    else{
+      admissionNumber=max+1
+    }
+   return db.student.create({
+      admission_no: admissionNumber,
+      status:'t',
+      user_detail_id:data.userId,
+      department_id:data.deptId,
+      batch_id:data.batchId,
+      parent_id:data.parentId,
+    })
+  })
+})
+let addStudentToSection=((data,db)=>{ 
+  return db.student_section_allocation.create({
+      section_id:1,
+      student_id:data.id,
+      status:'t'
+    })
+})
+let getSemesterBySection=((id,db)=>{
+  return db.section.findOne({
+      where:{
+        id:id
+      },
+      include:[{
+        model:db.curriculum,
+          include:[{
+            model:db.semester
+          }]
+        }
+      ]
+  })
+})
+let editUserDetails=((data,db)=>{
+  return db.user_detail.update(
+    {
+      name:data.name,
+      permanent_address:data.permanentAddress,
+      current_address:data.currentAddress,
+      email_id:data.emailId ,
+      contact_number:data.emailId,
+      country_code_one:data.countryCodeOne, 
+      alternate_number:data.alternateNumber,
+      country_code_two:data.countryCodeTwo
+    },
+    {
+      where:{
+        username:data.username
+      }
+    }
+  )
+})
+let editParentDetails=((data,db)=>{
+  return db.parent.update(
+    {
+      email_id:data.parentEmailId ,
+      contact_number:data.parentContactNumber,
+      country_code:data.parentCountryCode
+    },
+    {
+      where:{
+        id:data.parentId
+      }
+    }
+  )
+})
+let deleteUserDetails=((data,db)=>{
+  return db.user_detail.update(
+    {
+      status:'f'
+    },
+    {
+      where:{
+        username:data.username
+      }
+    }
+  )
+})
+let deleteParentDetails=((data,db)=>{
+  return db.parent.update(
+    {
+      status:'f'
+    },
+    {
+      where:{
+        id:data.parentId
+      }
+    }
+  )
+})
+let countParents=((data,db)=>{
+  return db.student.findAndCountAll(
+    {
+      where:{
+        parent_id:data.parentId
+      }
+    }
+  )
+})
+let deleteStudentDetails=((data,db)=>{
+  return db.student.update(
+    {
+      status:'f'
+    },
+    {
+      where:{
+        id:data.studentId
+      }
+    }
+  )
+})
+let deleteStudentSectionAllocationDetails=((data,db)=>{
+  return db.student_section_allocation.update(
+    {
+      status:'f'
+    },
+    {
+      where:{
+        student_id:data.studentId,
+        section_id:data.sectionId
+      }
+    }
+  )
 })
 module.exports=function(){
   let student= connection.define('student',{
@@ -142,13 +360,9 @@ module.exports=function(){
           student.belongsTo(batch,{
             foreignKey : 'batch_id'
          });
-          student.belongsToMany(section,{
-           through : "student_section_allocation"
-          });
         },
-        totalStudent: function(db, cb){ //counting number of students
+        totalStudent: function(db, cb){
           let student = db.student
-
           return student.findAndCountAll()
         },
         getInitialData:(db,courseId,cb)=>{
@@ -226,32 +440,41 @@ module.exports=function(){
           fetchStudentsOnSemDeptBatch(db,limit,offset,whereAttribute)
           .then((data)=>{
               let sendData={}
-            // console.log("data in getStudents---------------------------->", data)
-              console.log("hello",data)
-              let students=[{admissionNo:''}];
-              data.map((list,index)=>{
-                  console.log("list----------------------------------->",list)
+              var studentsList=[];
+              console.log("data of =============>", data[0])
+              if(data[0]!=undefined){
+                data.map((list,index)=>{
+                 // console.log("list----------------------------------->",list.dataValues)
                   let student=list.dataValues;
-                  students[index].admissionNo=student.admission_no;
-                  students[index].batchId=student.batch.dataValues.id;
-                  students[index].batchName=student.batch.dataValues.name;
-                  students[index].deptId=student.department.dataValues.id;
-                  students[index].deptName=student.department.dataValues.name;
-                  students[index].name=student.user_detail.dataValues.name;
-                  students[index].semester=list.sections[0].dataValues.curriculum.dataValues.semester.dataValues.name
-                  students[index].semesterId=list.sections[0].dataValues.curriculum.dataValues.semester.dataValues.id
-                  students[index].sectionId=list.sections[0].dataValues.id;
-                  students[index].section=list.sections[0].dataValues.name;
-              })
-              sendData={
+                  console.log(typeof studentsList[0])
+                  let newStudent={
+                    admissionNo:student.admission_no,
+                    studentId:student.id,
+                    batchId:student.batch.dataValues.id,
+                    batchName:student.batch.dataValues.name,
+                    deptId:student.department.dataValues.id,
+                    deptName:student.department.dataValues.name,
+                    name:student.user_detail.dataValues.name,
+                    semester:list.sections[0].dataValues.curriculum.dataValues.semester.dataValues.name,
+                    semesterId:list.sections[0].dataValues.curriculum.dataValues.semester.dataValues.id,
+                    sectionId:list.sections[0].dataValues.id,
+                    section:list.sections[0].dataValues.name,
+                    parentId:student.parent.dataValues.id
+                  }
+                  studentsList.push(newStudent)
+                })
+                sendData={
                   status:200,
-                  data:{
-                      students:students
-                  },
+                  data:studentsList,
                   msg:'successful'
-              }
-
-
+                }
+              } 
+              else{
+                sendData={
+                  status:200,
+                  msg:'No Rows Found'
+                }
+              }               
                 cb(sendData)
               })
               .catch((error)=>{
@@ -267,8 +490,10 @@ module.exports=function(){
           let details={}
           fetchStudentsDetails(db,data)
           .then((data)=>{
-            console.log("data in student Details---------------------->",data.dataValues.sections[0].dataValues.curriculum.dataValues);
+            let studentId=data.dataValues.id;
+              console.log("dats===================>",data.dataValues.parent.dataValues)
             details={
+              studentId:studentId,
               batchId: data.dataValues.batch.dataValues.id,
               batchName: data.dataValues.batch.dataValues.name,
               departmentId: data.dataValues.department.dataValues.id,
@@ -278,14 +503,14 @@ module.exports=function(){
               motherName: data.dataValues.parent.dataValues.mother_name,
               fatherName: data.dataValues.parent.dataValues.father_name,
               parentEmailId:data.dataValues.parent.dataValues.email_id,
+              parentId:data.dataValues.parent.dataValues.id,
               parentContactNumber:data.dataValues.parent.dataValues.contact_number,
               parentCountryCode:data.dataValues.parent.dataValues.country_code,
-              id:data.dataValues.user_detail.dataValues.id,
               username:data.dataValues.user_detail.dataValues.username,
               admissionNo:data.dataValues.admission_no,
               password:data.dataValues.user_detail.dataValues.fatherName,
-              name:data.dataValues.user_detail.dataValues.fatherName,
-              dateOfBirth:data.dataValues.user_detail.dataValues.date_of_birth,
+              name:data.dataValues.user_detail.dataValues.name,
+              dateOfBirth:(data.dataValues.user_detail.dataValues.date_of_birth).toDateString(),
               profilePicUrl:data.dataValues.user_detail.dataValues.profile_pic_url,
               gender:data.dataValues.user_detail.dataValues.gender,
               permanentAddress:data.dataValues.user_detail.dataValues.permanent_address,
@@ -301,7 +526,7 @@ module.exports=function(){
               curriculumName:data.dataValues.sections[0].dataValues.curriculum.dataValues.name,
               semesterId:data.dataValues.sections[0].dataValues.curriculum.dataValues.semester.dataValues.id,
               semesterType:data.dataValues.sections[0].dataValues.curriculum.dataValues.semester.dataValues.type,
-              semesterName:data.dataValues.sections[0].dataValues.curriculum.dataValues.semester.dataValues.name,
+              semesterName:data.dataValues.sections[0].dataValues.curriculum.dataValues.semester.dataValues.name
             }
             sendData={
               data:details,
@@ -316,6 +541,142 @@ module.exports=function(){
               status:500,
               msg:'Internal Server Error'
             }
+          })
+        },
+        addOneStudent:(db,data,cb)=>{
+          let allDetailsOfStudent={}
+          let userAdded,studentAdded;
+          addUser(data,db)
+          .then((user)=>{
+            userAdded=user;
+            return addParent(data,db)
+          })
+          .then((parent)=>{ 
+            data.parentId=parent.id;
+            data.userId=userAdded.id;          
+            return addStudent(data,db)
+          })
+          .then((student)=>{
+            studentAdded=student;          
+            return addStudentToSection(student, db)
+          })
+          .then((studentSection)=>{
+            return getSemesterBySection(studentSection.section_id,db)
+          })
+          .then((section)=>{         
+            console.log("section---------------->", section.dataValues);
+              allDetailsOfStudent={
+                data:{
+                  admissionNo:studentAdded.admission_no,
+                  studentId:studentAdded.id,
+                  name:userAdded.name,
+                  batchId:data.batchId,
+                  batchName:data.batchName,
+                  deptId:data.deptId,
+                  deptName:data.deptName,
+                  sectionId:section.id ,
+                  section: section.name,
+                  semesterId:section.dataValues.curriculum.dataValues.semester.dataValues.id,
+                  semester:section.dataValues.curriculum.dataValues.semester.dataValues.name
+                },
+                status:200,
+                msg:"Done"
+              }
+              cb(allDetailsOfStudent)
+          })
+          .catch((error)=>{
+            console.log("error",error)
+            sendData={
+              status:500,
+              msg:'Internal Server Error'
+            }
+            cb(sendData)
+          })
+        },
+        editStudentDetails:(db,data,cb)=>{
+          editUserDetails(data, db)
+          .then((user)=>{
+              console.log("user updated--->",user)
+              return editParentDetails(data, db)
+          })
+          .then((parent)=>{
+              console.log("parent updated--->",parent)
+              sendData={
+                status:200,
+                data:data,
+                msg:'Done'
+              }
+              cb(sendData)
+          })
+           .catch((error)=>{
+              console.log("error",error)
+              sendData={
+                status:500,
+                msg:'Internal Server Error'
+              }
+              cb(sendData)
+            })
+        },
+        deleteStudentDetails:(db,data,cb)=>{
+          countParents(data, db)
+          .then((parentCount)=>{
+            console.log("user updated--->",parentCount)
+            if(parentCount.count>1)
+             {
+              return deleteStudentSectionAllocationDetails(data, db)
+            }
+            else{
+              let allData={}
+              deleteStudentSectionAllocationDetails(data, db)
+              .then((allocate)=>{
+                  console.log("user updated--->",allocate)
+                  allData.allocate=allocate
+                  return deleteStudentDetails(data, db)
+                })
+              .then((studentSection)=>{
+                  console.log("user updated--->",studentSection)
+                allData.studentSection=studentSection
+                return deleteParentDetails(data, db)
+              })
+              .then((parentDeleted)=>{
+                  console.log("user updated--->",parentDeleted)
+                allData.parentDeleted=parentDeleted
+                return deleteUserDetails(data, db)
+              })
+              .then((userDeleted)=>{
+                  console.log("parent updated--->",userDeleted)
+                  if(allData.allocate==1&&allData.studentSection==1&&allData.parentDeleted==1&&userDeleted==1){
+                      sendData={
+                        status:200,
+                        data:data,
+                        msg:'Deleted Successfully'
+                    }
+                  }
+                  else{
+                    sendData={
+                      status:500,
+                      msg:'Internal Server Error'
+                    }
+                  }                  
+                  cb(sendData)
+              })
+              .catch((error)=>{
+                console.log("error",error)
+                sendData={
+                  status:500,
+                  msg:'Internal Server Error'
+                }
+                cb(sendData)
+              })
+            }
+          })
+         .catch((error)=>{
+            console.log("error",error)
+            sendData={
+              status:500,
+              msg:'Parent Already Exists'
+            }
+            cb(sendData)
           })
         }
       },

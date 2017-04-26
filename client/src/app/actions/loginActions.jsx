@@ -2,7 +2,6 @@ import authenticate from './../utils/api/authenticate';
 import * as types from './../constants';
 
 export function loginUser(credential){
-
 	return {
 		type: types.LOGIN,
 		payload: 	
@@ -13,7 +12,6 @@ export function loginUser(credential){
 	};
 	
 }
-
 
 export function checkLogin(config){
 	return {
@@ -33,7 +31,6 @@ export function logoutUser(){
 	}
 }
 
-
 export function setUrl(path){
 	return {
 		type: types.SETPREVPATH,
@@ -46,5 +43,10 @@ export function setReceivedResponse(value){
 		type: types.RES_PENDING,
 		payload: value
 
+	}
+}
+export function resetToNoError(){
+	return {
+		type: types.RESET_ERROR
 	}
 }

@@ -6,10 +6,9 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import DepartmentList  from './../../components/department/DepartmentList.jsx';
 import AddDepartment from './../../components/department/AddDepartment.jsx';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import {getDepartmentList, addDepartment, deleteDepartment, editDepartment,
-  hideSlackBar, updateSlackBarMsg, handleTabChange, pageChange} from "./../../actions/departmentActions";
+  hideSlackBar, updateSlackBarMsg, handleTabChange, pageChange, resetToNoError} from "./../../actions/departmentActions";
+import {setErrorMessage} from "./../../actions/errorActions";
 import {connect} from "react-redux";
 
 
@@ -19,19 +18,24 @@ class Department extends React.Component{
       super(props);
     }
 
-    getChildContext() {
-      return { muiTheme: getMuiTheme(baseTheme) }
-    }
-
     componentWillMount() {
+      this.props.resetToNoError();
       let course= {courseId: 1}
       this.props.getDepartmentList(course);
     }
 
+    componentWillReceiveProps(nextProps) {
+      if(this.props.department.showErrorPage){
+        this.props.setErrorMessage(this.props.department.errorMessage);
+        browserHistory.push('/error');
+      }
+    }
+
     render(){
+        console.log(this.props)
         return (
           <div >
-            <Tabs value={this.props.department.selectedTab} onChange={this.props.handleTabChange}>
+            <Tabs value={this.props.department.selectedTab} style={{color:'grey'}} onChange={this.props.handleTabChange}>
               <Tab label="Department List" value="list">
                   <DepartmentList
                     getDepartmentList= {(course) => this.props.getDepartmentList(course)}
@@ -46,7 +50,7 @@ class Department extends React.Component{
                     pageChange= {(currentPage , size) => this.props.pageChange(currentPage , size)}
                   />
               </Tab>
-              <Tab className='contentCenter' label="Add Department"value="add" >
+              <Tab className='contentCenter' label="Add Department" value="add" >
                 <AddDepartment
                   addDepartment= {(department) => this.props.addDepartment(department)}
                   showSlackBar= {this.props.department.showSlackBar}
@@ -58,9 +62,6 @@ class Department extends React.Component{
     }
 }
 
-Department.childContextTypes = {
-            muiTheme: React.PropTypes.object.isRequired,
-};
 Department.contextTypes = {
     router: React.PropTypes.object.isRequired
 };
@@ -68,7 +69,8 @@ Department.contextTypes = {
 const mapStateToProps= (state) => {
   return{
     login: state.login,
-    department: state.departmentReducer
+    department: state.departmentReducer,
+    error: state.errorReducer
   };
 };
 
@@ -98,7 +100,10 @@ const mapDispatchToProps= (dispatch) => {
     },
     pageChange: (currentPage , size) =>{
       dispatch(pageChange(currentPage , size));
-    }
+    },
+    resetToNoError: () =>{
+      dispatch(resetToNoError());
+    }   
   };
 };
 

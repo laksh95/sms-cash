@@ -1,9 +1,9 @@
 import React from 'react';
 import AppBar from 'material-ui/AppBar';
-import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import {cyan500} from 'material-ui/styles/colors';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 
 var style = {
 
@@ -31,15 +31,6 @@ class TopBar extends React.Component {
   }
 
   
-  getChildContext() {
-    return { muiTheme: getMuiTheme(baseTheme) };
-   }
-  
-
-
- 
-
-
   handleToggle =() => { this.setState({open: !this.state.open});}
 
 
@@ -48,6 +39,7 @@ class TopBar extends React.Component {
       <MuiThemeProvider muiTheme={muiTheme}>
        <AppBar
          title={<span  style={style.titleStyle}>S T U D E N T &nbsp;&nbsp; M A N A G E M E N T &nbsp;&nbsp; S Y S T E M </span>}
+         showMenuIconButton={false}
          iconClassNameRight=""
          iconClassNameLeft=""   
        />
@@ -56,9 +48,7 @@ class TopBar extends React.Component {
   }
 }
 
-TopBar.childContextTypes = {
-    muiTheme: React.PropTypes.object.isRequired,
-};
+
 TopBar.contextTypes = { 
     router: React.PropTypes.object.isRequired
 };

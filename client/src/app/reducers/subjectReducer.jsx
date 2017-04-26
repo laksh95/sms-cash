@@ -5,7 +5,8 @@ const subjectReducer = (
     department: [],
     subject: [],
     status: 200,
-    errorMessage: "Loading"
+    errorMessage: "Loading",
+    showErrorPage: false,
   },
   action
 ) => {
@@ -20,20 +21,36 @@ const subjectReducer = (
       }
       return state
     case "GET_SUBJECT_AND_DEPARTMENT_REJECTED":
-      let error = action.payload.data.message
-      switch(error){
-        case "IS_INTERNAL_SERVER_ERROR":
+      let errorStatus = action.payload.response.status
+      switch(errorStatus){
+        case 500:
           state = {
             status: 500,
-            errorMessage: messages.IS_INTERNAL_SERVER_ERROR
+            showErrorPage: true,
+            errorMessage: "500 : Internal Server Error"
           }
           return state
-        case "IS_INVALID_INPUT_FORM":
+        case 400:
           state = {
             status: 400,
-            errorMessage: messages.IS_INVALID_INPUT_FORM
+            errorMessage: "BAD REQUEST"
           }
+          return state
+        case 403:
+          state = {
+              ...state ,
+              showErrorPage : true,
+              errorMessage : "403: Forbidden"
+          }
+          return state
       }
+      case "RESET_ERROR":
+          state={
+              ...state,
+              showErrorPage: false,
+              errorMessage: "Loading"
+          }
+          return state
     default:
       return state
   }

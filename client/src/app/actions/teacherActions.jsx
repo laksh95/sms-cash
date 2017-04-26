@@ -7,7 +7,14 @@ export function getTeacherAndFeedback(data){
 		payload:
 			teacher.getTeacherAndFeedback(data)
 			.then((response) => {
+				response.data.status= response.status
 				return response.data
 			})
 	}
+}
+
+export function resetToNoErrorTeacher(){
+    return {
+        type: types.RESET_ERROR
+    }
 }

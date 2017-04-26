@@ -1,6 +1,5 @@
 let checkRole= require('./../config/roleCheck');
 let express=require('express')
-
 let apiRouter = (app) => {
 
   app.use('/api/department',checkRole(['admin','teacher']), require('../api/department'))
@@ -28,4 +27,4 @@ let apiRouter = (app) => {
   })
 };
 
-module.exports = apiRouter
+module.exports = apiRouter 

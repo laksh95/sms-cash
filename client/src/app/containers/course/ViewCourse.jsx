@@ -7,7 +7,7 @@ import NumberInput from 'material-ui-number-input';
 import axios from 'axios'
 import Snackbar from 'material-ui/Snackbar';
 require('rc-pagination/assets/index.css');
-import {setCourse,setPagedCourse,setSnackbarOpen,setSnackbarMessage,setValue,editCourse,addCourse , deleteCourse,getCourses} from '../../actions/courseActions.jsx'
+import {setCourse,setPagedCourse,setPagination,setSnackbarOpen,setSnackbarMessage,setValue,editCourse,addCourse , deleteCourse,getCourses} from '../../actions/courseActions.jsx'
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 import { Router, Route, browserHistory } from 'react-router'
 import store from './../../store'
@@ -26,7 +26,8 @@ class ViewCourse extends React.Component {
             errorText1 :"",
             errorText :"",
             validateCourseName :true,
-            validateCourseDuration : true
+            validateCourseDuration : true,
+            open:false
         };
         this.setCourseName = this.setCourseName.bind(this)
         this.setCourseDuration = this.setCourseDuration.bind(this)
@@ -69,9 +70,7 @@ class ViewCourse extends React.Component {
         this.props= props
     }
     pageChange = (currentPage , size) =>{
-        this.setState({
-            currentPage : currentPage
-        })
+        console.log("page change",currentPage)
         let course = this.props.courseReducer.course
         let start = (currentPage-1)*10
         let end = start + 10
@@ -81,9 +80,11 @@ class ViewCourse extends React.Component {
                 pagedCourses.push(course[index])
             }
         }
-        this.setState({
-            pagedCourses:pagedCourses
-        })
+        let  data = {
+            currentPage,
+            pagedCourses
+        }
+        this.props.setPagination(data)
     };
     handleDeleteOpen = (index,data) => {
         this.setState({
@@ -270,7 +271,7 @@ class ViewCourse extends React.Component {
                             {
                                 this.props.courseReducer.pagedCourses.map((data,index)=>{
                                     return (
-                                        <TableRow>
+                                        <TableRow key={index}>
                                             <TableRowColumn><FlatButton label={data.name}/></TableRowColumn>
                                             <TableRowColumn>{data.duration}</TableRowColumn>
                                             <TableRowColumn>{data.noOfDept}</TableRowColumn>
@@ -283,7 +284,7 @@ class ViewCourse extends React.Component {
                         </TableBody>
                     </Table>
                 </div>
-                <Pagination className="ant-pagination" defaultCurrent={1} total={this.state.totalPages} current={this.state.currentPage} defaultPageSize={10} onChange={this.pageChange}/>
+                <Pagination className="ant-pagination" defaultCurrent={1} total={this.props.courseReducer.totalPages} current={this.props.courseReducer.currentPage} defaultPageSize={10} onChange={this.pageChange}/>
                 {/*Confirm delete option*/}
                 <Dialog
                     actions={dialogActions}
@@ -338,16 +339,10 @@ const mapDispatchToProps = (dispatch) => {
         },
         deleteCourse:(data) =>{
             dispatch(deleteCourse(data))
+        },
+        setPagination:(data)=>{
+            dispatch(setPagination(data))
         }
     };
 };
 export  default connect(mapStateToProps,mapDispatchToProps)(ViewCourse);
-
-
-
-
-
-
-
-
-

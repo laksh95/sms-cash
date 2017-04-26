@@ -7,7 +7,14 @@ export function getSubjectAndDepartment(data){
 		payload:
 			subject.getSubjectAndDepartment(data)
 			.then((response) => {
+				response.data.status= response.status
 				return response.data
 			})
 	}
+}
+
+export function resetToNoErrorSubject(){
+    return {
+        type: types.RESET_ERROR
+    }
 }

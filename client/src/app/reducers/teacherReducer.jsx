@@ -4,7 +4,8 @@ const teacherReducer = (
   state = {
     status: 200,
     errorMessage: "Loading",
-    allTeacher: []
+    allTeacher: [],
+    showErrorPage: false
   },
   action
 ) => {
@@ -18,21 +19,36 @@ const teacherReducer = (
       }
       return state
     case "GET_TEACHER_AND_FEEDBACK_REJECTED":
-      let error = action.payload.response.data.message
-      console.log(error)
-      switch(error){
-        case "IS_INTERNAL_SERVER_ERROR":
+      let errorStatus = action.payload.response.status
+      switch(errorStatus){
+        case 500:
           state = {
             status: 500,
-            errorMessage: codes.failure.IS_INTERNAL_SERVER_ERROR
+            showErrorPage: true,
+            errorMessage: "500 : Internal Server Error"
           }
           return state
-        case "IS_INVALID_INPUT_FORM":
+        case 400:
           state = {
             status: 400,
-            errorMessage: codes.failure.IS_INVALID_INPUT_FORM
+            errorMessage: "BAD REQUEST"
           }
+          return state
+        case 403:
+        state = {
+            ...state ,
+            showErrorPage : true,
+            errorMessage : "403: Forbidden"
+        }
+        return state
       }
+    case "RESET_ERROR":
+        state={
+            ...state,
+            showErrorPage: false,
+            errorMessage: "Loading"
+        }
+        return state
     default:
       return state
   }

@@ -3,7 +3,7 @@ let sequelize = data.sequelize;
 let connection = data.connection;
 let validator = require('validator')
 
-module.exports=function(){
+module.exports=()=>{
 let personalCalendar= connection.define('personal_calendar',{
    id: {
        type: sequelize.INTEGER,

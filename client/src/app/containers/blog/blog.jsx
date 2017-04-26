@@ -2,7 +2,7 @@ import {Link} from 'react-router';
 import React from 'react';
 import {connect} from "react-redux";
 import {loginUser, checkLogin} from "./../../actions/loginActions";
-import {openModal,getPosts,getStats,setPost,deletePost,setShowEdit,searchPost,setSnackbarOpen,setCurrentLike,setLikes} from "../../actions/blogActions.js";
+import {openModal,getPosts,getStats,setPost,deletePost,setShowEdit,searchPost,setSnackbarOpen,setCurrentLike,setLikes,getMorePosts} from "../../actions/blogActions.js";
 import AddPost from "./addPost.jsx"
 import EditPost from "./editPost.jsx"
 import FloatingActionButton from 'material-ui/FloatingActionButton';
@@ -76,7 +76,7 @@ class Blog extends React.Component {
                 this.setState({
                     pageNumber:pg
                 })
-                this.props.getPosts({pageNumber:pg})
+                this.props.getMorePosts({pageNumber:pg})
             }
             else {
                 //do nothing
@@ -318,6 +318,9 @@ const mapDispatchToProps= (dispatch) => {
         },
         setCurrentLike:(data)=>{
             dispatch(setCurrentLike(data))
+        },
+        getMorePosts:(data)=>{
+            dispatch(getMorePosts(data))
         }
     };
 };

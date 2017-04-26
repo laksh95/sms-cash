@@ -5,7 +5,7 @@ module.exports = {
         if (req.body){
             post.addPost(models,req.body,(error,result) => {
                 if(result){
-                    //console.log(result)
+
                     if(Object.keys(result).length>0)
                         res.status(200).json({data:result,message:"SUCCESSFUL_INSERTION"})
                     else
@@ -24,10 +24,10 @@ module.exports = {
         }
     },
     getPosts :(req,res) =>{
-        console.log('inside controller')
+
         if(req.body){
             post.getPosts(models,req.body,(error,result)=>{
-                console.log("result of controller",result)
+
                 if(result){
                     if(result.length>0)
                         res.status(200).json({data:result,message:"SUCCESSFULLY_FETCHED"})
@@ -58,7 +58,6 @@ module.exports = {
     addComment :(req,res) =>{
         if(req.body){
             post.addComment(models,req.body,(error,result) =>{
-                console.log(result)
                 if(result){
                     res.status(200).json({data:result ,message: "SUCCESSFULLY_ADDED"})
                 }
@@ -70,9 +69,8 @@ module.exports = {
     },
     editComment : (req,res)=>{
         if(req.body){
-            console.log("req.body",req.body)
             post.editComment(models,req.body,(error,result) =>{
-                // console.log(result)
+
                 if(result){
                     res.status(200).json({data:result ,message: "SUCCESSFULLY_EDITED"})
                 }
@@ -84,7 +82,6 @@ module.exports = {
     },
     deleteComment : (req,res)=>{
         if(req.body){
-            console.log("req.body",req.body)
             post.deleteComment(models,req.body,(error,result) =>{
                 if(result){
                     res.status(200).json({data:result ,message: "SUCCESSFULLY_DELETED"})

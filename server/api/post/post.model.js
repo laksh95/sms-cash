@@ -61,7 +61,7 @@ let sql = function(){
                             status :true
                         }
                     }).then(function(response){
-                        console.log("inside then",response)
+
                         let posts = []
                         for(let index in response){
                             posts.push(response[index].dataValues)
@@ -84,7 +84,6 @@ let sql = function(){
                             }))
                         }
                         Promise.all(likedPromises).then(resultData=>{
-                            console.log("resultdata",resultData)
                             for(let index in resultData){
                                 if(resultData[index]!==null)
                                     posts[index].liked=true
@@ -147,8 +146,8 @@ let sql = function(){
                                 let postComment = models.post_comment
                                 let commentPromises = []
                                 postComment.findAll({
-                                    offset :1,
-                                    limit : 5 ,
+                                    offset :0,
+                                    limit :4 ,
                                     order: 'created_at DESC',
                                     where : {
                                         post_id : response.dataValues.id,
@@ -156,6 +155,7 @@ let sql = function(){
                                     }
                                 }).then((comments)=>{
                                     let updatedComments = []
+                                    console.log(comments.length)
                                     for(let index in comments){
                                         updatedComments.push(comments[index].dataValues)
                                         commentPromises.push(models.user_detail.findAll({
@@ -164,6 +164,7 @@ let sql = function(){
                                             }
                                         }))
                                     }
+
                                     Promise.all(commentPromises).then((result)=>{
                                         for(let index in result){
                                             updatedComments[index].user_name = result[index][0].dataValues.username
@@ -255,7 +256,6 @@ let sql = function(){
                         }
                     }).then((response)=>{
                         if(response!=null){
-                            console.log(response.dataValues)
                             postLike.update({
                                 status :data.liked
                             },{
@@ -264,7 +264,6 @@ let sql = function(){
                                     liked_by :data.user_id
                                 }
                             }).then((response)=>{
-                                console.log(response)
                                 cb(null,response)
                             }).catch((error)=>{
                                 cb(error,null)
@@ -275,7 +274,6 @@ let sql = function(){
                                 post_id : data.post.id ,
                                 liked_by : data.user_id
                               }).then((response)=>{
-                                  console.log(response)
                                   cb(null,response)
                               }).catch((error)=>{
                                   cb(error,null)
@@ -289,7 +287,6 @@ let sql = function(){
                     let postComment = models.post_comment
                     let result = {}
                     let promises = []
-                    console.log(data)
                     promises.push(post.count({
                         where : {
                             status : true ,
@@ -313,7 +310,6 @@ let sql = function(){
                         result.totalPosts = response[0]
                         result.totalLikes = response[1]
                         result.totalComments = response[2]
-                        console.log(result)
                         cb(null,result)
                     })
                     .catch((error)=>{
@@ -321,7 +317,6 @@ let sql = function(){
                     })
                 },
                 deletePost:function(models,data ,cb){
-                    console.log(data)
                     let post = models.post
                     post.update({
                         status : false
@@ -348,16 +343,13 @@ let sql = function(){
                         for(let index in temp){
                             posts[index]=temp[index].dataValues
                         }
-                        // console.log(posts)
+
                         let headings = []
                         for(let index in posts){
-                            console.log(posts[index].heading.toLowerCase())
-                            console.log(data.heading)
                             if(posts[index].heading.toLowerCase().indexOf(data.heading)!==-1){
                                 headings.push(posts[index])
                             }
                         }
-                        console.log("Headings",headings.length)
                         let userDetail = models.user_detail
                         promises = []
                         for(let index in headings){
@@ -373,9 +365,9 @@ let sql = function(){
                         let postLike = models.post_like
                         let postComment = models.post_comment
                         Promise.all(promises).then(data=>{
-                            console.log("data\n",data.length)
+
                             for(let index in data){
-                                console.log("index",index)
+
                                 headings[index].user_name = data[index][0].dataValues.name
                                 headings[index].profile_pic_url=data[index][0].dataValues.profile_pic_url
                                 likePromises.push(postLike.count({
@@ -407,7 +399,7 @@ let sql = function(){
                 },
                 getComments:function(models,data,cb){
                     let postComment = models.post_comment
-                    console.log(data.pageNumber)
+
                     postComment.findAll({
                         offset:(data.pageNumber-1)*5,
                         limit: 5,
@@ -421,7 +413,7 @@ let sql = function(){
                         for(let index in response){
                             comments.push(response[index].dataValues)
                         }
-                        console.log(comments)
+
                         cb(null,comments)
                     })
                 }

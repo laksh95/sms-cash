@@ -26,7 +26,24 @@ const blogReducer = (state = {
             if(action.payload.data.length===0){
                 state = {
                     ...state,
-                    isScrollActive: false
+                    isScrollActive: false,
+                    moreComments : true
+                }
+            }
+            else {
+                state = {
+                    ...state,
+                    posts:action.payload.data,
+                    moreComments : true
+                }
+            }
+            return state
+        case "GET_MORE_POSTS_FULFILLED":
+            if(action.payload.data.length===0){
+                state = {
+                    ...state,
+                    isScrollActive: false,
+                    moreComments : true
                 }
             }
             else {
@@ -34,7 +51,8 @@ const blogReducer = (state = {
                 posts = posts.concat(action.payload.data)
                 state = {
                     ...state,
-                    posts
+                    posts,
+                    moreComments : true
                 }
             }
             return state
@@ -189,11 +207,11 @@ const blogReducer = (state = {
             var  comments = state.comments
             let updatedComments = newComments.concat(comments)
             if(newComments.length===0){
-                console.log("yayyyyyyyy")
                 state = {
                     ...state ,
                     snackbarMessage:"No more comments",
-                    snackbarOpen:true
+                    snackbarOpen:true,
+                    moreComments:false
                 }
             }
             else {

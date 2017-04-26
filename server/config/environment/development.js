@@ -6,7 +6,7 @@ module.exports = {
   sequelize: {
     uri: 'postgres://postgres:postgres@localhost:5432/smsInternal',
     options: {
-      //logging: false,
+      logging: false,
       dialect: 'postgres',
       define: {
         timestamps: true,

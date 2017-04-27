@@ -162,11 +162,14 @@ const blogReducer = (state = {
                     posts.splice(index,1)
                 }
             }
+            var stats = state.stats
+            stats.totalPosts = stats.totalPosts -1
             state = {
                 ...state ,
                 posts: posts,
                 snackbarOpen:true ,
-                snackbarMessage:"Post Deleted"
+                snackbarMessage:"Post Deleted",
+                stats
             }
             return state
         case "SET_SHOW_EDIT":

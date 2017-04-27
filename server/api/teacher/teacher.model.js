@@ -15,7 +15,6 @@ let myPlaintextPassword=''
 const saltRounds = 10;
 
 let addUser=((data,db)=>{
-  console.log("inside add user then---------------------------->")
   let name=data.name;
   let removeSpaces=name.trim();
   let uname='';
@@ -266,7 +265,7 @@ let init = function(){
                    data=request;
                    let message={
                      from:'"Ghost In Action" <ignore.john@gmail.com>',
-                     to: 'ankit@cronj.com, laksh@cronj.com',
+                     to: user.email_id,
                      subject:'Student Management System Temporary Login Credentials',
                      text:' Username is ' + userAdded.username + 'and password is '+myPlaintextPassword
                   }

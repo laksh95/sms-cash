@@ -22,8 +22,9 @@ const teacherReducer = (
     /*adding the teacher to database*/
     case "ADD_USER_TEACHER_FULFILLED":
       allTeacher = state.allTeacher
-      let newTeacher = action.payload.result
-
+      let newTeacher = action.payload.data
+      newTeacher.teacher_name = action.payload.result.name
+      newTeacher.teacher_email = action.payload.result.emailId
       allTeacher.push(newTeacher)
       state = {
         ...state,
@@ -31,7 +32,8 @@ const teacherReducer = (
         error: false,
         errorMessage: action.payload.message,
         noDataError: false,
-        successSnackBar: true
+        successSnackBar: true,
+        value: "1"
       }
       return state
     case "ADD_USER_TEACHER_REJECTED":
@@ -341,7 +343,12 @@ const teacherReducer = (
             successSnackBar: false
         }
         return state
-
+    case "SET_VALUE":
+        state = {
+            ...state,
+            value : action.payload
+        }
+        return state
     default:
       return state
   }

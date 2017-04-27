@@ -4,11 +4,7 @@
 module.exports = {
   // Sequelize connection options
   sequelize: {
-<<<<<<< HEAD
-    uri: 'postgres://postgres:postgres@localhost:5432/smsInternal',
-=======
-    uri: 'postgres://postgres:shilpa@localhost:5432/sms',
->>>>>>> admin-teacher
+    uri: 'postgres://postgres:cronj123@192.168.1.223:5432/sms',
     options: {
       logging: false,
       dialect: 'postgres',

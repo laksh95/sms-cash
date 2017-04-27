@@ -233,7 +233,7 @@ const mapStateToProps = (state) => {
     teacherReducer: state.teacherReducer,
     subjectReducer: state.subjectReducer,
     headerReducer: state.headerReducer,
-    errorRedu
+    errorReducer: state.errorReducer
     }
 }
 

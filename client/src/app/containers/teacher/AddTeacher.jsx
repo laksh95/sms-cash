@@ -35,6 +35,7 @@ class AddTeacher extends React.Component{
           disableAddButton: true,
           birthDate: null,
           gender: null,
+          validationInForm: false,
           allGender: [
             {
               name: "MALE"
@@ -65,6 +66,20 @@ class AddTeacher extends React.Component{
     handleChange = (type, event) => {
       switch (type) {
         case "addUser":
+          for(let index = 0; index<this.props.teacherReducer.allTeacher.length; index++){
+            if(this.state.email == this.props.teacherReducer.allTeacher[index].teacher_email){
+              this.setState({
+                emailInvalid: true,
+                validationInForm: true
+              })
+              return
+            }
+          }
+
+          this.setState({
+            validationInForm: false
+          })
+
           let details = {
             name: this.state.teacherName,
             department: this.state.departmentSelected,
@@ -76,20 +91,14 @@ class AddTeacher extends React.Component{
             gender: this.state.gender
           }
           this.props.addUser(details)
-          this.setState({
-            teacherName: null,
-            departmentForChangeDetails: null,
-            email: null,
-            joinDate: null,
-            designation: null,
-            departmentId: null,
-            emailInvalid: true,
-            nameInvalid: true,
-            designationInvalid: true,
-            dateInvalid: true,
-            departmentInvalid: true,
-            genderInvalid: true,
-          })
+          // this.setState({
+          //   teacherName: null,
+          //   departmentForChangeDetails: null,
+          //   email: null,
+          //   joinDate: null,
+          //   designation: null,
+          //   departmentId: null
+          // })
           break
         case "getName":
           this.setState({
@@ -148,8 +157,10 @@ class AddTeacher extends React.Component{
           }
           break
         case "getEmail":
+          this.props.resetToNoErrorTeacher
           this.setState({
-            email: event.target.value
+            email: event.target.value,
+            validationInForm: false
           })
           if(event.target.value == ""){
             this.setState({
@@ -229,13 +240,22 @@ class AddTeacher extends React.Component{
           message={"Added a teacher"}
           autoHideDuration={4000}
           />
-      )
+        )
+      }
+      if(this.state.validationInForm == true){
+        return (
+          <Snackbar
+          open={true}
+          message={"A teacher with the same Email ID exists"}
+          autoHideDuration={4000}
+          />
+        )
       }
       else{
         return (
           <Snackbar
           open={true}
-          message={"Added a teacher"}
+          message={errorMessage}
           autoHideDuration={4000}
           />
         )
@@ -327,8 +347,10 @@ class AddTeacher extends React.Component{
           </form>
     		</div>
         {
-          this.props.teacherReducer.error == true || this.props.teacherReducer.successSnackBar == true?
-          this.errorSnackBar(this.props.teacherReducer.errorMessage)
+          this.props.teacherReducer.error == true || this.props.teacherReducer.successSnackBar == true || this.state.validationInForm == true?
+          (
+            this.errorSnackBar(this.props.teacherReducer.errorMessage)
+          )
           : null
         }
 

@@ -10,7 +10,6 @@ import request from 'superagent';
 import {Component, PropTypes} from 'react';
 let Dropzone = require('react-dropzone');
 import RichTextEditor from 'react-rte';
-
 let loginStyle = require('./../../css/login.css');
 const CLOUDINARY_UPLOAD_PRESET = 'sbidnltg';
 const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/yash04/image/upload';
@@ -19,12 +18,12 @@ class AddPost extends React.Component {
 
     constructor(props) {
         super(props)
-
         this.state = {
                 text: '',
                 validateHeading : false ,
                 open : false,
                 validateContent : false,
+                validateImage : false ,
                 heading : "" ,
                 content : "",
                 image : "",
@@ -42,23 +41,24 @@ class AddPost extends React.Component {
     };
     componentWillReceiveProps(props){
         this.props= props
-    }
+    }/* handle snackbar close*/
     handleRequestClose = () => {
         this.setState({
             open: false,
         });
     };
+    /*hanlde open modal*/
     handleOpen = () => {
         this.props.openModal(true)
     };
+    /*handle close event of dialog*/
     handleClose = (event,type) => {
         switch(event){
             case "CANCEL":
                 this.props.openModal(false)
-                this.setState({image : {}})
+                this.setState({image : {},value: RichTextEditor.createEmptyValue()})
                 break
             case "POST":
-                var image =this.state.image
                 var data = {
                     heading : this.state.heading,
                     content : this.state.value.toString('html'),
@@ -66,20 +66,23 @@ class AddPost extends React.Component {
                 }
                 this.props.addPost(data)
                 this.props.openModal(true)
-                this.setState({open : true, message : "Post Added" })
+                this.setState({open : true, message : "Post Added" ,value: RichTextEditor.createEmptyValue()})
+
                 break
             default:
                 break
         }
     };
+    /*event on image drop*/
     onDrop(files){
         console.log("Files onDrop",files)
         this.setState({
-            image : files[0]
+            image : files[0],
+            validateImage:true
         })
         this.handleImageUpload(files[0])
-
     }
+    /*handle image upload to cloudinary server*/
     handleImageUpload(file){
         let upload = request.post(CLOUDINARY_UPLOAD_URL)
             .field('upload_preset', CLOUDINARY_UPLOAD_PRESET)
@@ -95,6 +98,7 @@ class AddPost extends React.Component {
             }
         });
     }
+    /*handle change for all data fields*/
     handleChange = (type, event) => {
         switch(type){
             case "HEADING":
@@ -114,6 +118,7 @@ class AddPost extends React.Component {
                 break
         }
     }
+    /*setting the post content and validating the button */
     setContent(value){
         this.setState({
             value  :value
@@ -159,7 +164,7 @@ class AddPost extends React.Component {
             <FlatButton
                 label="Post"
                 primary={true}
-                disabled={!(this.state.validateContent&&this.state.validateHeading)}
+                disabled={!(this.state.validateContent&&this.state.validateHeading&&this.state.validateImage)}
                 onTouchTap={this.handleClose.bind(this,"POST")}
             />,
         ];

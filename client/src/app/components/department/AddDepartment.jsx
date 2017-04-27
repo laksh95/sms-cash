@@ -58,35 +58,26 @@ class AddDepartment extends React.Component{
     }
 
     addDepartment= ()=> {
-      if(this.state.invalidShortName === "" && this.state.invalidName ===""){
+      if(this.state.invalidShortName === "" && this.state.invalidName ==="" && this.state.shortName!=='' && this.state.name!==''){
         this.setState({errorMessage:""})
         let name= this.state.name.trim();
         let shortName= this.state.shortName.trim();
         let departmentObj={
           name:name,
           abbreviated_name: shortName,
-          course_id: 1
+          course_id: this.props.selectedCourseId
         }
         this.props.addDepartment(departmentObj); 
       }
       else{
-        this.setState({errorMessage:"Error! Please enter all the fields as suggested"})
+          if(this.state.shortName.trim()==='' || this.state.name.trim()==='')
+              this.setState({errorMessage:"Please enter all the fields"})
+          else {
+              this.setState({errorMessage:"Error! Please enter all the fields as suggested"})
+          }
       }
     }
-
     render(){
-      {
-      // const loaderStyle = {
-      //   container: {
-      //     position: 'relative',
-      //   },
-      //   refresh: {
-      //     display: 'inline-block',
-      //     position: 'relative',
-      //   },
-      // };
-    }
-
         return (
           <div>
            <div className="contentCenter">
@@ -127,5 +118,4 @@ class AddDepartment extends React.Component{
         );
     }
 }
-
 export default AddDepartment;

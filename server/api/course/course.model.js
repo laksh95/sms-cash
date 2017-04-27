@@ -28,9 +28,9 @@ let init=function(){
            classMethods:{
                associate:(model)=>{
                 },
+                /*confirmation for otp*/
                 generateOTP:(data,db,cb)=>{
                    const token = data.authorization.split(' ')[1];
-                   console.log(token,'--------course model---------')
                    let otp = totp('JBSWY3DPEHPK3PXP')
                     db.otp.update({
                         status:'f'
@@ -87,6 +87,7 @@ let init=function(){
                        }
                    })
                 },
+                /*get all the courses*/
                 getCourse:(db)=>{
                     let course=db.course
                     let department=db.department
@@ -102,6 +103,7 @@ let init=function(){
                         }]
                     })
                 },
+                /*add a new course */
                 addNewCourse:(db,setData,sendData)=>{
                     let course=db.course
                     setData.course_name = setData.course_name.toUpperCase()
@@ -156,14 +158,14 @@ let init=function(){
                                     }
                                     sendData(response)
                                 })
-                                    .catch((err)=>{
-                                        let response = {
-                                            status : 0,
-                                            data :[],
-                                            msg : "Internal Server Error"
-                                        }
-                                        sendData(response)
-                                    })
+                                .catch((err)=>{
+                                    let response = {
+                                        status : 0,
+                                        data :[],
+                                        msg : "Internal Server Error"
+                                    }
+                                    sendData(response)
+                                })
                             }
                             else {
                                 response = {
@@ -176,6 +178,7 @@ let init=function(){
                         }
                     })
                 },
+                /*edit a current course*/
                 editCourse:(db,updateData,sendData)=>{
                     let course=db.course
                     course.update({
@@ -202,6 +205,7 @@ let init=function(){
                             sendData(response)
                         })
                 },
+                /*delete a course*/
                 deleteCourse:(db,data,sendData)=>{
                     let course = db.course
                     let id = data.data
@@ -213,7 +217,6 @@ let init=function(){
                             status:'t'
                         }
                     }).then((deletedData)=>{
-                        console.log('------',deletedData.length)
                         if(deletedData[0] !== 0) {
                             let response = {
                                 data:id,
@@ -230,7 +233,6 @@ let init=function(){
                         }
                     })
                         .catch((err)=>{
-                        console.log(err.toString(),'--------------')
                             let response = {
                                 status : 0,
                                 data :[]

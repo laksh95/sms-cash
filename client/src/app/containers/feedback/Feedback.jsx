@@ -14,6 +14,7 @@ import ActionFavorite from 'material-ui/svg-icons/action/favorite'
 import Snackbar from 'material-ui/Snackbar'
 import {setErrorMessage} from './../../actions/errorActions'
 import { browserHistory } from 'react-router'
+import { Image } from 'material-ui-image'
 
 class Feedback extends React.Component {
    constructor(props) {
@@ -30,6 +31,7 @@ class Feedback extends React.Component {
   }
 
   errorSnackBar = (errorMessage) => {
+    if(this.props.teacherReducer.noDataError == false){
       return (
         <Snackbar
         open={true}
@@ -37,6 +39,14 @@ class Feedback extends React.Component {
         autoHideDuration={4000}
         />
       )
+    }
+    else{
+      return (
+        <div id="labelErrorDiv" style= {{ marginTop: '17%', marginLeft: '20%' }}>
+          <label style = {{color:'#808080', fontSize: 'xx-large'}}> NO DATA </label>
+        </div>
+      )
+    }
   }
   teacherList = (dataTeacher, index) => {
     return(
@@ -78,6 +88,8 @@ class Feedback extends React.Component {
 
   componentWillReceiveProps(nextProps){
     if(nextProps.headerReducer.selectedCourseId !== this.props.headerReducer.selectedCourseId){
+      // this.props.resetToNoErrorTeacher()
+      // this.props.resetToNoErrorSubject()
       this.props.getTeacherAndFeedback({
          "offset": 0,
          "limit":2,
@@ -133,12 +145,14 @@ class Feedback extends React.Component {
           multiple={true}
         >
        {
-         this.props.subjectReducer.errorMessage==="SUCCESS_OPERATION"?
+         this.props.subjectReducer.errorDepartment===false?
          (this.props.subjectReducer.department.map((data, index)=>{
            return(
              <MenuItem key={data.id} value={data.name} primaryText={data.name} />
            )
-        })) : null
+        })) : (
+            <MenuItem key={1} disabled={true} value='No data' primaryText='No data' />
+          )
        }
        </SelectField>
        &nbsp;&nbsp;
@@ -149,18 +163,21 @@ class Feedback extends React.Component {
          multiple={true}
        >
        {
-         this.props.subjectReducer.errorMessage==="SUCCESS_OPERATION"?
+         this.props.subjectReducer.errorSubject===false?
          (this.props.subjectReducer.subject.map((data, index)=>{
            return(
              <MenuItem key={index} value={data.subject.name} primaryText={data.subject.name} />
            )
-         })) : null
+         })) : (
+             <MenuItem key={1} disabled={true} value='No data' primaryText='No data' />
+           )
+
       }
        </SelectField>
        <br/>
           {
-            this.props.teacherReducer.status == 200 && this.props.teacherReducer.errorMessage === "SUCCESS_OPERATION"?
-            this.props.teacherReducer.allTeacher.map((data,id)=>{
+            this.props.teacherReducer.status == 200 && this.props.teacherReducer.error == false && this.props.teacherReducer.allTeacherAndFeedback !== undefined?
+            this.props.teacherReducer.allTeacherAndFeedback.map((data,id)=>{
                 let noSubject = 0
                 let noDepartment = 0
                 if(this.state.selectedSubject.length === 0){

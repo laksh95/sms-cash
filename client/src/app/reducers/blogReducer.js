@@ -26,7 +26,24 @@ const blogReducer = (state = {
             if(action.payload.data.length===0){
                 state = {
                     ...state,
-                    isScrollActive: false
+                    isScrollActive: false,
+                    moreComments : true
+                }
+            }
+            else {
+                state = {
+                    ...state,
+                    posts:action.payload.data,
+                    moreComments : true
+                }
+            }
+            return state
+        case "GET_MORE_POSTS_FULFILLED":
+            if(action.payload.data.length===0){
+                state = {
+                    ...state,
+                    isScrollActive: false,
+                    moreComments : true
                 }
             }
             else {
@@ -34,21 +51,40 @@ const blogReducer = (state = {
                 posts = posts.concat(action.payload.data)
                 state = {
                     ...state,
-                    posts
+                    posts,
+                    moreComments : true
                 }
             }
             return state
-        case "GET_POSTS_REJECTED":
+        case "GET_MORE_POSTS_REJECTED":
             state = {
                 ...state ,
                 isScrollActive:false
             }
             return state
-        case "GET_POST_FULFILLED":
+        case "GET_POSTS_REJECTED":
             state = {
                 ...state ,
-                post :action.payload.data,
-                comments :action.payload.data.comments
+                isScrollActive:false,
+                snackbarMessage:"No Posts to show",
+                snackbarOpen:true
+            }
+            return state
+        case "GET_POST_FULFILLED":
+            if(action.payload.data.comments.length===0){
+                state={
+                    ...state ,
+                    post:action.payload.data ,
+                    comments : action.payload.data.comments ,
+                    moreComments:false
+                }
+            }
+            else {
+                state = {
+                    ...state ,
+                    post :action.payload.data,
+                    comments :action.payload.data.comments
+                }
             }
             return state
         case "ADD_COMMENT_FULFILLED":
@@ -124,7 +160,9 @@ const blogReducer = (state = {
             }
             state = {
                 ...state ,
-                posts: posts
+                posts: posts,
+                snackbarOpen:true ,
+                snackbarMessage:"Post Deleted"
             }
             return state
         case "SET_SHOW_EDIT":
@@ -189,11 +227,11 @@ const blogReducer = (state = {
             var  comments = state.comments
             let updatedComments = newComments.concat(comments)
             if(newComments.length===0){
-                console.log("yayyyyyyyy")
                 state = {
                     ...state ,
                     snackbarMessage:"No more comments",
-                    snackbarOpen:true
+                    snackbarOpen:true,
+                    moreComments:false
                 }
             }
             else {

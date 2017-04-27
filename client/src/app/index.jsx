@@ -24,21 +24,23 @@ injectTapEventPlugin();
 render((
 	<Provider store={store}>
 	   <Router history = {history}>
+		   <Route path = "/login" component = {Login}/>
 	      <Route path = "/" component = {App}>
 	         <IndexRoute component = {Dashboard} />
 	         <Route path = "/dashboard" component = {Dashboard} />
 	         <Route path = "/department" component = {Department} />
-					 <Route path = '/teacher/allTeacher' component = {AllTeacher} />
-					 <Route path = '/teacher/addTeacher' component = {AddTeacher} />
-					 <Route path = "/blog" component = {Blog} />
-					 <Route path = "/course" component={Course} />
-					 <Route path = "/student" component = {Student} />
+			 <Route path = '/teacher/allTeacher' component = {AllTeacher} />
+			 <Route path = '/teacher/addTeacher' component = {AddTeacher} />
+			 <Route path = "/blog" component = {Blog} />
+			 <Route path = "/course/:page" component={Course} />
+			 <Route path = "/student" component = {Student} />
 	         <Route path = "/blog/post/:postid" component = {Post} />
 	         <Route path = "/teacher" component = {Teacher} />
 			 	 	<Route path = "/feedback" component = {Feedback} />
+			 	 	<Route path='*' component={ErrorApp} />
 	      </Route>
-	      <Route path = "/login" component = {Login}/>
 	      <Route path = "/error" component = {ErrorApp}/>
+	      <Route path='*' component={ErrorApp} />
 	   </Router>
 	</Provider>
 ), document.getElementById('app'))

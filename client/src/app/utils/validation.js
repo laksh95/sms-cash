@@ -10,7 +10,6 @@ export function isEmpty(value){
    return false ;
 }
 
-
 export function isLengthInvalid(value, min, max){
 	value= value.trim();
 	if(value.length<min || value.length>max)
@@ -36,11 +35,10 @@ export function isContactNumber(number){
     else
         return true
 }
-export function isEmail(email){
+export function isEmail(email) {
     let mail = email.match(/\S+@\S+\.\S+/g)
-    if(mail === null){
+    if (mail === null) {
         return false
     }
     else return true
-
 }

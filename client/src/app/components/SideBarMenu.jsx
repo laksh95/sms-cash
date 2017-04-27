@@ -40,7 +40,7 @@ class SideBarMenu extends React.Component {
            selected= "Department"
        else if(path === '/student')
            selected= "Students"
-       else if(path === '/course')
+       else if(path === '/course/')
            selected = 'Course'
         else if(path === '/blog')
             selected = 'Blog'
@@ -132,7 +132,7 @@ class SideBarMenu extends React.Component {
                        />
                    </Link> : null}
                {this.props.user.role.isAdmin ?
-                   <Link to ="/course" style={{textDecoration: 'none'}}>
+                   <Link to ="/course/1" style={{textDecoration: 'none'}}>
                        <ListItem
                            primaryText="Course"
                            leftIcon={ <img  src={courseImage}

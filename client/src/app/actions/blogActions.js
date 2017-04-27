@@ -14,10 +14,21 @@ export function getPosts(data){
         type:types.GET_POSTS,
         payload : blog.getPosts(data)
             .then((response) => {
-                console.log("inside response of get posts ")
+                // console.log("inside response of get posts ")
                 return response.data
             })
         }
+}
+export function getMorePosts(data){
+    // console.log("inside actions")
+    return{
+        type:types.GET_MORE_POSTS,
+        payload : blog.getMorePosts(data)
+            .then((response) => {
+                console.log("inside response of get more  posts ")
+                return response.data
+            })
+    }
 }
 export function getPost(data){
     return {

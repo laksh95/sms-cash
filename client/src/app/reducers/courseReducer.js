@@ -201,7 +201,6 @@ const courseReducer = (state = {
                 }
             }
             break
-
         case "EDIT_COURSE_REJECTED":
             var data = action.payload.response
             if (data.status===500){
@@ -227,34 +226,40 @@ const courseReducer = (state = {
                 }
             }
             break
-
         case "DELETE_COURSE_FULFILLED":
             var course = state.course
             var data = action.payload.data
-            console.log('------course------',course)
-            console.log('++++++++++++++++',data,'-------------')
-            for(let index in course){
-                if(course[index].id == data){
-                    console.log("true")
-                    course.splice(index,1)
+            console.log('------------>',data.length)
+            if(data.length === 0){
+                state={
+                    ...state,
+                    snackbarOpen :true ,
+                    snackbarMessage : "Incorrect OTP",
                 }
+                return state
             }
-            var size = course.length
-            var pagedCourses = []
-            for(let index in course ){
-                if(index<10){
-                    pagedCourses.push(course[index])
+                for(let index in course){
+                    if(course[index].id === data.data){
+                        console.log("true")
+                        course.splice(index,1)
+                    }
                 }
-            }
-            state = {
-                ...state ,
-                course : course ,
-                totalPages : size ,
-                currentPage: 1,
-                snackbarOpen :true ,
-                snackbarMessage : "Course Deleted",
-                pagedCourses:pagedCourses
-            }
+                var size = course.length
+                var pagedCourses = []
+                for(let index in course ){
+                    if(index<10){
+                        pagedCourses.push(course[index])
+                    }
+                }
+                state = {
+                    ...state ,
+                    course : course ,
+                    totalPages : size ,
+                    currentPage: 1,
+                    snackbarOpen :true ,
+                    snackbarMessage : "Course Deleted",
+                    pagedCourses:pagedCourses
+                }
             break
         case "DELETE_COURSE_REJECTED":
             var data = action.payload.response

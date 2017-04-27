@@ -6,18 +6,17 @@ let courseFunctions = {
     /*Called to create a new OTP, store it in database and send it via email.*/
     checkOTP:(req,res)=>{
         if(Object.keys(req).length !== 0 && Object.keys(req.body).length !== 0){
-            console.log('----------inside first if condition--------------')
-            console.log('---------',!req.headers.authorization,'--------')
             if(!req.headers.authorization){
                 res.status(401).end()
             }
             else{
+                // console.log('inside else of course controller-------->')
                 model.checkOTP(db,req.body,req.headers.authorization)
                     .then((data)=>{
-                    console.log(data,'----------data--------')
                         if(data !== null){
+                            // console.log('------>',data)
                             model.deleteCourse(db,req.body,(response)=>{
-                                console.log('----------------',response,'------------------')
+                                // console.log('-----department deleted',response)
                                 if(1 === response.status){
                                     res.status(200).json({data:response,msg:'Course deleted successfully.'})
                                 }
@@ -27,7 +26,7 @@ let courseFunctions = {
                             })
                         }
                         else{
-                            res.status(200).json({data:[],msg:'NO ROW(s) FOUND'})
+                            res.status(200).json({data:[],msg:'INCORRECT OTP'})
                         }
                     })
             }
@@ -37,12 +36,8 @@ let courseFunctions = {
         }
     },
     generateOTP:(req,res)=>{
-        console.log('-------generateOTP called---------')
         if(Object.keys(req).length !== 0){
-            console.log('----------inside first if condition--------------')
-            console.log('---------',!req.headers.authorization,'--------')
             if(req.headers.authorizaton === false) {
-                console.log('--------second gateway--------',req.headers.authorization)
                 res.status(401).end()
             }
             else{
@@ -81,7 +76,6 @@ let courseFunctions = {
          }
     },
     getCourses: (req, res) => {
-        console.log("-------------------",req.body)
         if (Object.keys(req).length !== 0) {
             model.getCourse(db)
                 .then((data) => {
@@ -100,7 +94,6 @@ let courseFunctions = {
         if (Object.keys(req).length !== 0) {
             if (Object.keys(req.body).length !== 0) {
                 model.addNewCourse(db, req.body, function (data) {
-                    console.log(data)
                     if(1 === data.status){
                         res.status(200).json({data:data.data,msg:data.msg})
                     }
@@ -142,10 +135,14 @@ let courseFunctions = {
         if (Object.keys(req).length !== 0) {
             if (Object.keys(req.body).length !== 0) {
                 model.deleteCourse(db, req.body.id, (data) => {
-                    if(1 === data.status)
+                    console.log("inside delete course response",data)
+                    if(1 === data.status){
+                        console.log('-----sending data',data)
                         res.status(200).json({data:data.data,msg:data.msg})
-                    else
+                    }
+                    else {
                         res.status(500).json({data:[],msg:"INTERNAL_SERVER_ERROR"})
+                    }
                 })
             }
             else {

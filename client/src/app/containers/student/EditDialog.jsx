@@ -267,6 +267,11 @@ class EditDialog extends React.Component{
         return array
 
     }
+    handleSubmit = ()=>{
+        let response = {
+
+        }
+    }
     render(){
         console.log(this.props.studentInfo.studentData.data)
         const actions = [
@@ -278,7 +283,7 @@ class EditDialog extends React.Component{
             <FlatButton
                 label="Submit"
                 primary={true}
-                onTouchTap={this.handleClose}
+                onTouchTap={this.handleSubmit}
             />,
         ]
         const HANDLE_CODES={

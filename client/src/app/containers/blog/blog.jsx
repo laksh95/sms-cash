@@ -205,7 +205,7 @@ class Blog extends React.Component {
                                         {/*<label className="font">Posted At {data.created_at}</label><br/>*/}
                                     </div>
                                     <h5 className="cardHeader">{data.heading}</h5>
-                                    <img className="image" src={data.image} alt="Image" height={250} width={600}/>
+                                    <img className="image" src={data.image} alt="Image" height="auto" width={600}/>
                                     <Link to={url}><h6 className="readMore">Read More</h6></Link>
                                     <div className="footer">
                                         <div className="checkbox">

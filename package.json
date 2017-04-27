@@ -34,6 +34,7 @@
     "eventsource-polyfill": "^0.9.6",
     "express": "^4.14.1",
     "express-session": "^1.15.1",
+    "extract-text-webpack-plugin": "^2.1.0",
     "file-loader": "^0.11.1",
     "hooks": "0.3.2",
     "images-upload-middleware": "^1.1.1",

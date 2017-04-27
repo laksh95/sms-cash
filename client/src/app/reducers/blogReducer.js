@@ -193,9 +193,23 @@ const blogReducer = (state = {
                         posts[index].likes = action.payload.likes
                     }
                 }
-                state = {
-                    ...state ,
-                    posts
+                if(action.payload.liked===false){
+                    let stats =state.stats
+                    stats.totalLikes = stats.totalLikes -1
+                    state = {
+                        ...state ,
+                        stats ,
+                        posts
+                    }
+                }
+                else {
+                    let stats =state.stats
+                    stats.totalLikes = stats.totalLikes +1
+                    state = {
+                        ...state ,
+                        stats,
+                        posts
+                    }
                 }
             }
             return state

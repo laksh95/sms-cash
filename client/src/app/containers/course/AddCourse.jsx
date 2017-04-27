@@ -196,6 +196,7 @@ const mapDispatchToProps = (dispatch) => {
         setCourse : (course)=>{
             dispatch(setCourse(course))
         },
+
         setPagedCourse : (course)=>{
             dispatch(setPagedCourse(course))
         },

@@ -36,6 +36,9 @@ class AddTeacher extends React.Component{
           birthDate: null,
           gender: null,
           validationInForm: false,
+          nameErrorText: "",
+          emailErrorText: "",
+          designationErrorText: "",
           allGender: [
             {
               name: "MALE"
@@ -91,22 +94,16 @@ class AddTeacher extends React.Component{
             gender: this.state.gender
           }
           this.props.addUser(details)
-          // this.setState({
-          //   teacherName: null,
-          //   departmentForChangeDetails: null,
-          //   email: null,
-          //   joinDate: null,
-          //   designation: null,
-          //   departmentId: null
-          // })
           break
         case "getName":
           this.setState({
-            teacherName: event.target.value
+            teacherName: event.target.value,
+            nameErrorText: ""
           })
           if(event.target.value == ""){
             this.setState({
-              nameInvalid: true
+              nameInvalid: true,
+              nameErrorText: "Must not be empty"
             }, ()=> {
               this.checkAllValidations()
             })
@@ -114,14 +111,16 @@ class AddTeacher extends React.Component{
           else{
             if ( isAllAlphabets(event.target.value)) {
               this.setState({
-                nameInvalid: true
+                nameInvalid: true,
+                nameErrorText: "Only characters please"
               },  ()=> {
                 this.checkAllValidations()
               })
             }
             else{
               this.setState({
-                nameInvalid: false
+                nameInvalid: false,
+                nameErrorText: ""
               },  () => {
                 this.checkAllValidations()
               })
@@ -130,11 +129,13 @@ class AddTeacher extends React.Component{
           break
         case "getDesignation":
           this.setState({
-            designation: event.target.value
+            designation: event.target.value,
+            designationErrorText: ""
           })
           if(event.target.value == ""){
             this.setState({
-              designationInvalid: true
+              designationInvalid: true,
+              designationErrorText: "Must not be empty"
             },  ()=> {
               this.checkAllValidations()
             })
@@ -142,14 +143,16 @@ class AddTeacher extends React.Component{
           else{
             if ( isAllAlphabets(event.target.value)) {
               this.setState({
-                designationInvalid: true
+                designationInvalid: true,
+                designationErrorText: "Only characters please"
               }, ()=> {
                 this.checkAllValidations()
               })
             }
             else{
               this.setState({
-                designationInvalid: false
+                designationInvalid: false,
+                designationErrorText: ""
               },  ()=> {
                 this.checkAllValidations()
               })
@@ -160,11 +163,13 @@ class AddTeacher extends React.Component{
           this.props.resetToNoErrorTeacher
           this.setState({
             email: event.target.value,
-            validationInForm: false
+            validationInForm: false,
+            emailErrorText: ""
           })
           if(event.target.value == ""){
             this.setState({
-              emailInvalid: true
+              emailInvalid: true,
+              emailErrorText:"Must not be empty"
             },  ()=> {
               this.checkAllValidations()
             })
@@ -172,14 +177,16 @@ class AddTeacher extends React.Component{
           else{
             if( validateEmail(event.target.value)){
               this.setState({
-                emailInvalid: false
+                emailInvalid: false,
+                emailErrorText: ""
               },  ()=> {
                 this.checkAllValidations()
               })
             }
             else{
               this.setState({
-                emailInvalid: true
+                emailInvalid: true,
+                emailErrorText:"Give email in correct format"
               },  ()=> {
                 this.checkAllValidations()
               })
@@ -328,16 +335,19 @@ class AddTeacher extends React.Component{
               <TextField
               floatingLabelText="Teacher name"
               onChange={ this.handleChange.bind(this, "getName") }
+              errorText={this.state.nameErrorText}
               />
               <br />
               <TextField
               floatingLabelText="Teacher designation"
               onChange={this.handleChange.bind(this, "getDesignation")}
+              errorText={this.state.designationErrorText}
               />
               <br />
               <TextField
               floatingLabelText="Teacher Email ID"
               onChange={this.handleChange.bind(this, "getEmail")}
+              errorText={this.state.emailErrorText}
               />
               <br /><br />
               <DatePicker hintText="Join Date" mode="landscape" onChange={ this.getDate }/>

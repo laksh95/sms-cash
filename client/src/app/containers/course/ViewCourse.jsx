@@ -226,7 +226,7 @@ class ViewCourse extends React.Component {
     }
     handleVerificationSubmit = ()=>{
         let data= this.state.curCourse
-        if(this.state.otpValue === 0){
+        if(this.state.otp === 0){
             this.setState({
                 errorTextOTP:'Cannot be left blank'
             })
@@ -236,13 +236,19 @@ class ViewCourse extends React.Component {
                 otp:this.state.otp,
                 data:this.state.curCourse.id
             }
-            this.setState({
-                verificationDialog:false
-            })
             this.props.deleteCourse(response)
-            this.props.updateCourse(response.name)
-            
-
+            console.log('-------error',this.props.courseReducer.errorMessage)
+            if(this.props.courseReducer.errorMessage !==''){
+                this.setState({
+                    errorTextOTP:'incorrect OTP'
+                })
+            }
+            else{
+                this.setState({
+                    verificationDialog:false,
+                    errorTextOTP:''
+                })
+            }
         }
     }
     render(){

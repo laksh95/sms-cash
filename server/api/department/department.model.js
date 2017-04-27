@@ -34,7 +34,6 @@ let init=function() {
                 })
             },
             addDepartment:function(models,newDepartment,cb){
-                console.log(newDepartment)
                 let department=models.department;
                 let course=models.course;
                 course.findOne({
@@ -44,7 +43,7 @@ let init=function() {
                         status : true
                     }
                 }).then((courseData)=>{
-                    console.log(courseData)
+
                     if(courseData==null){
                         let response = {
                             status : "0",

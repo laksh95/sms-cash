@@ -161,6 +161,7 @@ const departmentReducer= (state=initialLoginState, action) => {
 
         case types.DELETE_DEPARTMENT + "_FULFILLED":
             var response= action.payload;
+            console.log(response.status)
             if(response.status===200){
                 let selectedDepartment= response.data;
                 let allDepartment= state.departmentList;
@@ -177,17 +178,23 @@ const departmentReducer= (state=initialLoginState, action) => {
                         break;
                     }
                 }
-                if(index>=startIndex && index<=endIndex){
-                    for(let j in pagedDepartment){
-                        if(pagedDepartment[j].id=== selectedDepartment.id){
-                            pagedDepartment.splice(j,1);
-                        break;
-                        }
+                // if(index>=startIndex && index<=endIndex){
+                //     for(let j in pagedDepartment){
+                //         if(pagedDepartment[j].id=== selectedDepartment.id){
+                //             pagedDepartment.splice(j,1);
+                //         break;
+                //         }
+                //     }
+                // }
+                for(let index in pagedDepartment){
+                    if(pagedDepartment[index].id===selectedDepartment.id){
+                        pagedDepartment.splice(index,1)
+                        break
                     }
                 }
                 pagination.totalPages= pagination.totalPages-1;
                 pagination.currentPage=1;
-
+                console.log("-------------------",pagedDepartment)
                 state= {
                     ...state,
                     departmentList: allDepartment,

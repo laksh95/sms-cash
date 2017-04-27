@@ -228,7 +228,9 @@ const blogReducer = (state = {
             else{
                 state ={
                     ...state,
-                    posts
+                    posts,
+                    snackbarOpen:true ,
+                    snackbarMessage:"Updated"
                 }
             }
             return state

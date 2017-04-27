@@ -67,7 +67,8 @@ class AddDepartment extends React.Component{
           abbreviated_name: shortName,
           course_id: this.props.selectedCourseId
         }
-        this.props.addDepartment(departmentObj); 
+        this.props.addDepartment(departmentObj);
+
       }
       else{
           if(this.state.shortName.trim()==='' || this.state.name.trim()==='')

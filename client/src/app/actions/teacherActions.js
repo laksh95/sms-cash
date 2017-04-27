@@ -19,7 +19,6 @@ export function resetToNoErrorTeacher(){
     }
 }
 
-
 export function addUser(details){
 	return {
 		type: types.ADD_USER_TEACHER,
@@ -84,5 +83,12 @@ export function setPagination(data){
     return {
         type : types.SET_PAGINATION_TEACHER ,
         payload :data
+    }
+}
+
+export function setValue(value){
+    return {
+        type : types.SET_VALUE,
+        payload : value
     }
 }

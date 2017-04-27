@@ -8,6 +8,7 @@ import Snackbar from 'material-ui/Snackbar';
 require('rc-pagination/assets/index.css');
 import {setCourse,setPagedCourse,setPagination,setSnackbarOpen,setSnackbarMessage,setValue,editCourse,addCourse , deleteCourse,getCourses,generateOTP} from '../../actions/courseActions.js'
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
+import { updateCourse , setCurrentSession , setCurrentCourse } from '../../actions/headerActions.js'
 import { Router, Route, browserHistory } from 'react-router'
 import store from './../../store'
 import {connect} from 'react-redux'
@@ -93,6 +94,8 @@ class ViewCourse extends React.Component {
             curCourse : data
         })
         this.setState({deleteDialog: true});
+
+        console.log("Inside....");
     };
     snackbarHandleRequestClose = () => {
 
@@ -397,6 +400,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         setCourse : (course)=>{
             dispatch(setCourse(course))
+        },
+        updateCourse : (data) => {
+            dispatch(updateCourse(data));
         },
         setPagedCourse : (course)=>{
             dispatch(setPagedCourse(course))

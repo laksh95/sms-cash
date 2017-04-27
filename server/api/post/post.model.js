@@ -334,7 +334,6 @@ let sql = function(){
                             by : data.id
                         }
                     }))
-
                     promises.push(postLike.count({
                         where : {
                             status : true ,
@@ -367,7 +366,27 @@ let sql = function(){
                             id : data.id
                         }
                     }).then((response)=>{
-                        cb(null,response)
+                        let result = response
+                        let postLike = models.post_like
+                        postLike.update({
+                            status :false
+                        },{
+                            where :{
+                                post_id : data.id
+                            }
+                        }).then(function(response){
+                            let postComment = models.post_comment
+                            postComment.update({
+                                status :false
+                            },{
+                                where :{
+                                    post_id : data.id
+                                }
+                            }).then(function(response){
+                                cb(null,result )
+                            })
+                        })
+
                     })
                 },
                 searchPost:function(models,data,cb){

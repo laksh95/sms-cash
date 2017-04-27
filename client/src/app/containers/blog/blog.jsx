@@ -66,11 +66,14 @@ class Blog extends React.Component {
     }
     /*infinite scrolling implementation*/
     handleScroll() {
+
         const windowHeight = "innerHeight" in window ? window.innerHeight : document.documentElement.offsetHeight;
         const body = document.body;
         const html = document.documentElement;
         const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight,  html.scrollHeight, html.offsetHeight);
         const windowBottom = windowHeight + window.pageYOffset;
+        console.log(windowBottom)
+        console.log(docHeight)
         if (windowBottom >= docHeight) {
             if(this.props.blogReducer.isScrollActive){
                 let pg= this.state.pageNumber
@@ -88,11 +91,11 @@ class Blog extends React.Component {
         }
     }
     componentWillMount() {
+        window.addEventListener("scroll", this.handleScroll);
         this.props.getPosts({
             pageNumber : this.state.pageNumber,
             user_id : 1
         })
-        window.addEventListener("scroll", this.handleScroll);
         this.props.getStats({
             id : 1
         })
@@ -205,7 +208,7 @@ class Blog extends React.Component {
                                         {/*<label className="font">Posted At {data.created_at}</label><br/>*/}
                                     </div>
                                     <h5 className="cardHeader">{data.heading}</h5>
-                                    <img className="image" src={data.image} alt="Image" height={250} width={600}/>
+                                    <img className="image" src={data.image} alt="Image" height="auto" width={600}/>
                                     <Link to={url}><h6 className="readMore">Read More</h6></Link>
                                     <div className="footer">
                                         <div className="checkbox">

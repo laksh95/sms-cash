@@ -9,6 +9,23 @@ const adminReducer = ( state = {
 	selectedCourseId: localStorage.getItem("courseId") 
 } , action) => {
 	switch (action.type){
+
+		case "UPDATE_COURSE":
+		    console.log(action.payload);
+		    console.log(state.initialData.course)
+		    if (state.initialData.course.filter(e => e.name == action.payload).length > 0) {
+              	console.log("InInsid")
+                let a =initialData =state.initialData.course.splice( state.initialData.course.findIndex(x => x.name==action.payload), 1);
+		        state={
+		     	...state,
+		     	initialData: {
+                    "course": a,
+		     		"batch": state.initialData.batch
+		     	}
+		      }
+            }
+		    
+		    return state
 		case "GET_DEPARTMENTS":
 			state = {
 				...state,            //creating state containing all departments, courses, batches and sessions

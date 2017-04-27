@@ -72,7 +72,8 @@ const mapStateToProps= (state) => {
 	return{
 		login: state.login,
     error: state.errorReducer,
-    courseReducer: state.courseReducer
+    courseReducer: state.courseReducer,
+    headerReducer: state.headerReducer
 	};
 };
 const mapDispatchToProps= (dispatch) => {

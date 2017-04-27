@@ -242,7 +242,8 @@ class ViewCourse extends React.Component {
             }
             else{
                 this.setState({
-                    verificationDialog:false
+                    verificationDialog:false,
+                    errorTextOTP:''
                 })
             }
         }

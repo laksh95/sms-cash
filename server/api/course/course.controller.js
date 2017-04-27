@@ -131,7 +131,7 @@ let courseFunctions = {
             res.status(400).json({data:[],msg:"BAD_REQUEST"})
         }
     },
-    deleteCourse: (req, res) => {
+    /*deleteCourse: (req, res) => {
         if (Object.keys(req).length !== 0) {
             if (Object.keys(req.body).length !== 0) {
                 model.deleteCourse(db, req.body.id, (data) => {
@@ -152,6 +152,6 @@ let courseFunctions = {
         else {
             res.status(400).json({data:[],msg:"BAD_REQUEST"})
         }
-    }
+    }*/
 }
 module.exports=courseFunctions

@@ -42,11 +42,11 @@ let init = function(){
             allowNull: false,
             defaultValue : true
         },
-        frozen: {
+        /*frozen: {
             type : sequelize.BOOLEAN,
             allowNull: false,
             defaultValue : false
-        },
+        },*/
     },{
         classMethods:{
             associate:function(model){

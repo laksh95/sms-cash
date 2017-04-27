@@ -6,8 +6,7 @@ import DatePicker from 'material-ui/DatePicker'
 import RaisedButton from 'material-ui/RaisedButton'
 import Checkbox from 'material-ui/Checkbox'
 import {connect} from 'react-redux'
-import {addStudent} from '../../actions/studentAction.js'
-import {getInitialData} from '../../actions/studentAction.js'
+import {addStudent,getInitialData} from '../../actions/studentAction.js'
 import ContentAddCircleOutline from 'material-ui/svg-icons/content/add-circle-outline'
 import Snackbar from 'material-ui/Snackbar'
 const styles = {
@@ -430,7 +429,6 @@ class AddStudent extends React.Component {
                         <label className="extra_space">Alternate Number</label><br/>
                         <label className="extra_space">Email ID</label><br/>
                         <label className="extra_space">Department</label><br/>
-                        <label className="extra_space">Batch</label><br/>
                         <label className="extra_space">Father's Name</label><br/>
                         <label className="extra_space">Mother's Name</label><br />
                         <label className="extra_space">Father's Email ID</label><br/>
@@ -459,6 +457,7 @@ class AddStudent extends React.Component {
                             hintText="Date of Birth"
                             onChange={this.handleChange.bind(this,HANDLE_CODE.DOB)}
                             container='inline'
+                            autoOk={true}
                             shouldDisableDate={this.disablePreviousDates(startDate)}
                         />
                         <TextField

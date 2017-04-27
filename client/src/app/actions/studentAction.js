@@ -10,6 +10,13 @@ const ingestFileBegin = (filename) => ({
         filename
     }
 })
+export const selectStudent = (data)=>{
+    return{
+        type:'SELECTED_STUDENT',
+        payload:data
+    }
+
+}
 export const deleteStudent = (data)=>{
     return{
         type:'DELETE_STUDENT',

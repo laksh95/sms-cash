@@ -97,7 +97,9 @@ const blogReducer = (state = {
             comments = temp.concat(comments)
             state = {
                 ...state ,
-                comments
+                comments,
+                snackbarMessage:"Comment added",
+                snackbarOpen:true
             }
             return state
         case "EDIT_COMMENT_FULFILLED":
@@ -128,16 +130,18 @@ const blogReducer = (state = {
         case "ADD_POST_FULFILLED":
             var post = action.payload.data
             var posts = state.posts
+            var stats = state.stats
+            stats.totalPosts= stats.totalPosts +1
             posts.push(post)
             state = {
                 ...state ,
                 open : false,
-                posts :posts
+                posts,
+                stats
             }
             return state
         case "GET_STATS_FULFILLED":
             var data= action.payload.data
-            console.log("========",data)
             state = {
                 ...state ,
                 stats : data
@@ -172,7 +176,6 @@ const blogReducer = (state = {
             }
             return state
         case "SET_CURRENT_LIKE":
-
             if(state.post.id===action.payload.post.id){
                 let post = state.post
                 post.liked= action.payload.liked
@@ -190,9 +193,23 @@ const blogReducer = (state = {
                         posts[index].likes = action.payload.likes
                     }
                 }
-                state = {
-                    ...state ,
-                    posts
+                if(action.payload.liked===false){
+                    let stats =state.stats
+                    stats.totalLikes = stats.totalLikes -1
+                    state = {
+                        ...state ,
+                        stats ,
+                        posts
+                    }
+                }
+                else {
+                    let stats =state.stats
+                    stats.totalLikes = stats.totalLikes +1
+                    state = {
+                        ...state ,
+                        stats,
+                        posts
+                    }
                 }
             }
             return state

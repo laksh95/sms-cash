@@ -241,7 +241,7 @@ class EditDialog extends React.Component{
                 )
 
             }
-            else if('departmentName'==key || 'departmentAbbreviatedName'==key || 'curriculumName'==key||'admissionNo'==key || 'gender'==key||'username'==key){
+            else if('departmentName'==key  || 'curriculumName'==key||'admissionNo'==key || 'gender'==key||'username'==key){
                 array.push(
                     <TextField
                         disabled={true}
@@ -252,7 +252,7 @@ class EditDialog extends React.Component{
                     />
                 )
             }
-            else if(!('studentId'==key || 'sectionId'==key || 'batchId'==key || 'departmentId'==key || 'semesterId'==key||'countryCodeOne' ==key || 'countryCodeTwo' == key || 'curriculumId' == key || 'parentCountryCode' == key || 'departmentAbbreviatedName' == key || 'profilePicUrl' == key || 'semesterType' == key || 'parentId'==key)) {
+            else if(!('studentId'==key || 'sectionId'==key || 'batchId'==key || 'departmentId'==key || 'semesterId'==key||'countryCodeOne' ==key || 'countryCodeTwo' == key || 'curriculumId' == key || 'parentCountryCode' == key || 'departmentAbbreviatedName' == key || 'profilePicUrl' == key || 'semesterType' == key || 'parentId'==key || 'departmentAbbreviatedName'==key)) {
                 array.push(
                     <TextField
                         id={key}

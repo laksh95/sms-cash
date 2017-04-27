@@ -19,7 +19,6 @@ export function resetToNoErrorTeacher(){
     }
 }
 
-
 export function addUser(details){
 	return {
 		type: types.ADD_USER_TEACHER,

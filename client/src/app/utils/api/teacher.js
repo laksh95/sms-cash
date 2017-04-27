@@ -57,6 +57,17 @@ const utils = {
    	 		}
 		}
 		return axios.put(url, teacherId, config);
+	},
+	addUser: (details) => {
+		let url = serverAddress + '/api/teacher/addTeacher'
+		let token = Auth.getToken();
+		let authString = 'bearer ' + token
+		let config = {
+    		headers: {
+        		'Authorization': authString
+   	 		}
+		}
+		return axios.post(url, details, config);
 	}
 }
 

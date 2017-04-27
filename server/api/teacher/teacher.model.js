@@ -1,7 +1,63 @@
 let database=require('../../config/db')
 let sequelize=database.sequelize
 let connection=database.connection
-let validator = require('validator')
+var moment = require('moment');
+var bcrypt = require('bcrypt');
+let mailer = require('nodemailer')
+  let transporter = mailer.createTransport({
+    service:'gmail',
+    auth:{
+      user:'ignore.john2017@gmail.com',
+      pass:'madman2017'
+      }
+    })
+let myPlaintextPassword=''
+const saltRounds = 10;
+
+let addUser=((data,db)=>{
+  console.log("inside add user then---------------------------->")
+  let name=data.name;
+  let removeSpaces=name.trim();
+  let uname='';
+  let nameArray=removeSpaces.split(" ");
+  if(nameArray[1]!=undefined||nameArray[1]!=null){
+    name=nameArray[0]+" "+nameArray[1];
+    uname=nameArray[0]+"_"+nameArray[1];
+  }
+  else{
+    name=uname=nameArray[0]
+  }
+    return db.user_detail.findAndCountAll({
+      where:{
+        name:{
+          $iLike: name+'%'
+        },
+      }
+    })
+    .then((users)=>{
+
+      let yearOfBirth=moment(data.dateOfBirth).year();
+      let username=uname+"_"+yearOfBirth+(users.count+1)
+      let password=''
+
+      var firstName=name[0].split('')
+      for (var ch in firstName) {
+          myPlaintextPassword=firstName[ch]+ (Math.floor(Math.random()*90000) + 10000);
+      }
+      return bcrypt.hash(myPlaintextPassword, saltRounds).
+        then((password)=> {
+          return db.user_detail.create({
+            username:username,
+            password: password,
+            name:data.name,
+            date_of_birth: new Date(data.dateOfBirth),
+            gender:data.gender ,
+            email_id:data.emailId ,
+            status:'t'
+          })
+        });
+    })
+  })
 
 let init = function(){
    return teacher = connection.define('teacher',{
@@ -198,6 +254,52 @@ let init = function(){
                  .catch((data)=>{
                    return data
                  })
+               },
+               addTeacher:(db, request)=>{
+                 let teacher=db.teacher;
+                 let userAdded,teacherAdded;
+                 const p = new Promise((res,rej)=>{
+                  addUser(request,db)
+                 .then((user)=>{
+                   userAdded=user;
+                   request.userId=userAdded.id;
+                   data=request;
+                   let message={
+                     from:'"Ghost In Action" <ignore.john@gmail.com>',
+                     to: 'ankit@cronj.com, laksh@cronj.com',
+                     subject:'Student Management System Temporary Login Credentials',
+                     text:' Username is ' + userAdded.username + 'and password is '+myPlaintextPassword
+                  }
+
+
+                    teacher.create({
+                              status:'t',
+                              user_detail_id:data.userId,
+                              department_id:data.deptId,
+                              joining_date: new Date(data.joinDate),
+                              designation: data.designation,
+                              experience_years: 0
+                           }).then((data)=>{
+                             transporter.sendMail(message,(error, info)=>{
+                              let response = {}
+                              if(error){
+                                response = {
+                                data:[],
+                                msg:'internal server error',
+                                status:0
+                                }
+                              }
+                              })
+                             res(data)
+                           }).catch((data)=>{
+                            rej(data)
+                           })
+                 }).catch((err)=>{
+                  rej(err)
+                 })
+                })
+                 return p;
+
                },
                /*getting teacher list and the feedback from feedback table as per the course selected*/
                getTeacherAndFeedback: (db, request) => {

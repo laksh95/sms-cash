@@ -88,7 +88,6 @@ class AllTeacher extends React.Component{
           disableSaveButton: true
         })
       }
-
     }
     handleTouchTap = (type, item, event) => {
       let teacher = {}
@@ -353,13 +352,14 @@ class AllTeacher extends React.Component{
                       onChange={this.handleChangeDepartmentForCHangeDetails}
                       >
                       {
-                        this.props.subjectReducer.error===false?
-                        (this.props.subjectReducer.department.map((department, index)=>{
+                        this.props.subjectReducer.errorDepartment===false?
+                        (this.props.subjectReducer.department.map((data, index)=>{
                           return(
-                            <MenuItem key={department.id} value={department.name} primaryText={department.name} />
+                            <MenuItem key={data.id} value={data.name} primaryText={data.name} />
                           )
-                       })) :  this.errorSnackBar(this.props.subjectReducer.errorMessage)
-
+                       })) : (
+                           <MenuItem key={1} disabled={true} value='No data' primaryText='No data' />
+                         )
                       }
                       </SelectField>
                       <br />
@@ -407,12 +407,14 @@ class AllTeacher extends React.Component{
           multiple={true}
           >
           {
-            this.props.subjectReducer.error===false?
+            this.props.subjectReducer.errorDepartment===false?
             (this.props.subjectReducer.department.map((data, index)=>{
               return(
                 <MenuItem key={data.id} value={data.name} primaryText={data.name} />
               )
-           })) :  this.errorSnackBar(this.props.subjectReducer.errorMessage)
+           })) : (
+               <MenuItem key={1} disabled={true} value='No data' primaryText='No data' />
+             )
           }
           </SelectField>
     			{

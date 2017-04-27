@@ -11,7 +11,8 @@ const teacherReducer = (
     noDataError: false,
     pagedTeachers: [],
     currentPage: 1,
-    totalPages : 0
+    totalPages : 0,
+    successSnackBar: false
   },
   action
 ) => {
@@ -20,13 +21,53 @@ const teacherReducer = (
   switch (action.type) {
     /*adding the teacher to database*/
     case "ADD_USER_TEACHER_FULFILLED":
+      allTeacher = state.allTeacher
+      let newTeacher = action.payload.result
+
+      allTeacher.push(newTeacher)
       state = {
         ...state,
-        email: action.payload.email,
-        password: action.payload.password,
-        userId: action.payload.userId
+        allTeacher: allTeacher,
+        error: false,
+        errorMessage: action.payload.message,
+        noDataError: false,
+        successSnackBar: true
       }
       return state
+    case "ADD_USER_TEACHER_REJECTED":
+      errorStatus = action.payload.response.status
+      switch(errorStatus){
+        case 500:
+          state = {
+            ...state,
+            error: true,
+            status: 500,
+            showErrorPage: true,
+            errorMessage: "500 : Internal Server Error",
+            successSnackBar: false
+          }
+          return state
+        case 400:
+          state = {
+            ...state,
+            error: true,
+            status: 400,
+            errorMessage: "BAD REQUEST",
+            successSnackBar: false
+          }
+          return state
+        case 403:
+          state = {
+              ...state ,
+              error: true,
+              showErrorPage : true,
+              errorMessage : "403: Forbidden",
+              successSnackBar: false
+          }
+          return state
+        default:
+          return state
+      }
     /*getting teacher list as per the course selected*/
     case "GET_TEACHER_FULFILLED":
       state = {
@@ -296,7 +337,8 @@ const teacherReducer = (
             errorMessage: "Loading",
             error: false,
             status: 200,
-            noDataError: false
+            noDataError: false,
+            successSnackBar: false
         }
         return state
 

@@ -406,7 +406,7 @@ let sql = function(){
 
                         let headings = []
                         for(let index in posts){
-                            if(posts[index].heading.toLowerCase().indexOf(data.heading)!==-1){
+                            if(posts[index].heading.toLowerCase().indexOf(data.heading.toLowerCase())!==-1){
                                 headings.push(posts[index])
                             }
                         }

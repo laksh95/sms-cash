@@ -28,6 +28,13 @@ export function isName(name){
          return true
 
 }
+export const checkCharacter =(name)=>{
+    if(!/[a-zA-Z]+([\s][a-zA-Z]+)*/.test(name)){
+        return true
+    }
+    return false
+
+}
 export function isContactNumber(number){
     let num = number.match(/\d+/g)
     if(num === null)

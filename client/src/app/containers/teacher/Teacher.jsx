@@ -67,6 +67,8 @@ class Teacher extends React.Component{
     }
 
     handleChange = (value) => {
+      this.props.resetToNoErrorTeacher()
+      this.props.resetToNoErrorSubject()
       if(this.props.teacherReducer.successSnackBar == true){
         this.props.resetToNoErrorTeacher()
       }

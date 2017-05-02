@@ -68,7 +68,7 @@ class Teacher extends React.Component{
 
     render(){
     const tabStyle = { marginTop:10, marginLeft: 50, marginRight: 50 ,transition: 'margin-left 100ms cubic-bezier(0.23, 1, 0.32, 1)' }
-      return(
+      return(                                       
         <div>
           <Tabs style={tabStyle}>
             <Tab label="Manage Teacher">

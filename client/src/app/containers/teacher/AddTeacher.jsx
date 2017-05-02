@@ -19,33 +19,33 @@ class AddTeacher extends React.Component{
     constructor(props) {
     	super(props);
       this.state = {
-          departmentSelected: null,
-          teacherName: null,
-          joinDate: "",
-          designation: null,
-          email: null,
-          emailInvalid: true,
-          nameInvalid: true,
-          designationInvalid: true,
-          dateInvalid: true,
-          genderInvalid: true,
-          departmentInvalid: true,
-          birthDateInvalid: true,
-          departmentId: null,
-          disableAddButton: true,
-          birthDate: null,
-          gender: null,
-          allGender: [
-            {
-              name: "MALE"
-            },
-            {
-              name: "FEMALE"
-            },
-            {
-              name: "OTHERS"
-            }
-          ]
+        departmentSelected: null,
+        teacherName: null,
+        joinDate: "",
+        designation: null,
+        email: null,
+        emailInvalid: true,
+        nameInvalid: true,
+        designationInvalid: true,
+        dateInvalid: true,
+        genderInvalid: true,
+        departmentInvalid: true,
+        birthDateInvalid: true,
+        departmentId: null,
+        disableAddButton: true,
+        birthDate: null,
+        gender: null,
+        allGender: [
+          {
+            name: "MALE"
+          },
+          {
+            name: "FEMALE"
+          },
+          {
+            name: "OTHERS"
+          }
+        ]
       }
     }
     checkAllValidations = () => {
@@ -229,7 +229,7 @@ class AddTeacher extends React.Component{
           message={"Added a teacher"}
           autoHideDuration={4000}
           />
-      )
+        )
       }
       else{
         return (

@@ -15,7 +15,6 @@ let myPlaintextPassword=''
 const saltRounds = 10;
 
 let addUser=((data,db)=>{
-  console.log("inside add user then---------------------------->")
   let name=data.name;
   let removeSpaces=name.trim();
   let uname='';
@@ -266,7 +265,7 @@ let init = function(){
                    data=request;
                    let message={
                      from:'"Ghost In Action" <ignore.john@gmail.com>',
-                     to: 'ankit@cronj.com, laksh@cronj.com',
+                     to: user.email_id,
                      subject:'Student Management System Temporary Login Credentials',
                      text:' Username is ' + userAdded.username + 'and password is '+myPlaintextPassword
                   }
@@ -322,14 +321,15 @@ let init = function(){
                      model : db.feedback,
                      attributes : [
                        'teacher_id','subject_id'],
-                     include : [{
+                     include : [
+                       {
                        model : db.rating,
                        attributes : [
                          'id',
                          'score',
                          'type'
                        ],
-                       required : true,
+                       //required : true,
                        where : {
                          status : true
                        }
@@ -356,7 +356,8 @@ let init = function(){
                         where:{
                             course_id: request.course_id
                         },
-                      },{
+                      },
+                      {
                         model: teacherSubjectAllocation,
                         attributes: ['subject_id'],
                         where:{

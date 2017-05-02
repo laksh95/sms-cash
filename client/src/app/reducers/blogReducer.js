@@ -26,7 +26,24 @@ const blogReducer = (state = {
             if(action.payload.data.length===0){
                 state = {
                     ...state,
-                    isScrollActive: false
+                    isScrollActive: false,
+                    moreComments : true
+                }
+            }
+            else {
+                state = {
+                    ...state,
+                    posts:action.payload.data,
+                    moreComments : true
+                }
+            }
+            return state
+        case "GET_MORE_POSTS_FULFILLED":
+            if(action.payload.data.length===0){
+                state = {
+                    ...state,
+                    isScrollActive: false,
+                    moreComments : true
                 }
             }
             else {
@@ -34,21 +51,40 @@ const blogReducer = (state = {
                 posts = posts.concat(action.payload.data)
                 state = {
                     ...state,
-                    posts
+                    posts,
+                    moreComments : true
                 }
             }
             return state
-        case "GET_POSTS_REJECTED":
+        case "GET_MORE_POSTS_REJECTED":
             state = {
                 ...state ,
                 isScrollActive:false
             }
             return state
-        case "GET_POST_FULFILLED":
+        case "GET_POSTS_REJECTED":
             state = {
                 ...state ,
-                post :action.payload.data,
-                comments :action.payload.data.comments
+                isScrollActive:false,
+                snackbarMessage:"No Posts to show",
+                snackbarOpen:true
+            }
+            return state
+        case "GET_POST_FULFILLED":
+            if(action.payload.data.comments.length===0){
+                state={
+                    ...state ,
+                    post:action.payload.data ,
+                    comments : action.payload.data.comments ,
+                    moreComments:false
+                }
+            }
+            else {
+                state = {
+                    ...state ,
+                    post :action.payload.data,
+                    comments :action.payload.data.comments
+                }
             }
             return state
         case "ADD_COMMENT_FULFILLED":
@@ -61,7 +97,9 @@ const blogReducer = (state = {
             comments = temp.concat(comments)
             state = {
                 ...state ,
-                comments
+                comments,
+                snackbarMessage:"Comment added",
+                snackbarOpen:true
             }
             return state
         case "EDIT_COMMENT_FULFILLED":
@@ -92,16 +130,18 @@ const blogReducer = (state = {
         case "ADD_POST_FULFILLED":
             var post = action.payload.data
             var posts = state.posts
+            var stats = state.stats
+            stats.totalPosts= stats.totalPosts +1
             posts.push(post)
             state = {
                 ...state ,
                 open : false,
-                posts :posts
+                posts,
+                stats
             }
             return state
         case "GET_STATS_FULFILLED":
             var data= action.payload.data
-            console.log("========",data)
             state = {
                 ...state ,
                 stats : data
@@ -124,7 +164,9 @@ const blogReducer = (state = {
             }
             state = {
                 ...state ,
-                posts: posts
+                posts: posts,
+                snackbarOpen:true ,
+                snackbarMessage:"Post Deleted"
             }
             return state
         case "SET_SHOW_EDIT":
@@ -134,7 +176,6 @@ const blogReducer = (state = {
             }
             return state
         case "SET_CURRENT_LIKE":
-
             if(state.post.id===action.payload.post.id){
                 let post = state.post
                 post.liked= action.payload.liked
@@ -152,9 +193,23 @@ const blogReducer = (state = {
                         posts[index].likes = action.payload.likes
                     }
                 }
-                state = {
-                    ...state ,
-                    posts
+                if(action.payload.liked===false){
+                    let stats =state.stats
+                    stats.totalLikes = stats.totalLikes -1
+                    state = {
+                        ...state ,
+                        stats ,
+                        posts
+                    }
+                }
+                else {
+                    let stats =state.stats
+                    stats.totalLikes = stats.totalLikes +1
+                    state = {
+                        ...state ,
+                        stats,
+                        posts
+                    }
                 }
             }
             return state
@@ -173,7 +228,9 @@ const blogReducer = (state = {
             else{
                 state ={
                     ...state,
-                    posts
+                    posts,
+                    snackbarOpen:true ,
+                    snackbarMessage:"Updated"
                 }
             }
             return state
@@ -189,11 +246,11 @@ const blogReducer = (state = {
             var  comments = state.comments
             let updatedComments = newComments.concat(comments)
             if(newComments.length===0){
-                console.log("yayyyyyyyy")
                 state = {
                     ...state ,
                     snackbarMessage:"No more comments",
-                    snackbarOpen:true
+                    snackbarOpen:true,
+                    moreComments:false
                 }
             }
             else {

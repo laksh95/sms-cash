@@ -23,6 +23,15 @@ export function setCurrentSession(session){
 
 }
 
+export function updateCourse(datatodelete){
+	console.log("Hello");
+	return {
+		type: types.UPDATE_COURSE,
+		payload: datatodelete
+	};
+
+}
+
 
 export function setCurrentCourse(item){
 	return {

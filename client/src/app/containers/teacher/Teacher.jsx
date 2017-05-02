@@ -11,7 +11,7 @@ import AddTeacher from './AddTeacher.jsx'
 import renderIf from 'render-if'
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
-import { getTeacher, resetToNoErrorTeacher } from './../../actions/teacherActions.js'
+import { getTeacher, resetToNoErrorTeacher,setValue } from './../../actions/teacherActions.js'
 import { getSelected } from '../../actions/adminActions.js'
 import { connect } from 'react-redux'
 import { getSubjectAndDepartment, resetToNoErrorSubject } from '../../actions/subjectActions.js'
@@ -66,15 +66,27 @@ class Teacher extends React.Component{
       }
     }
 
+    handleChange = (value) => {
+      this.props.resetToNoErrorTeacher()
+      this.props.resetToNoErrorSubject()
+      if(this.props.teacherReducer.successSnackBar == true){
+        this.props.resetToNoErrorTeacher()
+      }
+      this.props.setValue(value)
+    }
+
     render(){
     const tabStyle = { marginTop:10, marginLeft: 50, marginRight: 50 ,transition: 'margin-left 100ms cubic-bezier(0.23, 1, 0.32, 1)' }
-      return(                                       
+      return(
         <div>
-          <Tabs style={tabStyle}>
-            <Tab label="Manage Teacher">
+          <Tabs style={tabStyle}
+            value={this.props.teacherReducer.value}
+            onChange={this.handleChange}
+          >
+            <Tab label="Manage Teacher" value="1">
                 <AllTeacher/>
             </Tab>
-            <Tab label="Add Teachers">
+            <Tab label="Add Teachers" value="2">
                 <AddTeacher/>
             </Tab>
           </Tabs>
@@ -91,7 +103,8 @@ const mapStateToProps = (state) => {
   return {
     teacherReducer: state.teacherReducer,
     subjectReducer: state.subjectReducer,
-    headerReducer: state.headerReducer
+    headerReducer: state.headerReducer,
+    errorReducer: state.errorReducer
     }
 }
 
@@ -111,6 +124,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     resetToNoErrorTeacher: () => {
       dispatch(resetToNoErrorTeacher())
+    },
+    setValue:(value)=>{
+        dispatch(setValue(value))
     }
   }
 }

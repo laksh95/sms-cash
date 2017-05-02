@@ -17,9 +17,18 @@ const studentReducer = (state={
                             },
                             students:[],
                             studentData:{},
-                            snackbarDisplay:false
+                            snackbarDisplay:false,
+                            editStudent:{}
                         },action)=>{
     switch(action.type){
+        case 'SELECTED_STUDENT':
+            console.log(action.payload,'-------')
+            state = {
+                ...state,
+                editStudent:action.payload.data,
+                dialogOpen:action.payload.show
+            }
+            break
         case 'DELETE_STUDENT_FULFILLED':
             let students = state.students
             let data = action.payload.data.data

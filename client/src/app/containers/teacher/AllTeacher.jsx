@@ -17,7 +17,9 @@ import { connect } from 'react-redux'
 import Snackbar from 'material-ui/Snackbar'
 import {setErrorMessage} from './../../actions/errorActions'
 import { browserHistory } from 'react-router'
-import { validateEmail,isAllAlphabets } from '../../utils/validation.js'
+import { validateEmail, isAllAlphabets, checkCharacter } from '../../utils/validation.js'
+import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
+import Checkbox from 'material-ui/Checkbox'
 require('rc-pagination/assets/index.css');
 var moment = require('moment')
 const Pagination = require('rc-pagination');
@@ -38,26 +40,52 @@ class AllTeacher extends React.Component{
           disableSaveButton: false,
           emailInvalid: false,
           nameInvalid: false,
-          designationInvalid: false
+          designationInvalid: false,
+          onlyApproved: false,
+          onlyUnApproved: false,
+          disableCheckboxForUnapproved: false,
+          disableCheckboxForApproved: false,
+          noData: false
        	}
     }
 
-    errorSnackBar = (errorMessage) => {
-      if(this.props.teacherReducer.noDataError == false){
+    snackBarDisplay = (errorMessage) => {
+      if(this.props.teacherReducer.error == true){
         return (
           <Snackbar
           open={true}
           message={errorMessage}
           autoHideDuration={4000}
           />
-      )
+        )
       }
-      else{
+      else if(this.props.teacherReducer.noDataError == true){
         return (
           <div id="labelErrorDiv" style= {{ marginTop: '17%', marginLeft: '20%' }}>
             <label style = {{color:'#808080', fontSize: 'xx-large'}}> NO DATA </label>
           </div>
         )
+      }
+      else if(this.props.teacherReducer.actionSuccessSnack == true){
+        if(this.props.teacherReducer.changeDetailSuccess == true){
+          errorMessage = "Changed Details"
+        }
+        if(this.props.teacherReducer.deleteSuccess == true){
+          errorMessage = "Deleted"
+        }
+        if(this.props.teacherReducer.approveDetailsSuccess == true){
+          errorMessage = "Approved"
+        }
+        return (
+          <Snackbar
+          open={true}
+          message={errorMessage}
+          autoHideDuration={4000}
+          />
+        )
+      }
+      else{
+        return
       }
     }
     // pageChange = (currentPage , size) =>{
@@ -89,7 +117,10 @@ class AllTeacher extends React.Component{
         })
       }
     }
-    handleTouchTap = (type, item, event) => {
+    handleTouchTap = (type, item, event, input) => {
+      if(this.props.teacherReducer.noDataError != true){
+        this.props.resetToNoErrorTeacher()
+      }
       let teacher = {}
       switch(type){
         case "openEditDialog":
@@ -125,6 +156,7 @@ class AllTeacher extends React.Component{
             designation: this.state.designation
           }
           this.props.changeDetails(details)
+
           this.setState({
             teacherName: null,
             departmentForChangeDetails: null,
@@ -136,6 +168,7 @@ class AllTeacher extends React.Component{
             nameInvalid: false,
             designationInvalid: false
           })
+          this.props.resetToNoErrorTeacher()
           break
         case "getName":
           this.setState({
@@ -149,7 +182,7 @@ class AllTeacher extends React.Component{
             })
           }
           else{
-            if ( isAllAlphabets(event)) {
+            if ( checkCharacter(event)) {
               this.setState({
                 nameInvalid: true
               },  ()=> {
@@ -177,7 +210,7 @@ class AllTeacher extends React.Component{
             })
           }
           else{
-            if ( isAllAlphabets(event)) {
+            if ( checkCharacter(event)) {
               this.setState({
                 designationInvalid: true
               }, ()=> {
@@ -233,23 +266,46 @@ class AllTeacher extends React.Component{
           }
           this.props.approveDetails(teacher)
           break
+        case "onlyApprovedTeachersOrOnlyUnapproved":
+          if(input == "all"){
+            this.setState({
+              onlyApproved: false,
+              onlyUnApproved: false
+            })
+          }
+          if(input == "approved"){
+            this.setState({
+              onlyApproved: true,
+              onlyUnApproved: false
+            })
+          }
+          if(input == "not_approved"){
+            this.setState({
+              onlyApproved: false,
+              onlyUnApproved: true
+            })
+          }
+          break
         default:
           break
       }
     }
     /*gets the date and sets it as joining date for a teacher*/
     getDate = (event, date) => {
+      this.props.resetToNoErrorTeacher()
       this.setState({
         joinDate: date
       })
     }
     /*selecting departments*/
     handleChangeDepartment = (event, index, value) => {
+      this.props.resetToNoErrorTeacher()
       this.setState({
         departmentSelected: value
       })
     }
     handleChangeDepartmentForCHangeDetails = (event, index, value) => {
+      this.props.resetToNoErrorTeacher()
       let departmentId = null
       let departmentExisting = this.props.subjectReducer.department
       for(let index = 0; index<departmentExisting.length; index++){
@@ -263,10 +319,6 @@ class AllTeacher extends React.Component{
         departmentIdForChangeDetails: departmentId
       })
     }
-    componentWillUnmount() {
-      this.props.resetToNoErrorTeacher()
-      this.props.resetToNoErrorSubject()
-    }
 
     componentWillReceiveProps(nextProps){
       this.props = nextProps
@@ -279,6 +331,14 @@ class AllTeacher extends React.Component{
           browserHistory.push('/error');
       }
     }
+
+    componentDidMount(){
+      this.setState({
+        noData: false
+      })
+      console.log(this.state)
+    }
+
     /*displays all the teacehrs in cards*/
     teacherList = (data,index,style) => {
       return(
@@ -313,28 +373,71 @@ class AllTeacher extends React.Component{
                 </TableHeader>
                 <TableBody displayRowCheckbox= {false}>
                    <TableRow key={index}>
-                     <TableRowColumn colSpan="2">Joine Date</TableRowColumn>
-                     <TableRowColumn colSpan="3">{moment(data.joining_date).format("MMM Do YY")}</TableRowColumn>
+                     <TableRowColumn colSpan="3">Joine Date</TableRowColumn>
+                       {
+                         data.joining_date == null || data.joining_date == undefined ?
+                           (
+                             <TableRowColumn colSpan="6">{"No data"}</TableRowColumn>
+                           ) : (
+                             <TableRowColumn colSpan="6">{moment(data.joining_date).format("MMM Do YY")}</TableRowColumn>
+                           )
+                       }
                    </TableRow>
                    <TableRow>
-                     <TableRowColumn colSpan="2">Experience (In years)</TableRowColumn>
-                     <TableRowColumn colSpan="3">{data.experience_years}</TableRowColumn>
+                     <TableRowColumn colSpan="3">Experience (In years)</TableRowColumn>
+                     {
+                       data.experience_years == null || data.experience_years == undefined ?
+                         (
+                           <TableRowColumn colSpan="6">{"No data"}</TableRowColumn>
+                         ) : (
+                           <TableRowColumn colSpan="6">{data.experience_years}</TableRowColumn>
+                         )
+                     }
                    </TableRow>
                    <TableRow>
-                     <TableRowColumn colSpan="2">Email ID</TableRowColumn>
-                     <TableRowColumn colSpan="3" >{data.teacher_email}</TableRowColumn>
+                     <TableRowColumn colSpan="3">Email ID</TableRowColumn>
+                     {
+                       data.teacher_email == null || data.teacher_email == undefined ?
+                         (
+                           <TableRowColumn colSpan="6">{"No data"}</TableRowColumn>
+                         ) : (
+                           <TableRowColumn colSpan="6" >{data.teacher_email}</TableRowColumn>
+                         )
+                     }
                    </TableRow>
                    <TableRow>
-                     <TableRowColumn colSpan="2">Phone number</TableRowColumn>
-                     <TableRowColumn colSpan="3" >{data.contact_number}</TableRowColumn>
+                     <TableRowColumn colSpan="3">Phone number</TableRowColumn>
+                       {
+                         data.contact_number == null || data.contact_number == undefined ?
+                           (
+                             <TableRowColumn colSpan="6">{"No data"}</TableRowColumn>
+                           ) : (
+                             <TableRowColumn colSpan="6" >{data.contact_number}</TableRowColumn>
+                           )
+                       }
                    </TableRow>
                    <TableRow>
-                     <TableRowColumn colSpan="2">Email ID</TableRowColumn>
+                     <TableRowColumn colSpan="3">Alternate Number</TableRowColumn>
+                       {
+                         data.alternate_number == null || data.alternate_number == undefined ?
+                           (
+                             <TableRowColumn colSpan="3">{"No data"}</TableRowColumn>
+                           ) : (
+                             <TableRowColumn colSpan="3" >{data.alternate_number}</TableRowColumn>
+                           )
+                       }
                      <TableRowColumn colSpan="3" >{data.alternate_number}</TableRowColumn>
                    </TableRow>
                    <TableRow>
-                     <TableRowColumn colSpan="2">Experience Description</TableRowColumn>
-                     <TableRowColumn colSpan="3" >{data.experience_description}</TableRowColumn>
+                     <TableRowColumn colSpan="3">Experience Description</TableRowColumn>
+                       {
+                         data.experience_description == null || data.experience_description == undefined ?
+                           (
+                             <TableRowColumn colSpan="3">{"No data"}</TableRowColumn>
+                           ) : (
+                             <TableRowColumn colSpan="3" >{data.experience_description}</TableRowColumn>
+                           )
+                       }
                    </TableRow>
                 </TableBody>
               </Table>
@@ -417,23 +520,75 @@ class AllTeacher extends React.Component{
              )
           }
           </SelectField>
+          <RadioButtonGroup name="shipSpeed"  defaultSelected="all" onChange={this.handleTouchTap.bind(this, "onlyApprovedTeachersOrOnlyUnapproved", event)}>
+            <RadioButton
+              value="all"
+              style={{position: 'absolute', zIndex:'3', marginLeft: '30%', marginTop:'-3%', width: '20%'}}
+              label="All Teachers"
+            />
+            <RadioButton
+              value="approved"
+              style={{position: 'absolute', zIndex:'3', marginLeft: '50%', marginTop:'-3%', width: '20%'}}
+              label="Approved Teachers"
+            />
+            <RadioButton
+              value="not_approved"
+              style={{position: 'absolute', zIndex:'3', marginLeft: '70%', marginTop:'-3%', width: '20%'}}
+              label="UnApproved Teachers"
+            />
+          </RadioButtonGroup>
+        <div>
     			{
             this.props.teacherReducer.status == 200 && this.props.teacherReducer.error === false && this.props.teacherReducer.allTeacher !== undefined?
     				(this.props.teacherReducer.allTeacher.map((data,index)=>{
-                if(this.state.departmentSelected.length==0){
-                  return this.teacherList(data,data.id,style)
-                }
-                else{
-                  for(let index=0; index <this.state.departmentSelected.length; index++)
-                  {
-                    if(data.department_name==this.state.departmentSelected[index]){
+                if(this.state.onlyApproved ==  true){
+                  if(data.approved == true){
+                    if(this.state.departmentSelected.length==0 ){
                       return this.teacherList(data,data.id,style)
+                    }
+                    else{
+                      for(let index=0; index <this.state.departmentSelected.length; index++)
+                      {
+                        if(data.department_name==this.state.departmentSelected[index]){
+                          return this.teacherList(data,data.id,style)
+                        }
+                      }
                     }
                   }
                 }
-    				})) : this.errorSnackBar(this.props.teacherReducer.errorMessage)
+                if(this.state.onlyUnApproved == true){
+                  if(data.approved == false){
+                    if(this.state.departmentSelected.length==0 ){
+                      return this.teacherList(data,data.id,style)
+                    }
+                    else{
+                      for(let index=0; index <this.state.departmentSelected.length; index++)
+                      {
+                        if(data.department_name==this.state.departmentSelected[index]){
+                          return this.teacherList(data,data.id,style)
+                        }
+                      }
+                    }
+                  }
+                }
+                if(this.state.onlyUnApproved == false && this.state.onlyApproved == false){
+                  if(this.state.departmentSelected.length==0 ){
+                    return this.teacherList(data,data.id,style)
+                  }
+                  else{
+                    for(let index=0; index <this.state.departmentSelected.length; index++)
+                    {
+                      if(data.department_name==this.state.departmentSelected[index]){
+                        return this.teacherList(data,data.id,style)
+                      }
+                    }
+                  }
+                }
+    				})) : null
     			}
+          </div>
           {
+            this.snackBarDisplay("")
             // <Pagination className="ant-pagination" defaultCurrent={1}
             //   total={this.props.teacherReducer.totalPages}
             //   current={this.props.teacherReducer.currentPage}

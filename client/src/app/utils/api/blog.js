@@ -16,6 +16,11 @@ const utils ={
         let config = configHeader();
         return axios.post(url,data,  config);
     },
+    getMorePosts : (data) =>{
+        let url = serverAddress + '/api/post/getPosts';
+        let config = configHeader();
+        return axios.post(url,data,  config);
+    },
     getPost : (data) =>{
         let url = serverAddress + '/api/post/getPost';
         let config = configHeader();

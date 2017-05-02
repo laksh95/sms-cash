@@ -2,7 +2,7 @@ import {Link} from 'react-router';
 import React from 'react';
 import {connect} from "react-redux";
 import {loginUser, checkLogin} from "./../../actions/loginActions";
-import {openModal,getPosts,getStats,setPost,deletePost,setShowEdit,searchPost,setSnackbarOpen,setCurrentLike,setLikes} from "../../actions/blogActions.js";
+import {openModal,getPosts,getStats,setPost,deletePost,setShowEdit,searchPost,setSnackbarOpen,setCurrentLike,setLikes,getMorePosts} from "../../actions/blogActions.js";
 import AddPost from "./addPost.jsx"
 import EditPost from "./editPost.jsx"
 import FloatingActionButton from 'material-ui/FloatingActionButton';
@@ -30,6 +30,7 @@ class Blog extends React.Component {
         }
         this.handleScroll = this.handleScroll.bind(this);
     }
+    /*handler for checkbox*/
     handleCheck=(post,event,checked)=> {
         let likes = post.likes
         console.log(post)
@@ -63,12 +64,16 @@ class Blog extends React.Component {
         }
 
     }
+    /*infinite scrolling implementation*/
     handleScroll() {
+
         const windowHeight = "innerHeight" in window ? window.innerHeight : document.documentElement.offsetHeight;
         const body = document.body;
         const html = document.documentElement;
         const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight,  html.scrollHeight, html.offsetHeight);
         const windowBottom = windowHeight + window.pageYOffset;
+        console.log(windowBottom)
+        console.log(docHeight)
         if (windowBottom >= docHeight) {
             if(this.props.blogReducer.isScrollActive){
                 let pg= this.state.pageNumber
@@ -76,7 +81,7 @@ class Blog extends React.Component {
                 this.setState({
                     pageNumber:pg
                 })
-                this.props.getPosts({pageNumber:pg})
+                this.props.getMorePosts({pageNumber:pg})
             }
             else {
                 //do nothing
@@ -86,11 +91,11 @@ class Blog extends React.Component {
         }
     }
     componentWillMount() {
+        window.addEventListener("scroll", this.handleScroll);
         this.props.getPosts({
             pageNumber : this.state.pageNumber,
             user_id : 1
         })
-        window.addEventListener("scroll", this.handleScroll);
         this.props.getStats({
             id : 1
         })
@@ -102,28 +107,27 @@ class Blog extends React.Component {
     componentWillReceiveProps(props){
         this.props= props
     }
-    componentDidMount() {
-    }
-    componentDidUpdate(prevProps, prevState) {
-    }
+    /*open up the user profile */
     handleTouchTap() {
         alert('You clicked the Chip.');
     }
     openModal(event,data){
         this.props.openModal(data)
     }
-
+    /*delete a post*/
     deletePost = (data) =>{
         console.log(data)
         this.setState({open: true})
         this.props.setPost(data)
     }
+    /*edit a post*/
     editPost = (data)=>{
         console.log(data)
         this.props.setShowEdit(true)
         this.props.setPost(data)
 
     }
+    /*handler for dialog close*/
     handleClose = (type) => {
         console.log(type)
         switch(type){
@@ -136,6 +140,7 @@ class Blog extends React.Component {
                 break
         }
     };
+    /*handler for search after enter*/
     handleKeyPress = (e)=>{
         if(e.key==='Enter'){
             console.log("Haye",e.target.value)
@@ -144,6 +149,7 @@ class Blog extends React.Component {
             })
         }
     }
+    /*snackbar close*/
     handleRequestClose = () => {
         this.props.setSnackbarOpen(false);
     };
@@ -202,19 +208,10 @@ class Blog extends React.Component {
                                         {/*<label className="font">Posted At {data.created_at}</label><br/>*/}
                                     </div>
                                     <h5 className="cardHeader">{data.heading}</h5>
-                                    <img className="image" src={data.image} alt="Image" height={250} width={600}/>
+                                    <img className="image" src={data.image} alt="Image" height="auto" width={600}/>
                                     <Link to={url}><h6 className="readMore">Read More</h6></Link>
                                     <div className="footer">
                                         <div className="checkbox">
-                                            {/*<Checkbox*/}
-                                                {/*checkedIcon={<ActionFavorite />}*/}
-                                                {/*uncheckedIcon={<ActionFavoriteBorder />}*/}
-                                                {/*label={this.props.blogReducer.post.likes}*/}
-                                                {/*className="left"*/}
-                                                {/*onCheck={this.handleCheck.bind(this)}*/}
-                                                {/*style={{...styles.checkbox,...styles.block}}*/}
-                                                {/*checked={this.props.blogReducer.post.liked}*/}
-                                            {/*/>*/}
                                             <Checkbox
                                                 checkedIcon={<ActionFavorite />}
                                                 uncheckedIcon={<ActionFavoriteBorder />}
@@ -318,6 +315,9 @@ const mapDispatchToProps= (dispatch) => {
         },
         setCurrentLike:(data)=>{
             dispatch(setCurrentLike(data))
+        },
+        getMorePosts:(data)=>{
+            dispatch(getMorePosts(data))
         }
     };
 };

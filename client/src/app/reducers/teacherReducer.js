@@ -12,7 +12,11 @@ const teacherReducer = (
     pagedTeachers: [],
     currentPage: 1,
     totalPages : 0,
-    successSnackBar: false
+    successSnackBar: false,
+    changeDetailSuccess: false,
+    deleteSuccess: false,
+    actionSuccessSnack: false,
+    approveDetailsSuccess: false
   },
   action
 ) => {
@@ -22,8 +26,9 @@ const teacherReducer = (
     /*adding the teacher to database*/
     case "ADD_USER_TEACHER_FULFILLED":
       allTeacher = state.allTeacher
-      let newTeacher = action.payload.result
-
+      let newTeacher = action.payload.data
+      newTeacher.teacher_name = action.payload.result.name
+      newTeacher.teacher_email = action.payload.result.emailId
       allTeacher.push(newTeacher)
       state = {
         ...state,
@@ -31,7 +36,8 @@ const teacherReducer = (
         error: false,
         errorMessage: action.payload.message,
         noDataError: false,
-        successSnackBar: true
+        successSnackBar: true,
+        value: "1"
       }
       return state
     case "ADD_USER_TEACHER_REJECTED":
@@ -83,7 +89,6 @@ const teacherReducer = (
           status: 200,
           allTeacher: action.payload.data,
           errorMessage: action.payload.message,
-          error: true,
           noDataError: true
         }
       }
@@ -138,6 +143,8 @@ const teacherReducer = (
       state = {
         ...state,
         allTeacher: allTeacher,
+        changeDetailSuccess: true,
+        actionSuccessSnack: true,
         error: false
       }
       return state
@@ -192,6 +199,8 @@ const teacherReducer = (
         error: isTeacherListEmptyError,
         allTeacher: allTeacher,
         errorMessage: message,
+        deleteSuccess: true,
+        actionSuccessSnack: true,
         error: false
       }
       return state
@@ -238,6 +247,8 @@ const teacherReducer = (
       state = {
         ...state,
         allTeacher: allTeacherStored,
+        actionSuccessSnack: true,
+        approveDetailsSuccess: true,
         error: false
       }
       return state
@@ -338,10 +349,19 @@ const teacherReducer = (
             error: false,
             status: 200,
             noDataError: false,
-            successSnackBar: false
+            successSnackBar: false,
+            changeDetailSuccess: false,
+            deleteSuccess: false,
+            actionSuccessSnack: false,
+            approveDetailsSuccess: false
         }
         return state
-
+    case "SET_VALUE":
+        state = {
+            ...state,
+            value : action.payload
+        }
+        return state
     default:
       return state
   }

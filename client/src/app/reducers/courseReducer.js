@@ -60,24 +60,29 @@ const courseReducer = (state = {
             var course  = action.payload.data
             var size = course.length
             var pagedCourses = []
-            for(let index in course ){
-                if(index<10){
+            let start = (state.currentPage-1)*10
+            let end = start + 10
+            for(let index in course){
+                if(index>=start && index<end){
                     pagedCourses.push(course[index])
                 }
             }
-            if(0 === pagedCourses){
+            if(0 === pagedCourses.length){
                 state = {
                     ...state ,
                     snackbarMessage : "Nothing to Show",
                     snackbarOpen : true
                 }
             }
-            state  = {
-                ...state ,
-                course : course ,
-                totalPages : size ,
-                pagedCourses : pagedCourses
+            else {
+                state  = {
+                    ...state ,
+                    course : course ,
+                    totalPages : size ,
+                    pagedCourses : pagedCourses
+                }
             }
+
             break
         case "GET_COURSES_REJECTED":
             var data= action.payload.response
@@ -196,7 +201,6 @@ const courseReducer = (state = {
                 }
             }
             break
-
         case "EDIT_COURSE_REJECTED":
             var data = action.payload.response
             if (data.status===500){
@@ -222,34 +226,40 @@ const courseReducer = (state = {
                 }
             }
             break
-
         case "DELETE_COURSE_FULFILLED":
             var course = state.course
             var data = action.payload.data
-            console.log('------course------',course)
-            console.log('++++++++++++++++',data,'-------------')
-            for(let index in course){
-                if(course[index].id == data){
-                    console.log("true")
-                    course.splice(index,1)
+            console.log('------------>',data.length)
+            if(data.length === 0){
+                state={
+                    ...state,
+                    snackbarOpen :true ,
+                    snackbarMessage : "Incorrect OTP",
                 }
+                return state
             }
-            var size = course.length
-            var pagedCourses = []
-            for(let index in course ){
-                if(index<10){
-                    pagedCourses.push(course[index])
+                for(let index in course){
+                    if(course[index].id === data.data){
+                        console.log("true")
+                        course.splice(index,1)
+                    }
                 }
-            }
-            state = {
-                ...state ,
-                course : course ,
-                totalPages : size ,
-                currentPage: 1,
-                snackbarOpen :true ,
-                snackbarMessage : "Course Deleted",
-                pagedCourses:pagedCourses
-            }
+                var size = course.length
+                var pagedCourses = []
+                for(let index in course ){
+                    if(index<10){
+                        pagedCourses.push(course[index])
+                    }
+                }
+                state = {
+                    ...state ,
+                    course : course ,
+                    totalPages : size ,
+                    currentPage: 1,
+                    snackbarOpen :true ,
+                    snackbarMessage : "Course Deleted",
+                    pagedCourses:pagedCourses
+                }
             break
         case "DELETE_COURSE_REJECTED":
             var data = action.payload.response
@@ -293,6 +303,11 @@ const courseReducer = (state = {
                 errorMessage: ""
             }
             break
+        case "SET_CURRENT_PAGE":
+            state={
+                ...state ,
+                currentPage:action.payload
+            }
     }
     return state
 }

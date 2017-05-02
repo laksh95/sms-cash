@@ -40,7 +40,7 @@ class SideBarMenu extends React.Component {
            selected= "Department"
        else if(path === '/student')
            selected= "Students"
-       else if(path === '/course')
+       else if(path === '/course/')
            selected = 'Course'
         else if(path === '/blog')
             selected = 'Blog'
@@ -102,6 +102,16 @@ class SideBarMenu extends React.Component {
                 />
 
               </Link> : null}
+               {this.props.user.role.isAdmin ?
+                   <Link to ="/course/1" style={{textDecoration: 'none'}}>
+                       <ListItem
+                           primaryText="Course"
+                           leftIcon={ <img  src={courseImage}
+                           />}
+                           style={{backgroundColor: list["Course"]}}
+                           onTouchTap = {this.handleTouchTap.bind(this, "Course")}
+                       />
+                   </Link> : null}
               <Link to ="/department" style={{textDecoration: 'none'}}>
                 <ListItem
                   primaryText="Department"
@@ -129,16 +139,6 @@ class SideBarMenu extends React.Component {
                            />}
                            style={{backgroundColor: list["Blog"]}}
                            onTouchTap = {this.handleTouchTap.bind(this, "Blog")}
-                       />
-                   </Link> : null}
-               {this.props.user.role.isAdmin ?
-                   <Link to ="/course" style={{textDecoration: 'none'}}>
-                       <ListItem
-                           primaryText="Course"
-                           leftIcon={ <img  src={courseImage}
-                            />}
-                           style={{backgroundColor: list["Course"]}}
-                           onTouchTap = {this.handleTouchTap.bind(this, "Course")}
                        />
                    </Link> : null}
 

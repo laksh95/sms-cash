@@ -2,7 +2,7 @@ import React from 'react'
 import DropDownMenu from 'material-ui/DropDownMenu'
 import MenuItem from 'material-ui/MenuItem'
 import {connect} from 'react-redux'
-import {getInitialData,getFilteredData,deleteStudent} from '../../actions/studentAction.js'
+import {getInitialData,getFilteredData,deleteStudent,selectStudent} from '../../actions/studentAction.js'
 import FlatButton from 'material-ui/FlatButton'
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table'
 import EditDialog from './EditDialog.jsx'
@@ -17,8 +17,8 @@ class StudentInformation extends React.Component{
             batch:0,
             action:0,
             openEdit:false,
-            openProfile:false,
-            openDelete:false
+            openDelete:false,
+            editStudent:{}
         }
     }
     componentWillMount(){
@@ -115,6 +115,13 @@ class StudentInformation extends React.Component{
                     />
                 )
             })):null
+    }
+    handleEdit = (data)=>{
+        let response = {
+            data,
+            show:true
+        }
+        this.props.editSelectedStudent(response)
     }
     handleDeleteTap = (content)=>{
         let data = {
@@ -218,24 +225,20 @@ class StudentInformation extends React.Component{
                                                 </TableRowColumn>
                                                 <TableRowColumn>
                                                     <FlatButton primary={true} label="EDIT" onTouchTap={() => {
-                                                        this.props.showDialog(true)
+                                                        this.handleEdit(data)
                                                     }}/>
                                                     <FlatButton secondary={true} label="DELETE"
-                                                                onTouchTap={this.handleDeleteTap.bind(this,data)}/>
-                                                    &nbsp;
-                                                    {this.props.dialogValue ?
-                                                        <EditDialog
-                                                            studentId={data.studentId}
-                                                        /> : null}
-
+                                                                onTouchTap={
+                                                                    this.handleDeleteTap.bind(this,data)}/>
                                                 </TableRowColumn>
                                             </TableRow>
                                         )
-
                                 })):null
                         }
                         </TableBody>
                     </Table>
+                    {this.props.allStudents.dialogOpen ?
+                        <EditDialog/> : null}
                 </div>
             </div>
 
@@ -247,7 +250,7 @@ const mapStateToProps = (state)=>{
         allStudents: state.studentReducer,
         filterData: state.studentReducer.initialData,
         studentInfo:state.studentReducer.students,
-        dialogValue:state.studentReducer.dialogOpen
+
     }
 }
 const mapDispatchToProps = (dispatch)=>{
@@ -258,11 +261,11 @@ const mapDispatchToProps = (dispatch)=>{
         getAllStudents: (department,semester,batch)=>{
             dispatch(getFilteredData(department,semester,batch))
         },
-        showDialog: (show)=>{
-            dispatch(openDialog(show))
-        },
         deleteStudent:(content)=>{
             dispatch(deleteStudent(content))
+        },
+        editSelectedStudent: (data)=>{
+            dispatch(selectStudent(data))
         }
     }
 }

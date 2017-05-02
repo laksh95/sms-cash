@@ -43,6 +43,7 @@ let init=function() {
                         status : true
                     }
                 }).then((courseData)=>{
+
                     if(courseData==null){
                         let response = {
                             status : "0",
@@ -143,7 +144,7 @@ let init=function() {
                     let response = {
                         status : "1",
                         data : curDepartment ,
-                        msg : "edited successfully"
+                        msg : "Edited successfully"
                     }
                     cb(response)
                 })
@@ -168,7 +169,7 @@ let init=function() {
                 }).then((data)=>{
                     let response = {
                         status : "1",
-                        msg : "deleted Successfully",
+                        msg : "Deleted Successfully",
                         data : {id: cur_id}
                     }
                     cb(response)

@@ -8,7 +8,6 @@ export function setCourse(course){
     }
 }
 export function generateOTP(){
-    console.log('-------generate OTP called-----------')
     return{
         type:'GENERATE_OTP',
         payload: course.generateOTP()
@@ -92,5 +91,11 @@ export function setPagination(data){
 export function resetToNoError(){
     return {
         type: types.RESET_ERROR
+    }
+}
+export function setCurrentPage(data){
+    return {
+        type : types.SET_CURRENT_PAGE,
+        payload :data
     }
 }

@@ -19,33 +19,37 @@ class AddTeacher extends React.Component{
     constructor(props) {
     	super(props);
       this.state = {
-        departmentSelected: null,
-        teacherName: null,
-        joinDate: "",
-        designation: null,
-        email: null,
-        emailInvalid: true,
-        nameInvalid: true,
-        designationInvalid: true,
-        dateInvalid: true,
-        genderInvalid: true,
-        departmentInvalid: true,
-        birthDateInvalid: true,
-        departmentId: null,
-        disableAddButton: true,
-        birthDate: null,
-        gender: null,
-        allGender: [
-          {
-            name: "MALE"
-          },
-          {
-            name: "FEMALE"
-          },
-          {
-            name: "OTHERS"
-          }
-        ]
+          departmentSelected: null,
+          teacherName: null,
+          joinDate: "",
+          designation: null,
+          email: null,
+          emailInvalid: true,
+          nameInvalid: true,
+          designationInvalid: true,
+          dateInvalid: true,
+          genderInvalid: true,
+          departmentInvalid: true,
+          birthDateInvalid: true,
+          departmentId: null,
+          disableAddButton: true,
+          birthDate: null,
+          gender: null,
+          validationInForm: false,
+          nameErrorText: "",
+          emailErrorText: "",
+          designationErrorText: "",
+          allGender: [
+            {
+              name: "MALE"
+            },
+            {
+              name: "FEMALE"
+            },
+            {
+              name: "OTHERS"
+            }
+          ]
       }
     }
     checkAllValidations = () => {
@@ -65,6 +69,20 @@ class AddTeacher extends React.Component{
     handleChange = (type, event) => {
       switch (type) {
         case "addUser":
+          for(let index = 0; index<this.props.teacherReducer.allTeacher.length; index++){
+            if(this.state.email == this.props.teacherReducer.allTeacher[index].teacher_email){
+              this.setState({
+                emailInvalid: true,
+                validationInForm: true
+              })
+              return
+            }
+          }
+
+          this.setState({
+            validationInForm: false
+          })
+
           let details = {
             name: this.state.teacherName,
             department: this.state.departmentSelected,
@@ -76,28 +94,16 @@ class AddTeacher extends React.Component{
             gender: this.state.gender
           }
           this.props.addUser(details)
-          this.setState({
-            teacherName: null,
-            departmentForChangeDetails: null,
-            email: null,
-            joinDate: null,
-            designation: null,
-            departmentId: null,
-            emailInvalid: true,
-            nameInvalid: true,
-            designationInvalid: true,
-            dateInvalid: true,
-            departmentInvalid: true,
-            genderInvalid: true,
-          })
           break
         case "getName":
           this.setState({
-            teacherName: event.target.value
+            teacherName: event.target.value,
+            nameErrorText: ""
           })
           if(event.target.value == ""){
             this.setState({
-              nameInvalid: true
+              nameInvalid: true,
+              nameErrorText: "Must not be empty"
             }, ()=> {
               this.checkAllValidations()
             })
@@ -105,14 +111,16 @@ class AddTeacher extends React.Component{
           else{
             if ( isAllAlphabets(event.target.value)) {
               this.setState({
-                nameInvalid: true
+                nameInvalid: true,
+                nameErrorText: "Only characters please"
               },  ()=> {
                 this.checkAllValidations()
               })
             }
             else{
               this.setState({
-                nameInvalid: false
+                nameInvalid: false,
+                nameErrorText: ""
               },  () => {
                 this.checkAllValidations()
               })
@@ -121,11 +129,13 @@ class AddTeacher extends React.Component{
           break
         case "getDesignation":
           this.setState({
-            designation: event.target.value
+            designation: event.target.value,
+            designationErrorText: ""
           })
           if(event.target.value == ""){
             this.setState({
-              designationInvalid: true
+              designationInvalid: true,
+              designationErrorText: "Must not be empty"
             },  ()=> {
               this.checkAllValidations()
             })
@@ -133,14 +143,16 @@ class AddTeacher extends React.Component{
           else{
             if ( isAllAlphabets(event.target.value)) {
               this.setState({
-                designationInvalid: true
+                designationInvalid: true,
+                designationErrorText: "Only characters please"
               }, ()=> {
                 this.checkAllValidations()
               })
             }
             else{
               this.setState({
-                designationInvalid: false
+                designationInvalid: false,
+                designationErrorText: ""
               },  ()=> {
                 this.checkAllValidations()
               })
@@ -148,12 +160,16 @@ class AddTeacher extends React.Component{
           }
           break
         case "getEmail":
+          this.props.resetToNoErrorTeacher
           this.setState({
-            email: event.target.value
+            email: event.target.value,
+            validationInForm: false,
+            emailErrorText: ""
           })
           if(event.target.value == ""){
             this.setState({
-              emailInvalid: true
+              emailInvalid: true,
+              emailErrorText:"Must not be empty"
             },  ()=> {
               this.checkAllValidations()
             })
@@ -161,14 +177,16 @@ class AddTeacher extends React.Component{
           else{
             if( validateEmail(event.target.value)){
               this.setState({
-                emailInvalid: false
+                emailInvalid: false,
+                emailErrorText: ""
               },  ()=> {
                 this.checkAllValidations()
               })
             }
             else{
               this.setState({
-                emailInvalid: true
+                emailInvalid: true,
+                emailErrorText:"Give email in correct format"
               },  ()=> {
                 this.checkAllValidations()
               })
@@ -231,11 +249,20 @@ class AddTeacher extends React.Component{
           />
         )
       }
+      if(this.state.validationInForm == true){
+        return (
+          <Snackbar
+          open={true}
+          message={"A teacher with the same Email ID exists"}
+          autoHideDuration={4000}
+          />
+        )
+      }
       else{
         return (
           <Snackbar
           open={true}
-          message={"Added a teacher"}
+          message={errorMessage}
           autoHideDuration={4000}
           />
         )
@@ -308,16 +335,19 @@ class AddTeacher extends React.Component{
               <TextField
               floatingLabelText="Teacher name"
               onChange={ this.handleChange.bind(this, "getName") }
+              errorText={this.state.nameErrorText}
               />
               <br />
               <TextField
               floatingLabelText="Teacher designation"
               onChange={this.handleChange.bind(this, "getDesignation")}
+              errorText={this.state.designationErrorText}
               />
               <br />
               <TextField
               floatingLabelText="Teacher Email ID"
               onChange={this.handleChange.bind(this, "getEmail")}
+              errorText={this.state.emailErrorText}
               />
               <br /><br />
               <DatePicker hintText="Join Date" mode="landscape" onChange={ this.getDate }/>
@@ -327,8 +357,10 @@ class AddTeacher extends React.Component{
           </form>
     		</div>
         {
-          this.props.teacherReducer.error == true || this.props.teacherReducer.successSnackBar == true?
-          this.errorSnackBar(this.props.teacherReducer.errorMessage)
+          this.props.teacherReducer.error == true || this.props.teacherReducer.successSnackBar == true || this.state.validationInForm == true?
+          (
+            this.errorSnackBar(this.props.teacherReducer.errorMessage)
+          )
           : null
         }
 

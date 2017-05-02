@@ -1,9 +1,5 @@
 import React from 'react';
 import { Tabs, Tab } from 'material-ui/Tabs';
-import FontIcon from 'material-ui/FontIcon';
-import Divider from 'material-ui/Divider';
-import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
 import DepartmentList  from './../../components/department/DepartmentList.jsx';
 import AddDepartment from './../../components/department/AddDepartment.jsx';
 import {getDepartmentList, addDepartment, deleteDepartment, editDepartment,
@@ -54,6 +50,7 @@ class Department extends React.Component{
                 <AddDepartment
                   addDepartment= {(department) => this.props.addDepartment(department)}
                   showSlackBar= {this.props.department.showSlackBar}
+                  selectedCourseId = {this.props.headerReducer.selectedCourseId}
                 />
               </Tab>
             </Tabs>
@@ -70,7 +67,8 @@ const mapStateToProps= (state) => {
   return{
     login: state.login,
     department: state.departmentReducer,
-    error: state.errorReducer
+    error: state.errorReducer,
+    headerReducer:state.headerReducer
   };
 };
 

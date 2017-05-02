@@ -85,3 +85,10 @@ export function setPagination(data){
         payload :data
     }
 }
+
+export function setValue(value){
+    return {
+        type : types.SET_VALUE,
+        payload : value
+    }
+}

@@ -20,13 +20,13 @@ const utils={
         return axios.post(url,fileContent,config)
     },
     deleteStudent:(data)=>{
-      let url = baseAddress + '/api/student/deleteStudentDetails'
+      let url = serverAddress + '/api/student/deleteStudentDetails'
         let config = configHeader()
         return axios.put(url,data,config)
     },
     studentDetails:(data)=>{
         console.log('--------util api being called-----',data)
-        let url = baseAddress + '/api/student/getStudentDetails'
+        let url = serverAddress + '/api/student/getStudentDetails'
         let config = configHeader()
         return axios.post(url,data,config)
     },

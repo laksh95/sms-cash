@@ -17,12 +17,16 @@ let config = {
             index: 'index.html'
         }
     },
+    resolve: {
+        root: path.resolve('./')
+    },
     devtool : 'source-map',
     module: {
         loaders: [
             {
                 test: /\.jsx?/,
                 include: SRC_DIR,
+                exclude: /node_modules/,
                 loader: "babel-loader",
                 query: {
                     presets: ["react", "es2015", "stage-2"]

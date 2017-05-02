@@ -8,10 +8,10 @@ import Snackbar from 'material-ui/Snackbar';
 require('rc-pagination/assets/index.css');
 import {setCourse,setPagedCourse,setPagination,setSnackbarOpen,setSnackbarMessage,setValue,editCourse,addCourse , deleteCourse,getCourses,generateOTP} from '../../actions/courseActions.js'
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
+import { updateCourse , setCurrentSession , setCurrentCourse } from '../../actions/headerActions.js'
 import { Router, Route, browserHistory } from 'react-router'
 import store from './../../store'
 import {connect} from 'react-redux'
-
 const Pagination = require('rc-pagination');
 class ViewCourse extends React.Component {
     constructor(props) {
@@ -36,7 +36,6 @@ class ViewCourse extends React.Component {
         this.setCourseDuration = this.setCourseDuration.bind(this)
         this.onError = (error) => {
             let errorText;
-            console.log(error);
             switch (error) {
                 case 'required':
                     errorText = 'This field is required';
@@ -72,8 +71,8 @@ class ViewCourse extends React.Component {
     componentWillReceiveProps(props){
         this.props= props
     }
-    pageChange = (currentPage , size) =>{
-        console.log("page change",currentPage)
+    /*pagination*/
+    pageChange = (currentPage,size) =>{
         let course = this.props.courseReducer.course
         let start = (currentPage-1)*10
         let end = start + 10
@@ -88,19 +87,22 @@ class ViewCourse extends React.Component {
             pagedCourses
         }
         this.props.setPagination(data)
+        browserHistory.push('/course/'+currentPage)
     };
     handleDeleteOpen = (index,data) => {
         this.setState({
             curCourse : data
         })
         this.setState({deleteDialog: true});
+
+        console.log("Inside....");
     };
     snackbarHandleRequestClose = () => {
 
         this.props.setSnackbarOpen(false)
     };
+    /*set current course duration*/
     setCourseDuration(event){
-        console.log("inside set duration")
         let duration = event.target.value
         let course = this.state.curCourse
         if(duration.trim() === ''){
@@ -131,7 +133,6 @@ class ViewCourse extends React.Component {
     };
     handleDeleteCloseWithUpdate = () => {
         let data = this.state.curCourse
-        console.log("Inside Handle",data)
         /*this.props.deleteCourse(data)*/
         this.setState({deleteDialog: false, verificationDialog:true});
         this.props.generateOTP()
@@ -141,13 +142,25 @@ class ViewCourse extends React.Component {
 
     };
     handleCloseWithEdit = (key) => {
-        this.setState({open: false});
-        let data = this.state.curCourse
-        console.log("~~~~~~~~~~~~~~~~~",data)
-        this.props.editCourse(data)
+        let course = this.props.courseReducer.course
+        let flag = 0
+        for(let index in course){
+            if(course[index].name.toLowerCase()===this.state.curCourse.name.toLowerCase()){
+                flag =1
+                break
+            }
+        }
+        if(1===flag){
+            this.props.setSnackbarOpen(true)
+            this.props.setSnackbarMessage("Course Already Exists")
+        }
+        else {
+            this.setState({open: false});
+            let data = this.state.curCourse
+            this.props.editCourse(data)
+        }
     }
     handleOpen = (key,data) => {
-        console.log("******************",data)
         this.setState({open: true});
         this.setState({
             curCourse : data
@@ -204,6 +217,7 @@ class ViewCourse extends React.Component {
     }
     componentWillMount(){
         this.props.getCourses()
+        console.log(this.props.courseReducer.currentPage)
     }
     handleVerificationClose = ()=>{
         this.setState({
@@ -212,22 +226,29 @@ class ViewCourse extends React.Component {
     }
     handleVerificationSubmit = ()=>{
         let data= this.state.curCourse
-        if(this.state.otpValue === 0){
+        if(this.state.otp === 0){
             this.setState({
                 errorTextOTP:'Cannot be left blank'
             })
         }
         else{
-            console.log('------',this.state.curCourse.id,'-----------')
             let response = {
                 otp:this.state.otp,
                 data:this.state.curCourse.id
             }
-            this.setState({
-                verificationDialog:false
-            })
             this.props.deleteCourse(response)
-
+            console.log('-------error',this.props.courseReducer.errorMessage)
+            if(this.props.courseReducer.errorMessage !==''){
+                this.setState({
+                    errorTextOTP:'incorrect OTP'
+                })
+            }
+            else{
+                this.setState({
+                    verificationDialog:false,
+                    errorTextOTP:''
+                })
+            }
         }
     }
     render(){
@@ -333,7 +354,7 @@ class ViewCourse extends React.Component {
                         </TableBody>
                     </Table>
                 </div>
-                <Pagination className="ant-pagination" defaultCurrent={1} total={this.props.courseReducer.totalPages} current={this.props.courseReducer.currentPage} defaultPageSize={10} onChange={this.pageChange}/>
+                <Pagination className="ant-pagination" defaultCurrent={this.props.courseReducer.currentPage} total={this.props.courseReducer.totalPages} current={this.props.courseReducer.currentPage} defaultPageSize={10} onChange={this.pageChange}/>
                 {/*Confirm delete option*/}
                 <Dialog
                     actions={dialogActions}
@@ -379,6 +400,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         setCourse : (course)=>{
             dispatch(setCourse(course))
+        },
+        updateCourse : (data) => {
+            dispatch(updateCourse(data));
         },
         setPagedCourse : (course)=>{
             dispatch(setPagedCourse(course))

@@ -179,7 +179,7 @@ class EditPost extends React.Component {
                             multiple={false}
                             className="dropzone"
                         >
-                            <div><img src={this.state.image.preview} width={200} height={200} alt=""/></div>
+                            <div><img src={this.props.blogReducer.post.image} width={200} height={200} alt=""/></div>
                         </Dropzone>
                     </div>
                     <br/><br/>

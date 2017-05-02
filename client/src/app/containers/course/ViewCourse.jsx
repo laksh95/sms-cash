@@ -145,7 +145,7 @@ class ViewCourse extends React.Component {
         let course = this.props.courseReducer.course
         let flag = 0
         for(let index in course){
-            if(course[index].name.toLowerCase()===this.state.curCourse.name.toLowerCase()){
+            if(course[index].name.toLowerCase()===this.state.curCourse.name.toLowerCase() && course[index].id!==this.state.curCourse.id){
                 flag =1
                 break
             }

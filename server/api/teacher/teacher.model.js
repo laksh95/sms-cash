@@ -329,7 +329,6 @@ let init = function(){
                          'score',
                          'type'
                        ],
-                       //required : true,
                        where : {
                          status : true
                        }

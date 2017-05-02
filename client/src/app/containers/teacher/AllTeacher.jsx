@@ -21,6 +21,7 @@ import { validateEmail, isAllAlphabets, checkCharacter } from '../../utils/valid
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import Checkbox from 'material-ui/Checkbox'
 require('rc-pagination/assets/index.css');
+import 'moment/locale/nb';
 var moment = require('moment')
 const Pagination = require('rc-pagination');
 
@@ -379,7 +380,7 @@ class AllTeacher extends React.Component{
                            (
                              <TableRowColumn colSpan="6">{"No data"}</TableRowColumn>
                            ) : (
-                             <TableRowColumn colSpan="6">{moment(data.joining_date).format("MMM Do YY")}</TableRowColumn>
+                             <TableRowColumn colSpan="6">{moment(data.joining_date).format('ll')}</TableRowColumn>
                            )
                        }
                    </TableRow>

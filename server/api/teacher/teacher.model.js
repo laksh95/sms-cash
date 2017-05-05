@@ -321,14 +321,14 @@ let init = function(){
                      model : db.feedback,
                      attributes : [
                        'teacher_id','subject_id'],
-                     include : [{
+                     include : [
+                       {
                        model : db.rating,
                        attributes : [
                          'id',
                          'score',
                          'type'
                        ],
-                       required : true,
                        where : {
                          status : true
                        }
@@ -355,7 +355,8 @@ let init = function(){
                         where:{
                             course_id: request.course_id
                         },
-                      },{
+                      },
+                      {
                         model: teacherSubjectAllocation,
                         attributes: ['subject_id'],
                         where:{

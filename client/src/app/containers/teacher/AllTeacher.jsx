@@ -17,9 +17,11 @@ import { connect } from 'react-redux'
 import Snackbar from 'material-ui/Snackbar'
 import {setErrorMessage} from './../../actions/errorActions'
 import { browserHistory } from 'react-router'
-import { validateEmail,isAllAlphabets } from '../../utils/validation.js'
+import { validateEmail, isAllAlphabets, checkCharacter } from '../../utils/validation.js'
+import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import Checkbox from 'material-ui/Checkbox'
 require('rc-pagination/assets/index.css');
+import 'moment/locale/nb';
 var moment = require('moment')
 const Pagination = require('rc-pagination');
 
@@ -43,26 +45,48 @@ class AllTeacher extends React.Component{
           onlyApproved: false,
           onlyUnApproved: false,
           disableCheckboxForUnapproved: false,
-          disableCheckboxForApproved: false
+          disableCheckboxForApproved: false,
+          noData: false
        	}
     }
 
-    errorSnackBar = (errorMessage) => {
-      if(this.props.teacherReducer.noDataError == false){
+    snackBarDisplay = (errorMessage) => {
+      if(this.props.teacherReducer.error == true){
         return (
           <Snackbar
           open={true}
           message={errorMessage}
           autoHideDuration={4000}
           />
-      )
+        )
       }
-      else{
+      else if(this.props.teacherReducer.noDataError == true){
         return (
           <div id="labelErrorDiv" style= {{ marginTop: '17%', marginLeft: '20%' }}>
             <label style = {{color:'#808080', fontSize: 'xx-large'}}> NO DATA </label>
           </div>
         )
+      }
+      else if(this.props.teacherReducer.actionSuccessSnack == true){
+        if(this.props.teacherReducer.changeDetailSuccess == true){
+          errorMessage = "Changed Details"
+        }
+        if(this.props.teacherReducer.deleteSuccess == true){
+          errorMessage = "Deleted"
+        }
+        if(this.props.teacherReducer.approveDetailsSuccess == true){
+          errorMessage = "Approved"
+        }
+        return (
+          <Snackbar
+          open={true}
+          message={errorMessage}
+          autoHideDuration={4000}
+          />
+        )
+      }
+      else{
+        return
       }
     }
     // pageChange = (currentPage , size) =>{
@@ -94,7 +118,10 @@ class AllTeacher extends React.Component{
         })
       }
     }
-    handleTouchTap = (type, item, event, isInputChecked) => {
+    handleTouchTap = (type, item, event, input) => {
+      if(this.props.teacherReducer.noDataError != true){
+        this.props.resetToNoErrorTeacher()
+      }
       let teacher = {}
       switch(type){
         case "openEditDialog":
@@ -130,6 +157,7 @@ class AllTeacher extends React.Component{
             designation: this.state.designation
           }
           this.props.changeDetails(details)
+
           this.setState({
             teacherName: null,
             departmentForChangeDetails: null,
@@ -141,6 +169,7 @@ class AllTeacher extends React.Component{
             nameInvalid: false,
             designationInvalid: false
           })
+          this.props.resetToNoErrorTeacher()
           break
         case "getName":
           this.setState({
@@ -154,7 +183,7 @@ class AllTeacher extends React.Component{
             })
           }
           else{
-            if ( isAllAlphabets(event)) {
+            if ( checkCharacter(event)) {
               this.setState({
                 nameInvalid: true
               },  ()=> {
@@ -182,7 +211,7 @@ class AllTeacher extends React.Component{
             })
           }
           else{
-            if ( isAllAlphabets(event)) {
+            if ( checkCharacter(event)) {
               this.setState({
                 designationInvalid: true
               }, ()=> {
@@ -238,31 +267,23 @@ class AllTeacher extends React.Component{
           }
           this.props.approveDetails(teacher)
           break
-        case "onlyApprovedTeachers":
-          if(event){
-            this.setState({
-              onlyApproved: true,
-              disableCheckboxForUnapproved: true
-            })
-          }
-          else{
+        case "onlyApprovedTeachersOrOnlyUnapproved":
+          if(input == "all"){
             this.setState({
               onlyApproved: false,
-              disableCheckboxForUnapproved: false
+              onlyUnApproved: false
             })
           }
-          break
-        case "onlyUnApprovedTeachers":
-          if(event){
+          if(input == "approved"){
             this.setState({
-              onlyUnApproved: true,
-              disableCheckboxForApproved: true
+              onlyApproved: true,
+              onlyUnApproved: false
             })
           }
-          else{
+          if(input == "not_approved"){
             this.setState({
-              onlyUnApproved: false,
-              disableCheckboxForApproved: false
+              onlyApproved: false,
+              onlyUnApproved: true
             })
           }
           break
@@ -272,17 +293,20 @@ class AllTeacher extends React.Component{
     }
     /*gets the date and sets it as joining date for a teacher*/
     getDate = (event, date) => {
+      this.props.resetToNoErrorTeacher()
       this.setState({
         joinDate: date
       })
     }
     /*selecting departments*/
     handleChangeDepartment = (event, index, value) => {
+      this.props.resetToNoErrorTeacher()
       this.setState({
         departmentSelected: value
       })
     }
     handleChangeDepartmentForCHangeDetails = (event, index, value) => {
+      this.props.resetToNoErrorTeacher()
       let departmentId = null
       let departmentExisting = this.props.subjectReducer.department
       for(let index = 0; index<departmentExisting.length; index++){
@@ -308,6 +332,14 @@ class AllTeacher extends React.Component{
           browserHistory.push('/error');
       }
     }
+
+    componentDidMount(){
+      this.setState({
+        noData: false
+      })
+      console.log(this.state)
+    }
+
     /*displays all the teacehrs in cards*/
     teacherList = (data,index,style) => {
       return(
@@ -348,7 +380,7 @@ class AllTeacher extends React.Component{
                            (
                              <TableRowColumn colSpan="6">{"No data"}</TableRowColumn>
                            ) : (
-                             <TableRowColumn colSpan="6">{moment(data.joining_date).format("MMM Do YY")}</TableRowColumn>
+                             <TableRowColumn colSpan="6">{moment(data.joining_date).format('ll')}</TableRowColumn>
                            )
                        }
                    </TableRow>
@@ -489,22 +521,23 @@ class AllTeacher extends React.Component{
              )
           }
           </SelectField>
-          <span style={{width: '20%'}}>
-            <Checkbox
+          <RadioButtonGroup name="shipSpeed"  defaultSelected="all" onChange={this.handleTouchTap.bind(this, "onlyApprovedTeachersOrOnlyUnapproved", event)}>
+            <RadioButton
+              value="all"
+              style={{position: 'absolute', zIndex:'3', marginLeft: '30%', marginTop:'-3%', width: '20%'}}
+              label="All Teachers"
+            />
+            <RadioButton
+              value="approved"
+              style={{position: 'absolute', zIndex:'3', marginLeft: '50%', marginTop:'-3%', width: '20%'}}
               label="Approved Teachers"
-              style={{position: 'absolute', zIndex:'3', marginLeft: '70%', marginTop:'-3%', width: '30%'}}
-              onCheck={this.handleTouchTap.bind(event, "onlyApprovedTeachers")}
-              disabled={this.state.disableCheckboxForApproved}
             />
-          </span>
-          <span style={{width: '20%'}}>
-            <Checkbox
+            <RadioButton
+              value="not_approved"
+              style={{position: 'absolute', zIndex:'3', marginLeft: '70%', marginTop:'-3%', width: '20%'}}
               label="UnApproved Teachers"
-              style={{position: 'absolute', zIndex:'3', marginLeft: '30%', marginTop:'-3%', width: '30%'}}
-              onCheck={this.handleTouchTap.bind(event, "onlyUnApprovedTeachers")}
-              disabled={this.state.disableCheckboxForUnapproved}
             />
-          </span>
+          </RadioButtonGroup>
         <div>
     			{
             this.props.teacherReducer.status == 200 && this.props.teacherReducer.error === false && this.props.teacherReducer.allTeacher !== undefined?
@@ -552,10 +585,11 @@ class AllTeacher extends React.Component{
                     }
                   }
                 }
-    				})) : this.errorSnackBar(this.props.teacherReducer.errorMessage)
+    				})) : null
     			}
           </div>
           {
+            this.snackBarDisplay("")
             // <Pagination className="ant-pagination" defaultCurrent={1}
             //   total={this.props.teacherReducer.totalPages}
             //   current={this.props.teacherReducer.currentPage}

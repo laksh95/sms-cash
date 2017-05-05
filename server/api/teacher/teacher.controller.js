@@ -90,6 +90,7 @@ let teacherFunctions={
     if(req !== null && req != undefined && req.body != undefined && Object.keys(req).length!==0 && Object.keys(req.body).length!==0 || req.user != null){
       teacher.getTeacherAndFeedback(db, req.body)
       .then((result)=>{
+        console.log(result)
           if(result.length == 0){
             res.status(200).json({message: 'NO_ROWS_FOUND'})
           }

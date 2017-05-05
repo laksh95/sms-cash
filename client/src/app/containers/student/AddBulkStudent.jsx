@@ -61,6 +61,7 @@ class AddBulkStudent extends React.Component{
                             onDrop={this.onDrop}
                             accept='text/csv'
                             style={{width:750,height:500,margin:'auto',textAlign:'center'}}
+                            className="fileUpload"
                         >
                             <div>{this.props.file.csvToJS.filename}</div>
                         </DropZone>

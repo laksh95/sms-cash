@@ -74,7 +74,7 @@ class Blog extends React.Component {
         const windowBottom = windowHeight + window.pageYOffset;
         console.log(windowBottom)
         console.log(docHeight)
-        if (windowBottom >= docHeight) {
+        if (windowBottom+1 >= docHeight) {
             if(this.props.blogReducer.isScrollActive){
                 let pg= this.state.pageNumber
                 pg = pg +1

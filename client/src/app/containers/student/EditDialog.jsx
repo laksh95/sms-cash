@@ -44,7 +44,7 @@ class EditDialog extends React.Component{
     handleClose=()=>{
         this.props.dialogValue(false)
     }
-    handleChange = (type,event,value)=>{
+    handleChange = (that,type,event,value)=>{
         console.log('--------inside on change for textfields',type)
         switch(type){
             case 'dateOfBirth':
@@ -227,7 +227,7 @@ class EditDialog extends React.Component{
         let studentData = this.props.studentInfo.studentData.data
         const startDate=new Date()
         Object.keys(studentData).forEach((key,index)=>{
-            if('dateOfBirth' == key){
+            if('dateOfBirth' === key){
                 let date = new Date(studentData[key])
                 array.push(
                     <DatePicker

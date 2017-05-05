@@ -547,9 +547,7 @@ class AddStudent extends React.Component {
                     <RaisedButton label="Add Student" primary={true}
                                   onClick={this.addStudent}
                     />
-                    <RaisedButton label="Cancel" secondary={true}
-                                  onClick={this.cancel}
-                    />
+
                  </div>
                 <Snackbar
                     open={this.state.open}

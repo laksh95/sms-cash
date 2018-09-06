@@ -1,6 +1,6 @@
 import React from 'react';
-import TopBar from './../../components/login/TopBar.jsx'; 
-import Login from './../../components/login/Login.jsx'; 
+import TopBar from './../../components/login/TopBar.jsx';
+import Login from './../../components/login/Login.jsx';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import {browserHistory} from 'react-router';
@@ -44,26 +44,27 @@ class App extends React.Component {
   //   }
   // }
   render() {
+      console.log('here---')
     return (
-      <MuiThemeProvider> 
+      <MuiThemeProvider>
        <div className={loginStyle.mymain} >
-         <TopBar />  
-         <Login 
+         <TopBar />
+         <Login
          	isLogin={this.props.login.isLogin}
          	token={this.props.login.token}
          	user={this.props.login.loginUser}
             errorText = {this.props.login.errorText}
          	loginUser= {(credential) => this.props.loginUser(credential)}
          	checkLogin= {() => this.props.checkLogin()}
-         />         
+         />
       </div>
-    </MuiThemeProvider> 
+    </MuiThemeProvider>
     );
   }
 }
 
 
-App.contextTypes = { 
+App.contextTypes = {
     router: React.PropTypes.object.isRequired
 };
 
@@ -89,9 +90,8 @@ const mapDispatchToProps= (dispatch) => {
     },
     resetToNoError: () =>{
       dispatch(resetToNoError());
-    } 	
+    }
 	};
 };
 
 export default connect(mapStateToProps,mapDispatchToProps)(App);
-

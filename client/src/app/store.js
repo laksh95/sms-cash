@@ -15,17 +15,17 @@ import teacherReducer from './reducers/teacherReducer.js'
 import getDataReducer from './reducers/getDataDashboardreducer.jsx'
 export default createStore(
     combineReducers({
-    	login,
+        login,
     	departmentReducer,
     	errorReducer,
-      blogReducer,
+        blogReducer,
     	routing: routerReducer,
-      studentReducer,
-		  courseReducer,
+        studentReducer,
+        courseReducer,
     	headerReducer,
-      getDataReducer,
-      teacherReducer,
-      subjectReducer,
+        getDataReducer,
+        teacherReducer,
+        subjectReducer,
     }),
     {},
     applyMiddleware(logger() ,thunk , promise())

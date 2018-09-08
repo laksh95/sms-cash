@@ -3,7 +3,7 @@
 // ==================================
 module.exports = {
     sequelize: {
-        uri: 'postgres://postgres:password@localhost:5432/localSMS',
+        uri: 'postgres://postgres:password@localhost:5432/localsms',
         options: {
             logging: false,
             dialect: 'postgres',

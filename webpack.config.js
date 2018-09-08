@@ -11,16 +11,17 @@ let config = {
     },
     devServer:{
         publicPath:'/',
+<<<<<<< HEAD
         port:7070,
         contentBase:'./client/src',
+=======
+        port:8080,
+        contentBase:__dirname + '/client',
+>>>>>>> upstream/development
         historyApiFallback: {
             index: 'index.html'
         }
     },
-    resolve: {
-        root: path.resolve('./')
-    },
-    devtool : 'source-map',
     module: {
         loaders: [
             {

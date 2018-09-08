@@ -11,7 +11,7 @@ let config = {
     },
     devServer:{
         publicPath:'/',
-        port:8080,
+        port:7070,
         contentBase:'./client/src',
         historyApiFallback: {
             index: 'index.html'

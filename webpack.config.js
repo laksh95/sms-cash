@@ -12,7 +12,7 @@ let config = {
     devServer:{
         publicPath:'/',
         port:8080,
-        contentBase:__dirname + '/client',
+        contentBase:'./client/src',
         historyApiFallback: {
             index: 'index.html'
         }

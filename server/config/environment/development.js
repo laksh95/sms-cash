@@ -3,8 +3,8 @@
 // ==================================
 module.exports = {
   sequelize: {
-    // uri: 'postgres://postgres:cronj123@192.168.1.223:5432/sms',
-    uri: 'postgres://postgres:password@localhost:5432/localsms',
+    uri: 'postgres://postgres:root@127.0.0.1:5432/localSMS',
+      // uri: 'postgres://postgres:cronj123@192.168.1.223:5432/sms',
     options: {
       logging: false,
       dialect: 'postgres',
@@ -16,4 +16,4 @@ module.exports = {
     }
   }
 };
-//uri: 'postgres://postgres:cronj123@192.168.1.223:5432/sms',
+

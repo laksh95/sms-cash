@@ -5,9 +5,9 @@ let SRC_DIR = path.resolve(__dirname+'/client/src/')
 let config = {
     entry: SRC_DIR + "/app/index.jsx",
     output: {
-        path: DIST_DIR + "/app",
+        path: path.resolve(__dirname,'public'),
         filename: "bundle.js",
-        publicPath: "/"
+        publicPath: "/public/"
     },
     devServer:{
         publicPath:'/',

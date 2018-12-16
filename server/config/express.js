@@ -1,13 +1,17 @@
- let path= require('path');
+let path= require('path');
 let express= require('express');
 let bodyParser = require('body-parser');
 let passport = require('passport');
 let cors = require('cors')
+const history = require('connect-history-api-fallback')
 let init=function(app){
-	//var public= path.resolve(__dirname +"/../../client/public" );
-	//app.use(express.static(public));
+	var public= path.resolve(__dirname +"/../../public" );
+    app.use(history({
+        verbose:true
+    }))
+	app.use(express.static(public));
 
-    // app.use(cors())
+    app.use(cors())
 
     app.use(function(req, res, next) {
      res.header("Access-Control-Allow-Origin", "*");

@@ -11,7 +11,7 @@
 * set test environment
 * run node server
 * run webpack-dev server using npm start
-* open localhost:3000
+* open localhost:8080
 
 ### Contribution guidelines ###
 * Create a fork. 

@@ -129,33 +129,35 @@ module.exports=function(){
                         then((resultAdmin)=> {
                             if(resultAdmin){
                                 role.push('admin');
+                                cb(role);
                             }
-                            return director.findOne({attributes: ['id'], where: {user_detail_id: userId}})
+                            // return director.findOne({attributes: ['id'], where: {user_detail_id: userId}})
                         })
-                        .then((resultDirector)=>{
-                            if(resultDirector){
-                                role.push('director');
-                            }
-                            return hod.findOne({attributes: ['id'], where: {user_detail_id: userId}})
-                        })
-                        .then((resultHod)=>{
-                            if(resultHod){
-                                role.push('hod');
-                            }
-                            return teacher.findOne({attributes: ['id'], where: {user_detail_id: userId}})
-                        })
-                        .then((resultTeacher)=> {
-                            if(resultTeacher){
-                                role.push('teacher');
-                            }
-                            return student.findOne({attributes: ['id'], where: {user_detail_id: userId}})
-                        })
-                        .then((resultStudent)=> {
-                            if(resultStudent){
-                                role.push('student');
-                            }
-                            cb(role);
-                        }).catch((err) => {console.log('---------------------',err.toString())});
+                        // .then((resultDirector)=>{
+                        //     if(resultDirector){
+                        //         role.push('director');
+                        //     }
+                        //     return hod.findOne({attributes: ['id'], where: {user_detail_id: userId}})
+                        // })
+                        // .then((resultHod)=>{
+                        //     if(resultHod){
+                        //         role.push('hod');
+                        //     }
+                        //     return teacher.findOne({attributes: ['id'], where: {user_detail_id: userId}})
+                        // })
+                        // .then((resultTeacher)=> {
+                        //     if(resultTeacher){
+                        //         role.push('teacher');
+                        //     }
+                        //     return student.findOne({attributes: ['id'], where: {user_detail_id: userId}})
+                        // })
+                        // .then((resultStudent)=> {
+                        //     if(resultStudent){
+                        //         role.push('student');
+                        //     }
+                        //     cb(role);
+                        // })
+                        .catch((err) => {console.log('---------------------',err.toString())});
 
                 }
 
